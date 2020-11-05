@@ -111,6 +111,8 @@
   xnoremap <C-l> <Esc>`<<C-v>`>odp`<<C-v>`>lol
   xnoremap <C-h> <Esc>`<<C-v>`>odhP`<<C-v>`>hoh
 
+
+  au TermOpen * set ft=term                  " adds filetype to terminal buffer
   augroup terminal-maps
     au!
     au Filetype term tnoremap <buffer> <Esc> <C-\><C-n>
@@ -169,5 +171,13 @@
       silent exec a:open
   endfunction
 
+  function! Backup()
+  	let b:timestamp = strftime('%Y-%m-%d_%Hh%Mm')
+  	let b:expanded = expand('%:p')
+  	let b:subst = substitute(b:expanded, "/", "\\\\%", "g")
+  	let b:dir = g:backupdir
+  	let b:backupfile = b:dir . b:timestamp . "_" . b:subst
+  	silent exec ':w! ' b:backupfile
+  endfunction
 
 "}}}

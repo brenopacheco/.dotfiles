@@ -20,7 +20,7 @@ alias tmp='cd /tmp/'
 alias desk='cd ~/Desktop'
 alias down='cd ~/Downloads'
 alias pics='cd ~/Pictures'
-alias bin='cd ~/bin'
+alias bin='cd ~/.dotfiles/bins/bin'
 
 # configurations for default cmds
 alias joe="joe-gitignore"

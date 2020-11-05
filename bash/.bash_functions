@@ -65,14 +65,6 @@ function extract() {
 		done
     }
 # }}}
-# lsexec : Returns executables in $PATH {{{
-    function dkill () {
-		OLD_IFS=$IFS
-		IFS=:
-		find $PATH -executable -printf "%f\n" 2>/dev/null
-		IFS=$OLD_IFS
-    }
-# }}}
 # truecolortest : tests terminal truecolor {{{
     function truecolortest () {
 		awk -v term_cols="${width:-$(tput cols || echo 80)}" 'BEGIN{

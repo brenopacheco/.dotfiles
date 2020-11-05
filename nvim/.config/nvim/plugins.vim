@@ -11,7 +11,7 @@
 "}}}
 " Undotree{{{
 	set undofile
-	set undodir=~/.config/nvim/.undodir
+	set undodir=g:undodir
 "}}}
 " Gutentags{{{
 	let g:gutentags_file_list_command = 'rg --files'
