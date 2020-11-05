@@ -17,11 +17,11 @@ gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # background image
-export WALLPAPER=$HOME/Pictures/wallpapers/wallpaper-8.jpg
+export WALLPAPER=$HOME/Pictures/wallpapers/wallpaper-13.jpg
 [[ -f "$WALLPAPER" ]] && feh --bg-fill $WALLPAPER
 
 # applications
-xcompmgr -cfF -t-9 -l-11 -r9 -o.95 -D3 & # window effects
+# xcompmgr -cfF -t-9 -l-11 -r9 -o.95 -D3 & # window effects
 xfce4-power-manager &                    # power manager
 nm-applet &                              # networkmanager applet
 blueman-applet &                         # bluetooth applet

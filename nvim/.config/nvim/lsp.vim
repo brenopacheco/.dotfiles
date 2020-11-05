@@ -1,5 +1,5 @@
 " Language servers{{{
-
+" enable without git: https://github.com/neovim/nvim-lspconfig/issues/44
 lua << EOF
 	-- tsserver requires typescript, 
 	-- jdtls requires jdk-11 
@@ -10,7 +10,8 @@ lua << EOF
 	end
 	require'nvim_lsp'.yamlls.setup{}
 	require'nvim_lsp'.bashls.setup{}
-	require'nvim_lsp'.ccls.setup{}
+	-- require'nvim_lsp'.ccls.setup{}
+	require'nvim_lsp'.clangd.setup{}
 	require'nvim_lsp'.cssls.setup{}
 	require'nvim_lsp'.html.setup{}
 	require'nvim_lsp'.jdtls.setup{}
