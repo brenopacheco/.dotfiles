@@ -1,0 +1,2715 @@
+#+TITLE: Emacs Literate Configuration
+#+AUTHOR: Breno Pacheco
+#+PROPERTY: header-args :tangle yes
+#+SETUPFILE: ~/.emacs.d/styles/readtheorg.setup
+#+STARTUP: overview
+
+* Things to do
+
+  - [ ] org hydra
+  - [ ] undotree hydra
+  - [ ] dumbjump
+  - [ ] origami
+  - [ ] lsp tings
+  - [X] add apropos x in help-hydra
+  - [ ] ivy confs: ( remove ivy's ^ at the beggining of search)  
+  - [ ] learn how to use ivy/counsel actions and hydra
+  - [ ] hide buffers (*Messages*, *Help*, *Completions*)
+  - [ ] fix go-to help behavior (open to the right down) 
+  - [ ] open *Help* in secondary window (see video)
+  - [ ] integrate window/buffer management in one hydra
+  - [ ] lsp functionalities
+  - [ ] project management and hydra
+  - [ ] compilation / running / testing configuration
+  - [ ] vdiff configuration
+  - [ ] search hydra
+  - [ ] evil marks
+  - [ ] bookmarks
+  - [ ] tags and other fzf related functions
+
+** LSP
+
+
+
+* Organization
+  
+  The following explains how this init.org is tangled into an init.el
+  file, how we can export it into different formats for reading and
+  how it is organized.
+
+** Automatically Tangle
+
+   First there is a property defined on the file:
+
+   #+BEGIN_SRC :tangle no
+      header-args :tangle yes
+   #+END_SRC
+
+   This tells emacs to automatically tangle (include) all code blocks
+   in this file when generating the code for the config, unless the
+   code block explicitly includes =:tangle no= as the above code block
+   does.
+   
+   To run the tangle command use =org-babel-tangle=
+
+** Dispatch styles
+   
+   This org file can be either tangled into an init.el file or
+   converted into a PDF or HTML web page. The [[https://github.com/fniessen/org-html-themes#readtheorg][ReadTheOrg]] template is
+   pretty cool, so I'll leave it as an option by inserting the header
+   property:
+
+	#+begin_example
+	#+SETUPFILE: ~/.emacs.d/styles/readtheorg.setup
+	#+end_example
+	
+	To dispatch it to other format, run =org-export-dispatch=
+
+** Org file
+   
+   This file follows the following organization:
+
+   1. Package setup and configurations
+   2. Useful functions defined by the user 
+   3. Keybindings and hydras
+   4. General settings for emacs (theme, behaviors, etc...)
+
+* Packages
+
+	This org file makes sure that, when tangled, the init.el file
+	generated will be able to bootstrap Emacs, installing all necessary
+	packages without need to go through manual instalation from Package
+	Menu. We still need some el files included in the git repository though.
+
+** Package system [2/2]
+*** DONE Package.el and archives
+
+	Emacs has a built-in feature for managing packages called package.el.
+	We first 'require' this feature, meaning we load it on initialization.
+	reading the init.el file.
+
+	We then tell package.el that we don't want emacs to initialize
+	packages by itself, but let us do it with package-initialize. We need
+	to run it now because the list of installed packages must be updated
+	for the next step (installing use-package).
+
+	In this package we set the archives we will be getting our packages
+	from. Emacs keeps a list of packages available from the archives, but
+	we do not need to update it at this point.
+
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	(require 'package)
+	(setq package-enable-at-startup nil)
+	(package-initialize)
+	(setq package-archives
+			'(("org"   . "http://orgmode.org/elpa/")
+			("gnu"   . "http://elpa.gnu.org/packages/")
+			("melpa" . "http://melpa.milkbox.net/packages/")))
+	#+END_SRC
+
+	I'll force emacs do update the package list on startup. This way when
+	the daemon starts I don't have to refresh the package list contents
+	everytime I ask for *list-packages*. When using =t= as argument the
+	command refresh-package-contents will pull *melpa* packages
+	information asynchronously.
+
+	#+begin_src emacs-lisp :tangle yes
+	(package-refresh-contents t)
+	#+end_src
+
+*** DONE Use-package
+
+	Package.el is kinda messy for setting configurations for all the
+	packages. We will still use it to manage the packages, but with aid of
+	use-package, which is a package defining macros for setting up
+	configurations for other packages in a tidy manner (i.e.: saying who
+	goes after who, commands to execute on load, selecting which packages
+	to install, etc...).
+
+	It works as a better interface for package.el, allowing us to define
+	the <pgk>-autoloads.el configurations run by package.el
+
+	The first thing we gotta do is to install use-package, if not
+	installed, by first refreshing the list of packages available from the
+	archives. Use-package is then required (loaded) and we tell it to
+	always make sure to install the packages we reference using the
+	use-package macro.
+
+	[[~/.emacs.d/use-package-guide.org][use-package-guide]]
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	(unless (package-installed-p 'use-package)
+		(package-refresh-contents)
+		(package-install 'use-package))
+	(require 'use-package)
+	(setq use-package-always-ensure t)
+
+	;; for now accept that this is magic
+	(eval-when-compile
+		(require 'use-package))
+	#+END_SRC
+
+** Evil packages [5/5]
+
+   Here we will declare a myriad of evil packages for emulation of vim
+   modal editing. The default evil package, the collections package
+   and the magit and org packages provide vim functionality for most
+   major modes in emacs. The other packages emulate some of vim's
+   plugins (mostly tim pope's).
+    - [[https://github.com/noctuid/evil-guide]]
+
+*** Evil
+	
+	... We can do more here ...
+	
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	  (use-package evil
+		;; some flags to set before starting evil
+		;; used for evil-collections
+		:init
+		(setq evil-want-integration t) 
+		(setq evil-want-keybinding nil)
+		:config
+		;; (evil-define-key 'normal evil-jumper-mode-map (kbd "TAB") nil) ;; for terminal <tab> != TAB
+		(evil-mode 1))
+	#+END_SRC
+
+*** DONE Evil-collections
+
+	The collections package brings evil-mode keybindings to
+	many of Emacs's built-in major modes like *packages-menu*,
+	*dired* and *buffer-menu*, as well as popular package
+	major modes such as *flycheck* and *helm*. We can check
+	the available modes this package applies to and their
+	configurations by calling evil-collection-open-config-file.
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	  (use-package evil-collection
+		:config
+		(evil-collection-init)
+		(evil-define-key 'normal org-mode-map (kbd "TAB") #'org-cycle)
+		(evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle))
+	#+END_SRC
+
+*** DONE Evil-magit
+
+	Magit vim key bindings are in a separate package, not
+	contained within the evil-collections project.
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	  (use-package evil-magit)
+	#+END_SRC
+
+*** DONE Evil-escape
+	
+	We can have a keybinding for escaping to normal mode or
+	quitting the minibuffer and many more operations (like
+	magit, ex commands, neotree, etc...) by using the
+	evil-escape package. I will set 'jk' as this keybinding
+	and tell evil-escape to allow me to press 'kj' instead if
+	I want to. Besides that, the default delay for pressing
+	two keys in sequence is pretty low (0.1s) so I will also
+	set it a bit higher.
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	  (use-package evil-escape
+		:config
+		(setq-default
+		 evil-escape-key-sequence "jk"
+		 evil-escape-unordered-key-sequence "true"
+		 evil-escape-delay 0.5)
+		(evil-escape-mode 1))
+	#+END_SRC
+
+*** DONE Evil-commentary
+
+	Evil-commentary brings tpope's vim-commentary plugin to
+	Emacs. You can comment/uncomment out a line using gcc or
+	apply a motion (like gap - comment around paragraph) or a
+	visual selection (using gc after selecting).
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	(use-package evil-commentary
+		:config
+		(evil-commentary-mode))
+	#+END_SRC
+
+*** DONE Evil-surround
+	
+	Evil-surround brings yet another tpope's plugin to Emacs.
+	It's usage is a little more convoluted, but here's how it
+	works: 
+	- add surround normal ::
+		ys<object><sur> (i.e: ysaw" = surround around word with ")
+	- add surround visual mode ::
+		S<sur> (i.e: viwS" - surround inner word with ")
+	- change surrounding normal mode :: 
+	    cs<old-sur><new-sur> (i.e: cs"' - change " to ')
+	- delete surrounding :: 
+		ds<sur> (i.e: ds" - delete ")
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	(use-package evil-surround
+		:config
+		(global-evil-surround-mode 1))
+	#+END_SRC
+*** Evil-search-highlight-persist
+	
+	By default when performing a search with / (isearch) the matches
+	do not keep highlighted. This plugin solves that.
+	
+	 #+begin_src emacs-lisp :tangle yes
+	   (use-package evil-search-highlight-persist
+		 :config
+		 (define-key evil-normal-state-map (kbd "C-/") 'evil-search-highlight-persist-remove-all)
+		 (define-key evil-normal-state-map (kbd "C-_") 'evil-search-highlight-persist-remove-all)
+		 (global-evil-search-highlight-persist 1))
+	 #+end_src 
+
+	 #+RESULTS:
+	 : t
+
+** IDE features [1/7]
+*** TODO Ivy
+	
+	#+begin_src emacs-lisp :tangle yes
+
+	  (use-package ivy
+		:ensure counsel
+		:ensure swiper
+		:ensure smex
+		:bind (("M-x" . counsel-M-x))
+		:config
+		(setq counsel-find-file-at-point t
+			  enable-recursive-minibuffers t
+			  ivy-auto-shrink-minibuffer t
+			  ivy-count-format "[%d:%d] "
+			  ivy-display-style 'fancy								; ?
+			  ivy-fixed-height-minibuffer t
+			  ivy-height 15
+			  ivy-initial-inputs-alist nil							; no ^ when using ivy
+			  ivy-more-chars-alist '((t . 0))							; number of chars to start counsel
+			  ivy-on-del-error-function nil
+			  ivy-re-builders-alist '((t . ivy--regex-ignore-order))	; filter list by regex no order
+			  ivy-use-selectable-prompt t								; ?
+			  ivy-use-virtual-buffers t  ; Enable bookmarks and recentf
+			  ivy-wrap t												; wrap around first/last candidate
+			  )
+		(ivy-mode 1))
+
+	  (use-package ivy-rich
+		:after ivy
+		:config
+		(ivy-rich-mode))
+
+    #+end_src
+
+	#+RESULTS:
+	: t
+
+*** TODO Flycheck
+
+		#+BEGIN_SRC emacs-lisp :tangle yes
+		  (use-package flycheck
+			:demand t
+			:config
+			(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+			:init (global-flycheck-mode))
+		#+END_SRC
+
+*** TODO Projectile
+
+	#+BEGIN_SRC emacs-lisp :tangle no
+	(use-package projectile
+	:config
+	(projectile-mode 0))
+	#+END_SRC
+
+*** DONE Yasnippets
+	
+	=Yasnippet= is a template/snippet insertion engine for emacs much like
+	Ultisnippets is for Vim. It's syntax is that of ~TextMate~ and it
+	works for pretty much any language.
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	(use-package yasnippet
+		:config
+		(setq yas-wrap-around-region t) ; wrap first placeholder
+		(yas-global-mode 1))
+	#+END_SRC
+
+	The package does not bring by itself any snippets, but we can
+	require the =yasnippet-snippet= package a package that bundles
+	many usefull snippets. After pulling the snippets we reload it.
+
+	#+begin_src emacs-lisp :tangle yes
+	  (use-package yasnippet-snippets
+		:after (yasnippet)
+		:config
+		(yas-reload-all))
+	#+end_src
+	
+	In order to insert snippets we can use an ivy package
+	
+	#+begin_src emacs-lisp :tangle yes
+	  (use-package ivy-yasnippet)
+	#+end_src 
+
+*** TODO Company
+	
+	- [ ] add snipeets to company's backend
+	- [ ] expand snippet
+	- [ ] integrate with lsp
+	- [ ] expand lsp's snippets
+	  jesus christ
+	
+	Company-mode is already pre-configured the way I like it (except
+	for the delay time). When writting, completions will appear ...
+
+	#+BEGIN_SRC emacs-lisp :tangle no
+	  (use-package company
+	    :after (yasnippet)
+		:config
+		(setq company-idle-delay 0) ; No delay in showing suggestions.
+		(global-company-mode))
+	#+END_SRC
+	
+**** TODO Yasnippet integration
+
+	We want to add snippets on every mode we are in to *company*'s
+	backend. On the webs when searching for how to do this the
+	solution is always this one: 
+
+	#+begin_src emacs-lisp :tangle no
+	  ;; Add yasnippet support for all company backends
+	  ;; "Basically it sets up the yasnippet backend with every other
+	  ;; backend you have activated, so you get the proper completion for
+	  ;; the corresponding backend as well as your snippets."
+	  ;; https://github.com/syl20bnr/spacemacs/pull/179
+	  (defvar company-mode/enable-yas t
+		"Enable yasnippet for all backends.")
+
+	  (defun company-mode/backend-with-yas (backend)
+		(if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+			backend
+		  (append (if (consp backend) backend (list backend))
+				  '(:with company-yasnippet))))
+
+	  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+	#+end_src
+	
+	Tab expansion is overriden by company, which means selecting
+	snippet suggestions won't expand the them. From Emacs Wiki:
+	" Company interferes with Yasnippet’s native behaviour. Here’s a
+	quick fix: http://gist.github.com/265010 "
+	
+	#+begin_src emacs-lisp :tangle no
+	  (defun check-expansion ()
+		  (save-excursion
+		  (if (looking-at "\\_>") t
+			  (backward-char 1)
+			  (if (looking-at "\\.") t
+			  (backward-char 1)
+			  (if (looking-at "->") t nil)))))
+
+	  (defun do-yas-expand ()
+		  (let ((yas/fallback-behavior 'return-nil))
+		  (yas/expand)))
+
+	  (defun tab-indent-or-complete ()
+		  (interactive)
+		  (if (minibufferp)
+			  (minibuffer-complete)
+		  (if (or (not yas/minor-mode)
+				  (null (do-yas-expand)))
+			  (if (check-expansion)
+				  (company-complete-common)
+				  (indent-for-tab-command)))))
+
+	  (global-set-key [tab] 'tab-indent-or-complete)
+
+	#+end_src
+
+*** TODO Lsp-mode
+
+	#+begin_src emacs-lisp :tangle no
+	  (use-package lsp-mode
+		:config
+		(require 'lsp-clients)
+		(setq lsp-prefer-flymake nil)
+		(setq lsp-auto-configure nil))
+
+	  (use-package lsp-ui
+		:hook (lsp-mode . lsp-ui-mode)
+		:config
+		(setq lsp-ui-sideline-enable t)
+		(setq lsp-ui-doc-enable t)
+		(setq lsp-ui-flycheck-enable t)
+		(setq lsp-ui-imenu-enable t)
+		(setq lsp-ui-peek-enable t)
+		;; more actions on point
+		(setq lsp-ui-sideline-update-mode 'point) )
+
+	  (use-package lsp-java
+		:after lsp
+		:hook (java-mode . lsp)
+		:config
+		(setq lsp-java-server-install-dir (expand-file-name "~/.jdt.ls/")
+			  lsp-java-workspace-dir (expand-file-name "~/.jdt-workspace/")
+			  lsp-java-workspace-cache-dir (expand-file-name ".cache/" lsp-java-workspace-dir)
+			  lsp-java-maven-download-sources t))
+
+	  (use-package lsp-ivy
+		:after lsp-mode)
+
+	  (use-package company-lsp
+		:after (lsp-mode company)
+		:config
+		(add-hook 'lsp-mode-hook
+				  '(lambda ()
+					 (setq-local company-backends
+								 (cons 'company-lsp
+									   (remove 'company-capf company-backends))))))
+	#+end_src 
+
+**** old
+	*lsp-mode*
+	#+begin_src emacs-lisp :tangle no
+	  (use-package lsp-mode
+		:config (add-hook 'prog-mode-hook 'lsp))
+	#+end_src 
+	
+	*Company-lsp*
+	#+begin_src emacs-lisp :tangle no
+	  (use-package company-lsp
+		:after (company lsp-mode)
+		:config (push 'company-lsp company-backends))
+	#+end_src
+	
+	*lsp-java*
+	#+begin_src emacs-lisp :tangle no
+	  (use-package lsp-java
+		:after lsp)
+		;; :config (add-hook 'java-mode-hook 'lsp)) ;; prog-mode-hook is running lsp
+	#+end_src 
+	
+	*java-ui* ??? this is for flycheck
+	#+begin_src emacs-lisp :tangle no
+	  (use-package lsp-ui)
+	#+end_src
+
+*** TODO Dap-mode
+	
+	#+begin_src emacs-lisp :tangle no
+	(use-package dap-mode
+		:ensure t :after lsp-mode
+		:config
+		(dap-mode t)
+		(dap-ui-mode t))
+	#+end_src
+
+	#+begin_src emacs-lisp :tangle no
+		(use-package dap-java :after (lsp-java))
+	#+end_src 
+
+** Other functionalities [4/8]
+*** DONE Parenthesys
+
+	Emacs has a nice mode built-in for inserting parenthesys
+	automatically called electric-pair-mode. We will set it to be
+	always on in any major mode.
+
+	#+begin_src emacs-lisp :tangle yes
+		(electric-pair-mode 1)
+	#+end_src
+
+	We also can have parenthesys being shown in different colors
+	depending on their nesting level (meaning parens inside other
+	parens will show in different colors). The next package will
+	provide this functionality. We cannot, however, enable it globally
+	since the package might jack-up some other major modes. Therefore
+	we only enable it on programming modes using a hook.
+
+	#+begin_src emacs-lisp :tangle yes
+	(use-package rainbow-delimiters
+		:config
+		(add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+	#+end_src 
+	
+*** DONE Avy
+
+   Works like vim-easymotion. You press one or more keypresses
+   (depending on the avy's function called) and a list of
+   possible jump locations pop up on screen for use to select
+   where we want to go. 
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	(use-package avy
+		:config
+		(setq avy-timeout-seconds 999))
+	#+END_SRC 
+
+   The function I'll be using most is avy-goto-char-timer
+   which expects us to type any number of characters for the
+   word we wish to jump to within a *timout* timespan. Since I
+   don't like to be rushed, the *timeout* is set very high.
+
+*** DONE Icons
+
+	A utility package to collect various Icon Fonts and propertize
+	them within Emacs. Required by some packages. We still need to
+	manually call all-the-icons-install-fonts once only to download
+	the .ttf fonts needed.
+	
+	#+begin_src emacs-lisp :tangle yes
+	  (use-package all-the-icons)
+	  (unless (file-exists-p "~/.local/share/fonts/all-the-icons.ttf")
+		(all-the-icons-install-fonts t))
+	#+end_src 
+
+*** DONE Beacon
+
+	#+begin_src emacs-lisp :tangle yes
+	(use-package beacon
+	  :config
+	  (beacon-mode t))
+	#+end_src 
+
+*** TODO Dumb-jump
+
+	#+begin_src emacs-lisp :tangle yes
+	(use-package dumb-jump
+	  :defer t
+	  :init
+	  (setq dumb-jump-selector 'ivy
+			dumb-jump-force-searcher 'rg)
+	  :config
+	  (dumb-jump-mode t))
+	#+end_src 
+
+*** TODO Origami
+	
+	#+begin_src emacs-lisp :tangle yes
+		(use-package origami
+		:config
+		(global-origami-mode))
+	#+end_src
+	
+*** TODO Iedit
+*** TODO Posframes
+	
+	Posframe is a package that allows us to create floating frames. It
+	is quite nice looking and we can add support for ivy, helm, hydra,
+	flycheck and others. We need to set up posframe with some default
+	appearance and behavior settings and add support for our other
+	packages.
+
+	#+begin_src emacs-lisp :tangle yes
+	  (use-package posframe
+		:demand t)
+
+	  (use-package hydra-posframe
+		:load-path "~/.emacs.d/lisp/"
+		:after (posframe hydra)
+		:custom
+		(hydra-posframe-parameters
+		 '((internal-border-width . 1)))
+		:config
+		(setq hydra-posframe-poshandler #'posframe-poshandler-frame-center)
+		(hydra-posframe-mode 0))
+
+	  (use-package ivy-posframe
+		:ensure t
+		:custom-face
+		(ivy-posframe-border ((t (:background "#6272a4"))))
+		:config
+		(setq ivy-posframe-height-alist '((t . 20)))
+		(setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+		(ivy-posframe-mode 1))
+    #+END_SRC
+
+	#+RESULTS:
+	: t
+
+**** old
+
+	Your hydras will show up in the minibuffer, but if you
+	want it they can be made to show up in a posframe using
+	the hydra-posframe package. The maintener however has not
+	published this package to melpa. Therefore, we will have
+	to place it manually. You can get it from [[https://github.com/Ladicle/hydra-posframe][github/Ladicle]] 
+	and place it somewhere. I placed it in ~/.emacs.d/lisp
+
+** Keymap packages [1/1]
+*** DONE Which-key
+
+	 The which-key packages make it really easy to see which
+	 keybindings are available for a certain chord. For
+	 instance, when pressing C-h, which-key will pop up
+	 suggestions for k -> describe key, v -> describe-variable,
+	 etc.
+
+	 #+BEGIN_SRC emacs-lisp :tangle yes
+	   (use-package which-key
+		 :config
+		 (which-key-setup-minibuffer)
+		 (setq which-key-idle-delay 0.4)
+		 (which-key-mode 1))
+	 #+END_SRC
+
+	 We tell which-key to appear on bottom of the screen as a
+	 separate window , then set a delay time and finally tell
+	 emacs to toggle on which-key-mode for all buffers. Having
+	 which-key take up mini-buffer might break the paging
+	 feature (in case there are too many bindings and we need
+	 to flip pages) and lowering the delay time too much might
+	 make the pop-up window not appear.
+
+**** choose candidates via completion 
+
+ - origin :: [[https://with-emacs.com/posts/ui-hacks/prefix-command-completion/][where this hack is from]]
+
+
+ When you press C-h after a prefix key, Emacs displays a buffer
+ containing all the bindings under that prefix. This script makes the
+ completions appear as a completion-menu.
+
+ #+begin_src emacs-lisp :tangle no
+ (setq prefix-help-command #'which-key-M-x-prefix+)
+ (defun which-key-M-x-prefix+ (&optional _)
+   "Completing read and execute command from prefix-map.
+
+ This command can be used as `prefix-help-command'. The optional
+ argument is ignored and only for compatability with
+ `which-key-C-h-dispatch' so this command can be bound in
+ `which-key-C-h-map', too."
+   (interactive)
+   (let* ((evs (cond ((which-key--current-prefix)
+                      (which-key--current-key-list))
+                     (t
+                      (butlast (append (this-command-keys-vector) nil)))))
+          (key  (and evs (apply #'vector evs))))
+     (which-key-M-x+ key)))
+
+ (defun which-key-M-x+ (&optional key)
+   "Completing read command and execute it.
+
+ Only commands which are bound to keys are considered. If KEY is
+ given it should be the prefix-key for which commands should be
+ completed. Otherwise read command from top-level. "
+   (interactive)
+   (let ((cmd (which-key--completing-read-cmd+ key)))
+     (when (commandp cmd)
+       (which-key--execute-cmd+ cmd))))
+
+ (defun which-key--completing-read-cmd+ (&optional prefix)
+   "Completing read command for PREFIX.
+
+ Read commands for PREFIX or top-level if PREFIX not given."
+   (which-key--hide-popup-ignore-command)
+   (let ((desc
+          (completing-read
+           (if prefix
+               (format "Execute (%s): " (key-description prefix))
+             "Execute: ")
+           (mapcar #'which-key--completing-read-format+
+                   (which-key--get-current-bindings prefix)))))
+     (intern (car (split-string desc)))))
+
+ (defun which-key--execute-cmd+ (cmd)
+   "Execute command CMD as if invoked by key sequence."
+   (setq prefix-arg current-prefix-arg)
+   (setq this-command cmd)
+   (setq real-this-command cmd)
+   (command-execute cmd 'record))
+
+ (defun which-key--completing-read-format+ (bnd)
+   "Format binding BND for `completing-read'."
+   (let* ((key (car bnd))
+          (cmd (cdr bnd))
+          (desc (format "%s (%s)" cmd
+						(propertize key 'face 'which-key-key-face))))
+     (which-key--maybe-add-docstring
+      (format "%-50s" desc) cmd)))
+ #+end_src
+
+*** Hydra packages
+	
+	Hydras xallaala ...
+
+**** Base package
+	
+	The hydra package allows us to create transient states,
+	meaning we pop up a minibuffer with a set of keybindings
+	that does not vanish when we choose an action. We can
+	install it in the usual way.
+	
+	#+begin_src emacs-lisp :tangle yes
+		(use-package hydra
+		   :demand t)
+	#+end_src
+
+	To give you an example of this concept of transient state,
+	consider the following: you could bind <F2> to start a
+	hydra to zoom in and out (scale the font), and then
+	proceed to press + or - multiple times until you get the
+	result you want. When you're done, you can press an exit
+	key.
+	
+	The following example taken from [[https://github.com/abo-abo/hydra][abo-abo's hydra]] page on
+	github illustrates that:
+	
+	#+begin_src emacs-lisp :tangle yes
+	(defhydra hydra-zoom nil
+		"zoom"
+		("+" text-scale-increase "in")
+		("-" text-scale-decrease "out"))
+	#+end_src	
+	
+	The hydra could be called by  the mapped <f2> key or
+	through M-x hydra-zoom/body.
+	
+	How to make hydras ...
+
+**** pretty-hydra
+	 
+	#+begin_src emacs-lisp :tangle yes
+	  (use-package pretty-hydra)
+	#+end_src
+
+**** major-mode-hydra 
+	 
+	 The original hydra package is not so easy for creating
+	 beautiful menus. We can use the alternative pretty-hydra
+	 package that provides a macro for building hydras with
+	 easier syntax. Another package called major-hydra-mode
+	 uses the pretty-hydra package for creating hydras callable
+	 by the same keybind, depending on the buffer's mode.
+
+	 I.e., with the major-hydra-mode we can call SPC-m on a
+	 python file and get a python hydra, while at the same
+	 time calling SPC-m on a C++ file will yeld a C++ hydra,
+	 all the while creating beautiful tables for commands.
+	 
+	#+begin_src emacs-lisp :tangle yes
+	  (use-package major-mode-hydra)
+	#+end_src
+	
+	The hydras will be defined in a later section. 
+    We will leave here the default function for making headers.
+	
+*** General
+
+ #+BEGIN_SRC emacs-lisp :tangle yes
+
+   (use-package general
+     :config
+     (general-evil-setup t))
+
+ #+END_SRC
+
+** Applications [6/8]
+*** DONE Undo-tree
+ The undo-tree package is equivalent to vim's undotree, but allows emacs
+ to remember the file's undo history too, which by default it cannot do.
+ To do so, a variable must be set for auto-save history.
+
+ #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package undo-tree
+         :config
+         (setq undo-tree-auto-save-history 1)
+		 (setq undo-tree-visualizer-diff t)
+		 (setq undo-tree-visualizer-timestamps t)
+         (global-undo-tree-mode 1))
+ #+END_SRC 
+
+*** DONE Keyfreq
+ The keyfreq package tracks  user's commands and computes it's frequency.
+ We can visualize it or generate very nice reports in html. To use it
+ we require the package and allow this minor mode. Optionaly, we can
+ enable auto-save or refresh it's cache on every startup.
+
+ #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package keyfreq
+         :config
+         (keyfreq-mode 1)
+         (keyfreq-autosave-mode 1))
+ #+END_SRC 
+
+*** DONE Command-log
+ Allows us to track keypresses and the commands they execute.
+
+ #+begin_src emacs-lisp :tangle yes
+   (use-package command-log-mode
+     :config
+     (global-command-log-mode 1))
+ #+end_src
+
+*** DONE Helpful
+	Helpful is an alternative to the built-in Emacs help that
+	provides much more contextual information. It separates
+	functions from macros (adding callable for when returning
+	both).
+   
+	#+begin_src emacs-lisp :tangle yes
+      (use-package helpful
+		:config
+		(global-set-key (kbd "C-h f") #'helpful-callable)
+		(global-set-key (kbd "C-h v") #'helpful-variable)
+		(global-set-key (kbd "C-h k") #'helpful-key)
+		(global-set-key (kbd "C-h C") #'helpful-command)
+		(global-set-key (kbd "C-h F") #'helpful-function)
+		(setq counsel-describe-function-function #'helpful-callable)
+		(setq counsel-describe-variable-function #'helpful-variable))
+	#+end_src
+
+	#+RESULTS:
+	: t
+
+*** DONE Paradox
+
+	Paradox is a better *list-packages* with melpa integration and
+	asynchronous update.
+   
+	#+begin_src emacs-lisp :tangle yes
+   (use-package paradox
+	 :config
+	 (paradox-enable))
+	#+end_src 
+
+*** DONE Magit
+
+	The magical git client. Let's load magit only when one of the
+	several entry pont functions we invoke regularly outside of magit
+	is called.
+
+	#+BEGIN_SRC emacs-lisp :tangle yes
+	  (use-package magit
+		:commands (magit-status magit-blame magit-log-buffer-file magit-log-all))
+	#+END_SRC
+
+*** TODO Mu4e
+
+	https://github.com/lehoff/lehoff-emacs/blob/master/configs/init-mu4e.el
+
+	#+BEGIN_SRC emacs-lisp :tangle no
+	  ;; sending mail -- replace USERNAME with your gmail username
+	  ;; also, make sure the gnutls command line utils are installed
+	  ;; package 'gnutls-bin' in Debian/Ubuntu, 'gnutls' in Archlinux.
+
+	  (require 'smtpmail)
+
+	  (setq message-send-mail-function 'smtpmail-send-it
+			starttls-use-gnutls t
+			smtpmail-starttls-credentials
+			'(("smtp.gmail.com" 587 nil nil))
+			smtpmail-auth-credentials
+			(expand-file-name "~/.authinfo.gpg")
+			smtpmail-default-smtp-server "smtp.gmail.com"
+			smtpmail-smtp-server "smtp.gmail.com"
+			smtpmail-smtp-service 587
+			smtpmail-debug-info t)
+
+	  (use-package evil-mu4e
+		:custom
+		(mu4e-attachment-dir "~/Downloads")
+		(mu4e-maildir (expand-file-name "~/Mail"))
+		(mu4e-drafts-folder "/[Gmail].Drafts")
+		(mu4e-sent-folder   "/[Gmail].Sent Mail")
+		(mu4e-trash-folder  "/[Gmail].Trash")
+		(mu4e-sent-messages-behavior 'delete)
+		(mu4e-maildir-shortcuts
+		 '(("/INBOX"             . ?i)
+		   ("/[Gmail].Sent Mail" . ?s)
+		   ("/[Gmail].Trash"     . ?t)))
+		(mu4e-get-mail-command "offlineimap")
+		(
+		 user-mail-address "brenoleonhardt@gmail.com"
+		 user-full-name  "Breno Leonhardt Pacheco"
+		 message-signature
+		 (concat
+		  "Breno Leonhardt Pacheco\n"
+		  "\n"))
+		(mu4e-update-interval 300)
+		(mu4e-use-fancy-chars t)
+		(mu4e-view-show-addresses t)
+		(mu4e-view-show-images t))
+	#+END_SRC
+
+*** TODO Org
+
+	Let's include a newer version of org-mode than the one that is built
+	in. We're going to manually remove the org directories from the load
+	path, to ensure the version we want is prioritized instead.
+
+	#+begin_src emacs-lisp :tangle no
+	  (use-package org
+		:ensure org-plus-contrib
+		:config
+		(org-babel-do-load-languages 'org-babel-load-languages
+									 '((shell . t)
+									   (plantuml . t)
+									   (dot . t)))
+		(setq org-plantuml-jar-path
+			  (expand-file-name "~/Dev/plantuml.jar"))
+		(setq org-startup-with-inline-images t)
+		(setq org-display-inline-images t)
+		(setq org-image-actual-width 1000)
+		(add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+	#+end_src 
+
+	#+RESULTS:
+	: t
+
+	#+BEGIN_SRC emacs-lisp :tangle no
+	  (use-package org
+		  :ensure org-plus-contrib
+		  :config
+		  (org-babel-do-load-languages 'org-babel-load-languages
+									  '((shell . t))))
+
+	  ;; Ensure ELPA org is prioritized above built-in org.
+	  ;; (require 'cl)
+	  (setq load-path
+			  (remove-if
+			  (lambda (x)
+			  (string-match-p "org$" x))
+			  load-path))
+
+	  ;; sets auto-fill-mode for 
+	  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+
+	  ;; Indent text according to outline structure.
+	  (org-indent-mode)
+
+	  ;; default apps
+
+	  (setq org-file-apps
+			  '((auto-mode . emacs)
+			  ("\\.mm\\'" . default)
+			  ("\\.x?html?\\'" . "/usr/bin/firefox %s")
+			  ("\\.pdf\\'" . default)))
+
+		  (setq org-web-tools-sleep-time 1000)
+		  (use-package org-web-tools)
+	#+END_SRC
+
+* Functions [12/12]
+** DONE blp/zoom
+Functions for zooming in and out 
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun blp/zoom-in ()
+    (interactive)
+    (let ((x (+ (face-attribute 'default :height)
+                10)))
+      (set-face-attribute 'default nil :height x)))
+
+  (defun blp/zoom-out ()
+    (interactive)
+    (let ((x (- (face-attribute 'default :height)
+                10)))
+      (set-face-attribute 'default nil :height x)))
+
+  (define-key global-map (kbd "C-+") 'blp/zoom-in)
+  (define-key global-map (kbd "C--") 'blp/zoom-out)
+#+END_SRC
+
+#+RESULTS:
+: blp/zoom-out
+
+** DONE blp/kill-other-buffers
+Clean buffer list by deleting all buffers except the current one.
+
+#+begin_src emacs-lisp :tangle yes
+(defun blp/kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+#+end_src
+
+** DONE blp/new-empty-buffer
+Create a new empty buffer.
+New buffer will be named “untitled” or “untitled<2>”, “untitled<3>”, etc.
+It returns the buffer (for elisp programing).
+URL `http://ergoemacs.org/emacs/emacs_new_empty_buffer.html'
+
+#+begin_src emacs-lisp :tangle yes
+    (defun blp/new-empty-buffer ()
+    (interactive)
+    (let (($buf (generate-new-buffer "untitled")))
+        (switch-to-buffer $buf)
+        (funcall initial-major-mode)
+        (setq buffer-offer-save t)
+        $buf))
+#+end_src
+
+** DONE blp/compile-init
+Compiles the init.org file and evaluates init.el.
+Used for writing init.org and testing new configurations.
+
+#+begin_src emacs-lisp :tangle yes
+(defun blp/compile-init ()
+    (interactive)
+    (org-babel-tangle-file "~/.emacs.d/init.org")
+    (load-file user-init-file))
+#+end_src
+
+#+RESULTS:
+: blp/compile-init
+
+** DONE blp/load-only-theme
+When loading a theme in Emacs using load-theme it tries to overlap all
+themes you enable. We can define a function to strip down all themes
+currently enabled and apply only the one we are testing.
+
+#+begin_src emacs-lisp :tangle yes
+  (defun blp/load-only-theme ()
+    "Disable all themes and then load a single theme interactively."
+    (interactive)
+    (while custom-enabled-themes
+      (disable-theme (car custom-enabled-themes)))
+    (call-interactively 'load-theme))
+#+end_src
+
+** DONE blp/shell-toggle
+   
+   Function for toggling a terminal buffer
+   
+	#+begin_src emacs-lisp :tangle yes
+      (defun blp/shell-toggle ()
+        (interactive)
+        (if (derived-mode-p 'shell-mode)
+            (delete-window)
+          (shell)))
+	#+end_src
+
+** DONE blp/yank-buffer 
+
+   Function to yank the whole buffer. To do this, we use the mark-ring
+   in a bit of a convoluted way.
+
+	#+begin_src emacs-lisp :tangle yes
+	  (defun blp/yank-buffer ()
+		  (interactive)
+		  (push-mark-command (point))
+		  (mark-whole-buffer)
+		  (if (use-region-p)
+			  (copy-region-as-kill (region-beginning) (region-end))
+		  (message "region not active"))
+		  (deactivate-mark)
+		  (pop-to-mark-command)
+		  (pop-to-mark-command))
+	#+end_src
+
+** DONE blp/buffer-format
+    
+   #+begin_src emacs-lisp :tangle yes
+	 (defun blp/buffer-format ()
+	   (interactive)
+	   (push-mark-command (point))
+	   (evil-indent (window-start) (window-end))
+	   (pop-to-mark-command))
+   #+end_src 
+** DONE blp/goto-scratch
+
+
+	#+begin_src emacs-lisp :tangle yes
+
+	  (defun blp/goto-scratch ()
+		"Go to scratch buffer. If it does not exist, create it and set to elisp mode."
+		(interactive)
+		(let ((buffer "*scratch*"))
+		  (progn
+			(switch-to-buffer (get-buffer-create buffer))
+			(when (eq major-mode 'fundamental-mode)
+			  (message "is in fundamental")))))
+
+	#+end_src
+
+
+** DONE blp/close-window
+	#+begin_src emacs-lisp :tangle yes
+
+	  ;; missing making the jump to the previous tab
+	  (defun blp/close-window ()
+		"Closes a window. If it is the last window, close the tab"
+		(interactive)
+		(condition-case nil
+			(delete-window)
+		  (error (tab-close))))
+	#+end_src
+
+
+** DONE blp/new-tab-scratch
+
+	#+begin_src emacs-lisp :tangle yes
+	  ;; for some reason it exits the hydra
+	  (defun blp/new-tab-scratch ()
+		"Opens a new tab to the right with the scratch buffer"
+		(interactive)
+		(progn
+		  (tab-new 0)
+		  (tab-next)
+		  (blp/goto-scratch)))
+
+	#+end_src
+
+	#+RESULTS:
+	: blp/new-tab-scratch
+
+** DONE blp/counsel-fd-cached
+   #+begin_src emacs-lisp :tangle yes
+	 (defun blp/counsel-fd-cached ()
+	   "Test"
+	   (interactive)
+	   (let ((cmd "cat /tmp/cached-files"))
+		 (ivy-read "Find: "
+				   (split-string (shell-command-to-string cmd))
+				   :action (lambda (x)
+							 (find-file x))
+				   :sort nil
+				   :caller 'blp/counsel-custom-fd)))
+   #+end_src
+
+
+* Keymap
+** Hydras
+*** Making hydras
+	
+	Docstring is the text displayed in echo area for
+	identifying the hydra.
+
+	The function to define a hydra is as follows:
+	=(pretty-hydra-define NAME BODY HEADS-PLIST)=
+	- NAME :: symbol (line my-hydra)
+	- BODY :: quite complicated
+	- HEADS-PLIST :: plist (list of pairs) of columns for 
+				     the hydra's heads.
+					 
+	Lets discuss first the ~HEADS-PLIST~
+	The list of pairs contains as *key* a string for the name of the
+	column, while the *value* is another list containing 3 arguments:
+	- a keybinding
+	- a command
+	- a string description
+	
+	A hydra ~HEADS-PLIST~ can be, for example:
+	#+begin_src emacs-lisp :tangle no
+	  (pretty-hydra-define hydra-example
+		(;; BODY
+		 global-map "<f2>"				;; BODY-MAP and BODY-KEY
+		 :foreign-keys warn
+		 :title "Example"
+		 :quit-key "q")					;; BODY-PLIST
+		(;; HEAD PLIST
+		 "Column 1"						;; 1st KEY
+		 (("a" foo "runs foo"))			;; 1st VAL
+		 "Column 2"						;; 2nd KEY
+		 (("b" bar "runs bar")
+		  ("c" foobar "runs foobar"))))	;; 2nd VAL
+	#+end_src
+
+*** other people's hydras
+	 - [[https://github.com/rememberYou/.emacs.d/blob/master/config.org#hydra][rememberYou]]
+	 - [[https://github.com/jojojames/matcha/tree/master/archive][matcha]]
+	 - [[https://github.com/angrybacon/dotemacs/blob/master/dotemacs.org#hydra][angryBacon]]
+	 - [[https://wolfecub.github.io/dotfiles/#orgbf8b4c5][wolfe]]
+	 - [[https://github.com/abo-abo/hydra/wiki/Hydras-by-Topic][abo-abo]]
+
+*** TODO Dispatcher
+
+	We need to bind the dispatcher
+	
+	#+begin_src emacs-lisp :tangle yes
+	  (define-key evil-normal-state-map (kbd "SPC") 'dispatcher-hydra/body)
+	#+end_src 
+
+	Main hydra dispatcher (called with space)
+
+    #+begin_src emacs-lisp :tangle yes
+	  (defvar dispatcher-hydra-title (all-the-icons-faicon "keyboard-o" "Main dispatcher" 1 -0.05))
+
+	  (pretty-hydra-define dispatcher-hydra
+		(
+		 :title dispatcher-hydra-title 
+		 :foreign-key warn 
+		 :exit t 
+		 :quit-key "q")
+		("Menus"
+		 (("a" applications-hydra/body "Apps...")
+		  ;; ("b" buffers-hydra/body "Buffers...")
+		  ("b" buf-win-tab-hydra/body "Buf/win/tabs...")
+		  ("d" dap-hydra/body "Debugger...")
+		  ("e" flycheck-hydra/body "Errors...")
+		  ("E" eglot-hydra/body "Eglot...")
+		  ("f" find-hydra/body "Find...")
+		  ("h" help-hydra/body "Help...")
+		  ("i" insert-hydra/body "Insert...")
+		  ("k" macro-hydra/body "Kmacro...")
+		  ("l" lsp-hydra/body "Language server...")
+		  ("'" misc-hydra/body "Misc...")
+		  ("m" major-mode-hydra "Major-mode...")
+		  ("p" projects-hydra/body "Projects...")
+		  ("RET" counsel-M-x "Commands...")
+		  ("/" search-hydra/body "Search...")
+		  ("gs"  "Avy")
+		  ("t" toggles-hydra/body "Toggles...")
+		  ("w" buf-win-tab-hydra/body "Win/bufs/tabs..."))))
+
+
+	  (defvar misc-hydra-title (all-the-icons-material "dashboard" "Miscellania" 1 -0.05))
+
+	  (pretty-hydra-define misc-hydra
+		(
+		 :title misc-hydra-title 
+		 :foreign-key warn 
+		 :exit t 
+		 :quit-key "q")
+		("Actions"
+		 (("k"		kill-emacs		"kill emacs")
+		  ("a"		align-regexp		"Align text"))))
+
+
+	  ;; ("<SPC>"	avy-goto-char-timer	"Easymotion")
+	  ;; ("/" 	swiper              "Swiper")
+
+
+
+    #+end_src
+
+	#+RESULTS:
+	: misc-hydra/body
+
+*** DONE Help
+
+	A hydra for replacing the C-h commands
+
+    #+begin_src emacs-lisp :tangle yes
+	  ;; jump to help window everytime it is created
+	  (setq help-window-select t)
+
+	  (defvar help-hydra-title (all-the-icons-material "help_outline" "Help hydra" 1 -0.05))
+
+	  (pretty-hydra-define help-hydra
+		(
+		 :title help-hydra-title 
+		 :foreign-key warn 
+		 :exit t 
+		 :quit-key "q")
+		("Describe"
+		 (("f" helpful-callable "Function")
+		  ("v" helpful-variable "Variable")
+		  ("k" helpful-key "Keychord")
+		  ("K" helpful-command "Key briefly")
+		  ("h" helpful-at-point "Thing at point")
+		  ("F" counsel-describe-face "Face"))
+		 "Apropos"
+		 (("u" apropos-user-option "User options")
+		  ("c" counsel-apropos "Counsel")
+		  ("a" counsel-apropos "Regex")
+		  ("C" apropos-command "Command")
+		  ("V" apropos-variable "Variable"))
+		 "Info"
+		 (("b" counsel-descbinds "Key bindings")
+		  ("m" describe-mode "Mode")
+		  ("p" describe-package "Package")
+		  ("l" counsel-find-library "Libraries")
+		  ("i" info "Info docs")
+		  ("w" where-is "Where is"))))
+
+    #+end_src
+
+	#+RESULTS:
+	: help-hydra/body
+
+*** TODO Buffer/window/tabs
+
+		#+begin_src emacs-lisp :tangle yes
+
+		  (use-package move-border
+			:load-path "~/.emacs.d/lisp/"
+			:demand t)
+
+		  (defvar buf-win-tab-hydra-title (all-the-icons-faicon "windows" "Window Management" 1 -0.05))
+
+		  (pretty-hydra-define buf-win-tab-hydra 
+			(
+			 :foreign-keys warn
+			 :title buf-win-tab-hydra-title
+			 :quit-key "q")
+			("Buffer"
+			 (("b"  ivy-switch-buffer "Buf. menu")
+			  ("n" next-buffer "Next")
+			  ("p" previous-buffer "Previous")
+			  ("w" save-buffer "Save")
+			  ("e" blp/new-empty-buffer "Empty new")
+			  ("*" (switch-to-buffer "*scratch*") "Scratch")
+			  ;; ("y" blp/yank-buffer "Yank all")
+			  ("f" blp/buffer-format "Format")
+			  ("x" kill-this-buffer "Kill current")
+			  ("X" blp/kill-other-buffers "Kill others"))
+			 "Window"
+			 (("s" split-window-right "Split -")
+			  ("v" split-window-below "Split |")
+			  ("d" blp/close-window "Delete")
+			  ("D" delete-window "Del. others")
+			  ("m" maximize-window "Maximize")
+			  ("=" balance-windows "Balance")
+			  ("+" blp/zoom-in "Zoom in")
+			  ("-" blp/zoom-out "Zoom out"))
+			 "Move"
+			 (("H" evil-window-move-far-left "Window left")
+			  ("J" evil-window-move-very-bottom "Window bottom")
+			  ("K" evil-window-move-very-top "Window top")
+			  ("L" evil-window-move-far-right "Window left")
+			  ("←" nil "Border right")
+			  ("↓" nil "Border down")
+			  ("↑" nil "Border up")
+			  ("→" nil "Border right"))
+			 "Tabs & goto"
+			 (("TAB" blp/new-tab-scratch "New")
+			  ("<tab>" blp/new-tab-scratch nil)
+			  ("1" (tab-bar-select-tab 1) "Tab 1")
+			  ("2" (tab-bar-select-tab 2) "Tab 2")
+			  ("3" (tab-bar-select-tab 3) "Tab 3...")
+			  ("N" tab-next "Tab next...")
+			  ("P" tab-previous "Tab previous...")
+			  ("h" evil-window-left "go left")
+			  ("j" evil-window-down "go bottom")
+			  ("k" evil-window-up "go top")
+			  ("l" evil-window-right "go left")
+			  ("4" (tab-bar-select-tab 4) nil)
+			  ("5" (tab-bar-select-tab 5) nil)
+			  ("6" (tab-bar-select-tab 6) nil)
+			  ("7" (tab-bar-select-tab 7) nil)
+			  ("8" (tab-bar-select-tab 8) nil)
+			  ("9" (tab-bar-select-tab 9) nil)
+			  ("<left>" move-border-left nil)
+			  ("<down>" move-border-down nil)
+			  ("<up>" move-border-up nil)
+			  ("<right>" move-border-right nil))))
+	#+end_src
+
+	#+RESULTS:
+	: buf-win-tab-hydra/body
+
+*** DONE Applications
+	
+	Applications hydra
+
+	#+begin_src emacs-lisp :tangle yes
+	  (defvar applications-hydra-title (all-the-icons-faicon "paper-plane" "Application hydra" 1 -0.05))
+
+	  (pretty-hydra-define applications-hydra
+		(;; BODY
+		 :foreign-key warn
+		 :exit t
+		 :title applications-hydra-title ;;
+		 :quit-key "q")
+		(;; HEADS
+		 "Applications"
+		 (("m" mu4e "mu4e")
+		  ("g" magit "magit")
+		  ("l" clm/toggle-command-log-buffer "command-log")
+		  ("p" package-hydra/body "packages")
+		  ("f" keyfreq-show "keyfreq")
+		  ("'"	    blp/shell-toggle	    "Shell")
+		  ("a" elfeed "Elfeed")
+		  ("u" undo-tree-visualize "undo-tree")))) 
+    #+end_src
+
+	#+RESULTS:
+	: applications-hydra/body
+
+**** DONE Packages
+	
+	#+begin_src emacs-lisp :tangle yes
+
+	  (defvar package-hydra-title (all-the-icons-octicon "package" "Package hydra" 1 -0.05))
+
+	  (pretty-hydra-define package-hydra
+		(;; BODY
+		 :title package-hydra-title
+		 :foreign-keys warn
+		 :exit nil
+		 :quit-key "q")
+		(;; HEADS
+		 "Packages"
+		 (("p" paradox-list-packages "Package menu" :exit t)
+		  ("i" package-install "Install")
+		  ("u" (message "not yet") "Upgrade packages")
+		  ("r" package-refresh-contents "Refresh contents")))) 
+    #+end_src
+
+	#+RESULTS:
+	: package-hydra/body
+
+*** TODO Insert
+
+	*Things to insert*
+	[ ] - templates
+	[ ] -  macros
+
+	  #+begin_src emacs-lisp :tangle yes
+		(defvar insert-hydra-title (all-the-icons-material "attach_file" "Insert hydra" 1 -0.05))
+
+		(pretty-hydra-define insert-hydra
+		  (;; BODY
+		   :foreign-key warn
+		   :exit t
+		   :title insert-hydra-title
+		   :quit-key "q")
+		  (;; HEADS
+		   "Inserts (need to fix that)"
+		   (("k" counsel-yank-pop "kill-ring")
+			("s" ivy-yasnippet "snippet")
+			("l" lorem-hydra/body "lorem"))))
+
+		(pretty-hydra-define lorem-hydra
+		  (;; BODY
+		   :foreign-key warn
+		   :exit nil   
+		   :quit-key "q")
+		  (;; HEADS
+		   "Insert lorem"
+		   (("p" lorem-ipsum-insert-paragraphs "paragraph")
+			("s" lorem-ipsum-insert-sentences "sentence")
+			("l" lorem-ipsum-insert-list "list"))))
+	  #+end_src
+
+*** TODO Errors
+
+	The following Hydra pops open a list of Flycheck errors and then
+	allows easy navigation through them. The error list closes
+	automatically when you quit the Hydra.
+
+	#+begin_src emacs-lisp :tangle yes
+	  (defvar flycheck-hydra-title (all-the-icons-material "report_problem" "Flycheck hydra" 1 -0.05))
+
+	  (pretty-hydra-define flycheck-hydra 
+	  (
+	  :foreign-keys warn
+	  :exit nil
+	  :title flycheck-hydra-title 
+	  :quit-key "q"
+	  :body-pre (flycheck-list-errors)
+	  :post (quit-windows-on "*Flycheck errors*"))
+	  (
+	  "Errors:"
+	  (("f"  flycheck-error-list-set-filter					"filter")
+		  ("n"  flycheck-next-error								"next")
+		  ("p"  flycheck-previous-error							"previous")
+		  ("RET" nil :exit t)
+		  ("gg"  flycheck-first-error								"first")
+		  ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "last"))))
+
+	#+end_src
+	
+*** TODO Toggles
+
+	*to fix*
+	- [ ] fringes
+
+    #+begin_src emacs-lisp :tangle yes
+	  ;; jump to toggles window everytime it is created
+	  (setq toggles-window-select t)
+
+	  (defvar toggles-hydra-title (all-the-icons-faicon "toggle-on" "Toggles hydra" 1 -0.05))
+
+	  (defvaralias 'toggle-auto-fill-mode 'auto-fill-function)
+	  (defun toggle-auto-fill-mode ()
+		(interactive)
+		(auto-fill-mode 'toggle))
+
+	  (use-package vim-empty-lines-mode
+		:demand t
+		:config
+		(global-vim-empty-lines-mode 0)) ;; it doesn't work well with center-cursor-mode
+
+	  (use-package page-break-lines
+		:config
+		(global-page-break-lines-mode 1))
+
+	  
+
+	  (pretty-hydra-define toggles-hydra
+		(
+		 :title toggles-hydra-title 
+		 :foreign-key warn 
+		 :exit nil 
+		 :quit-key "q")
+		("Toggles"
+		 (("l" global-hl-line-mode          "Highlight line" :toggle t)
+		  ("i" highlight-indent-guides-mode "Highlight indent" :toggle t)
+		  ("n" display-line-numbers-mode	  "Line numbers" :toggle t)
+		  ("v" global-visual-line-mode      "Visual line" :toggle t)
+		  ;; ("f" fringe-mode                  "Fringes" :toggle t)
+		  ("w" whitespace-mode              "Whitespace" :toggle t)
+		  ("~" global-vim-empty-lines-mode         "Empty line ~" :toggle t)
+		  ("m" menu-bar-mode				  "Menu bar" :toggle t)
+		  ("t" tool-bar-mode				  "Tool bar" :toggle t)
+		  ("a" toggle-auto-fill-mode               "Auto fill" :toggle t)
+		  ("h" hydra-posframe-mode				  "Hydra-posframe" :toggle t)
+		  ("y" ivy-posframe-mode				  "ivy-posframe" :toggle t)
+		  ("c" nil                          "highlight column" :toggle t))
+		 "Untested others"
+		 (("W" whitespace-cleanup-mode "whitespace cleanup" :toggle t)
+		  ("r" rainbow-delimiters-mode "rainbow" :toggle t)
+		  ("L" page-break-lines-mode "page break lines" :toggle t)
+		  ("p" smartparens-mode "smartparens" :toggle t)
+		  ("P" smartparens-strict-mode "smartparens strict" :toggle t)
+		  ("S" show-smartparens-mode "show smartparens" :toggle t)
+		  ("f" flycheck-mode "flycheck" :toggle t)
+		  ("l" lsp-mode "lsp" :toggle t)
+		  ("D" toggle-debug-on-error "debug on error" :toggle (default-value 'debug-on-error))
+		  ("X" toggle-debug-on-quit "debug on quit" :toggle (default-value 'debug-on-quit)))))
+
+    #+end_src
+
+	#+RESULTS:
+	: toggles-hydra/body
+	
+	others
+	("W" whitespace-cleanup-mode "whitespace cleanup" :toggle t)
+	("r" rainbow-mode "rainbow" :toggle t)
+	("L" page-break-lines-mode "page break lines" :toggle t)
+	("p" smartparens-mode "smartparens" :toggle t)
+	("P" smartparens-strict-mode "smartparens strict" :toggle t)
+	("S" show-smartparens-mode "show smartparens" :toggle t)
+	("f" flycheck-mode "flycheck" :toggle t)
+	("D" toggle-debug-on-error "debug on error" :toggle (default-value 'debug-on-error))
+	("X" toggle-debug-on-quit "debug on quit" :toggle (default-value 'debug-on-quit)
+
+*** TODO Macro
+
+	#+begin_src emacs-lisp :tangle yes
+	  (defhydra macro-hydra (:color pink
+									:hint nil
+									:pre (when defining-kbd-macro
+										   (kmacro-end-macro 1)))
+		"
+
+		^^Create-Cycle^^   ^Basic^          ^Insert^        ^Save^         ^Edit^
+	  ╭─────────────────────────────────────────────────────────────────────────╯
+		   ^_i_^           [_e_] execute    [_n_] insert    [_b_] name      [_'_] previous
+		   ^^↑^^           [_d_] delete     [_t_] set       [_K_] key       [_,_] last
+	   _j_ ←   → _l_       [_o_] edit       [_a_] add       [_x_] register
+		   ^^↓^^           [_r_] region     [_f_] format    [_B_] defun
+		   ^_k_^           [_m_] step
+		  ^^   ^^          [_s_] swap
+	  "
+		("j" kmacro-start-macro :color blue)
+		("l" kmacro-end-or-call-macro-repeat)
+		("i" kmacro-cycle-ring-previous)
+		("k" kmacro-cycle-ring-next)
+		("r" apply-macro-to-region-lines)
+		("d" kmacro-delete-ring-head)
+		("e" kmacro-end-or-call-macro-repeat)
+		("o" kmacro-edit-macro-repeat)
+		("m" kmacro-step-edit-macro)
+		("s" kmacro-swap-ring)
+		("n" kmacro-insert-counter)
+		("t" kmacro-set-counter)
+		("a" kmacro-add-counter)
+		("f" kmacro-set-format)
+		("b" kmacro-name-last-macro)
+		("K" kmacro-bind-to-key)
+		("B" insert-kbd-macro)
+		("x" kmacro-to-register)
+		("'" kmacro-edit-macro)
+		("," edit-kbd-macro)
+		("q" nil :color blue))
+
+	#+end_src
+*** TODO Project
+	
+	#+begin_src emacs-lisp :tangle yes
+
+	#+end_src 
+
+*** TODO Find 
+
+	#+begin_src emacs-lisp :tangle yes
+	  (defun blp/counsel-fd ()
+		"Test"
+		(interactive)
+		(let ((cmd "fd \".\" ~/ --full-path -Hia -t f -j 5 -E backup -E undodir -E .git"))
+		  (ivy-read "Find: "
+					(split-string (shell-command-to-string cmd))
+					:action (lambda (x)
+							  (find-file x))
+					:sort nil
+					:caller 'blp/counsel-custom-fd)))
+
+	  (defvar find-hydra-title (all-the-icons-material "find_in_page" "Find hydra" 1 -0.05))
+
+	  (pretty-hydra-define find-hydra
+		(;; BODY
+		 :foreign-key warn
+		 :exit t   
+		 :title find-hydra-title
+		 :quit-key "q")
+		(;; HEADS
+		 "Find"
+		 (("F" blp/counsel-fd-cached "file (cached)")
+		  ("i" counsel-imenu "Imenu")
+		  ("f" counsel-locate "file")
+		  ("/" counsel-rg "grep")
+		  ("o" counsel-outline "outline/tags")
+		  ("g" counsel-git "git")
+		  ("m" counsel-compile "make target"))))
+	#+end_src
+
+	#+RESULTS:
+	: find-hydra/body
+
+#+end_src
+*** TODO Lsp
+
+	#+begin_src emacs-lisp :tangle yes
+	  (defvar lsp-hydra-title (all-the-icons-octicon "server" "LSP - Language Server Protocol" 1 -0.05))
+
+	  (pretty-hydra-define lsp-hydra
+		(;; BODY
+		 :foreign-key warn
+		 :exit nil   
+		 :title lsp-hydra-title
+		 :quit-key "q")
+		(;; HEADS
+		 "Connection"
+		 (("cc" lsp "start")
+		  ("cd" lsp-describe-session "describe session")
+		  ("cq" lsp-disconnect "disconnect"))
+		 "Workspace"
+		 (("wr" lsp-workspace-restart "restart")
+		  ("wa" lsp-workspace-folders-add "Add workspace folder")
+		  ("wr" lsp-workspace-folders-remove "Remove workspace folder")
+		  ("ws" lsp-workspace-folders-switch "Switch workspace folder"))
+		 "Actions"
+		 (("ah" lsp-symbol-highlight "Highlight symbol refs.")
+		  ("aa" lsp-execute-code-action "Action")
+		  ("ar" lsp-rename "Rename")
+		  ("af" lsp-format-buffer "Format"))
+		 "Find & Goto"
+		 (("d" lsp-describe-thing-at-point "Describe this")
+		  ("gr" lsp-find-references "Goto references")
+		  ("gd" lsp-find-definition "Goto definition")
+		  ("gt" lsp-goto-type-definition "Goto type def")
+		  ("gi" lsp-goto-implementation "Goto impl")
+		  ("fs" lsp-ivy-workspace-symbol "Find symbol")
+		  ("fd" lsp-ui-peek-find-definitions "Find definition")
+		  ("fr" lsp-ui-peek-find-references "Find reference"))))
+	#+end_src 
+
+*** Shell
+*** Configs
+*** Search
+*** Format
+*** Major modes
+**** DONE Elisp
+
+	#+begin_src emacs-lisp :tangle yes
+	  (defvar elisp-hydra-title (all-the-icons-fileicon "elisp" "Elisp hydra" 1 -0.05))
+
+	  (major-mode-hydra-define emacs-lisp-mode
+		(;; BODY
+		 :foreign-key warn
+		 :exit t   
+		 :title elisp-hydra-title
+		 :quit-key "q")
+		(;; HEADS
+		 "Eval"
+		 (("b" eval-buffer "Buffer")
+		  ("d" eval-defun "Defun")
+		  ("r" eval-region "Region"))
+		 "REPL"
+		 (("I" ielm "Ielm"))
+		 "Test"
+		 (("t" ert "Prompt")
+		  ("T" (ert t) "All")
+		  ("F" (ert :failed) "Failed"))))
+	#+end_src
+
+**** TODO Java
+	 
+	 #+begin_src emacs-lisp :tangle yes
+
+	   (defvar java-hydra-title (all-the-icons-alltheicon "java" "Java hydra" 1 -0.05))
+
+	   (major-mode-hydra-define java-mode
+		 (;; BODY
+		  :foreign-key warn
+		  :exit t
+		  :title lsp-hydra-title
+		  :quit-key "q")
+		 (;; HEADS
+		  "Server/configs"
+		  (("sp" lsp-java-update-project-configuration "Update project configuration")
+		   ("su" lsp-java-update-user-settings "Update user settings")
+		   ("ss" lsp-java-update-server "Update server installation.")
+		   ("sd" lsp-java-dependency-list "View java dependencies"))
+		  "Targets"
+		  (("tb" lsp-java-build-project "Build"))
+		  "Fixes"
+		  (("fx" lsp-java-organize-imports "Organize imports")
+		   ("fy" lsp-java-actionable-notifications "Resolve notifications"))
+		  "Generate"
+		  (("gs" lsp-java-generate-to-string "Generate toString.")
+		   ("ge" lsp-java-generate-equals-and-hash-code "Generate equals/hash.")
+		   ("go" lsp-java-generate-overrides "Generate overrides")
+		   ("gg" lsp-java-generate-getters-and-setters "Generate getters/setters."))
+		  "Refactoring"
+		  (("re" lsp-java-extract-to-constant "Extract constant")
+		   ("ra" lsp-java-add-unimplemented-methods "Add unimplemented")
+		   ("rp" lsp-java-create-parameter "Create parameter")
+		   ("rf" lsp-java-create-field "Create field")
+		   ("rl" lsp-java-create-local "Create local")
+		   ("rm" lsp-java-extract-method "Extract method")
+		   ("ri" lsp-java-add-import "Add missing import"))))
+
+	 #+end_src 
+
+	 #+RESULTS:
+	 : major-mode-hydras/java-mode/body
+
+**** TODO Org
+
+	#+begin_src emacs-lisp :tangle yes
+
+	  (defun inc-org-image ()
+		(interactive)
+		(let ((size (+ org-image-actual-width 50)))
+		  (setq org-image-actual-width size)
+		  (org-display-inline-images)))
+
+	  (defun dec-org-image ()
+		(interactive)
+		(let ((size (- org-image-actual-width 50)))
+		  (setq org-image-actual-width size)
+		  (org-display-inline-images)))
+
+	  (defun eq-org-image ()
+		(interactive)
+		(let ((size 1000))
+		  (setq org-image-actual-width size)
+		  (org-display-inline-images)))
+
+	  (major-mode-hydra-define org-mode
+		(;; BODY
+		 :color red)
+		(;; HEADS
+		 "Images"
+		 (("-" dec-org-image "decrease" )
+		  ("+" inc-org-image "increase" )
+		  ("=" eq-org-image "default" )
+		  ("RET"	fill-paragraph		"Fill paragraph")
+		  ("o" org-open-at-point "open"))))
+
+	#+end_src  
+
+	#+RESULTS:
+	: major-mode-hydras/org-mode/body
+
+**** TODO Mu4e
+	 
+	#+begin_src emacs-lisp :tangle no
+	  (major-mode-hydra-define mu4e-mode
+		(;; BODY
+		 :foreign-keys warn
+		 :quit t)
+		(;; HEADS
+		 "General"
+		 (("n" mu4e-headers-next                   "next")
+		  ("p" mu4e-headers-previous               "prev")
+		  ("]" mu4e-select-next-unread             "n unred")
+		  ("[" mu4e-select-previous-unread         "p unred")
+		  ("y" mu4e-select-other-view              "sw view")
+		  ("R" mu4e-compose-reply                  "reply")
+		  ("C" mu4e-compose-new                    "compose")
+		  ("F" mu4e-compose-forward                "forward")
+		  ("o" my/org-capture-mu4e                 "org-cap"))
+		 "Search"
+		 (("s" mu4e-headers-search                 "search")
+		  ("S" mu4e-headers-search-edit            "edit prev qry")
+		  ("/" mu4e-headers-search-narrow          "narrow search")
+		  ("b" mu4e-headers-search-bookmark        "search bkmk")
+		  ("B" mu4e-headers-search-bookmark-edit   "edit bkmk")
+		  ("{" mu4e-headers-query-prev             "previous qry")
+		  ("}" mu4e-headers-query-next             "next query")
+		  ("C-+" mu4e-headers-split-view-grow      "show more")
+		  ("C--" mu4e-headers-split-view-shrink    "show less"))
+		 "Mark [1/2]"
+		 (("!" mu4e-headers-mark-for-read          "read")
+		  ("?" mu4e-headers-mark-for-unread        "unread")
+		  ("r" mu4e-headers-mark-for-refile        "refile")
+		  ("u" mu4e-headers-mark-for-unmark        "unmk")
+		  ("U" mu4e-mark-unmark-all                "unmk *")
+		  ("d" mu4e-headers-mark-for-trash         "trash")
+		  ("D" mu4e-headers-mark-for-delete        "delete")
+		  ("m" mu4e-headers-mark-for-move          "move")
+		  ("a" mu4e-headers-action                 "action"))
+		 "Mark [2/2]"
+		 (("A" mu4e-headers-mark-for-action        "mk4actn")
+		  ("*" mu4e-headers-mark-for-something     "*thing")
+		  ("#" mu4e-mark-resolve-deferred-marks    "deferred")
+		  ("%" mu4e-headers-mark-pattern           "pattern")
+		  ("&" mu4e-headers-mark-custom            "custom")
+		  ("+" mu4e-headers-mark-for-flag          "flag")
+		  ("-" mu4e-headers-mark-for-unflag        "unflag")
+		  ("t" mu4e-headers-mark-thread            "thr")
+		  ("H" mu4e-display-manual                 "help"))
+		 "Misc."
+		 (("q" mu4e~headers-quit-buffer           "quit hdrs")
+		  ("O" mu4e-headers-change-sorting         "sorting")
+		  ("P" mu4e-headers-toggle-threading       "threading")
+		  ("Q" mu4e-headers-toggle-full-search     "full-search")
+		  ("V" mu4e-headers-toggle-skip-duplicates "skip dups")
+		  ("W" mu4e-headers-toggle-include-related "include-related")
+		  ("`" mu4e-update-mail-and-index          "update, reindex")
+		  (";" mu4e-context-switch                 "context-switch")
+		  ("j" mu4e~headers-jump-to-maildir        "jump2maildir"))))
+	#+end_src
+
+**** DONE Paradox
+
+	 #+begin_src emacs-lisp :tangle yes
+	   (major-mode-hydra-define package-menu-mode
+		 (;; BODY
+		  :foreign-key warn
+		  :exit t   
+		  :title elisp-hydra-title
+		  :quit-key "q")
+		 (;; HEADS
+		  "Filters"
+		  (("f" package-menu-filter "Keyword")
+		   ("r" paradox-filter-regexp "Regex")
+		   ("u" paradox-filter-upgrades "Upgrades")
+		   ("s" paradox-filter-stars "Stars")
+		   ("c" paradox-filter-clear "Clear"))))
+	 #+end_src  
+
+**** TODO Info
+
+	 #+begin_src emacs-lisp :tangle yes
+	   (major-mode-hydra-define info-mode
+		 (;;BODY
+		  :color pink
+		  :hint nil)
+		 (;;HEAD
+		 "INFO"
+		  (("j"   Info-menu)
+		  ("k"   Info-up) 
+		  ("m"   Info-menu)
+		  ("u"   Info-up)
+
+		  ("l"   Info-forward-node)
+		  ("h"   Info-backward-node)
+		  ("]"   Info-forward-node)
+		  ("["   Info-backward-node)
+
+		  ("t"   Info-top-node)
+		  ("<"   Info-top-node)
+		  (">"   Info-final-node)
+
+		  ("n"   Info-next)
+		  ("p"   Info-prev)
+
+		  ("K"   Info-history)
+		  ("H"   Info-history-back)
+		  ("L"   Info-history-forward)
+
+		  ("s"   Info-search)
+		  ("S"   Info-search-case-sensitively)
+
+		  ("g"   Info-goto-node)
+
+		  ("f"   Info-follow-reference)
+		  ("b"   bmkp-info-jump)
+		  ("i"   Info-index)
+		  (","   Info-index-next)
+		  ("I"   Info-virtual-index)
+
+		  ("T"   Info-toc)
+		  ("t"   Info-top-node)
+		  ("d"   Info-directory)
+		  ("c"   Info-copy-current-node-name)
+		  ("C"   clone-buffer)
+		  ("a"   info-apropos)
+
+		  ("1"   Info-nth-menu-item)
+		  ("2"   Info-nth-menu-item)
+		  ("3"   Info-nth-menu-item)
+		  ("4"   Info-nth-menu-item)
+		  ("5"   Info-nth-menu-item)
+		  ("6"   Info-nth-menu-item)
+		  ("7"   Info-nth-menu-item)
+		  ("8"   Info-nth-menu-item)
+		  ("9"   Info-nth-menu-item)
+
+		  ("?"   Info-summary "Info summary")
+		  ("y"   Info-help "Info help")
+		  ("q"   Info-exit "Info exit" :color blue)
+		  ("C-g" nil "cancel" :color blue))))
+	 #+end_src 
+
+#+RESULTS
+**** Elfeed
+	 
+	 #+begin_src emacs-lisp :tangle yes
+	   (defvar elfeed-hydra-title (all-the-icons-material "rss_feed" "Elfeed" 1 -0.05))
+
+	   (pretty-hydra-define elfeed-hydra
+		 (:title elfeed-hydra-title 
+				 :foreign-key warn 
+				 :exit nil
+				 :quit-key "q")
+		 ("Commands"
+		  (("aa" elfeed-apply-autotags-now "Apply autotags to existing entries according to `elfeed-feeds'.")
+		   ("af" elfeed-add-feed "Add a feed to the database.")
+		   ("ah" elfeed-apply-hooks-now "Apply `elfeed-new-entry-hook' to all entries in the database.")
+		   ("dc" elfeed-db-compact "Minimize the Elfeed database storage size on the filesystem.")
+		   ("du" elfeed-db-unload "Unload the database so that it can be operated on externally.")
+		   ("eo" elfeed-export-opml "Export the current feed listing to OPML-formatted FILE.")
+		   ("kb" elfeed-kill-buffer "Kill the current buffer.")
+		   ("kl" elfeed-kill-link-url-at-point "Get link URL at point and store in kill-ring.")
+		   ("lo" elfeed-load-opml "Load feeds from an OPML file into `elfeed-feeds'.")
+		   ("sa" elfeed-show-add-enclosure-to-playlist "Add enclosure number ENCLOSURE-INDEX to current EMMS playlist.")
+		   ("sb" elfeed-search-browse-url "Visit the current entry in your browser using `browse-url'.")
+		   ("sc" elfeed-search-clear-filter "Reset the search filter to the default value of `elfeed-search-filter'.")
+		   ("sff" elfeed-search-fetch "Update all feeds via `elfeed-update', or only visible feeds with PREFIX.")
+		   ("sfv" elfeed-search-fetch-visible "Update any feed with an entry currently displayed in the search buffer.")
+		   ("sfe" elfeed-search-first-entry "Place point on last entry.")
+		   ("sle" elfeed-search-last-entry "Place point on first entry.")
+		   ("slf" elfeed-search-live-filter "Filter the elfeed-search buffer as the filter is written.")
+		   ("sns" elfeed-show-new-live-search "Kill the current buffer, search again in *elfeed-search*.")
+		   ("snl" elfeed-show-next-link "Skip to the next link, exclusive of the Link header.")
+		   ("snn" elfeed-show-next "Show the next item in the elfeed-search buffer.")
+		   ("spe" elfeed-show-play-enclosure "Play enclosure number ENCLOSURE-INDEX from current entry using EMMS.")
+		   ("sp" elfeed-show-prev "Show the previous item in the elfeed-search buffer.")
+		   ("sq" elfeed-search-quit-window "Save the database, then `quit-window'.")
+		   ("srm" elfeed-show-refresh--mail-style "Update the buffer to match the selected entry, using a mail-style.")
+		   ("sr" elfeed-show-refresh "Update the buffer to match the selected entry.")
+		   ("sset" elfeed-search-set-entry-title "Manually set the title for the entry under point.")
+		   ("ssft" elfeed-search-set-feed-title "Manually set the title for the feed belonging to the entry under point.")
+		   ("ssf" elfeed-search-set-filter "Set a new search filter for the elfeed-search buffer.")
+		   ("ssse" elfeed-search-show-entry "Display the currently selected item in a buffer.")
+		   ("ssm" elfeed-show-save-enclosure-multi "Offer to save multiple entry enclosures from the current entry.")
+		   ("sse" elfeed-show-save-enclosure "Offer to save enclosure(s).")
+		   ("sss" elfeed-show-save-enclosure-single "Save enclosure number ENCLOSURE-INDEX from ENTRY.")
+		   ("sta" elfeed-search-tag-all "Apply TAG to all selected entries.")
+		   ("stu" elfeed-search-tag-all-unread "Add the `unread' tag to all selected entries.")
+		   ("stt" elfeed-search-toggle-all "Toggle TAG on all selected entries.")
+		   ("stst" elfeed-show-tag "Add TAGS to the displayed entry.")
+		   ("stsy" elfeed-show-tag--unread "Mark unread.")
+		   ("sua" elfeed-search-untag-all "Remove TAG from all selected entries.")
+		   ("suu" elfeed-search-untag-all-unread "Remove the `unread' tag from all selected entries.")
+		   ("suf" elfeed-search-update--force "Force refresh view of the feed listing.")
+		   ("suu" elfeed-search-update "Update the elfeed-search buffer listing to match the database.")
+		   ("sut" elfeed-show-untag "Remove TAGS from the displayed entry.")
+		   ("sv" elfeed-show-visit "Visit the current entry in your browser using `browse-url'.")
+		   ("syy" elfeed-search-yank "Copy the selected feed items to clipboard and kill-ring.")
+		   ("ssy" elfeed-show-yank "Copy the current entry link URL to the clipboard.")
+		   ("uf" elfeed-update-feed "Update feed.")
+		   ("uM" elfeed-unjam "Manually clear the connection pool when connections fail to timeout.")
+		   ("uU" elfeed-update "Update all feeds."))))
+
+	 #+end_src 
+
+	 #+RESULTS:
+	 : elfeed-hydra/body
+
+** General
+   
+   #+begin_src emacs-lisp :tangle no
+	(general-define-key
+	 :states '(normal emacs motion)
+	 "SPC" 'dispatcher-hydra/body)
+   #+end_src 
+  
+   #+begin_src emacs-lisp :tangle no
+	 (define-key evil-normal-state-map (kbd ";r") 'ranger)
+   #+end_src 
+
+
+  #+RESULTS:
+
+* Settings [10/11]
+** Behavior
+*** DONE Personal Information
+
+ Let's set some variables with basic user information for
+ automatic filling of information in forms such as org files.
+
+ #+BEGIN_SRC emacs-lisp :tangle yes
+ (setq user-full-name "Breno Leonhardt Pacheco"
+     user-mail-address "brenoleonhardt@gmail.com")
+ #+END_SRC
+
+*** DONE Encoding
+
+ Use UTF-8 as default encoding for files.
+ #+BEGIN_SRC emacs-lisp :tangle yes
+ (set-language-environment "UTF-8")
+ #+END_SRC
+
+*** DONE Server
+	
+	If no server is running, start daemon.
+
+	#+begin_src emacs-lisp :tangle yes
+	  (require 'server)
+	  (if (not (server-running-p)) (server-start))
+	#+END_SRC
+
+*** Yank-kill
+	
+	When in terminal mode (emacs -nw) we do not have access to X11
+	libraries and therefore need to use auxiliary tools. I use xclip
+	for handling copy paste, which is super easy to set up in emacs:
+
+	#+begin_src emacs-lisp :tangle yes
+	  (use-package xclip
+		:demand t
+		:config
+		(xclip-mode 1))
+	#+end_src 
+
+*** DONE Paragraphs
+
+ Sentences SHOULD end with only a point.
+ #+begin_src emacs-lisp :tangle yes
+ (setq sentence-end-double-space nil)                   
+ #+end_src
+
+*** DONE Yes-no-prompts
+
+ Shorten Yes and No prompts.
+ #+begin_src emacs-lisp :tangle yes
+ (fset 'yes-or-no-p 'y-or-n-p)
+ #+end_src
+
+*** DONE Sessions
+
+ Saves last place we were in buffer between sessions.
+ Equivalent behavior to vim-lastplace. 
+ #+begin_src emacs-lisp :tangle yes
+ (save-place-mode 1)                                    
+ #+end_src
+
+ Automatically reload a file When it gets changed outside emacs.
+ #+begin_src emacs-lisp :tangle yes
+ (global-auto-revert-mode t)                            
+ #+end_src
+
+*** TODO Garbage collection (deprecated??)
+
+ Allow 50MB of memory (instead of 0.76MB) before calling garbage
+ collection. This means GC runs less often, which speeds up some
+ operations.
+ #+begin_src emacs-lisp :tangle no
+ (setq gc-cons-threshold 50000000)
+ #+end_src
+
+*** DONE Indentation
+
+	Tabs are 4 spaces unless otherwise specified.
+	#+begin_src emacs-lisp :tangle yes
+	(setq-default tab-width 4)
+	#+end_src
+
+	Indentation inserts Tabs instead of Spaces.
+	#+begin_src emacs-lisp :tangle yes
+	(setq-default indent-tabs-mode 1)                                
+	#+end_src
+
+	We can force indentation to always with the following package.
+	#+begin_src emacs-lisp :tangle yes
+	(use-package aggressive-indent
+		:init
+		(global-aggressive-indent-mode 1))
+	#+end_src
+	
+	We can also show indentation with the package indent-guide, by I
+	dont like the visual effect so we leave it off.
+	#+begin_src emacs-lisp :tangle yes
+	  (use-package highlight-indent-guides
+		  :custom
+		  (highlight-indent-guides-method 'character)
+		  (highlight-indent-guides-character ?\|)
+		  ;; (highlight-indent-guides-method 'fill)
+		  (highlight-indent-guides-delay 0)
+		  :hook (prog-mode . highlight-indent-guides-mode))
+	#+end_src
+
+*** DONE Links
+
+ Set Firefox as default browser
+ #+begin_src emacs-lisp :tangle yes
+ (setq browse-url-browser-function 'browse-url-firefox) 
+ #+end_src
+
+ Make links open in a new tab in Firefox
+ #+begin_src emacs-lisp :tangle yes
+ (setq browse-url-firefox-new-window-is-tab 1)
+ #+end_src
+
+ Don't ask for confirmation when opening symlinked file.
+ #+begin_src emacs-lisp :tangle yes
+ (setq vc-follow-symlinks t )                           
+ #+end_src
+
+*** DONE Backup
+
+	Stop Emacs from creating those #auto-save# files
+	#+begin_src emacs-lisp :tangle yes
+	  (setq auto-save-default nil)	
+	#+end_src 
+
+	Before setting up backup configurations, lets talk about how emacs
+	backups up our files. 
+
+	We can choose between /renaming/ and /copying/ when creating
+	backups. When /renaming/, the original file is renamed into a
+	backup and the buffer is rewritten as a new original file. It
+	means that if we had a symlink to this file (say a shortcut) and
+	made a backup, out symlink would now link to the backup, and not
+	to the original file we were editing. In case we set it to
+	/copying/, the buffer keeps being saved to the original file, but
+	after saving the file is copied to another location.
+	
+	I like the /copying/ method better, so now we tell emacs to make
+	backups for us and do it in this manner. The =make-backup-files=
+	variable is optional, as it is true by default.
+	
+	#+begin_src emacs-lisp :tangle yes
+	  (setq make-backup-files t
+			backup-by-copying t)
+	#+end_src 
+	
+	Emacs makes a new backup every time we visit a new buffer and save
+	it for the first time. By default, if it sees the file has a
+	backup already, it will keep rewritting it. We can have it make
+	numbered versions instead, creating an init.el~1~, init.el~2~ and
+	so on every time we enter a buffer and save it the first time.
+	
+	#+begin_src emacs-lisp :tangle yes
+	  (setq version-control t)
+	#+end_src
+
+	Now say we have backups from ~1~ to ~20~, we can tell emacs to
+	store only the newest 6 (from init.el~14~ to init.el~20~) and the
+	2 oldests (from init.el~1~ to init.el~2~), and delete the old
+	versions in between.
+
+	#+begin_src emacs-lisp :tangle yes
+	  (setq kept-new-versions 6
+			kept-old-versions 2
+			delete-old-versions t)
+	#+end_src
+
+	Now, by default emacs won't keep backups for files you have under
+	version control (say using git or svn). I don't really commit on
+	every save, so I'd like to keep backups for these files too.
+
+	#+begin_src emacs-lisp :tangle yes
+		(setq vc-make-backup-files t)
+	#+end_src
+	
+	We can also define where our backups are going to be stored.
+
+	#+begin_src emacs-lisp :tangle yes
+	  (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
+	#+end_src
+
+	As previously discussed, Emacs also do not backup a file on every
+	save. It makes a backup when you first save the file, and makes
+	new backups when you close the buffer and revisits the file. This
+	sort of a /per-session/ behavior and can be frustrating when you
+	keep emacs running from a long time and it doesn't keep fresh backups.
+
+	To address this problem, we can have a sort of /per-save/ behavior
+	by forcing Emacs to have a different behavior for backups only
+	when we hit "save file". We define a function for this:
+
+	#+begin_src emacs-lisp :tangle yes
+	  (defun force-backup-of-buffer ()
+		;; Make a special "per session" backup at the first save of each
+		;; emacs session.
+		(when (not buffer-backed-up)
+		  ;; Override the default parameters for per-session backups.
+		  (let ((backup-directory-alist '(("" . "~/.emacs.d/backup/per-session")))
+				(kept-new-versions 50))
+			(backup-buffer)))
+		;; Make a "per save" backup on each save.  The first save results in
+		;; both a per-session and a per-save backup, to keep the numbering
+		;; of per-save backups consistent.
+		(let ((buffer-backed-up nil))
+		  (backup-buffer)))
+
+	  (add-hook 'before-save-hook  'force-backup-of-buffer)
+	#+end_src
+
+*** TODO Tabs
+	
+	#+begin_src emacs-lisp :tangle yes
+	  (setq tab-bar-tab-hints 1)
+	  (tab-bar-mode 1)
+	#+end_src 
+
+*** TODO Mimes
+
+	The mimes set in your computer define which application emacs will
+	use when you ask it to open in an external application. Now, ...
+
+	#+begin_src emacs-lisp :tangle yes
+	(use-package openwith
+		:config
+		(setq openwith-associations '(("\\.pdf\\'" "zathura" (file))))
+		(openwith-mode t))
+	#+end_src
+
+** Display / GUI
+*** DONE Override defaults
+
+	Remove startup screen, tool bar, menu bar and scroll-bar
+	#+begin_src emacs-lisp :tangle yes
+	  (setq inhibit-startup-screen t )		
+	  (tool-bar-mode 0) 
+	  (menu-bar-mode 0) 
+	  (scroll-bar-mode 0) 
+	#+end_src 
+
+	Do not thorow audio warning when making a mistake
+	#+begin_src emacs-lisp :tangle yes
+	(setq ring-bell-function 'ignore )		
+	#+end_src 
+
+	When in floating window, set default dimensions
+	(add-to-list 'default-frame-alist '(height . 37)) 
+	#+begin_src emacs-lisp :tangle yes
+	(add-to-list 'default-frame-alist '(width . 110)) 
+	#+end_src 
+
+*** DONE Line Wrapping
+
+     Toggle wrapping text at the Nth character. This information is
+     used by the auto-fill-mode to break lines automatically. This mode
+     needs to be manually set or a hook must be added for the modes you
+     wish to have lines breaking automatically.
+     #+begin_src emacs-lisp :tangle yes
+       (setq-default fill-column 70)			
+     #+end_src 
+
+     When wrapping lines, remove the line-wrap symbol from both sides
+     of the screen.
+     #+begin_src emacs-lisp :tangle yes
+       (fringe-mode '(0 . 0)) 
+     #+end_src
+	 
+	 ... visual line mode
+	 #+begin_src emacs-lisp :tangle yes
+	   (setq-default word-wrap t)
+	   (global-visual-line-mode t)
+	 #+end_src 
+
+*** DONE Line numbers
+
+	 Emacs provides a minor mode for displaying line numbers
+	 which is way faster than the package alternative (nlinum).
+	 We set a variable to make it display relative numbers and
+	 allow the minor mode globally
+	 #+BEGIN_SRC emacs-lisp :tangle yes
+	   (setq display-line-numbers-type 'relative
+			 display-line-numbers-current-absolute t)
+	   (global-display-line-numbers-mode 1)
+	 #+END_SRC
+
+*** DONE Scratch buffers
+
+     Change ~scratch~ buffer message
+     #+begin_src emacs-lisp :tangle yes
+       (setq initial-scratch-message "~Scratch~")
+     #+end_src
+	
+*** DONE Fonts
+
+	 Setting text font. The function =set-frame-font= could be
+	 used but if launching Emacs daemon and attaching to it the
+	 display goes wack.
+	 #+BEGIN_SRC emacs-lisp :tangle yes
+		 (add-to-list 'default-frame-alist '(font . "Ubuntu Mono 13"))
+	 #+END_SRC
+
+*** DONE Cursor 
+   
+	 I now would like to keep our cursor center on the middle of the
+	 screen, so that the page shifts but the cursor line keeps static.
+	 For this, we use a package called centered-cursor-mode and enable
+	 the new minor mode globally.
+	 #+begin_src emacs-lisp :tangle yes
+	 (use-package centered-cursor-mode
+		 :config
+		 (global-centered-cursor-mode))
+	 #+end_src
+
+	 The cursor blinking is quite annoying and will be removed too
+	 by disabling it's minor mode.
+	 #+begin_src emacs-lisp :tangle yes
+		 (blink-cursor-mode 0)
+	 #+end_src  
+
+	 Another usefull feature related to the cursor is highlighting
+	 the line in which it is positioned:
+	 #+begin_src emacs-lisp :tangle yes
+	 (global-hl-line-mode 1) ;; highlight current line
+	 #+end_src
+
+ #+RESULTS:
+ : t
+
+*** DONE Theme
+
+ We first download some themes
+ #+BEGIN_SRC emacs-lisp :tangle yes
+   (use-package doom-themes)
+ #+END_SRC
+
+ To allow enabling themes without being prompted yes-or-no we tell
+ Emacs to trust all themes.
+ #+begin_src emacs-lisp :tangle yes
+   (setq custom-safe-themes t) 
+ #+end_src
+
+ Then we can choose which theme to load. 
+ #+begin_src emacs-lisp :tangle yes
+   (load-theme 'doom-outrun-electric t)
+ #+end_src
+
+ When replacing the theme we can use blp/load-only-theme function to
+ get rid of pre-loaded themes and trying new ones.
+ 
+ We need to get the tab-bar to be displayed alright with the theme
+
+ #+begin_src emacs-lisp :tangle no
+   (custom-set-faces
+	'(tab-bar ((t (:inherit default :box (:line-width 5 :style released-button)))))
+	'(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "red")))))
+ #+end_src
+
+ #+RESULTS:
+ 
+*** DONE Modeline
+	
+	#+begin_src emacs-lisp :tangle yes
+	 (use-package moody)
+	  (use-package jp-modeline
+		:load-path "~/.emacs.d/lisp/"
+		:config
+		(jp-modeline-setup))
+	#+end_src 
+	
+	https://github.com/ianpan870102/.personal-emacs.d/blob/master/init.el
+	#+begin_src emacs-lisp :tangle no
+	  (use-package doom-modeline
+		:hook (after-init . doom-modeline-mode)
+		:custom
+		(inhibit-compacting-font-caches t)
+		(doom-modeline-buffer-file-name-style 'relative-from-project)
+		(doom-modeline-bar-width 1)
+		(doom-modeline-modal-icon nil)
+		(doom-modeline-height 15)
+		(doom-modeline-env-python-executable "python3")
+		:config
+		(when (member "Menlo" (font-family-list))
+		  (set-face-attribute 'mode-line nil :height 110 :font "Menlo")
+		  (set-face-attribute 'mode-line-inactive nil :height 110 :font "Menlo")))
+
+	#+end_src 
+
+*** TODO Tabs -- still waiting on centaur configs
+* Scratch
+** Misc
+#+begin_src emacs-lisp :tangle yes
+		  ;;; folding
+	  
+
+	(use-package ivy-xref
+	  :ensure t
+	  :init
+	  ;; xref initialization is different in Emacs 27 - there are two different
+	  ;; variables which can be set rather than just one
+	  (when (>= emacs-major-version 27)
+		(setq xref-show-definitions-function #'ivy-xref-show-defs))
+	  ;; Necessary in Emacs <27. In Emacs 27 it will affect all xref-based
+	  ;; commands other than xref-find-definitions (e.g. project-find-regexp)
+	  ;; as well
+	  (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+
+
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package org-download
+	:config
+	(setq-default org-download-image-dir "~/org/img")
+	(setq org-download-screenshot-method "gnome-screenshot -a -f %s"))
+
+  (setq org-web-tools-pandoc-sleep-time 10)
+
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+  (setq org-latex-listings 'minted
+		org-latex-packages-alist '(("" "minted"))
+		org-latex-pdf-process
+		'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+		  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+	 (latex . t)
+	 (shell . t)
+	 (xml . t)   
+	 (plantuml .t)
+	 (java . t)))
+
+#+end_src
+
+** Company
+   #+begin_src emacs-lisp :tangle yes
+	 (use-package company
+	   :demand t
+	   :after yasnippet
+	   :config
+	   (define-key company-active-map (kbd "C-n") 'company-select-next)
+	   (define-key company-active-map (kbd "C-p") 'company-select-previous)
+	   (define-key company-search-map (kbd "C-n") 'company-select-next)
+	   (define-key company-search-map (kbd "C-p") 'company-select-previous)
+	   (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
+	   (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+	   ;; (define-key company-active-map (kbd "<tab>") 'yas-expand)
+	   ;; (define-key company-search-map (kbd "<tab>") 'yas-expand)
+	   ;; (define-key company-active-map (kbd "TAB") 'yas-expand)
+	   ;; (define-key company-search-map (kbd "TAB") 'yas-expand)
+	   (setq
+		company-minimum-prefix-length 1      ; Only one key required for completions
+		company-idle-delay 0                 ; The idle delay in seconds until completion starts automatically.
+		company-echo-delay 0
+		company-selection-wrap-around 'on    ; When in bottom of the list, wrap around to the top and vise-versa
+		company-transformers nil             ; Don't change the list of candidates received from backends
+		company-require-match nil            ; Don't require match, so you can still move your cursor as expected.
+		company-tooltip-align-annotations t  ; Align annotation to the right side.
+		company-dabbrev-downcase nil         ; No downcase when completion.
+		company-dabbrev-code-everywhere t    ; Offer completion on docs and strings
+		company-dabbrev-code-modes t         ; Make deabrev complete only symbols in all modes. Not text/string
+		company-dabbrev-code-ignore-case t   ; Ignore case
+		company-transformers '(company-sort-by-occurrence
+							   company-sort-by-backend-importance)
+		company-backends '((
+							company-files         ; Files and directories
+							company-yasnippet     ; Snippets 
+							company-keywords      ; Code keywords
+							company-capf          ; completion-at-point-functions
+							company-dabbrev       ; dabbrev for plain text
+							company-dabbrev-code  ; dabbrev for code
+							;; company-gtags         ; GNU Global
+							;; company-etags         ; etags
+							)))
+	   ;; Add yasnippet support for all company backends
+	   ;; https://github.com/syl20bnr/spacemacs/pull/179
+	   (defvar company-mode/enable-yas t
+		 "Enable yasnippet for all backends.")
+
+	   (defun company-mode/backend-with-yas (backend)
+		 (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+			 backend
+		   (append (if (consp backend) backend (list backend))
+				   '(:with company-yasnippet))))
+
+	   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+
+	   (global-company-mode t))
+
+   #+end_src 
+
+** Eglot
+	#+begin_src emacs-lisp  :tangle no
+
+	  (use-package eglot
+		:ensure eldoc-box ;; shows doc in posframe (either at point or up)
+		:config
+		(setq eglot-put-doc-in-help-buffer t
+			  eglot-auto-display-help-buffer nil)
+		(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+		(add-hook 'eglot--managed-mode-hook #'eldoc-box-hover-at-point-mode t)
+		(add-hook 'c-mode-hook 'eglot-ensure)
+		(add-hook 'c++-mode-hook 'eglot-ensure)
+		(add-hook 'java-mode-hook 'eglot-ensure))
+
+	  (defvar eglot-hydra-title (all-the-icons-faicon "keyboard-o" "Main eglot" 1 -0.05))
+	  (pretty-hydra-define eglot-hydra
+		(
+		 :title eglot-hydra-title 
+		 :foreign-key warn 
+		 :exit t 
+		 :quit-key "q")
+		("Server"
+		 (("ss" eglot "Start")
+		  ("sr" eglot-reconnect "Reconnect")
+		  ("sc" eglot-shutdown "Close")
+		  ("se" eglot-events-buffer "Event buffer")
+		  ("sl" eglot-stderr-buffer "Log for sterr"))
+		 "Features"
+		 (("r" eglot-rename "Rename")
+		  ("f" eglot-format "Format")
+		  ("a" eglot-code-actions  "Actions")
+		  ("h" eglot-help-at-point "Help at point"))
+		 "Find"
+		 (("d" eglot-find-declaration "Declaration" )
+		  ("t" eglot-find-typeDefition "Type definition" )
+		  ("i" eglot-find-implementation "Implementation" ))))
+
+	#+end_src
+	
+** LSP
+
+#+begin_src emacs-lisp :tangle no
+  (use-package lsp-mode
+	:commands lsp  
+	:hook ((c-mode c++-mode objc-mode) . lsp)
+	:hook (java-mode . lsp)
+	:config
+	(setq lsp-log-io t                           ;; log comm. to *lsp-log* buffer
+		  lsp-print-performance t                ;; log performance to *lsp-log* buffer
+		  lsp-inhibit-message nil                ;; do not inhibit messages
+		  lsp-report-if-no-buffer t              ;;   errors will be reported even when the file is not open ?
+		  lsp-keep-workspace-alive nil           ;; when closing last file, close server
+		  lsp-enable-snippet t                   ;; enable snippets in company-lsp
+		  lsp-auto-guess-root t                  ;; uses .git etc to guess root
+		  lsp-restart 'interactive               ;; request if server should restart
+		  lsp-auto-configure t                   ;;  Auto configure  lsp-mode, lsp-ui, company-lsp
+		  lsp-document-sync-method nil           ;; Sync method recommended by the server
+		  lsp-auto-execute-action t              ;;  Auto-execute single action
+		  lsp-eldoc-render-all t                 ;; render all received by eldoc
+		  lsp-enable-completion-at-point t       ;; Enable completion-at-point integration.
+		  lsp-enable-xref t                      ;; Enable xref integration.
+		  lsp-prefer-flymake nil                 ;;  use flycheck
+		  lsp-enable-indentation t               ;; Indent regions using the file formatting functionality provided by the language server.
+		  lsp-enable-on-type-formatting t        ;; Enable textDocument/onTypeFormatting integration.
+		  lsp-before-save-edits t                ;; Apply edits suggested by the language server before saving a document.
+		  lsp-imenu-show-container-name t        ;; Display the symbol’s container name in an imenu entry.
+		  lsp-imenu-container-name-separator "/" ;; Separator for imenu entries.
+		  lsp-imenu-sort-methods '(kind name)    ;; How to sort the imenu items
+		  lsp-response-timeout 10                ;; Number of seconds to wait for a response from the language server before timing out.
+		  lsp-enable-file-watchers t             ;; If non-nil lsp-mode will watch the files in the workspace if the server has requested that.
+		  lsp-server-trace t                     ;; Request trace mode on the language server.
+		  lsp-enable-semantic-highlighting t     ;; Enable experimental semantic highlighting support
+		  lsp-enable-imenu nil                   ;; Enable imenu integration when server provides textDocument/documentSymbol.
+		  lsp-signature-auto-activate t          ;; Auto activate signature when trigger char is pressed.
+		  lsp-signature-render-documentation t   ;; Include signature documentation in signature help.
+		  lsp-enable-text-document-color t)      ;; Enable textDocument/documentColor when server supports it.
+	(lsp-clients-register-clangd))               ;; use clangd for c/cpp
+
+  (use-package lsp-ui
+	:commands lsp-ui-mode
+	:config
+	(setq lsp-ui-sideline-delay 0                       ;; Number of seconds to wait before showing sideline.
+		  lsp-ui-sideline-actions-kind-regex            ;; Regex for the code actions kinds to show in the sideline.
+		  "quickfix.*\\|refactor.*"  
+		  lsp-ui-sideline-diagnostic-max-line-length 80 ;; Maximum line length of diagnostics in sideline.
+		  lsp-ui-sideline-diagnostic-max-lines 10       ;; Maximum number of lines to show of diagnostics in sideline.
+		  lsp-ui-sideline-enable t                      ;; Whether or not to enable ‘lsp-ui-sideline’.
+		  lsp-ui-sideline-ignore-duplicate t            ;; Ignore duplicates when there is a same symbol with the same contents.
+		  lsp-ui-sideline-show-code-actions t           ;; Whether to show code actions in sideline.
+		  lsp-ui-sideline-show-diagnostics t            ;; Whether to show diagnostics messages in sideline.
+		  lsp-ui-sideline-show-hover nil                ;; Whether to show hover messages in sideline.
+		  lsp-ui-sideline-show-symbol nil               ;; When t, show the symbol name on the right of the information.
+		  lsp-ui-sideline-update-mode 'point))          ;; Define the mode for updating sideline information.
+
+  (use-package company-lsp
+	:after company
+	:config
+	(setq company-lsp-async t                     ;; Use async operations to fetch data.
+		  company-lsp-cache-candidates 'auto      ;; Cache completion candidates according to server opinion.
+		  company-lsp-enable-additional-text-edit ;; Apply additional text edit from server
+		  company-lsp-enable-recompletion t       ;; Re-trigger completion candidates when completion is done.
+		  company-lsp-enable-snippet t            ;; Support expanding completion snippet.
+		  company-lsp-enable-trigger-kind t       ;; Populate triggerKind field in the completion request.
+		  company-lsp-filter-candidates nil       ;; Filter completion candidates returned by server.
+		  company-lsp-match-candidate-predicate   ;; Predicate function that determines whether a candidate matches given input.
+		  'company-lsp-match-candidate-flex)
+	(push 'company-lsp company-backends))         ;; add company-lsp as a backend
+
+  (use-package lsp-java 
+	:after lsp
+	:config 
+	(setq lsp-java-server-install-dir (expand-file-name "~/eclipse.jdt.ls/")     ;; JDT install directory
+		  lsp-java-workspace-dir (expand-file-name "~/.jdt-workspace/")          ;; Workspace dirs
+		  lsp-java-workspace-cache-dir (expand-file-name "~/.cache/jdt/")        ;; LSP java workspace cache directory.
+		  lsp-java-configuration-maven-user-settings (expand-file-name "~/.m2/") ;; Path to Maven's settings.xml
+		  lsp-java-java-path "java"                                              ;; Path for java executable
+		  lsp-java-errors-incomplete-classpath-severity "warning"                ;; Severity of missing classpath for files
+		  lsp-java-pop-buffer-function 'lsp-java-show-buffer                     ;; The function for showing the helper windows.
+		  lsp-java-configuration-check-project-settings-exclusions t             ;; Exclude dot files from the file explorer.
+		  lsp-java-configuration-update-build-configuration "automatic"          ;; How to update the Java classpath/configuration
+		  lsp-java-trace-server t                                                ;; Traces the comm with server
+		  lsp-java-import-gradle-enabled t                                       ;; Enable/disable the Gradle importer.
+		  lsp-java-import-maven-enabled t                                        ;; Enable/disable the Maven importer.
+		  lsp-java-maven-download-sources t                                      ;; Enable/disable eager download of Maven artifacts.
+		  lsp-java-references-code-lens-enabled t                                ;; Enable/disable the references code lens.
+		  lsp-java-signature-help-enabled t                                      ;; Enable/disable the signature help.
+		  lsp-java-implementations-code-lens-enabled t                           ;; Enable/disable the implementations code lens.
+		  lsp-java-format-enabled t                                              ;; Enable/disable default Java formatter
+		  lsp-java-save-actions-organize-imports t                               ;; Enable/disable auto organize imports on save action
+		  lsp-java-import-exclusions t                                           ;; Configure glob patterns for excluding folders
+		  lsp-java-autobuild-enabled t                                           ;; Enable/disable the 'auto build'
+		  lsp-java-max-concurrent-builds 1                                       ;; Max simultaneous project builds
+		  lsp-java-completion-enabled t                                          ;; Enable/disable code completion support
+		  lsp-java-completion-overwrite t                                        ;; Code completion overwrites the current text.
+		  lsp-java-completion-guess-method-arguments t                           ;; Method arguments are guessed when a method is selected
+		  lsp-java-completion-favorite-static-members ["org.junit.Assert.*"      ;; static members to propose even if the import is missing.
+													   "org.junit.Assume.*"
+													   "org.junit.jupiter.api.Assertions.*"
+													   "org.junit.jupiter.api.Assumptions.*"
+													   "org.junit.jupiter.api.DynamicContainer.*"
+													   "org.junit.jupiter.api.DynamicTest.*"
+													   "org.mockito.Mockito.*"
+													   "org.mockito.ArgumentMatchers.*"
+													   "org.mockito.Answers.*"]
+		  lsp-java-completion-import-order ["java" "javax" "com" "org"]          ;; Sorting order of import statements.
+		  lsp-java-folding-range-enabled nil                                     ;; Disable smart folding range support.
+		  lsp-java-progress-reports-enabled t                                    ;; Progress reports from background processes on server.
+		  lsp-java-format-settings-url nil                                       ;; Path to the Eclipse formatter xml settings.
+		  lsp-java-format-settings-profile nil                                   ;; Optional formatter 
+		  lsp-java-format-comments-enabled t                                     ;; Includes the comments during code formatting.
+		  lsp-java-format-on-type-enabled t                                      ;; Enable automatic block formatting when typing ;, <enter> or }
+		  lsp-java-bundles nil                                                   ;; List of bundles that will be loaded in the JDT server.
+		  lsp-java-code-generation-hash-code-equals-use-java7objects nil         ;; Use Objects.hash and Objects.equals for hash/equals 
+		  lsp-java-code-generation-hash-code-equals-use-instanceof t             ;; Use 'instanceof' for hash/equals 
+		  lsp-java-code-generation-use-blocks t                                  ;; Use blocks in 'if' statements when generating the methods.
+		  lsp-java-code-generation-generate-comments t                           ;; Generate method comments when generating the methods.
+		  lsp-java-code-generation-to-string-template                            ;; The template for generating the toString method.
+		  "${object.className} [${member.name()}=${member.value}, ${otherMembers}]"
+		  lsp-java-code-generation-to-string-code-style "STRING_BUILDER"         ;; The code style for generating the toString method.
+		  lsp-java-code-generation-to-string-skip-null-values nil                ;; Skip null values when generating the toString method.
+		  lsp-java-code-generation-to-string-list-array-contents t               ;; List contents of arrays instead of using native toString().
+		  lsp-java-code-generation-to-string-limit-elements 0                    ;; List all items in array when generating toString
+		  lsp-java-inhibit-message nil)                                          ;; Don't inhibit java messages echo via `inhibit-message'.
+	(add-hook 'java-mode-hook 'lsp))
+
+
+  (use-package lsp-ivy)
+
+
+
+  ;; (use-package lsp-treemacs)
+  ;; (use-package dap-mode
+  ;;   :ensure t :after lsp-mode
+  ;;   :config
+  ;;   (dap-mode t)
+  ;;   (dap-ui-mode t))
+
+#+end_src
