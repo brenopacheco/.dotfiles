@@ -1,8 +1,8 @@
 " Configure some default directories
-let g:backupdir    = $HOME.'/.cache/backup'
-let g:plugdir      = $HOME.'/.cache/plug'
-let g:swapdir      = $HOME.'/.cache/swap'
-let g:undodir      = $HOME.'/.cache/undo'
+let g:backupdir    = expand('~/.cache/nvim/backup/')
+let g:plugdir      = expand('~/.cache/nvim/plug/')
+let g:undodir      = expand('~/.cache/nvim/undo/')
+let g:swapdir      = expand('~/.cache/nvim/swap//')
 
 for dir in [ g:backupdir, g:plugdir, g:swapdir, g:undodir ]
     if !isdirectory(dir)
@@ -10,13 +10,13 @@ for dir in [ g:backupdir, g:plugdir, g:swapdir, g:undodir ]
     endif
 endfor
 
-
 let mapleader     =" "                    " set leader as comma
-set clipboard    ^=unnamed,unnamedplus    " copy/pasting from x11 clipboard
+set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
 set colorcolumn   =78                     " draw column at position
 set completeopt   =menuone,noinsert       " defaults popup menu behavior
 set conceallevel  =0                      " shows |hyperlinks|
-let &directory    =g:swapdir . '//'       " swap file directory
+set swapfile                              " enable swap file
+let &directory    = g:swapdir             " swap directory
 set encoding      =utf-8                  " use encoding supporting unicode
 set fillchars     =fold:\                 " make v:folddashes whitespace
 set foldlevel     =99                     " make folds open initially
@@ -69,6 +69,7 @@ set showmatch                              " highlights matches [{()}]
 set smartcase                              " smart case for search
 set splitright                             " :vsp creates right split
 set wildmenu                               " tab help in cmdline
+au BufWritePost * call Backup()            " backs up file in .backups
 
 " new uncat options // TODO
 set undolevels     =500 
@@ -84,6 +85,6 @@ set notimeout ttimeout ttimeoutlen=10
 set nocompatible
 
 
-" au BufWritePost * call Backup()       " backs up file in .backups
 " set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 " set grepformat=%f:%l:%c:%m,%f:%l:%m
+"

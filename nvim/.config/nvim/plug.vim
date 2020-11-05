@@ -43,7 +43,6 @@ call plug#begin(g:plugdir)
     Plug 'junegunn/gv.vim'                  " git log browser
     Plug 'aperezdc/vim-template'            " inserts template on new file
     Plug 'KabbAmine/zeavim.vim'             " interfaces to zeal
-    Plug 'sheerun/vim-polyglot'             " syntax highlight and indent 
     Plug 'neovim/nvim-lsp'                  " language server features
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
     Plug 'nvim-lua/completion-nvim'         " lsp compatible autocomplete
@@ -60,4 +59,6 @@ call plug#begin(g:plugdir)
     Plug 'glepnir/zephyr-nvim'
     Plug 'chrisbra/Colorizer'
     Plug 'bluz71/vim-nightfly-guicolors'
+
+    " Plug 'sheerun/vim-polyglot'             " syntax highlight and indent 
 call plug#end()

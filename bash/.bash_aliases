@@ -13,6 +13,7 @@ alias reload='source ~/.bashrc'
 alias usage='du -sch .[!.]* * |sort -h'
 
 # directories cd's
+alias dotfiles='cd ~/.dotfiles'
 alias org='cd ~/org'
 alias mnt='cd /var/run/media/breno'
 alias aulas='cd ~/Aulas'
