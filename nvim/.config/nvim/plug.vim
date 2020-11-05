@@ -4,7 +4,7 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin(g:plugdir)
     let g:plug_timeout=99999
     Plug 'kana/vim-textobj-user'            " create textobjects
     Plug 'somini/vim-textobj-fold'          " adds fold text object

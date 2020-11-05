@@ -5,10 +5,10 @@ let g:swapdir      = $HOME.'/.cache/swap'
 let g:undodir      = $HOME.'/.cache/undo'
 
 for dir in [ g:backupdir, g:plugdir, g:swapdir, g:undodir ]
-    if !isdirectory(path)
-        silent call system('mkdir -p ' path)
-    end
-end
+    if !isdirectory(dir)
+        silent call system('mkdir -p ' . dir)
+    endif
+endfor
 
 
 let mapleader     =" "                    " set leader as comma
