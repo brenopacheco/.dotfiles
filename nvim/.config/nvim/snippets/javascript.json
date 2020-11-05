@@ -1,0 +1,727 @@
+{
+    "proto": {
+        "prefix": "proto",
+        "description": "proto",
+        "body": [
+        "${1:class_name}.prototype.${2:method_name} = function(${3}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "};"
+        ]
+    },
+    "fun": {
+        "prefix": "fun",
+        "description": "function",
+        "body": [
+        "function ${1:function_name}(${2}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "asf": {
+        "prefix": "asf",
+        "description": "async function",
+        "body": [
+        "async function ${1:function_name}(${2}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "anf": {
+        "prefix": "anf",
+        "description": "",
+        "body": [
+        "function(${1}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "vaf": {
+        "prefix": "vaf",
+        "description": "vaf",
+        "body": [
+        "var ${1:function_name} = function(${2}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "};"
+        ]
+    },
+    "vf": {
+        "prefix": "vf",
+        "description": "vf",
+        "body": [
+        "var ${1:function_name} = function $1(${2}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "};"
+        ]
+    },
+    "(f": {
+        "prefix": "(f",
+        "description": "(f",
+        "body": [
+        "(function(${1}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}(${2}));"
+        ]
+    },
+    ";fe": {
+        "prefix": ";fe",
+        "description": ";fe",
+        "body": [
+        ";(function(${1}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}(${2}))"
+        ]
+    },
+    "sdf": {
+        "prefix": "sdf",
+        "description": "sdf",
+        "body": [
+        "var ${1:function_name} = function (${2:argument}) {",
+        "    ${3}",
+        "    $1 = function ($2) {",
+        "        ${0:${TM_SELECTED_TEXT}}",
+        "    };",
+        "};"
+        ]
+    },
+    "if": {
+        "prefix": "if",
+        "description": "if (condition) { ... }",
+        "body": [
+        "if (${1:true}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "ife": {
+        "prefix": "ife",
+        "description": "if (condition) { ... } else { ... }",
+        "body": [
+        "if (${1:true}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "} else {",
+        "    ${2}",
+        "}"
+        ]
+    },
+    "ter": {
+        "prefix": "ter",
+        "description": "ter",
+        "body": [
+        "${1:/* condition */} ? ${2:/* if true */} : ${0:/* if false */}"
+        ]
+    },
+    "switch": {
+        "prefix": "switch",
+        "description": "switch",
+        "body": [
+        "switch (${1:expression}) {",
+        "    case '${3:case}':",
+        "        ${4}",
+        "        break;",
+        "    ${0}",
+        "    default:",
+        "        ${2}",
+        "}"
+        ]
+    },
+    "case": {
+        "prefix": "case",
+        "description": "case 'xyz': ... break",
+        "body": [
+        "case '${1:case}':",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "    break;"
+        ]
+    },
+    "try": {
+        "prefix": "try",
+        "description": "try { ... } catch(e) { ... }",
+        "body": [
+        "try {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "} catch (${1:e}) {",
+        "    ${2:/* handle error */}",
+        "}"
+        ]
+    },
+    "tryf": {
+        "prefix": "tryf",
+        "description": "try { ... } catch(e) { ... } finally { ... }",
+        "body": [
+        "try {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "} catch (${1:e}) {",
+        "    ${2:/* handle error */}",
+        "} finally {",
+        "    ${3:/* be executed regardless of the try / catch result*/}",
+        "}"
+        ]
+    },
+    "terr": {
+        "prefix": "terr",
+        "description": "terr",
+        "body": [
+        "throw new Error('${1:error message}')"
+        ]
+    },
+    "ret": {
+        "prefix": "ret",
+        "description": "ret",
+        "body": [
+        "return ${0:result};"
+        ]
+    },
+    "for": {
+        "prefix": "for",
+        "description": "for (...) {...}",
+        "body": [
+        "for (var ${1:i} = 0, ${2:len} = ${3:Things.length}; $1 < $2; $1++) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "forr": {
+        "prefix": "forr",
+        "description": "reversed for (...) {...}",
+        "body": [
+        "for (var ${2:i} = ${1:Things.length} - 1; $2 >= 0; $2--) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "wh": {
+        "prefix": "wh",
+        "description": "(condition) { ... }",
+        "body": [
+        "while (${1:/* condition */}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "do": {
+        "prefix": "do",
+        "description": "do { ... } while (condition)",
+        "body": [
+        "do {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "} while (${1:/* condition */});"
+        ]
+    },
+    "fori": {
+        "prefix": "fori",
+        "description": "fori",
+        "body": [
+        "for (var ${1:prop} in ${2:object}) {",
+        "    ${0:$2[$1]}",
+        "}"
+        ]
+    },
+    ":f": {
+        "prefix": ":f",
+        "description": ":f",
+        "body": [
+        "${1:method_name}: function (${2:attribute}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "},"
+        ]
+    },
+    "has": {
+        "prefix": "has",
+        "description": "has",
+        "body": [
+        "hasOwnProperty(${0})"
+        ]
+    },
+    "sing": {
+        "prefix": "sing",
+        "description": "sing",
+        "body": [
+        "function ${1:Singleton} (${2:argument}) {",
+        "    // the cached instance",
+        "    var instance;",
+        "    // rewrite the constructor",
+        "    $1 = function $1($2) {",
+        "        return instance;",
+        "    };",
+        "    // carry over the prototype properties",
+        "    $1.prototype = this;",
+        "    // the instance",
+        "    instance = new $1();",
+        "    // reset the constructor pointer",
+        "    instance.constructor = $1;",
+        "    ${0}",
+        "    return instance;",
+        "}"
+        ]
+    },
+    "obj": {
+        "prefix": "obj",
+        "description": "obj",
+        "body": [
+        "function object(o) {",
+        "    function F() {}",
+        "    F.prototype = o;",
+        "    return new F();",
+        "}"
+        ]
+    },
+    "props": {
+        "prefix": "props",
+        "description": "props",
+        "body": [
+        "var ${1:my_object} = Object.defineProperties(",
+        "    ${2:new Object()},",
+        "    {",
+        "        ${3:property} : {",
+        "            get : function $1_$3_getter() {",
+        "                // getter code",
+        "            },",
+        "            set : function $1_$3_setter(value) {",
+        "                // setter code",
+        "            },",
+        "            value        : ${4:value},",
+        "            writeable    : ${5:boolean},",
+        "            enumerable   : ${6:boolean},",
+        "            configurable : ${0:boolean}",
+        "        }",
+        "    }",
+        ");"
+        ]
+    },
+    "prop": {
+        "prefix": "prop",
+        "description": "prop",
+        "body": [
+        "Object.defineProperty(",
+        "    ${1:object},",
+        "    '${2:property}',",
+        "    {",
+        "        get : function $1_$2_getter() {",
+        "            // getter code",
+        "        },",
+        "        set : function $1_$2_setter(value) {",
+        "            // setter code",
+        "        },",
+        "        value        : ${3:value},",
+        "        writeable    : ${4:boolean},",
+        "        enumerable   : ${5:boolean},",
+        "        configurable : ${0:boolean}",
+        "    }",
+        ");"
+        ]
+    },
+    "/**": {
+        "prefix": "/**",
+        "description": "/**",
+        "body": [
+        "/**",
+        " * ${0:description}",
+        " *",
+        " */"
+        ]
+    },
+    "@par": {
+        "prefix": "@par",
+        "description": "@par",
+        "body": [
+        "@param {${1:type}} ${2:name} ${0:description}"
+        ]
+    },
+    "@ret": {
+        "prefix": "@ret",
+        "description": "@ret",
+        "body": [
+        "@return {${1:type}} ${0:description}"
+        ]
+    },
+    "jsonp": {
+        "prefix": "jsonp",
+        "description": "jsonp",
+        "body": [
+        "JSON.parse(${0:jstr});"
+        ]
+    },
+    "jsons": {
+        "prefix": "jsons",
+        "description": "jsons",
+        "body": [
+        "JSON.stringify(${0:object});"
+        ]
+    },
+    "get": {
+        "prefix": "get",
+        "description": "get",
+        "body": [
+        "getElementsBy${1:TagName}('${0}')"
+        ]
+    },
+    "gett": {
+        "prefix": "gett",
+        "description": "gett",
+        "body": [
+        "getElementBy${1:Id}('${0}')"
+        ]
+    },
+    "by.": {
+        "prefix": "by.",
+        "description": "by.",
+        "body": [
+        "${1:document}.getElementsByClassName('${0:class}')"
+        ]
+    },
+    "by#": {
+        "prefix": "by#",
+        "description": "by#",
+        "body": [
+        "${1:document}.getElementById('${0:element ID}')"
+        ]
+    },
+    "qs": {
+        "prefix": "qs",
+        "description": "qs",
+        "body": [
+        "${1:document}.querySelector('${0:CSS selector}')"
+        ]
+    },
+    "qsa": {
+        "prefix": "qsa",
+        "description": "qsa",
+        "body": [
+        "${1:document}.querySelectorAll('${0:CSS selector}')"
+        ]
+    },
+    "de": {
+        "prefix": "de",
+        "description": "de",
+        "body": [
+        "debugger;"
+        ]
+    },
+    "cl": {
+        "prefix": "cl",
+        "description": "console.log",
+        "body": [
+        "console.log(${0});"
+        ]
+    },
+    "cd": {
+        "prefix": "cd",
+        "description": "console.debug",
+        "body": [
+        "console.debug(${0});"
+        ]
+    },
+    "ce": {
+        "prefix": "ce",
+        "description": "console.error",
+        "body": [
+        "console.error(${0});"
+        ]
+    },
+    "cw": {
+        "prefix": "cw",
+        "description": "console.warn",
+        "body": [
+        "console.warn(${0});"
+        ]
+    },
+    "ci": {
+        "prefix": "ci",
+        "description": "console.info",
+        "body": [
+        "console.info(${0});"
+        ]
+    },
+    "ct": {
+        "prefix": "ct",
+        "description": "console.trace",
+        "body": [
+        "console.trace(${0:label});"
+        ]
+    },
+    "ctime": {
+        "prefix": "ctime",
+        "description": "console.time ... console.timeEnd",
+        "body": [
+        "console.time(\"${1:label}\");",
+        "${0:${TM_SELECTED_TEXT}}",
+        "console.timeEnd(\"$1\");"
+        ]
+    },
+    "ctimestamp": {
+        "prefix": "ctimestamp",
+        "description": "console.timeStamp",
+        "body": [
+        "console.timeStamp(\"${1:label}\");"
+        ]
+    },
+    "ca": {
+        "prefix": "ca",
+        "description": "console.assert",
+        "body": [
+        "console.assert(${1:expression}, ${0:obj});"
+        ]
+    },
+    "cclear": {
+        "prefix": "cclear",
+        "description": "console.clear",
+        "body": [
+        "console.clear();"
+        ]
+    },
+    "cdir": {
+        "prefix": "cdir",
+        "description": "console.dir",
+        "body": [
+        "console.dir(${0:obj});"
+        ]
+    },
+    "cdirx": {
+        "prefix": "cdirx",
+        "description": "console.dirxml",
+        "body": [
+        "console.dirxml(${1:object});"
+        ]
+    },
+    "cgroup": {
+        "prefix": "cgroup",
+        "description": "console.group",
+        "body": [
+        "console.group(\"${1:label}\");",
+        "${0:${TM_SELECTED_TEXT}}",
+        "console.groupEnd();"
+        ]
+    },
+    "cgroupc": {
+        "prefix": "cgroupc",
+        "description": "console.groupCollapsed",
+        "body": [
+        "console.groupCollapsed(\"${1:label}\");",
+        "${0:${TM_SELECTED_TEXT}}",
+        "console.groupEnd();"
+        ]
+    },
+    "cprof": {
+        "prefix": "cprof",
+        "description": "console.profile",
+        "body": [
+        "console.profile(\"${1:label}\");",
+        "${0:${TM_SELECTED_TEXT}}",
+        "console.profileEnd();"
+        ]
+    },
+    "ctable": {
+        "prefix": "ctable",
+        "description": "console.table",
+        "body": [
+        "console.table(${1:\"${2:value}\"});"
+        ]
+    },
+    "us": {
+        "prefix": "us",
+        "description": "us",
+        "body": [
+        "'use strict';"
+        ]
+    },
+    "timeout": {
+        "prefix": "timeout",
+        "description": "timeout",
+        "body": [
+        "setTimeout(function () {${0}}${2}, ${1:10});"
+        ]
+    },
+    "const": {
+        "prefix": "const",
+        "description": "const",
+        "body": [
+        "const ${1} = ${0};"
+        ]
+    },
+    "constn": {
+        "prefix": "constn",
+        "description": "constn",
+        "body": [
+        "const ${1} = new ${0};"
+        ]
+    },
+    "let": {
+        "prefix": "let",
+        "description": "let",
+        "body": [
+        "let ${1} = ${0};"
+        ]
+    },
+    "im": {
+        "prefix": "im",
+        "description": "import xyz from 'xyz'",
+        "body": [
+        "import ${1} from '${2:$1}';"
+        ]
+    },
+    "imas": {
+        "prefix": "imas",
+        "description": "import * as xyz from 'xyz'",
+        "body": [
+        "import * as ${1} from '${2:$1}';"
+        ]
+    },
+    "imm": {
+        "prefix": "imm",
+        "description": "import { member } from 'xyz'",
+        "body": [
+        "import { ${1} } from '${2}';"
+        ]
+    },
+    "cla": {
+        "prefix": "cla",
+        "description": "cla",
+        "body": [
+        "class ${1} {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "clax": {
+        "prefix": "clax",
+        "description": "clax",
+        "body": [
+        "class ${1} extends ${2} {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "clac": {
+        "prefix": "clac",
+        "description": "clac",
+        "body": [
+        "class ${1} {",
+        "    constructor(${2}) {",
+        "        ${0:${TM_SELECTED_TEXT}}",
+        "    }",
+        "}"
+        ]
+    },
+    "foro": {
+        "prefix": "foro",
+        "description": "for (const prop of object}) { ... }",
+        "body": [
+        "for (const ${1:prop} of ${2:object}) {",
+        "    ${0:$1}",
+        "}"
+        ]
+    },
+    "forl": {
+        "prefix": "forl",
+        "description": "for (let prop of object}) { ... }",
+        "body": [
+        "for (let ${1:prop} of ${2:object}) {",
+        "    ${0:$1}",
+        "}"
+        ]
+    },
+    "fun*": {
+        "prefix": "fun*",
+        "description": "fun*",
+        "body": [
+        "function* ${1:function_name}(${2}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "c=>": {
+        "prefix": "c=>",
+        "description": "c=>",
+        "body": [
+        "const ${1:function_name} = (${2}) => {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "ca=>": {
+        "prefix": "ca=>",
+        "description": "ca=>",
+        "body": [
+        "const ${1:function_name} = async (${2}) => {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "caf": {
+        "prefix": "caf",
+        "description": "caf",
+        "body": [
+        "const ${1:function_name} = (${2}) => {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "casf": {
+        "prefix": "casf",
+        "description": "casf",
+        "body": [
+        "const ${1:function_name} = async (${2}) => {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "=>": {
+        "prefix": "=>",
+        "description": "=>",
+        "body": [
+        "(${1}) => {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "af": {
+        "prefix": "af",
+        "description": "() =>",
+        "body": [
+        "(${1}) => ${0:${TM_SELECTED_TEXT}}"
+        ]
+    },
+    "afb": {
+        "prefix": "afb",
+        "description": "() => {}",
+        "body": [
+        "(${1}) => {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "sym": {
+        "prefix": "sym",
+        "description": "sym",
+        "body": [
+        "const ${1} = Symbol('${0}');"
+        ]
+    },
+    "ed": {
+        "prefix": "ed",
+        "description": "ed",
+        "body": [
+        "export default ${0}"
+        ]
+    },
+    "${": {
+        "prefix": "${",
+        "description": "${",
+        "body": [
+        "${${1}}${0}"
+        ]
+    },
+    "as": {
+        "prefix": "as",
+        "description": "async",
+        "body": [
+        "async ${0}"
+        ]
+    },
+    "aw": {
+        "prefix": "aw",
+        "description": "await",
+        "body": [
+        "await ${0:${TM_SELECTED_TEXT}}"        ]
+    }
+}

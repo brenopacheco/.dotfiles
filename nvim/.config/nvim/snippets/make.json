@@ -1,0 +1,79 @@
+{
+    "base": {
+        "prefix": "base",
+        "description": "base",
+        "body": [
+        ".PHONY: clean, mrproper",
+        "CC = gcc",
+        "CFLAGS = -g -Wall",
+        "all: $1",
+        "%.o: %.c",
+        "    $(CC) $(CFLAGS) -c -o $@ $<",
+        "",
+        "${1:out}: $1.o",
+        "    $(CC) $(CFLAGS) -o $@ $+",
+        "clean:",
+        "    rm -f *.o core.*",
+        "mrproper: clean",
+        "    rm -f $1"
+        ]
+    },
+    "add": {
+        "prefix": "add",
+        "description": "add",
+        "body": [
+        "${1:out}: $1.o",
+        "    $(CC) $(CFLAGS) -o $@ $+"
+        ]
+    },
+    "print": {
+        "prefix": "print",
+        "description": "print",
+        "body": [
+        "print-%: ; @echo $*=$($*)"
+        ]
+    },
+    "if": {
+        "prefix": "if",
+        "description": "if",
+        "body": [
+        "ifeq (${1:cond0}, ${2:cond1})",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "endif"
+        ]
+    },
+    "ife": {
+        "prefix": "ife",
+        "description": "ife",
+        "body": [
+        "ifeq (${1:cond0}, ${2:cond1})",
+        "    ${3:${TM_SELECTED_TEXT}}",
+        "else",
+        "    ${0}",
+        "endif"
+        ]
+    },
+    "el": {
+        "prefix": "el",
+        "description": "el",
+        "body": [
+        "else",
+        "    ${0:${TM_SELECTED_TEXT}}"
+        ]
+    },
+    "default": {
+        "prefix": "default",
+        "description": "default",
+        "body": [
+        ".DEFAULT_GOAL := ${1}"
+        ]
+    },
+    "help": {
+        "prefix": "help",
+        "description": "help",
+        "body": [
+        "help: ## Prints help for targets with comments",
+        "    @cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = \":.*?## \"}; {printf \"\\033[36m%-30s\\033[0m %s\\n\", $\\$1, $\\$2}'",
+        "${0}"        ]
+    }
+}

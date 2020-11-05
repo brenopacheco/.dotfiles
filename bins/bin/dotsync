@@ -1,0 +1,54 @@
+#!/bin/bash
+exec &> >(tee -a /tmp/dotfiles.log)
+# sets which dot files to include (recursevly)
+include=/tmp/dotfiles
+cat<<EOF > $include
+.bash_aliases
+.bash_functions
+.bash_keybindings
+.bash_profile
+.bashrc
+.config/zathura
+.config/lf
+.config/dunst
+.config/htop
+.config/kitty
+.config/mimeapps.list
+.config/nvim/colors.vim
+.config/nvim/commands.vim
+.config/nvim/completion.vim
+.config/nvim/defaults.vim
+.config/nvim/hydras.vim
+.config/nvim/init.vim
+.config/nvim/lsp.vim
+.config/nvim/mappings.vim
+.config/nvim/plugins.vim
+.config/nvim/plug.vim
+.config/nvim/statusline.vim
+.config/nvim/snippets
+.config/nvim/notes
+.config/nvim/templates
+.local/share/fonts
+.config/mimeapps.list
+.fzf.bash
+.profile
+.tmux.conf
+.xinitrc
+.Xmodmap
+.xprofile
+.Xresources
+.emacs.d/init.org
+bin
+EOF
+
+target="dotfiles"
+
+rm -rf $(find ~/${target} | egrep -v "^/home/$USER/${target}/.git" | egrep -v "^/home/$USER/${target}$")
+mkdir -p ~/${target}/.emacs.d ~/${target}/.config/ ~/${target}/.local/share/fonts ~/${target}/.config/nvim  
+cat $include | xargs -i cp -r ~/{} ~/${target}/{}
+rm $include
+cd ~/${target}
+git add -A
+git commit -m "$(date)"
+git push origin master
+exit 0

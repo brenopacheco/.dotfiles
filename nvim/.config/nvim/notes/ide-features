@@ -1,0 +1,30 @@
+# IDE features using vim
+## linting/errors
+	lsp 
+## code fixes & formating
+	apply fix
+		lsp
+	apply formatting
+		lsp / vim's default =
+## code navigation
+	go to definition
+	go to declaration
+	go to type definition
+	find usage/references
+	find symbol
+	find workspace symbol
+	find class/file/function
+	go to diagnostic
+## project exploration
+	... ?		
+## compiling & running
+	compiling: makeprg configurations
+			   special scripts for each language
+## code generation
+	templates
+	lsp actions
+## tests generation
+	special scripts
+## debugging
+	see vimspector?
+## miscellaneous

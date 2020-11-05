@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# read window position
+echo "Select window to record:"
+read -r X Y W H G < <(slop -f "%x %y %w %h %g")
+
+# kill other peek and screenkey instances
+echo "Killing pending processes."
+pkill peek
+pkill screenkey
+
+# start screenkey
+echo "Starting screenkey (screen capturing)"
+screenkey -s small -p bottom -t 2 -g $G & disown $!
+
+# start peek 
+echo "Starting recorder"
+peek & disown $!
+
+while true; do
+   ids=$(xdotool search --class peek)
+   if [[ $? == 0 ]]; then
+       echo "$ids"
+      break 
+   fi
+   echo "$ids"
+   echo "Looking for recorder's window..."
+   sleep 1 
+done
+
+# ovewrite peek position
+echo "Positioning recorder on screen."
+xdotool search --class peek windowsize %@ $W $H windowmove %@ $X $Y
+echo "Window found.
+
+read -p "Press enter when you're done." 
+
+pkill screenkey
+pkill peek

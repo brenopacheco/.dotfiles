@@ -1,0 +1,65 @@
+
+buffers
+	[N]bn, [N]bp, b[N], ls, ]b, [b
+	bufdo, 
+
+tabs
+	[N]gt, [N]gT
+
+argument list
+	[N]n, [N]p
+	ar[gs]                      // lists
+	ar[gs] {pattern} [files]    // sets
+	argd {pattern}              // dels
+	arga {pattern}              // adds (repeats)
+	argdo {cmd}
+	argdo u                     // undos argdo
+grep / vimgrep
+
+quickfix
+	cdo
+	cfdo
+loclist
+
+files
+
+tags
+
+	C-] -> adds tag to tagstack, go to it
+	:[N]po[p] -> jump down the tag stack 
+	:[N]ta[g] -> go up the tag stack
+	:tags -> list tag stack
+	:tag NAME -> goes into tag with name
+	:ptag NAME -> opens tag in prev. window
+	:ts /pattern -> lists tags to get to
+	:tag /pattern -> go to tag with pattern
+		-> if there are multiple, use
+		tn, tp to jump between
+	au BufEnter * :tag / 
+
+	nnoremap <C-[> :pop<CR>
+	-- what to map :tag to?
+
+	nnoremap [t :tag<cr>
+	nnoremap ]t :pop<cr>
+
+
+	-> calling C-] will clean the tag stack
+	   from the point where we are in it
+
+	Is it possible to highlight all the tags in the current file?
+	Yes. Read the Vim online help on "tag-highlight". 
+
+considerations:
+	tags can go to definitions and navigate in/out functions easily
+	grep can show references/usage in quickfix (i.e: <leader>*)
+	arglist can keep track of source files
+	fzf can be used to fuzzy find 
+		files, recent files, tags, ...
+	lsp gives
+		erros, linting
+		function definitions,
+		go to implementation, etc...
+	doc integration with zeal
+	build integration quick qf error report
+	

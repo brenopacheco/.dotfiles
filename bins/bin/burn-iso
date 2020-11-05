@@ -1,0 +1,12 @@
+#!/bin/bash
+# Burns an .iso from anywhere in $HOME into
+# one of the plugged devices using dd
+# Uses dmenu_color for selection
+
+device=$(ls /dev/ | egrep "^(sd.|mmcblk[1-9]p.)$" | dmenu_color)
+[[ $? -eq 0 ]] || exit 1
+image=$(fd ".*\.(img|iso)$" ~ | dmenu_color)
+[[ $? -eq 0 ]] || exit 1
+echo "trying to burn $image to $device"
+sudo umount /dev/${device}*
+sudo dd bs=4M if=$image of=/dev/$device conv=fdatasync  status=progress

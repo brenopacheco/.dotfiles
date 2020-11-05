@@ -1,0 +1,19 @@
+1. unnamed ""
+2. numbered "0 to "9
+	"0    last yanked
+	"1 to "9    last deleted, successively shifted
+3. small delete "-
+4. name "a to "z and "A to "Z
+5. read only ": ". "%
+	":    last ex command
+	".    last last inserted text
+	"%    name of current file
+6. alternate file "#
+7. expression "=
+8. selection "* "+
+9. black hole "_
+10. last search "/
+
+:let @/ = "sel"
+:echo @a
+

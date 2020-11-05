@@ -1,0 +1,59 @@
+! URXVT {{{
+
+URxvt*buffecolor1: true
+URxvt*cursorBlink: true
+URxvt*font:  xft:Ubuntu Mono:size=13
+URxvt*depth: 32
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt*borderless: 1
+URxvt*scrollBar: false
+URxvt*loginShell: true
+Urxvt*secondaryScroll:  true
+URxvt*saveLines: 5000
+URxvt*termName: rxvt-unicode
+URxvt.perl-ext-common: default,matcher
+URxvt.urlLauncher: firefox
+URxvt.matcher.button: 1
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+URxvt.print-pipe: "cat > /dev/null"
+
+! }}}
+! Argonauth theme {{{
+
+*background:             #0d0f18
+*color0:                 #222222
+*color10:                #abe05a
+*color11:                #ffd141
+*color12:                #0092ff
+*color13:                #9a5feb
+*color14:                #67ffef
+*color15:                #ffffff
+*color1:                 #ff000f
+*color2:                 #8ce00a
+*color3:                 #ffb900
+*color4:                 #008df8
+*color5:                 #6c43a5
+*color6:                 #00d7eb
+*color7:                 #ffffff
+*color8:                 #444444
+*color9:                 #ff273f
+*cursorColor:            #ff0017
+*foreground:             #fffaf3
+*fadeColor:              #0d0f18
+*pointerColorBackground: #002a3a
+*pointerColorForeground: #0d0f18
+dwm.selbordercolor:  #ff0017
+dwm.normbordercolor: #000C16
+dwm.selbgcolor:      #0E111D
+dwm.normbgcolor:     #000C16
+dwm.selfgcolor:      #ff0017
+dwm.normfgcolor:     #ffffff
+dmenu.selbackground: #0E111D
+dmenu.selforeground: #ff0017
+dmenu.background:    #000C16
+dmenu.foreground:    #fffaf3
+dmenu.font:  ubuntumono:size=13
+
+/* ! }}} */

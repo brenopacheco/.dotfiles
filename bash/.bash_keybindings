@@ -1,0 +1,12 @@
+
+bind -r "\C-t"
+bind -r "c"
+
+bind -x '"": "clear"'
+bind -x '"´": "lf"'
+bind -x '"ǘ": "fzf-vim"'
+bind '"ǵ": "fzf-dir /"'
+
+
+bind '"\C-p": previous-history'
+bind '"\C-n": next-history'

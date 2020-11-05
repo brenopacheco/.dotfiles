@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# ~/.xprofile
+#
+# Executed on login by lightDM
+
+# logs startup
+exec 1>/tmp/xprofile.log 2>&1              
+
+# set default PATH
+export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
+
+# gnome-keyring // gnome-keyring 
+gnome-keyring-daemon --start --components=pkcs11,secrets,ssh  
+
+# polkit agent
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+# background image
+export WALLPAPER=$HOME/Pictures/wallpapers/wallpaper-8.jpg
+[[ -f "$WALLPAPER" ]] && feh --bg-fill $WALLPAPER
+
+# applications
+xcompmgr -cfF -t-9 -l-11 -r9 -o.95 -D3 & # window effects
+xfce4-power-manager &                    # power manager
+nm-applet &                              # networkmanager applet
+blueman-applet &                         # bluetooth applet
+start-pulseaudio-x11                     # force start pulseaudio
+pa-applet &                              # pulseaudio volume applet
+light-locker &                           # lockerl
+udiskie & disown                         # automount disks
+/usr/lib/xfce4/notifyd/xfce4-notifyd &   # notification daemon
+~/bin/info-daemon & disown               # statusbar
+# system-config-printer-applet           # printer
+# export _JAVA_AWT_WM_NONREPARENTING=1   # variable for netbeans
+# ~/bin/emacsdaemon &                    # starts emacs in daemon mode

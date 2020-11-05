@@ -1,0 +1,16 @@
+# Install lsp servers
+
+#!/bash/bin
+npm install -g bash-language-server	
+npm install -g clangd	
+npm install -g css-languageserver	
+npm install -g html-languageserver	
+npm install -g json-languageserver	
+npm install -g eclipse-jdt-ls	
+npm install -g typescript-language-server	
+npm install -g eslint-language-server	
+npm install -g sumneko-lua-language-server	
+npm install -g sql-language-server	
+npm install -g vim-language-server	
+npm install -g lemminx	
+npm install -g yaml-language-server	

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Caches files from $HOME into /tmp/cached-files when modifications
+# such as deletion / adition / renaming occurs 
+
+
+exec 1>> /tmp/cache-daemon.log 2>&1 
+
+cache=/tmp/cached-files 
+
+function cache-files() {
+     fd "." ~/ --full-path -Hia -t f -j 5 -E backup -E undodir -E .git 1> $cache
+}
+
+# Verify event and update cahce accordingly 
+function update-cache() {
+    file="$1$3"
+    case $2 in
+        "CREATE")
+            echo $file >> $cache
+            echo "running echo $file >> $cache"
+            ;;
+        "DELETE")
+            sed -i "\#$file#d" $cache
+            echo running "sed -i \"\#$file#d\" $cache"
+            ;;
+        "MOVE_TO")
+            echo $file >> $cache
+            echo "running echo $file >> $cache"
+            ;;
+        "MOVE_FROM")
+            sed -i "\#$file#d" $cache
+            echo running "sed -i \"\#$file#d\" $cache"
+            ;;
+esac
+}
+
+cache-files
+
+inotifywait --event move --event create --event delete --monitor --recursive $HOME |
+  while read -r directory events filename; do
+    echo "$directory" | egrep "(.*\.git.*|.*backup/|.*undodir|.*\.cache.*|.*mozilla.*|.*shada.*|.*swap.*)" 1>/dev/null
+    if [[ $? -ne 0 ]]; then
+        echo ${filename} | egrep "(.*\.git.*|tags|.*emacs.*keyfreq.*)" 1>/dev/null
+        if [[ $? -ne 0 ]]; then
+            echo "--------------------------------"
+            echo "$(date)"
+            echo "directory events filename: \"${directory}\" \"${events}\" \"${filename}\""
+            echo "updating cache"
+            update-cache $directory $events $filename
+        fi
+    fi
+    # sleep 0.2
+  done
