@@ -21,7 +21,7 @@
 	let g:completion_enable_auto_popup      = 1
 	let g:completion_enable_auto_hover      = 1
 	let g:completion_enable_auto_signature  = 1
-	" let g:completion_sorting                = "length"
+	let g:completion_sorting                = "length"
 	" let g:completion_matching_strategy_list = ['exact']
 	let g:completion_matching_strategy_list = ['fuzzy']
 	let g:completion_matching_ignore_case   = 1
@@ -46,22 +46,7 @@
 	let g:completion_confirm_key = ""
 	
 "}}}
-" Mappings{{{
-	" set completeopt=menuone,noinsert
-	" smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
-	" imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
-	" smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
-    " xmap s <Plug>(vsnip-cut-text)
-	" imap <expr> <TAB>  
-	" 			\ pumvisible() ? 
-	" 			\ 	complete_info()["selected"] != "-1" ?
-	" 			\   	"\<Plug>(completion_confirm_completion)"  : 
-	" 			\       "\<c-e>\<TAB>" :  
-	" 			\   vsnip#jumpable(1) ? 
-	" 			\ 		"\<Plug>(vsnip-jump-next)" :
-	" 			\   	"\<TAB>"
-"}}}
-" Mappings 2 {{{
+" Mappings {{{
 	set completeopt=menuone,noinsert,noselect
 	imap <expr> <TAB>  
 				\ pumvisible() ? 
@@ -72,8 +57,10 @@
 				\ 		"\<Plug>(vsnip-jump-next)" :
 				\   	"\<TAB>"
 	imap <F5> <TAB>
-	smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
 	imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
+	smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
 	smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
+	nmap <expr> <Tab>   vsnip#jumpable(1)  ? 'i<Plug>(vsnip-jump-next)' : '<Tab>'
+	nmap <expr> <S-Tab> vsnip#jumpable(1)  ? 'i<Plug>(vsnip-jump-prev)' : '<Tab>'
     xmap s <Plug>(vsnip-cut-text)
 " }}}

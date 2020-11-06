@@ -23,7 +23,7 @@ set foldlevel     =99                     " make folds open initially
 set foldmethod    =marker                 " default fold method using {{{}}}
 set grepformat    =%f:%l:%c:%m,%f:%l:%m   " format for grep in quickfix
 set grepprg       =internal               " defaults :gr[ep] to :vimgrep
-set iskeyword    +=-,:                    " accept key-word for <cword>
+set iskeyword    +=-,:,=                  " accept key-word for <cword>
 set laststatus    =2                      " always show statusline
 set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
 set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp

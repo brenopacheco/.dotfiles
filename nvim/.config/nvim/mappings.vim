@@ -17,11 +17,18 @@
   nnoremap [<space> mmo<Esc>`m
   nnoremap ]<space> mmO<Esc>`m
 
+  xnoremap <C-j> :m '>+1<CR>gv=gv
+  xnoremap <C-k> :m '<-2<CR>gv=gv
+  xnoremap <C-l> <Esc>`<<C-v>`>odp`<<C-v>`>lol
+  xnoremap <C-h> <Esc>`<<C-v>`>odhP`<<C-v>`>hoh
+
   " MISC
   xmap ga :EasyAlign<cr>
   nmap ga :EasyAlign<cr>
   map  + <Plug>(wildfire-fuel)
   vmap - <Plug>(wildfire-water)
+  nnoremap - :Tree<CR>
+  nnoremap _ :vsp<CR>:Tree<CR>
 
 "}}}
 " NAVIGATION [ ] {{{
@@ -45,7 +52,7 @@
   nnoremap ]l :lnext<CR>
   nnoremap [l :lprevious<CR>
 "}}}
-" FUZZY{{{
+" FIND{{{
   nnoremap <silent> <leader>f~ :Files ~<CR>
   nnoremap <silent> <leader>f. :Files .<CR>
   nnoremap <silent> <leader>fg :GFiles?<CR>
@@ -63,56 +70,38 @@
 "}}}
 " ACTIONS{{{
   " code-action, format, rename, hover, align, comment
-  " nnoremap <leader>a viW<cmd>lua vim.lsp.buf.code_action()<CR><ESC>
-  " xnoremap <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
-  " nnoremap <leader>= <cmd>lua vim.lsp.buf.formatting()<CR>
-  " xnoremap <leader>= <cmd>lua vim.lsp.buf.range_formatting()<CR>
-"}}}
-" LIST{{{
-  nnoremap <leader>o :lua vim.lsp.buf.document_symbol()<CR>
-  nnoremap <leader>* :References<CR>
-  nnoremap <leader>s :lua vim.lsp.buf.workspace_symbol()<CR>
-  nnoremap <leader>/ :gr//**/*<left><left><left><left><left>
+  nnoremap <silent> <leader>a viW<cmd>lua vim.lsp.buf.code_action()<CR><ESC>
+  xnoremap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
+  nnoremap <silent> <leader>= <cmd>lua vim.lsp.buf.formatting()<CR>
+  xnoremap <silent> <leader>= <cmd>lua vim.lsp.buf.range_formatting()<CR>
+  xnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
+  nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
+  nnoremap <silent> <leader>* :exec 'vimgrep /' . expand('<cword>') 
+			  \ . '/j **/*.' . &ft<CR>:copen<CR>:wincmd p<CR>
+  nnoremap <leader>/ :call <SID>vimgrep()<CR>
 "}}}
 " GOTOS{{{
-  nnoremap <silent> gA viW<cmd>lua vim.lsp.buf.code_action()<CR><ESC>
-  xnoremap <silent> gA <cmd>lua vim.lsp.buf.code_action()<CR>
-  nnoremap <silent> g= <cmd>lua vim.lsp.buf.formatting()<CR>
-  xnoremap <silent> g= <cmd>lua vim.lsp.buf.range_formatting()<CR>
-  nnoremap <silent> gR <cmd>lua vim.lsp.buf.rename()<CR>
-  xnoremap <silent> gR <cmd>lua vim.lsp.buf.rename()<CR>
-  nnoremap <silent> gr :References<CR>
+  nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
   nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
   nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
   nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
   nnoremap <silent> gy <cmd>lua vim.lsp.buf.type_definition()<CR>
+  nnoremap <silent> go <cmd>lua vim.lsp.buf.document_symbol()<CR>
+  nnoremap <silent> gs <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 "}}}
 " TOGGLES{{{
   nnoremap <leader>' :TerminalToggle<CR>
-  nnoremap <leader>n :NetrwToggle<CR>
+  nnoremap <leader>n :TreeToggle<CR>
   nnoremap <leader>t :TagbarToggle<CR>
   nnoremap <leader>l :Lf<CR>
   nnoremap <leader>u :UndotreeToggle<CR>
-  nnoremap <leader>q :QuickfixToggle<CR><C-w><C-p>
+  nnoremap <leader>q :QuickfixToggle<CR>
 "}}}
-" MISC/LEADER{{{
-  " silent nmap f             <Plug>(easymotion-sn)
-  " nnoremap <leader>        :Hydra leader_help<CR>
-  nnoremap <leader>f       :Hydra fuzzy_help<CR>
-  nnoremap g?               :Hydra goto_help<CR>
-  nnoremap <S-h>            :lua vim.lsp.buf.hover()<CR>
-  nnoremap ´                :Lf<CR>
-
-  nnoremap - :Tree<CR>
-  nnoremap _ :vsp<CR>:Tree<CR>
-
-  xnoremap <C-j> :m '>+1<CR>gv=gv
-  xnoremap <C-k> :m '<-2<CR>gv=gv
-  xnoremap <C-l> <Esc>`<<C-v>`>odp`<<C-v>`>lol
-  xnoremap <C-h> <Esc>`<<C-v>`>odhP`<<C-v>`>hoh
-
-
-  au TermOpen * set ft=term                  " adds filetype to terminal buffer
+" HELP{{{
+  nnoremap <leader>?        :Hydra help<CR>
+"}}}
+" &FT MAPPINGS {{{
+  au TermOpen * set ft=term
   augroup terminal-maps
     au!
     au Filetype term tnoremap <buffer> <Esc> <C-\><C-n>
@@ -126,19 +115,20 @@
     au Filetype lf   tunmap <buffer> kj
     au Filetype netrw  nnoremap <buffer> zh gh
   augroup end
-
 "}}}
-" ---- command/func defs {{{
+" ========== COMMANDS/FUNCS {{{
 
   command! LspStatus      :lua print(vim.inspect(vim.lsp.buf_get_clients()))<CR>
-  command! DirView        :tabnew! | term tree
-  command! References     :call s:references()
+  command! TermOpen       :vsp | term
+  command! References     :exec 'vimgrep /' . expand('<cWORD>') . '/j **/*.' . &ft | copen | wincmd p
   command! Backup         :call Backup()
   command! Vimrc          :so ~/.config/nvim/init.vim
   command! Trim           :%s/\s\+$//e
   command! Fork           :silent exec '!fork'
   command! NetrwToggle    :call s:toggle('netrw', 'Lexplore')
-  command! QuickfixToggle :call s:toggle('quickfix', 'copen')
+  command! TreeToggle     :call s:toggle('vimtree', 'VTree')
+  command! TerminalToggle :call s:toggle('term', 'TermOpen')
+  command! QuickfixToggle :call s:toggle('qf', 'copen')
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
   command! Load           :exec 'ar ' . s:root() . '/**/*.' . input('ft: ')
@@ -147,11 +137,12 @@
      let l:winnr = winnr()
      silent lua vim.lsp.buf.references()
      if empty(getqflist())
-       exec 'vimgrep /' . expand('<cWORD>') . '/j **/*.' . &ft
+       exec 'vimgrep /' . expand('<cWORD>') . '/j **/*'
      endif
      copen
      wincmd p
   endfunction
+
 
   command! Root :echo s:root()
   function s:root() abort
@@ -163,8 +154,8 @@
   function s:toggle(filetype, open) abort
       for i in range(1, winnr('$'))
           let bnum = winbufnr(i)
-          if getbufvar(bnum, '&buftype') == a:filetype
-              silent exe "bwipeout " . bnum
+          if getbufvar(bnum, '&ft') == a:filetype
+              silent exe "bwipeout! " . bnum
               return
           endif
       endfor
@@ -178,6 +169,14 @@
   	let b:dir = g:backupdir
   	let b:backupfile = b:dir . b:timestamp . "_" . b:subst
   	silent exec ':w! ' b:backupfile
+  endfunction
+
+  function s:vimgrep() abort
+	  let pattern = input(":vimgrep /")
+	  let files   = input(":vimgrep /" . pattern . "/j ", "**/*", "file")
+	  silent exec "vimgrep /" . pattern . "/j " . files
+	  copen
+      wincmd p
   endfunction
 
 "}}}

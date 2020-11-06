@@ -53,12 +53,15 @@ call plug#begin(g:plugdir)
     Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
     Plug 'honza/vim-snippets'
 
-    " Plug 'nvim-treesitter/nvim-treesitter'  " syntax highlight and folds
+    Plug 'nvim-treesitter/nvim-treesitter'  " syntax highlight and folds
+    " Plug 'chrisbra/Colorizer'
     Plug 'brenopacheco/vim-tree'
     Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
-    Plug 'glepnir/zephyr-nvim'
-    Plug 'chrisbra/Colorizer'
     Plug 'bluz71/vim-nightfly-guicolors'
 
-    " Plug 'sheerun/vim-polyglot'             " syntax highlight and indent 
+
+
+	Plug 'RishabhRD/popfix'
+	Plug 'RishabhRD/nvim-lsputils'
+
 call plug#end()

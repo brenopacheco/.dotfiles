@@ -36,19 +36,19 @@
 "}}}
 " Tree-sitter {{{
 
-" lua <<EOF
-" 	require'nvim-treesitter.configs'.setup {
-" 	  ensure_installed = "all",     
-" 	  highlight = {
-" 		enable = true,             
-" 		disable = {},  
-" 	  },
-" 	}
-" EOF
+lua <<EOF
+	require'nvim-treesitter.configs'.setup {
+	  ensure_installed = "all",     
+	  highlight = {
+		enable = true,             
+		disable = {},  
+	  },
+	}
+EOF
 
-" 	au! Filetype c,cpp,go,python,java,javascript,html,yaml
-" 		\ setlocal foldmethod=expr | 
-" 		\ setlocal foldexpr=nvim_treesitter#foldexpr()
+	au! Filetype c,cpp,go,python,java,javascript,html,yaml
+		\ setlocal foldmethod=expr | 
+		\ setlocal foldexpr=nvim_treesitter#foldexpr()
 
 " }}}
 " Zeavim{{{

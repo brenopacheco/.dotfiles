@@ -1,85 +1,86 @@
 
-let s:goto_help_map = {   'name': 'Goto mapping [g]',
+" TODO: toggles, navigation
+
+let s:toggle_map =    {   'name': '[spc-] Toggle',
 					 \    'keys': [
-					 \       ['v', '', 'var. declaration'],
-					 \       ['d', '', 'definition'],
-					 \       ['i', '', 'implementation'],
-					 \       ['y', '', 'type defintion'],
-					 \       ['c', '', '-> comment'],
-					 \       ['a', '', '-> align'],
+					 \       ["_'", 'norm gr', 'terminal'],
+					 \       ['_n', 'norm gr', 'tree    '],
+					 \       ['_t', 'norm gr', 'tagbar  '],
+					 \       ['_l', 'norm gr', 'lf      '],
+					 \       ['_u', 'norm gr', 'undotree'],
+					 \       ['_q', 'norm gr', 'quickfix']
 					 \ ]}
 
-let s:fuzzy_help_map = { 'name': 'Fuzzy [space-f]',
+let s:navigate_map = {   'name': ']? Navigate',
 					 \    'keys': [
-					 \       ['~', '', 'home    (file)'],
-					 \       ['.', '', 'curdir  (file)'],
-					 \       ['g', '', 'gitls   (file)'],
-					 \       ['p', '', 'project (file)'],
-					 \       ['r', '', 'recent  (file)'],
-					 \       ['b', '', 'buffers'],
-					 \       ['a', '', 'args'],
-					 \       ['m', '', 'marks'],
-					 \       ['s', '', 'symbols'],
-					 \       ['o', '', 'outline'],
-					 \       ['/', '', 'rg pattern'],
-					 \       ['*', '', 'rg <word>'],
-					 \       [':', '', 'cmd history'],
-					 \       ['h', '', 'helptags']
-					 \ ]}
-
-let s:leader_help_map = { 'name': 'Leader [space]',
-					 \    'keys': [
-					 \       ['a', '', 'code-action'],
-					 \       ['=', '', 'format'],
-					 \       ['r', '', 'rename'],
-					 \       ['-', '', 'align'],
-					 \       ['c', '', 'comment'],
-					 \       ['o', '', 'outline (qf)'],
-					 \       ['s', '', 'symbols (qf)'],
-					 \       ['*', '', 'refs.   (qf)'],
-					 \       ['/', '', 'pattern (qf)'],
-					 \       ["'", '', 'terminal'],
-					 \       ['e', '', 'explorer'],
-					 \       ['t', '', 'tagbar'],
-					 \       ['l', '', 'lf'],
-					 \       ['u', '', 'undotree'],
-					 \       ['q', '', 'quickfix'],
-					 \       ['f', 'Hydra fuzzy_help', '>>> fuzzy', 'exit']
+					 \       [']e', '', 'diagnostic'],
+					 \       [']g', '', 'git hunk  '],
+					 \       [']s', '', 'tag buffer'],
+					 \       [']t', '', 'tagstack  '],
+					 \       [']a', '', 'arg       '],
+					 \       [']b', '', 'buffer    '],
+					 \       [']q', '', 'quickfix  '],
 					 \ ]}
 
 
 
+let s:goto_map = {   'name': '[g-] Goto',
+					 \    'keys': [
+					 \       ['gr', '', 'references      ',],
+					 \       ['gD', '', 'declaration     ',],
+					 \       ['gd', '', 'definition      ',],
+					 \       ['gi', '', 'implementation  ',],
+					 \       ['gy', '', 'type_definition ',],
+					 \       ['go', '', 'document_symbol ',],
+					 \       ['gs', '', 'workspace_symbol',],
+					 \ ]}
 
-let s:leader_help_hydra = { 'name':        'leader_help',
-					\       'title':       'leader_help',
+let s:ffile_map =  { 'name': '[spc-f-] Find file',
+					 \    'keys': [
+					 \       ['_f~', '', 'home   '],
+					 \       ['_f.', '', 'curdir '],
+					 \       ['_fg', '', 'gitls  '],
+					 \       ['_fp', '', 'project'],
+					 \       ['_fr', '', 'recent '],
+					 \       ['_fb', '', 'buffers'],
+					 \       ['_fa', '', 'args']
+					 \ ]}
+
+let s:fmisc_map =  { 'name': '[spc-f-] Find misc',
+					 \    'keys': [
+					 \       ['_fm', '', 'marks'],
+					 \       ['_fs', '', 'symbols'],
+					 \       ['_fo', '', 'outline'],
+					 \       ['_f/', '', 'rg pattern'],
+					 \       ['_f*', '', 'rg <word>'],
+					 \       ['_f:', '', 'cmd history'],
+					 \       ['_fh', '', 'helptags']
+					 \ ]}
+
+let s:action_map = { 'name': '[spc-] Action',
+					 \    'keys': [
+					 \       ['_a', '', 'code-action'],
+					 \       ['_=', '', 'format'],
+					 \       ['_r', '', 'rename'],
+					 \       ['_*', '', 'grep cursor'],
+					 \       ['_/', '', 'grep pattern']
+					 \ ]}
+
+let s:help_hydra = {        'name':        'help',
+					\       'title':       'help',
 					\       'show':        'popup',
 					\       'position':    's:bottom_right',
 					\       'exit_key':    'q',
 					\       'feed_key':    v:false,
 					\       'foreign_key': v:true,
-					\       'keymap':      [ s:leader_help_map ] }
-
-let s:fuzzy_help_hydra = {  'name':        'fuzzy_help',
-					\       'title':       'fuzzy_help',
-					\       'show':        'popup',
-					\       'position':    's:bottom_right',
-					\       'exit_key':    'q',
-					\       'feed_key':    v:false,
-					\       'foreign_key': v:true,
-					\       'keymap':      [ s:fuzzy_help_map ] }
-
-let s:goto_help_hydra = {   'name':        'goto_help',
-					\       'title':       'goto_help',
-					\       'show':        'popup',
-					\       'position':    's:bottom_right',
-					\       'exit_key':    'q',
-					\       'feed_key':    v:false,
-					\       'foreign_key': v:true,
-					\       'keymap':      [ s:goto_help_map ] }
-
-
+					\       'keymap':      [ 
+					\           s:navigate_map,
+					\           s:goto_map,
+					\           s:toggle_map,
+					\           s:action_map,
+					\           s:ffile_map,
+					\           s:fmisc_map
+					\       ] }
 
 silent call hydra#hydras#reset()
-silent call hydra#hydras#register(s:leader_help_hydra)
-silent call hydra#hydras#register(s:fuzzy_help_hydra)
-silent call hydra#hydras#register(s:goto_help_hydra)
+silent call hydra#hydras#register(s:help_hydra)
