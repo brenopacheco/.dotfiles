@@ -60,7 +60,7 @@ call plug#begin(g:plugdir)
     Plug 'bluz71/vim-nightfly-guicolors'
 	Plug 'metakirby5/codi.vim'
 
-    " Plug 'nvim-treesitter/nvim-treesitter'  " syntax highlight and folds
+    Plug 'nvim-treesitter/nvim-treesitter'  " syntax highlight and folds
 	" Plug 'pseewald/vim-anyfold'
 
 call plug#end()

@@ -90,6 +90,6 @@ set nocompatible
 au BufNewFile,BufRead *.h set ft=c
 
 if executable('rg')
-    set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+    let &grepprg='rg --vimgrep --no-heading --smart-case $*'
     set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif

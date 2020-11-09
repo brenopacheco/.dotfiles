@@ -14,9 +14,16 @@
   inoremap kj <C-[>l
   vnoremap * "zy/\V<C-r>=escape(@z, '\/')<CR><CR>
   nnoremap  :nohlsearch<CR>
-  nnoremap [<space> mmo<Esc>`m
-  nnoremap ]<space> mmO<Esc>`m
 
+  " add spaces below and up
+  nnoremap ]<space> mmo<Esc>`m
+  nnoremap [<space> mmO<Esc>`m
+
+  " yank vim cmd and run
+  nnoremap # yy:@"<CR>
+  xnoremap # y:@"<CR>
+
+  " move text in visual mode
   xnoremap <C-j> :m '>+1<CR>gv=gv
   xnoremap <C-k> :m '<-2<CR>gv=gv
   xnoremap <C-l> <Esc>`<<C-v>`>odp`<<C-v>`>lol
@@ -28,7 +35,7 @@
   map  + <Plug>(wildfire-fuel)
   vmap - <Plug>(wildfire-water)
   nnoremap - :Tree<CR>
-  nnoremap _ :vsp<CR>:Tree<CR>
+  nnoremap g- :RTree<CR>
 
 "}}}
 " NAVIGATION {{{
@@ -47,14 +54,14 @@
   nnoremap [a :previous<CR>
   nnoremap ]b :bnext<CR>
   nnoremap [b :bprevious<CR>
-  nnoremap ]q :cnext<CR>
-  nnoremap [q :cprevious<CR>
+  " nnoremap ]q :cnext<CR>
+  " nnoremap [q :cprevious<CR>
+  nnoremap <silent> ]q :try \| cnext \| catch \| cfirst \| catch \| endtry<CR>
+  nnoremap <silent> [q :try \| cprev \| catch \| clast \| catch \| endtry<CR>
   nnoremap ]l :lnext<CR>
   nnoremap [l :lprevious<CR>
   nmap q] ]q
   nmap q[ [q
-  nmap l] ]l
-  nmap l[ [l
 "}}}
 " FIND{{{
   nnoremap <silent> <leader>f~ :Files ~<CR>
@@ -81,9 +88,6 @@
   " xnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
   " nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
   nnoremap <silent> <leader>r :Rename<CR>
-  nnoremap <silent> <leader>* :exec 'vimgrep /' . expand('<cword>') 
-			  \ . '/j **/*'<CR>:copen<CR>:wincmd p<CR>
-  nnoremap <leader>/ :call <SID>vimgrep()<CR>
 "}}}
 " GOTOS{{{
   " nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
@@ -104,8 +108,14 @@
   nnoremap <leader>q :QuickfixToggle<CR>
 "}}}
 " HELP{{{
-  nnoremap <leader>?        :Hydra help<CR>
+  nnoremap <leader>? :Hydra help<CR>
 "}}}
+" SEARCH/QF {{{
+
+    nnoremap <silent> <leader>* :exec 'Search /' . expand('<cword>') . '/ **/*'<CR>
+    nnoremap <silent> <leader>/ :Search<CR>
+
+" }}}
 " &FT MAPPINGS {{{
   au TermOpen * set ft=term
   augroup terminal-maps
@@ -124,6 +134,7 @@
 "}}}
 " ========== COMMANDS/FUNCS {{{
 
+  command! RTree          :exec 'aboveleft 30vsplit | Tree ' . <SID>root()
   command! LspStatus      :lua print(vim.inspect(vim.lsp.buf_get_clients()))<CR>
   command! TermOpen       :vsp | term
   command! References     :exec 'vimgrep /' . expand('<cword>') . '/j **/*' | copen | wincmd p
@@ -138,8 +149,68 @@
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
   command! Rename         :call s:rename()
-  command! ArgsGrep       :exec 'vimgrep /'.input('/').'/j ##' | copen | wincmd p
-  command! Search         :exec 'gr "'.input('Pattern/').'" '.input('Files (#,%,**/*) /', '**/*')
+  command! -nargs=* Search call s:search(<q-args>)
+  command! ArgsGrep call s:search('/'.<q-args>.'/##')
+
+  " arg: /pattern/filepattern 
+  function s:search(...) abort
+      if &ft == 'qf'
+          let pattern = input('Filter QF: /')
+          call s:grep_qf(pattern)
+          return
+      endif
+      if a:0 == 0 || a:1 == ''
+          let pattern = input('Pattern: /')
+          let filepattern = input('Files: ', '', 'custom,SearchList')
+      else
+        let pattern = matchstr(a:1, '\/\(.\{-}\)[^\\]\/')
+        let filepattern = a:1[len(pattern):-1]
+        if len(pattern) > 2
+            let pattern = pattern[1:-2]
+        else
+          let pattern = input('Pattern: /')
+          let filepattern = filepattern[2:-1]
+        endif
+        if len(filepattern) == 0
+            let filepattern = input('Files: ', '', 'custom,SearchList')
+        endif
+      endif
+      let pattern = substitute(pattern, '"', '\\"', 'g')
+      " call s:ripgrep(pattern, filepattern)
+      silent exec 'vimgrep /' . pattern . '/ ' . filepattern
+      copen
+      wincmd p
+  endfunction
+
+  function! s:grep_qf(pat)
+    let all = getqflist()
+    for d in all
+      if bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat
+          call remove(all, index(all,d))
+      endif
+    endfor
+    call setqflist(all)
+  endfunction
+
+  " function s:ripgrep(pat, fpat) abort
+  "     let tmp = system(shellescape('mktemp'))
+  "     let fpat = substitute(a:fpat, ' ', '', 'g')
+  "     exec '!rg --vimgrep "' . a:pat . '" -g "' . fpat . '"'
+  "                 \ . ' --ignore-file "' . shellescape(&wildignore) . '"'
+  "                 \ . ' 2>/dev/null 1>' . tmp
+  "     exec 'caddfile ' . tmp
+  "     copen
+  "     wincmd p
+  " endfunction
+
+
+  function SearchList(A,L,P)
+      return join(['**/*', '%', '*', '##'], "\n")
+  endfunction
+
+  function YesNo(A,L,P)
+      return join(['n', 'y'], "\n")
+  endfunction
 
   command! Root :echo s:root()
   function s:root() abort
@@ -181,10 +252,10 @@
     let old_repo  = &report
     set report=0
     set noignorecase
-    " let mark      = getcurpos()
+    norm mR
     let word      = expand('<cword>')
     let replace   = input('Replace: ' . word . ' -> ', word)
-    let sglobal    = input('Global? [y/n]: ', 'n')
+    let sglobal    = input('Global? [y/n]: ', '', 'custom,YesNo')
     if sglobal == 'n'
         let files = expand('%')
     elseif sglobal == 'y'
@@ -198,20 +269,22 @@
     endif
     let cmd       = '%s/' . word . '/' . replace . '/gie | echo "-> ".expand("%")'
     exec 'args ' . files
-    redir => l:subs
+    redir => substitutions
     exec 'silent argdo ' . cmd
     redir END
-    let l:subs = split(l:subs, '\n')
+    let substitutions = split(substitutions, '\n')
     let i = 0
-    for line in l:subs
+    for line in substitutions
         if len(matchstr(line, 'substitution')) > 0
-          echo l:subs[i+1] . ": " . line
+          echo substitutions[i+1] . ": " . line
         endif
         let i = i + 1
     endfor
-    " call setpos('.', mark)
     let &ignorecase = old_ignc
     let &report     = old_repo
+    norm 'R
+    " TODO: fix jump. add changes to quickfix/loclist
   endfunction
-
 "}}}
+"
+"TODO unify grep/vimgrep/rg/quickfix
