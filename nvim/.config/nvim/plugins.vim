@@ -1,3 +1,9 @@
+" Plug {{{
+	" checks wether a plugin is loaded
+	function! s:plugged(name)
+		return has_key(g:plugs, a:name)
+	endfunction
+" }}}
 " Commentary {{{
 	autocmd FileType c,cpp setlocal commentstring=//\ %s
 "}}}
@@ -35,21 +41,17 @@
 	autocmd! User GoyoLeave Limelight!
 "}}}
 " Tree-sitter {{{
-
+if s:plugged('nvim-treesitter')
 lua <<EOF
 	require'nvim-treesitter.configs'.setup {
 	  ensure_installed = "all",     
 	  highlight = {
 		enable = true,             
 		disable = {},  
-	  },
+	  }
 	}
 EOF
-
-	au! Filetype c,cpp,go,python,java,javascript,html,yaml
-		\ setlocal foldmethod=expr | 
-		\ setlocal foldexpr=nvim_treesitter#foldexpr()
-
+endif
 " }}}
 " Zeavim{{{
     let g:zv_disable_mapping = 1
@@ -79,6 +81,7 @@ EOF
 "}}}
 " template {{{
 	let g:templates_directory = $HOME . "/.config/nvim/templates"
+    let g:templates_no_autocmd = 1
 " }}}
 " signify {{{
     let g:signify_line_highlight = 0
@@ -141,3 +144,30 @@ EOF
 
 	"}}}
 "}}}
+" Anyfold {{{
+if s:plugged('vim-anyfold')
+	let g:anyfold_fold_comments=0
+	let g:anyfold_fold_display=1
+	let g:anyfold_motion=0
+	let g:anyfold_identify_comments=2
+
+	augroup anyfold
+		autocmd!
+		autocmd Filetype * AnyFoldActivate
+	augroup END
+
+	" disable anyfold for large files
+	let g:LargeFile = 1000000 " file is large if size greater than 1MB
+	autocmd BufReadPre,BufRead * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
+	function LargeFile()
+		augroup anyfold
+			autocmd! " remove AnyFoldActivate
+			autocmd Filetype <filetype> setlocal foldmethod=indent " fall back to indent folding
+		augroup END
+	endfunction
+endif
+" }}}
+" autopairs {{{
+    let g:AutoPairsMapBS = 0
+    let g:AutoPairsMapCh = 0
+" }}}

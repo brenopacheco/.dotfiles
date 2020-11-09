@@ -9,10 +9,10 @@ call plug#begin(g:plugdir)
     Plug 'kana/vim-textobj-user'            " create textobjects
     Plug 'somini/vim-textobj-fold'          " adds fold text object
     Plug 'glts/vim-textobj-comment'         " adds comment text object
-    Plug 'kana/vim-textobj-function'
+    Plug 'kana/vim-textobj-function'        " adds function text obj
     Plug 'gcmt/wildfire.vim'                " expand/contract select
     Plug 'alvan/vim-closetag'                 " closes html/xml tags
-    Plug 'jiangmiao/auto-pairs'             " auto close ([{
+    " Plug 'jiangmiao/auto-pairs'             " auto close ([{
     Plug 'tpope/vim-commentary'             " comment lines of code
     Plug 'tpope/vim-repeat'                 " repeats commands with .
     Plug 'tpope/vim-surround'               " surrounds elements in text
@@ -33,7 +33,7 @@ call plug#begin(g:plugdir)
     Plug 'itchyny/lightline.vim'            " statusline configuration
     Plug 'junegunn/fzf.vim', { 'commit': '18205e071dc701ed9ca51971466b9997cd3d0778' }
     Plug 'rbgrouleff/bclose.vim'            " required by lf
-    Plug 'brenopacheco/lf.vim'                " file browser
+    Plug 'brenopacheco/lf.vim'              " file browser
     Plug 'voldikss/vim-floaterm'            " pops up floating terminal 
     Plug 'brenopacheco/vim-hydra'           " hydras
     Plug 'tpope/vim-fugitive'               " git tools wrapper
@@ -49,19 +49,18 @@ call plug#begin(g:plugdir)
     Plug 'steelsojka/completion-buffers'    " word completion for buffers
     Plug 'nvim-lua/diagnostic-nvim'         " lsp diagnostics
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
+	Plug 'RishabhRD/popfix'                 " required by lsputils
+	Plug 'RishabhRD/nvim-lsputils'          " utils for lsp
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
     Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
     Plug 'honza/vim-snippets'
-
-    Plug 'nvim-treesitter/nvim-treesitter'  " syntax highlight and folds
-    " Plug 'chrisbra/Colorizer'
-    Plug 'brenopacheco/vim-tree'
     Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
+
+    Plug 'brenopacheco/vim-tree'
     Plug 'bluz71/vim-nightfly-guicolors'
+	Plug 'metakirby5/codi.vim'
 
-
-
-	Plug 'RishabhRD/popfix'
-	Plug 'RishabhRD/nvim-lsputils'
+    " Plug 'nvim-treesitter/nvim-treesitter'  " syntax highlight and folds
+	" Plug 'pseewald/vim-anyfold'
 
 call plug#end()

@@ -34,6 +34,10 @@ print_stash() {
     git stash list 
 }
 
+print_branches() {
+    git branch -vva
+}
+
 print_separator() {
     REPEAT=$(($TERM_WIDTH - ${#1} - 1))
     printf "$1 "
@@ -48,7 +52,10 @@ print_git() {
     print_separator "STATUS"
     echo -e ""
     print_status
-    echo -e "\n"
+    echo -e ""
+    print_separator "BRANCHES"
+    echo -e ""
+    print_branches
     print_separator "STASH"
     echo -e ""
     print_stash
@@ -60,10 +67,10 @@ export -f print_stash
 export -f print_status
 export -f print_git
 
-# watch -n 2 -c --no-title bash -c print_git
-
-while true; do 
+ROOT=$(git rev-parse --show-toplevel)
+while true; do
     clear
     print_git
-    inotifywait -r -e move -e modify -e delete -e move ./* .git/* 1>/dev/null 2>&1
+    inotifywait --event close_write --monitor --recursive $ROOT > /dev/null 2>&1
+    sleep 1
 done

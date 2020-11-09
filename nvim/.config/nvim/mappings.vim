@@ -1,4 +1,4 @@
-" DEFAULTS{{{
+" DEFAULTS {{{
 
   " FIXES
   nnoremap Y :norm v$y<cr>
@@ -31,7 +31,7 @@
   nnoremap _ :vsp<CR>:Tree<CR>
 
 "}}}
-" NAVIGATION [ ] {{{
+" NAVIGATION {{{
   " e: errors,      s: stack(tags), t: tags
   " a: arglist,     b: buffer,      q: quickfix
   " g: gitchunk     l: loclist      c: diffnext
@@ -51,6 +51,10 @@
   nnoremap [q :cprevious<CR>
   nnoremap ]l :lnext<CR>
   nnoremap [l :lprevious<CR>
+  nmap q] ]q
+  nmap q[ [q
+  nmap l] ]l
+  nmap l[ [l
 "}}}
 " FIND{{{
   nnoremap <silent> <leader>f~ :Files ~<CR>
@@ -74,14 +78,16 @@
   xnoremap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
   nnoremap <silent> <leader>= <cmd>lua vim.lsp.buf.formatting()<CR>
   xnoremap <silent> <leader>= <cmd>lua vim.lsp.buf.range_formatting()<CR>
-  xnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
-  nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
+  " xnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
+  " nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
+  nnoremap <silent> <leader>r :Rename<CR>
   nnoremap <silent> <leader>* :exec 'vimgrep /' . expand('<cword>') 
-			  \ . '/j **/*.' . &ft<CR>:copen<CR>:wincmd p<CR>
+			  \ . '/j **/*'<CR>:copen<CR>:wincmd p<CR>
   nnoremap <leader>/ :call <SID>vimgrep()<CR>
 "}}}
 " GOTOS{{{
-  nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+  " nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+  nnoremap <silent> gr :References<CR>
   nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
   nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
   nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
@@ -120,7 +126,7 @@
 
   command! LspStatus      :lua print(vim.inspect(vim.lsp.buf_get_clients()))<CR>
   command! TermOpen       :vsp | term
-  command! References     :exec 'vimgrep /' . expand('<cWORD>') . '/j **/*.' . &ft | copen | wincmd p
+  command! References     :exec 'vimgrep /' . expand('<cword>') . '/j **/*' | copen | wincmd p
   command! Backup         :call Backup()
   command! Vimrc          :so ~/.config/nvim/init.vim
   command! Trim           :%s/\s\+$//e
@@ -131,18 +137,9 @@
   command! QuickfixToggle :call s:toggle('qf', 'copen')
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
-  command! Load           :exec 'ar ' . s:root() . '/**/*.' . input('ft: ')
-
-  function s:references() abort
-     let l:winnr = winnr()
-     silent lua vim.lsp.buf.references()
-     if empty(getqflist())
-       exec 'vimgrep /' . expand('<cWORD>') . '/j **/*'
-     endif
-     copen
-     wincmd p
-  endfunction
-
+  command! Rename         :call s:rename()
+  command! ArgsGrep       :exec 'vimgrep /'.input('/').'/j ##' | copen | wincmd p
+  command! Search         :exec 'gr "'.input('Pattern/').'" '.input('Files (#,%,**/*) /', '**/*')
 
   command! Root :echo s:root()
   function s:root() abort
@@ -177,6 +174,44 @@
 	  silent exec "vimgrep /" . pattern . "/j " . files
 	  copen
       wincmd p
+  endfunction
+
+  function s:rename() abort
+    let old_ignc  = &ignorecase
+    let old_repo  = &report
+    set report=0
+    set noignorecase
+    " let mark      = getcurpos()
+    let word      = expand('<cword>')
+    let replace   = input('Replace: ' . word . ' -> ', word)
+    let sglobal    = input('Global? [y/n]: ', 'n')
+    if sglobal == 'n'
+        let files = expand('%')
+    elseif sglobal == 'y'
+        let root  = system('git rev-parse --show-toplevel 2>/dev/null')
+        let root  = substitute(root, '\n', '', '')
+        let root  = len(root) == 0 ? './' : root
+        let files = substitute(system('fd "." -t f -a ' . root), '\n', ' ', 'g')
+    else
+        echo "Invalid option"
+        return 1
+    endif
+    let cmd       = '%s/' . word . '/' . replace . '/gie | echo "-> ".expand("%")'
+    exec 'args ' . files
+    redir => l:subs
+    exec 'silent argdo ' . cmd
+    redir END
+    let l:subs = split(l:subs, '\n')
+    let i = 0
+    for line in l:subs
+        if len(matchstr(line, 'substitution')) > 0
+          echo l:subs[i+1] . ": " . line
+        endif
+        let i = i + 1
+    endfor
+    " call setpos('.', mark)
+    let &ignorecase = old_ignc
+    let &report     = old_repo
   endfunction
 
 "}}}

@@ -27,14 +27,19 @@
 	let g:completion_matching_ignore_case   = 1
 	let g:completion_trigger_keyword_length = 1
 	let g:completion_trigger_on_delete      = 1
-	" let g:completion_trigger_character      = ['.', '::']
+	let g:completion_trigger_character      = ['.', '::']
 	let g:completion_chain_complete_list = {
 	   \   'default' : {
 	   \     'default': [
-	   \       {'complete_items': ['lsp', 'vim-vsnip', 'buffer']}],
+	   \       {'complete_items': ['lsp', 'vim-vsnip', 'buffers']},
+	   \       {'complete_items': ['path'], 'triggered_only': ['/']}],
 	   \     'comment': [
-	   \       {'complete_items': ['buffer']}],
+	   \       {'complete_items': ['buffers', 'path']}],
+	   \     'string': [
+	   \       {'complete_items': ['buffers', 'path']}],
 	   \     'path': [
+	   \       {'complete_items': ['path']}],
+	   \     'cIncluded': [
 	   \       {'complete_items': ['path']}],
 	   \   }
 	   \ }

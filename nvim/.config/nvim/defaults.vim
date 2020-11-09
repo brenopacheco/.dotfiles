@@ -54,8 +54,8 @@ set linebreak                              " don't break word when wrapping
 set list                                   " actually use listchars
 set more                                   " show --more-- to scroll messages
 set nobackup                               " no backup for current file
-set noexpandtab                            " do not replace tabs with spaces
-set noexpandtab                            " expands tabs as spaces
+" set noexpandtab                            " do not replace tabs with spaces
+set expandtab                              " expands tabs as spaces
 set noshowmode                             " don't show --INSERT-- message
 set nospell                                " block spell check
 set nosplitbelow                           " :sp creates top split
@@ -70,12 +70,15 @@ set smartcase                              " smart case for search
 set splitright                             " :vsp creates right split
 set wildmenu                               " tab help in cmdline
 au BufWritePost * call Backup()            " backs up file in .backups
+filetype plugin indent on
+syntax on
+set report=0
 
 " new uncat options // TODO
 set undolevels     =500 
 set history        =500
 set virtualedit    =block,onemore
-set formatoptions +=j
+" set formatoptions +=j
 set nojoinspaces
 set breakindent
 set nostartofline
@@ -84,7 +87,9 @@ set cmdheight=1
 set notimeout ttimeout ttimeoutlen=10
 set nocompatible
 
+au BufNewFile,BufRead *.h set ft=c
 
-" set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-" set grepformat=%f:%l:%c:%m,%f:%l:%m
-"
+if executable('rg')
+    set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
