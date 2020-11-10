@@ -85,13 +85,12 @@
   xnoremap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
   nnoremap <silent> <leader>= <cmd>lua vim.lsp.buf.formatting()<CR>
   xnoremap <silent> <leader>= <cmd>lua vim.lsp.buf.range_formatting()<CR>
-  " xnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
-  " nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
-  nnoremap <silent> <leader>r :Rename<CR>
+  xnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
+  nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
+  nnoremap <silent> <leader>R :Rename<CR>
 "}}}
 " GOTOS{{{
-  " nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-  nnoremap <silent> gr :References<CR>
+  nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
   nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
   nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
   nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
@@ -112,8 +111,10 @@
 "}}}
 " SEARCH/QF {{{
 
-    nnoremap <silent> <leader>* :exec 'Search /' . expand('<cword>') . '/ **/*'<CR>
+    nnoremap <silent> <leader>* :WordSearch<CR>
     nnoremap <silent> <leader>/ :Search<CR>
+    nnoremap <silent> <leader>s :Substitute<CR>
+    nnoremap <expr><leader>* ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
 
 " }}}
 " &FT MAPPINGS {{{
@@ -137,7 +138,6 @@
   command! RTree          :exec 'aboveleft 30vsplit | Tree ' . <SID>root()
   command! LspStatus      :lua print(vim.inspect(vim.lsp.buf_get_clients()))<CR>
   command! TermOpen       :vsp | term
-  command! References     :exec 'vimgrep /' . expand('<cword>') . '/j **/*' | copen | wincmd p
   command! Backup         :call Backup()
   command! Vimrc          :so ~/.config/nvim/init.vim
   command! Trim           :%s/\s\+$//e
@@ -149,8 +149,10 @@
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
   command! Rename         :call s:rename()
-  command! -nargs=* Search call s:search(<q-args>)
-  command! ArgsGrep call s:search('/'.<q-args>.'/##')
+  command! -nargs=* Search     :call s:search(<q-args>)
+  command! -nargs=* ArgsSearch :call s:search('/'.<q-args>.'/##')
+  command! WordSearch          :call s:search('/'.expand('<cword>').'/##')
+  command! Load :exec 'args ' . join(split(system('fd "." -t f ' . s:root()), '\n'), ' ')
 
   " arg: /pattern/filepattern 
   function s:search(...) abort
@@ -176,8 +178,6 @@
         endif
       endif
       let pattern = substitute(pattern, '"', '\\"', 'g')
-      " call s:ripgrep(pattern, filepattern)
-      " silent exec 'vimgrep /' . pattern . '/j ' . filepattern
       silent exec 'gr! "' . pattern . '" ' . filepattern
       copen
       wincmd p
@@ -229,40 +229,24 @@
   	silent exec ':w! ' b:backupfile
   endfunction
 
-  function s:vimgrep() abort
-	  let pattern = input(":vimgrep /")
-	  let files   = input(":vimgrep /" . pattern . "/j ", "**/*", "file")
-	  silent exec "vimgrep /" . pattern . "/j " . files
-	  copen
-      wincmd p
-  endfunction
-
-  function s:rename() abort
+  function s:rename()
     let old_ignc  = &ignorecase
     let old_repo  = &report
-    set report=0
     set noignorecase
-    " norm mR
+    set report=0
+    norm mR
     let word      = expand('<cword>')
-    let replace   = input('Replace: ' . word . ' -> ', word)
-    let sglobal    = input('Global? [y/n]: ', '', 'custom,YesNo')
-    if sglobal == 'n'
-        let files = expand('%')
-    elseif sglobal == 'y'
-        let root  = system('git rev-parse --show-toplevel 2>/dev/null')
-        let root  = substitute(root, '\n', '', '')
-        let root  = len(root) == 0 ? './' : root
-        let files = substitute(system('fd "." -t f -a ' . root), '\n', ' ', 'g')
-    else
-        echo "Invalid option"
-        return 1
-    endif
-    let cmd       = '%s/' . word . '/' . replace . '/gie | echo "-> ".expand("%")'
-    exec 'args ' . files
-    redir => substitutions
-    exec 'silent argdo ' . cmd
-    redir END
-    let substitutions = split(substitutions, '\n')
+    let replace   = input('global replace: ' . word . ' -> ', word)
+    let root  = system('git rev-parse --show-toplevel 2>/dev/null')
+    let root  = substitute(root, '\n', '', '')
+    let root  = len(root) == 0 ? './' : root
+    let files = substitute(system('fd "." -t f -a ' . root), '\n', ' ', 'g')
+    let buffers = join(map(split(execute('ls', 'silent'), "\n"), 
+          \ { _,s -> matchstr(s, '".*"')[1:-2] }), ' ')
+    let cmd       = 'set hidden | %s/' . word . '/' . replace . '/gie | echo "-> ".expand("%")'
+    exec 'args ' . files . ' ' . buffers
+    exec 'args ' . join(uniq(sort(argv())), ' ')
+    let substitutions = split(execute('argdo '.cmd,'silent'), '\n')
     let i = 0
     for line in substitutions
         if len(matchstr(line, 'substitution')) > 0
@@ -272,9 +256,23 @@
     endfor
     let &ignorecase = old_ignc
     let &report     = old_repo
-    " norm 'R
-    " TODO: fix jump. add changes to quickfix/loclist
+    norm 'R
+    %argd
   endfunction
+
+  function g:Root() abort
+     let l:root = system('git rev-parse --show-toplevel 2>/dev/null')
+     let l:root = substitute(l:root, '\n', '', '')
+     return len(l:root) == 0 ? './' : l:root
+  endfunction
+
+
+  function g:Buflist() abort
+      return map(split(execute('ls', 'silent'), "\n"), 
+          \ { _,s -> matchstr(s, '".*"')[1:-2] })
+  endfunction
+
+
 "}}}
 "
 "TODO unify grep/vimgrep/rg/quickfix
