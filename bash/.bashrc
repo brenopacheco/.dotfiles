@@ -32,6 +32,7 @@ set -o vi
 set -o notify 
 set completion-ignore-case On
 shopt -s checkwinsize
+shopt -s globstar
 
 # PATH
 export PATH=$PATH:$HOME/bin

@@ -177,7 +177,8 @@
       endif
       let pattern = substitute(pattern, '"', '\\"', 'g')
       " call s:ripgrep(pattern, filepattern)
-      silent exec 'vimgrep /' . pattern . '/ ' . filepattern
+      " silent exec 'vimgrep /' . pattern . '/j ' . filepattern
+      silent exec 'gr! "' . pattern . '" ' . filepattern
       copen
       wincmd p
   endfunction
@@ -191,17 +192,6 @@
     endfor
     call setqflist(all)
   endfunction
-
-  " function s:ripgrep(pat, fpat) abort
-  "     let tmp = system(shellescape('mktemp'))
-  "     let fpat = substitute(a:fpat, ' ', '', 'g')
-  "     exec '!rg --vimgrep "' . a:pat . '" -g "' . fpat . '"'
-  "                 \ . ' --ignore-file "' . shellescape(&wildignore) . '"'
-  "                 \ . ' 2>/dev/null 1>' . tmp
-  "     exec 'caddfile ' . tmp
-  "     copen
-  "     wincmd p
-  " endfunction
 
 
   function SearchList(A,L,P)
@@ -252,7 +242,7 @@
     let old_repo  = &report
     set report=0
     set noignorecase
-    norm mR
+    " norm mR
     let word      = expand('<cword>')
     let replace   = input('Replace: ' . word . ' -> ', word)
     let sglobal    = input('Global? [y/n]: ', '', 'custom,YesNo')
@@ -282,7 +272,7 @@
     endfor
     let &ignorecase = old_ignc
     let &report     = old_repo
-    norm 'R
+    " norm 'R
     " TODO: fix jump. add changes to quickfix/loclist
   endfunction
 "}}}
