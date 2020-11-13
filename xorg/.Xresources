@@ -1,5 +1,6 @@
 ! URXVT {{{
 
+Xft.antialias: 0
 URxvt*buffecolor1: true
 URxvt*cursorBlink: true
 URxvt*font:  xft:Ubuntu Mono:size=13

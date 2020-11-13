@@ -3,6 +3,7 @@
 " 	tsserver requires typescript, 
 " 	jdtls requires jdk-11 
 " 	run :LspInstall
+"   https://github.com/mfussenegger/nvim-jdtls
 
 lua << EOF
 	require'nvim_lsp'.yamlls.setup{}
@@ -24,16 +25,9 @@ lua << EOF
 	end
 EOF
 
-lua <<EOF
-	vim.lsp.callbacks['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
-	vim.lsp.callbacks['textDocument/references'] = require'lsputil.locations'.references_handler
-	vim.lsp.callbacks['textDocument/definition'] = require'lsputil.locations'.definition_handler
-	vim.lsp.callbacks['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
-	vim.lsp.callbacks['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
-	vim.lsp.callbacks['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
-	vim.lsp.callbacks['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
-	vim.lsp.callbacks['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
-EOF
+" lua <<EOF
+" 	vim.lsp.callbacks['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+" EOF
 
 
 "}}}
@@ -43,7 +37,7 @@ EOF
 	autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
 
 	nmap <C-k> :DisplayInfo<CR>
-	command! DisplayInfo :call s:display_info()
+	command! DisplayInfo :silent call s:display_info()
 	function s:display_info() abort
 		lua vim.lsp.buf.hover()
 		lua vim.lsp.buf.signature_help()

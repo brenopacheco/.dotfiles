@@ -72,8 +72,8 @@
   nnoremap <silent> <leader>fb :Buffers<CR>
   nnoremap <silent> <leader>f/ :Rg<CR>
   nnoremap <silent> <leader>f* :exec 'Rg ' . expand("<cword>")<CR>
-  nnoremap <silent> <leader>fs :Vista finder!<CR>
-  nnoremap <silent> <leader>fo :Vista finder<CR>
+  nnoremap <silent> <leader>fs :Tags<CR>
+  nnoremap <silent> <leader>fo :Btags<CR>
   nnoremap <silent> <leader>fm :Marks<CR>
   nnoremap <silent> <leader>fr :History<CR>
   nnoremap <silent> <leader>f: :History:<CR>
@@ -111,10 +111,19 @@
 "}}}
 " SEARCH/QF {{{
 
-    nnoremap <silent> <leader>* :WordSearch<CR>
-    nnoremap <silent> <leader>/ :Search<CR>
-    nnoremap <silent> <leader>s :Substitute<CR>
-    nnoremap <expr><leader>* ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
+    nnoremap <silent> g*        :exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
+    nnoremap <silent><leader>*  :exec 'grep! "' . expand('<cword>') . '" ' . <SID>root()<CR>:copen<CR>:wincmd p<CR>
+	nnoremap g/ :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
+    nnoremap <expr><leader>/ ':silent grep! "" '. Root() .' \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>'
+    nnoremap <expr> <leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
+
+	command! QFReject  :call Jump('qf', 'copen') | exec 'Reject ' . input(':Reject ') | wincmd p
+	command! QFKeep    :call Jump('qf', 'copen') | exec 'Keep '   . input(':Keep ')   | wincmd p
+	command! QFRestore :call Jump('qf', 'copen') | exec 'Restore' | wincmd p
+	nnoremap qv :QFReject<CR>
+	nnoremap qf :QFKeep<CR>
+	nnoremap qr :QFRestore<CR>
+	
 
 " }}}
 " &FT MAPPINGS {{{
@@ -137,7 +146,7 @@
 
   command! RTree          :exec 'aboveleft 30vsplit | Tree ' . <SID>root()
   command! LspStatus      :lua print(vim.inspect(vim.lsp.buf_get_clients()))<CR>
-  command! TermOpen       :vsp | term
+  command! TermOpen       :call s:termopen()
   command! Backup         :call Backup()
   command! Vimrc          :so ~/.config/nvim/init.vim
   command! Trim           :%s/\s\+$//e
@@ -149,41 +158,8 @@
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
   command! Rename         :call s:rename()
-  command! -nargs=* Search     :call s:search(<q-args>)
-  command! -nargs=* ArgsSearch :call s:search('/'.<q-args>.'/##')
-  command! WordSearch          :call s:search('/'.expand('<cword>').'/##')
-  command! Load :exec 'args ' . join(split(system('fd "." -t f ' . s:root()), '\n'), ' ')
 
-  " arg: /pattern/filepattern 
-  function s:search(...) abort
-      if &ft == 'qf'
-          let pattern = input('Filter QF: /')
-          call s:grep_qf(pattern)
-          return
-      endif
-      if a:0 == 0 || a:1 == ''
-          let pattern = input('Pattern: /')
-          let filepattern = input('Files: ', '', 'custom,SearchList')
-      else
-        let pattern = matchstr(a:1, '\/\(.\{-}\)[^\\]\/')
-        let filepattern = a:1[len(pattern):-1]
-        if len(pattern) > 2
-            let pattern = pattern[1:-2]
-        else
-          let pattern = input('Pattern: /')
-          let filepattern = filepattern[2:-1]
-        endif
-        if len(filepattern) == 0
-            let filepattern = input('Files: ', '', 'custom,SearchList')
-        endif
-      endif
-      let pattern = substitute(pattern, '"', '\\"', 'g')
-      silent exec 'gr! "' . pattern . '" ' . filepattern
-      copen
-      wincmd p
-  endfunction
-
-  function! s:grep_qf(pat)
+  function! s:qf_filter(pat)
     let all = getqflist()
     for d in all
       if bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat
@@ -210,14 +186,39 @@
   endfunction
 
   function s:toggle(filetype, open) abort
-      for i in range(1, winnr('$'))
+      for i in range(1, winnr('$'))  " if buf is in a window, close
           let bnum = winbufnr(i)
           if getbufvar(bnum, '&ft') == a:filetype
-              silent exe "bwipeout! " . bnum
+              " silent exe "bwipeout! " . bnum
+			  silent exe i . 'close'
               return
           endif
       endfor
       silent exec a:open
+  endfunction
+
+  function s:termopen()
+	  vsp
+	  let buffers = map(split(execute('ls!', 'silent'), "\n"), 
+				  \ { _,s -> matchstr(s, '[0-9]\+') })
+	  for bnum in buffers            " if buf is hidden, pop it open
+          if getbufvar(bnum, '&ft') == 'term'
+			exec bnum . 'b'
+			return
+		  endif
+	  endfor
+	  term
+  endfunction
+
+  function Jump(filetype, open) abort
+      for i in range(1, winnr('$'))
+          let bnum = winbufnr(i)
+          if getbufvar(bnum, '&ft') == a:filetype
+			  silent call win_gotoid(win_getid(i))
+              return
+          endif
+      endfor
+	  silent exec a:open
   endfunction
 
   function! Backup()
@@ -257,7 +258,6 @@
     let &ignorecase = old_ignc
     let &report     = old_repo
     norm 'R
-    %argd
   endfunction
 
   function g:Root() abort
@@ -272,6 +272,29 @@
           \ { _,s -> matchstr(s, '".*"')[1:-2] })
   endfunction
 
+
+
+	command! Changes call s:changes()
+	function s:changes() abort
+		call writefile(reverse(split(execute('changes'),"\n"))[1:-2], '/tmp/changelist')
+		call system('sed -i "/-invalid-$/d" /tmp/changelist')
+		call system('sed -i "s/^ \+[0-9]\+ \+//" /tmp/changelist')
+		call system("awk -F' ' '!_[$1]++' /tmp/changelist > /tmp/tmpfile && mv /tmp/tmpfile /tmp/changelist")
+		call system('sed -i "s/\([0-9]\+\)\([ ]\+\)\([0-9]\+\)/\1:\3:/" /tmp/changelist')
+		call system('sed -i "s/^/'.expand('%').':/" /tmp/changelist')
+		cfile! /tmp/changelist
+	endfunction
+
+	let preview_file = $HOME.'/.fzf/bin/preview.sh'
+	command! -bang -nargs=* Tags
+	  \ call fzf#vim#tags(<q-args>, {
+	  \      'down': '40%',
+	  \      'options': '
+	  \         --with-nth 1,2
+	  \         --prompt "=> "
+	  \         --preview-window="50%"
+	  \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
+	  \ }, <bang>0)
 
 "}}}
 "

@@ -1,0 +1,622 @@
+<PageUp                                >= named keys
+<create-alias                          >= named Mutt function
+<Down                                  >= <next-entry>=move to the next entry
+<Up                                    >= <previous-entry>=move to the previous entry
+<PageDn                                >= <page-down>=go to the next page
+<PageUp                                >= <page-up>=go to the previous page
+<Home                                  >= <first-entry>=jump to the first entry
+<End                                   >= <last-entry>=jump to the last entry
+<quit                                  >= exit the current menu
+<help                                  >= list all keybindings for the current menu
+<Return                                >= <next-line>=scroll down one line
+<Backspace                             >= <previous-line>=scroll up one line
+<Space> or <PageDn                     >= <next-page>=move to the next page
+<PageUp                                >= <previous-page>=move the previous page
+<Home                                  >= <top>=move to the top
+<End                                   >= <bottom>=move to the bottom
+<Home                                  >= <bol>=move to the start of the line
+<Left                                  >= <backward-char>=move back one char
+<backward-word                         >= move back one word
+<Delete                                >= <delete-char>=delete the char under the cursor
+<End                                   >= <eol>=move to the end of the line
+<Right                                 >= <forward-char>=move forward one char
+<forward-word                          >= move forward one word
+<Tab                                   >= <complete>=complete filename, alias, or label
+<complete-query                        >= complete address with query
+<kill-eol                              >= delete to the end of the line
+<kill-eow                              >= delete to the end of the word
+<kill-word                             >= kill the word in front of the cursor
+<kill-line                             >= delete entire line
+<quote-char                            >= quote the next typed key
+<Up                                    >= <history-up>=recall previous string from history
+<Down                                  >= <history-down>=recall next string from history
+<history-search                        >= use current input to search history
+<BackSpace                             >= <backspace>=kill the char in front of the cursor
+<upcase-word                           >= convert word to upper case
+<downcase-word                         >= convert word to lower case
+<capitalize-word                       >= capitalize the word
+<Return                                >= n/a=finish editing
+<Delete> key delete the character in front of the cursor rather than under, you could use:
+<delete> backspace
+<history-up> and/or <history-down> commands. Mutt will remember the currently entered text as you cycle through history, and will wrap around to the initial entry line.
+<Return                                >= display-message
+<Tab                                   >= jump to the next new or unread message
+<set-flag> and <clear-flag> bound by default to “w” and “W” respectively.
+<Return                                >= go down one line
+<Space                                 >= display the next page (or next message if at the end of a message)
+<delete-message> or <copy-message> (this is one advantage over using an external pager to view messages).
+<color                                 >= Foreground color is <color> (see Table 2.9, “Color sequences”)
+<color                                 >= Background color is <color> (see Table 2.9, “Color sequences”)
+<delete-thread                         >= delete all messages in the current thread
+<undelete-thread                       >= undelete all messages in the current thread
+<next-thread                           >= jump to the start of the next thread
+<previous-thread                       >= jump to the start of the previous thread
+<read-thread                           >= mark the current thread as read
+<delete-subthread                      >= delete all messages in the current subthread
+<undelete-subthread                    >= undelete all messages in the current subthread
+<next-subthread                        >= jump to the start of the next subthread
+<previous-subthread                    >= jump to the start of the previous subthread
+<read-subthread                        >= mark the current subthread as read
+<tag-thread                            >= toggle the tag on the current thread
+<collapse-thread                       >= toggle collapse for the current thread
+<collapse-all                          >= toggle collapse for all threads
+<parent-message                        >= jump to parent message in thread
+<char>?<if-part>&<else-part>? syntax is explained in detail in format string conditionals.
+<check-stats>
+<create-alias> (default: a)
+<check-traditional-pgp> (default: Esc P)
+<edit-type> function's effect. 
+<edit> (default: e)
+<edit-type> (default: ^E on the attachment menu, and in the pager and index menus; ^T on the compose menu)
+<enter-command> (default: “:”)
+<extract-keys> (default: ^K)
+<forget-passphrase> (default: ^F)
+<list-reply> (default: L)
+<pipe-message> (default: |)
+<resend-message> (default: Esc e)
+<shell-escape> (default: !)
+<toggle-quoted> (default: T)
+<skip-quoted> (default: S)
+<mail                                  >= compose a new message
+<reply                                 >= reply to sender
+<group-reply                           >= reply to all recipients
+<group-chat-reply                      >= reply to all recipients preserving To/Cc
+<list-reply                            >= reply to mailing list address
+<forward                               >= forward message
+<bounce                                >= bounce (remail) message
+<mail-key                              >= mail a PGP public key to someone
+<attach-file                           >= attach a file
+<attach-message                        >= attach message(s) to the message
+<attach-key                            >= attach a PGP public key
+<edit-description                      >= edit description on attachment
+<detach-file                           >= detach a file
+<edit-to                               >= edit the To field
+<edit-from                             >= edit the From field
+<edit-reply-to                         >= edit the Reply-To field
+<edit-cc                               >= edit the Cc field
+<edit-bcc                              >= edit the Bcc field
+<send-message                          >= send the message
+<edit-subject                          >= edit the Subject
+<smime-menu                            >= select S/MIME options
+<edit-fcc                              >= specify an “Fcc” mailbox
+<pgp-menu                              >= select PGP options
+<postpone-message                      >= postpone this message until later
+<quit                                  >= quit (abort) sending the message
+<write-fcc                             >= write the message to a folder
+<ispell                                >= check spelling (if available on your system)
+<forget-passphrase                     >= wipe passphrase(s) from memory
+<attach-message> function to will prompt you for a folder to attach messages from. You can now tag messages in that folder and they will be attached to the message you are sending.
+<send-message>, the message will be sent. If configured and enabled, this can happen via mixmaster or $smtp_url. Otherwise $sendmail will be invoked. Prior to version 1.13, Mutt enabled $write_bcc by default, assuming the MTA would automatically remove a Bcc: header as part of delivery. Starting with 1.13, the option is unset by default, but no longer affects the fcc copy of the message.
+<edit-fcc> function in the compose menu. It can later be changed from the compose menu.
+<id> ]
+<id>” selects signing with the given key, setting $pgp_sign_as for the duration of the message composition session. The selection can later be changed in the compose menu.
+<exit> from the landing page, which will return you to the message index. This allows viewing other messages, changing mailboxes, even starting a new message composition session - all while the first editor session is still running.
+<background-compose-menu> in the index and pager, by default bound to “B”. If there is only a single backgrounded session, which has already exited, that session will automatically resume. Otherwise the list will be displayed, and a particular session can be selected. $background_format controls the format string used for the menu.
+<bounce> function and forwarding using the <forward> function bound to “b” and “f” respectively.
+<postpone-message> function is used in the compose menu, the body of your message and attachments are stored in the mailbox specified by the $postponed variable. This means that you can recall the message even if you exit Mutt and then restart it at a later time.
+<create-alias> function can use only one file, the one pointed to by the $alias_file variable (which is ~/.muttrc by default). This file is not special either, in the sense that Mutt will happily append aliases to any file, but in order for the new aliases to take effect you need to explicitly source this file too.
+<Return>), and use the exit key (default: q) to return to the address prompt.
+<tab                                   >= tab
+<backtab                               >= backtab / shift-tab
+<esc                                   >= escape
+<up                                    >= up arrow
+<down                                  >= down arrow
+<left                                  >= left arrow
+<right                                 >= right arrow
+<pageup                                >= Page Up
+<pagedown                              >= Page Down
+<backspace                             >= Backspace
+<delete                                >= Delete
+<insert                                >= Insert
+<enter                                 >= Enter
+<return                                >= Return
+<home                                  >= Home
+<end                                   >= End
+<space                                 >= Space bar
+<f1                                    >= function key 1
+<f10                                   >= function key 10
+<what-key> function can be used to explore keycode and symbolic names for other keys on your keyboard. Executing this function will display information about each key pressed, until terminated by ^G.
+<noop> unbinds the specified key sequence.
+<key name> and <function name>. For a listing of key names see the section on key bindings. Functions are listed in the reference.
+<list-reply> function will work for all known lists. Additionally, when you send a message to a known list and $followup_to is set, Mutt will add a Mail-Followup-To header. For unsubscribed lists, this will include your personal address, ensuring you receive a copy of replies. For subscribed mailing lists, the header will not, telling other users' mail user agents not to send copies of replies to your personal address.
+<edit-headers> function (default: “E”) in the compose menu so that you can edit the header of your message along with the body.
+<author name>
+<collapse-all>'
+<” and “>”) to make Mutt recognize the input as a function name. Otherwise it will simulate individual just keystrokes, i.e. “push collapse-all” would be interpreted as if you had typed “c”, followed by “o”, followed by “l”, ..., which is not desired and may lead to very unexpected behavior.
+<collapse-all>).
+<function>”.
+<enter-command>score ~                  = 10<enter>"'
+<search> and <limit> functions. And it's what sorting by spam attribute will use as a sort key.
+<enter-command> function in the index menu, you can query the value of a variable by prefixing the name of the variable with a question mark:
+<enter-command>set my_delete            = $delete<enter>\
+<enter-command>set delete               = yes<enter>\
+<enter-command>set delete               = $my_delete<enter>'
+<PageDown> "\
+<enter-command> set my_old_pager_stop   = \$pager_stop pager_stop<Enter>\
+<next-page>\
+<enter-command> set pager_stop          = \$my_old_pager_stop<Enter>\
+<enter-command> unset my_old_pager_stop<Enter>"
+<enter-command> and the set configuration command, preventing Mutt from recording the macro's commands into its history.
+<sequence_char>?<optional_string>?
+<sequence_char>?<if_string>&<else_string>?
+<[MAX]”, “>[MIN]”, “[MIN]-” and “-[MAX]” are allowed, too.
+<tag-pattern> function, which is bound to “shift-T” by default. Or you can select individual messages by hand using the <tag-message> function, which is bound to “t” by default. See patterns for Mutt's pattern matching syntax.
+<tag-prefix-cond> operator. If there are no tagged messages, Mutt will “eat” the rest of the macro to abort it's execution. Mutt will stop “eating” the macro when it encounters the <end-cond> operator; after this operator the rest of the macro will be executed as normal.
+<query> function (default: Q). This will prompt for a query, then bring up the query menu which will list the matching responses. From the query menu, you can select addresses to create aliases, or to mail. You can tag multiple addresses to mail, start a new query, or have a new query appended to the current responses.
+<complete-query> function (default: ^T) to run a query based on the current address you have typed. Like aliases, Mutt will look for what you have typed back to the last space or comma. If there is a single response for that query, Mutt will expand the address in place. If there are multiple responses, Mutt will activate the query menu. At the query menu, you can select one or more addresses to be added to the prompt.
+<list>” when “list” appears in the “To” field, and “Cc <list>” when it appears in the “Cc” field (otherwise it prints the name of the author).
+<list-reply> function, which by default is bound to “L” in the index menu and pager, helps reduce the clutter by only replying to the known mailing list addresses instead of all recipients (except as specified by Mail-Followup-To, see below).
+<complete> binding (TAB, by default) will perform completion against all labels currently in use.
+<check-new> function which is unbound by default. Pressing TAB will bring up a menu showing the files specified by the mailboxes command, and indicate which contain new messages. Mutt will automatically enter this mode when invoked from the command line with the -y option.
+<buffy-list> function (bound to “.” by default) which will print a list of folders with new mail in the command line at the bottom of the screen.
+<Space> will cycle through folders with new mail. The (by default unbound) function <next-unread-mailbox> in the index can be used to immediately open the next folder with unread mail (if any).
+<link-threads> function (bound to & by default). The reply will then be connected to this parent message.
+<tag-prefix> command (“;”) or the $auto_tag option.
+<break-thread> function (bound by default to #), which will turn the subthread starting from the current message into a whole different thread.
+<save-message                          >= archive<enter><enter-command>echo 'Saved to archive'<enter>"
+<enter-command>set index_format         = \
+<enter>'
+<view-attachments> is “v”, which displays the attachment menu for a message. The attachment menu displays a list of the attachments in a message. From the attachment menu, you can save, print, pipe, delete, and view attachments. You can apply these operations to a group of attachments at once, by tagging the attachments and by using the <tag-prefix> operator. You can also reply to the current message from this menu, and only the current attachment (or the attachments tagged) will be quoted in your reply. You can view attachments as text, or view them using the mailcap viewer definition (the mailcap mechanism is explained later in detail).
+<resend-message>, and the <reply> and <forward> functions) to attachments of type message/rfc822.
+<no description>
+<no description>
+<toggle-unlink> command (default: u). The next field is the MIME content-type, and can be changed with the <edit-type> command (default: ^T). The next field is the encoding for the attachment, which allows a binary message to be encoded for transmission on 7bit links. It can be changed with the <edit-encoding> command (default: ^E). The next field is the size of the attachment, rounded to kilobytes or megabytes. The next field is the filename, which can be changed with the <rename-file> command (default: R). The final field is the description of the attachment, and can be changed with the <edit-description> command (default: d). See $attach_format for a full list of available expandos to format this display to your needs.
+<edit-type> command from the compose menu (default: ^T), see Table 5.1, “Supported MIME types” for supported major types. Mutt recognizes all of these if the appropriate entry is found in the mime.types file. Non-recognized mime types should only be used if the recipient of the message is likely to be expecting such attachments.
+<command>
+<command>
+<command>
+<command>
+<template>
+<command>
+<view-mailcap> function (bound to “m” by default). In addition, you can then use the test feature to determine which viewer to use interactively depending on your environment.
+<view-attach> function in the attachment menu.
+<view-attach> because the copiousoutput before them matched already.
+<parameter>}
+<html>
+<body>
+</body>
+</html>
+<view-alt>, <view-alt-text> and <view-alt-mailcap>, bound to "v", "Esc v" and "V" by default.
+<fetch-mail> function (default: G). It allows to connect to $pop_host, fetch all your new mail and place it in the local $spoolfile. After this point, Mutt runs exactly as if the mail had always been local.
+<create-mailbox>, <delete-mailbox>, and <rename-mailbox> commands (default bindings: C, d and r, respectively). You may also <subscribe> and <unsubscribe> to mailboxes (normally these are bound to s and u, respectively). 
+<chain-prev> and <chain-next> functions, which are by default bound to the left and right arrows and to the h and l keys (think vi keyboard bindings). To insert a remailer at the current chain position, use the <insert> function. To append a remailer behind the current chain position, use <select-entry> or <append>. You can also delete entries from the chain, using the corresponding function. Finally, to abandon your changes, leave the menu, or <accept> them pressing (by default) the Return key.
+<sidebar-next                          >= Move the highlight to next mailbox
+<sidebar-next-new                      >= Move the highlight to next mailbox with new mail
+<sidebar-open                          >= Open highlighted mailbox
+<sidebar-page-down                     >= Scroll the Sidebar down 1 page
+<sidebar-page-up                       >= Scroll the Sidebar up 1 page
+<sidebar-prev                          >= Move the highlight to previous mailbox
+<sidebar-prev-new                      >= Move the highlight to previous mailbox with new mail
+<sidebar-toggle-visible                >= Make the Sidebar (in)visible
+<autocrypt-acct-menu> function in the index, by default bound to A.
+<autocrypt-menu> function, by default bound to o.
+<pgp-menu>. 
+<autocrypt-menu> function, by default bound to o, can be used to change the Encrypt: field value. (e)ncrypt will toggle encryption on. (c)lear will toggle encryption off. If either of these are chosen, the field will remain in that state despite what the Recommendation: field shows. Lastly, (a)utomatic will set the value based on the recommendation engine's output.
+<autocrypt-acct-menu>, by default bound to A. See Autocrypt Account Menu for the list of functions and their default keybindings.
+<create-alias> function. Entries added to this file are encoded in the character set specified by $config_charset if it is set or the current character set otherwise.
+<tag-prefix> function (bound to “;” by default) to make the next function apply to all tagged messages.
+<background-compose-menu> function.
+<change-folder> function mailbox suggestion will start at the next folder in your “mailboxes” list, instead of starting at the first folder in the list.
+<decode-copy> or <decode-save> functions.
+<display-message> function. If you reply to a message before opening it, Mutt will end up using the dummy Subject header, so be sure to open such a message first. (Crypto only)
+<error-history> function. The history is cleared each time this variable is set.
+<reply> function when replying to messages from mailing lists (as defined by the “subscribe” or “lists” commands). When set, if the “Reply-To:” field is set to the same value as the “To:” field, Mutt assumes that the “Reply-To:” field was set by the mailing list to automate responses to the list, and will ignore this field. To direct a response to the mailing list when this option is set, use the <list-reply> function; <group-reply> will reply to both the sender and the list.
+<toggle-subscribed> function.
+<imap-fetch-mail> function or try to open an IMAP folder.
+<list-name>", otherwise the same as %F.
+<fmt>                                   = the current local time. “fmt” is expanded by the library function strftime(3); a leading bang disables locales.
+<check-stats> function.
+<mark-message>a will be composed from this prefix and the letter a.
+<old file name> in mh folders instead of really deleting them. This leaves the message on disk but makes programs reading the folder ignore it. If the variable is set, the message files will simply be deleted.
+<next-page> function.
+<check-traditional-pgp> function, mutt will automatically check the message for traditional pgp.
+<s>]                                    = date of the key where <s> is an strftime(3) expression
+<pipe-message> function. When unset, Mutt will pipe the messages without any preprocessing. When set, Mutt will attempt to decode the messages first.
+<pipe-message>, when $pipe_decode is set, this further controls whether Mutt will weed headers.
+<pipe-message> function following <tag-prefix>. If this variable is unset, when piping a list of tagged messages Mutt will concatenate the messages and will pipe them all concatenated. When set, Mutt will pipe the messages one by one. In both cases the messages are piped in the current sorted order, and the $pipe_sep separator is added after each message.
+<fetch-mail> function. When unset, Mutt will download messages but also leave them on the POP server.
+<fetch-mail> function. You can also specify an alternative port, username and password, i.e.:
+<fetch-mail> function.
+< /dev/null > /dev/null"
+<print-message> function. If this option is set, the message is decoded before it is passed to the external command specified by $print_command. If this option is unset, no processing will be applied to the message when printing it. The latter setting may be useful if you are using some advanced printer filter which is able to properly format e-mail messages for printing.
+<print-message>, when $print_decode is set, this further controls whether Mutt will weed headers.
+<print-message> function. If this option is set, the command specified by $print_command is executed once for each message which is to be printed. If this option is unset, the command specified by $print_command is executed only once, and all the messages are concatenated, with a form feed as the message separator.
+<toggle-quoted> command, or colored according to the “color quoted” family of directives.
+<recall-message> function can be used to manually recall postponed messages.
+<sidebar-next-new> command will not stop and the end of the list of mailboxes, but wrap around to the beginning. The <sidebar-prev-new> command is similarly affected, wrapping around to the end of the list.
+<account-hook> function.
+<account-hook> function.
+<toggle-write> operation, bound by default to “%”). The fourth is used to indicate that the current folder has been opened in attach- message mode (Certain operations like composing a new mail, replying, forwarding, etc. are not permitted in this mode).
+<sequence_char>?<optional_string>?
+<sequence_char>?<if_string>&<else_string>?
+<shell-escape>, <pipe-message>, <pipe-entry>, <print-message>, and <print-entry> commands.
+<top-page                              >= H=move to the top of the page
+<next-entry                            >= j=move to the next entry
+<previous-entry                        >= k=move to the previous entry
+<bottom-page                           >= L=move to the bottom of the page
+<refresh                               >= ^L=clear and redraw the screen
+<middle-page                           >= M=move to the middle of the page
+<search-next                           >= n=search for next match
+<exit                                  >= q=exit this menu
+<tag-entry                             >= t=tag the current entry
+<next-page                             >= z=move to the next page
+<previous-page                         >= Z=move to the previous page
+<last-entry                            >= *=move to the last entry
+<first-entry                           >= ==move to the first entry
+<enter-command                         >= :=enter a muttrc command
+<next-line                             >= >=scroll down one line
+<previous-line                         >= <=scroll up one line
+<half-up                               >= [=scroll up 1/2 page
+<half-down                             >= ]=scroll down 1/2 page
+<help                                 >=? =this screen
+<tag-prefix                            >= ;=apply next function to tagged messages
+<tag-prefix-cond                       >= =apply next function ONLY to tagged messages
+<end-cond                              >= =end of conditional execution (noop)
+<shell-escape                          >= !=invoke a command in a subshell
+<select-entry                          >= MUTT_ENTER_S=select the current entry
+<search                                >= /=search for a regular expression
+<search-reverse                        >= Esc /=search backwards for a regular expression
+<search-opposite                       >= =search for next match in opposite direction
+<jump                                  >= =jump to an index number
+<current-top                           >= =move entry to top of screen
+<current-middle                        >= =move entry to middle of screen
+<current-bottom                        >= =move entry to bottom of screen
+<error-history                         >= =display recent history of error messages
+<what-key                              >= =display the keycode for a key press
+<check-stats                           >= =calculate message statistics for all mailboxes
+<create-alias                          >= a=create an alias from a message sender
+<autocrypt-acct-menu                   >= A=manage autocrypt accounts
+<background-compose-menu               >= B=list and select backgrounded compose sessions
+<bounce-message                        >= b=remail a message to another user
+<break-thread                         >=# =break the thread in two
+<browse-mailboxes                      >= y=select a new mailbox from the browser
+<browse-mailboxes-readonly             >= =select a new mailbox from the browser in read only mode
+<change-folder                         >= c=open a different folder
+<change-folder-readonly                >= Esc c=open a different folder in read only mode
+<next-unread-mailbox                   >= =open next mailbox with new mail
+<collapse-thread                       >= Esc v=collapse/uncollapse current thread
+<collapse-all                          >= Esc V=collapse/uncollapse all threads
+<compose-to-sender                     >= =compose new message to the current message sender
+<copy-message                          >= C=copy a message to a file/mailbox
+<decode-copy                           >= Esc C=make decoded (text/plain) copy
+<decode-save                           >= Esc s=make decoded copy (text/plain) and delete
+<delete-message                        >= d=delete the current entry
+<delete-pattern                        >= D=delete messages matching a pattern
+<delete-thread                         >= ^D=delete all messages in thread
+<delete-subthread                      >= Esc d=delete all messages in subthread
+<edit                                  >= e=edit the raw message
+<edit-label                            >= Y=add, change, or delete a message's label
+<edit-type                             >= ^E=edit attachment content type
+<forward-message                       >= f=forward a message with comments
+<flag-message                          >= F=toggle a message's 'important' flag
+<group-chat-reply                      >= =reply to all recipients preserving To/Cc
+<group-reply                           >= g=reply to all recipients
+<fetch-mail                            >= G=retrieve mail from POP server
+<imap-fetch-mail                       >= =force retrieval of mail from IMAP server
+<imap-logout-all                       >= =logout from all IMAP servers
+<display-toggle-weed                   >= h=display message and toggle header weeding
+<next-undeleted                        >= j=move to the next undeleted message
+<previous-undeleted                    >= k=move to the previous undeleted message
+<limit                                 >= l=show only messages matching a pattern
+<link-threads                          >= &=link tagged message to the current one
+<list-reply                            >= L=reply to specified mailing list
+<mail                                  >= m=compose a new mail message
+<toggle-new                            >= N=toggle a message's 'new' flag
+<toggle-write                          >= %=toggle whether the mailbox will be rewritten
+<next-thread                           >= ^N=jump to the next thread
+<next-subthread                        >= Esc n=jump to the next subthread
+<purge-message                         >= =delete the current entry, bypassing the trash folder
+<query                                 >= Q=query external program for addresses
+<quit                                  >= q=save changes to mailbox and quit
+<reply                                 >= r=reply to a message
+<show-limit                            >= Esc l=show currently active limit pattern
+<sort-mailbox                          >= o=sort messages
+<sort-reverse                          >= O=sort messages in reverse order
+<print-message                         >= p=print the current entry
+<previous-thread                       >= ^P=jump to previous thread
+<previous-subthread                    >= Esc p=jump to previous subthread
+<recall-message                        >= R=recall a postponed message
+<read-thread                           >= ^R=mark the current thread as read
+<read-subthread                        >= Esc r=mark the current subthread as read
+<resend-message                        >= Esc e=use the current message as a template for a new one
+<save-message                          >= s=save message/attachment to a mailbox/file
+<tag-pattern                           >= T=tag messages matching a pattern
+<tag-subthread                         >= =tag the current subthread
+<tag-thread                            >= Esc t=tag the current thread
+<untag-pattern                         >= ^T=untag messages matching a pattern
+<undelete-message                      >= u=undelete the current entry
+<undelete-pattern                      >= U=undelete messages matching a pattern
+<undelete-subthread                    >= Esc u=undelete all messages in subthread
+<undelete-thread                       >= ^U=undelete all messages in thread
+<view-attachments                      >= v=show MIME attachments
+<show-version                          >= V=show the Mutt version number and date
+<set-flag                              >= w=set a status flag on a message
+<clear-flag                            >= W=clear a status flag from a message
+<display-message                       >= MUTT_ENTER_S=display a message
+<mark-message                          >= ~=create a hotkey macro for the current message
+<buffy-list                            >= .=list mailboxes with new mail
+<sync-mailbox                          >= $=save changes to mailbox
+<display-address                       >= @=display full address of sender
+<pipe-message                          >= |=pipe message/attachment to a shell command
+<next-new                              >= =jump to the next new message
+<next-new-then-unread                  >= <Tab>=jump to the next new or unread message
+<previous-new                          >= =jump to the previous new message
+<previous-new-then-unread              >= Esc <Tab>=jump to the previous new or unread message
+<next-unread                           >= =jump to the next unread message
+<previous-unread                       >= =jump to the previous unread message
+<parent-message                        >= P=jump to parent message in thread
+<root-message                          >= =jump to root message in thread
+<extract-keys                          >= ^K=extract supported public keys
+<forget-passphrase                     >= ^F=wipe passphrase(s) from memory
+<check-traditional-pgp                 >= Esc P=check for classic PGP
+<mail-key                              >= Esc k=mail a PGP public key
+<decrypt-copy                          >= =make decrypted copy
+<decrypt-save                          >= =make decrypted copy and delete
+<sidebar-first                         >= =move the highlight to the first mailbox
+<sidebar-last                          >= =move the highlight to the last mailbox
+<sidebar-next                          >= =move the highlight to next mailbox
+<sidebar-next-new                      >= =move the highlight to next mailbox with new mail
+<sidebar-open                          >= =open highlighted mailbox
+<sidebar-page-down                     >= =scroll the sidebar down 1 page
+<sidebar-page-up                       >= =scroll the sidebar up 1 page
+<sidebar-prev                          >= =move the highlight to previous mailbox
+<sidebar-prev-new                      >= =move the highlight to previous mailbox with new mail
+<sidebar-toggle-visible                >= =make the sidebar (in)visible
+<background-compose-menu               >= B=list and select backgrounded compose sessions
+<break-thread                         >=# =break the thread in two
+<browse-mailboxes                      >= y=select a new mailbox from the browser
+<browse-mailboxes-readonly             >= =select a new mailbox from the browser in read only mode
+<create-alias                          >= a=create an alias from a message sender
+<bounce-message                        >= b=remail a message to another user
+<change-folder                         >= c=open a different folder
+<change-folder-readonly                >= Esc c=open a different folder in read only mode
+<next-unread-mailbox                   >= =open next mailbox with new mail
+<compose-to-sender                     >= =compose new message to the current message sender
+<copy-message                          >= C=copy a message to a file/mailbox
+<decode-copy                           >= Esc C=make decoded (text/plain) copy
+<delete-message                        >= d=delete the current entry
+<delete-thread                         >= ^D=delete all messages in thread
+<delete-subthread                      >= Esc d=delete all messages in subthread
+<set-flag                              >= w=set a status flag on a message
+<clear-flag                            >= W=clear a status flag from a message
+<edit                                  >= e=edit the raw message
+<edit-label                            >= Y=add, change, or delete a message's label
+<edit-type                             >= ^E=edit attachment content type
+<forward-message                       >= f=forward a message with comments
+<flag-message                          >= F=toggle a message's 'important' flag
+<group-chat-reply                      >= =reply to all recipients preserving To/Cc
+<group-reply                           >= g=reply to all recipients
+<imap-fetch-mail                       >= =force retrieval of mail from IMAP server
+<imap-logout-all                       >= =logout from all IMAP servers
+<display-toggle-weed                   >= h=display message and toggle header weeding
+<next-undeleted                        >= j=move to the next undeleted message
+<next-entry                            >= J=move to the next entry
+<previous-undeleted                    >= k=move to the previous undeleted message
+<previous-entry                        >= K=move to the previous entry
+<link-threads                          >= &=link tagged message to the current one
+<list-reply                            >= L=reply to specified mailing list
+<redraw-screen                         >= ^L=clear and redraw the screen
+<mail                                  >= m=compose a new mail message
+<mark-as-new                           >= N=toggle a message's 'new' flag
+<toggle-write                          >= %=toggle whether the mailbox will be rewritten
+<search-next                           >= n=search for next match
+<next-thread                           >= ^N=jump to the next thread
+<next-subthread                        >= Esc n=jump to the next subthread
+<sort-mailbox                          >= o=sort messages
+<sort-reverse                          >= O=sort messages in reverse order
+<print-message                         >= p=print the current entry
+<previous-thread                       >= ^P=jump to previous thread
+<previous-subthread                    >= Esc p=jump to previous subthread
+<purge-message                         >= =delete the current entry, bypassing the trash folder
+<quit                                  >= Q=save changes to mailbox and quit
+<exit                                  >= q=exit this menu
+<reply                                 >= r=reply to a message
+<recall-message                        >= R=recall a postponed message
+<read-thread                           >= ^R=mark the current thread as read
+<read-subthread                        >= Esc r=mark the current subthread as read
+<resend-message                        >= Esc e=use the current message as a template for a new one
+<save-message                          >= s=save message/attachment to a mailbox/file
+<skip-quoted                           >= S=skip beyond quoted text
+<decode-save                           >= Esc s=make decoded copy (text/plain) and delete
+<tag-message                           >= t=tag the current entry
+<toggle-quoted                         >= T=toggle display of quoted text
+<undelete-message                      >= u=undelete the current entry
+<undelete-subthread                    >= Esc u=undelete all messages in subthread
+<undelete-thread                       >= ^U=undelete all messages in thread
+<view-attachments                      >= v=show MIME attachments
+<show-version                          >= V=show the Mutt version number and date
+<search-toggle                         >= \\=toggle search pattern coloring
+<display-address                       >= @=display full address of sender
+<next-new                              >= =jump to the next new message
+<pipe-message                          >= |=pipe message/attachment to a shell command
+<help                                 >=? =this screen
+<next-page                             >= <Space>=move to the next page
+<previous-page                         >= -=move to the previous page
+<top                                   >= ^=jump to the top of the message
+<sync-mailbox                          >= $=save changes to mailbox
+<shell-escape                          >= !=invoke a command in a subshell
+<enter-command                         >= :=enter a muttrc command
+<buffy-list                            >= .=list mailboxes with new mail
+<search                                >= /=search for a regular expression
+<search-reverse                        >= Esc /=search backwards for a regular expression
+<search-opposite                       >= =search for next match in opposite direction
+<next-line                             >= MUTT_ENTER_S=scroll down one line
+<error-history                         >= =display recent history of error messages
+<jump                                  >= =jump to an index number
+<next-unread                           >= =jump to the next unread message
+<previous-new                          >= =jump to the previous new message
+<previous-unread                       >= =jump to the previous unread message
+<half-up                               >= =scroll up 1/2 page
+<half-down                             >= =scroll down 1/2 page
+<previous-line                         >= =scroll up one line
+<bottom                                >= =jump to the bottom of the message
+<parent-message                        >= P=jump to parent message in thread
+<root-message                          >= =jump to root message in thread
+<check-traditional-pgp                 >= Esc P=check for classic PGP
+<mail-key                              >= Esc k=mail a PGP public key
+<extract-keys                          >= ^K=extract supported public keys
+<forget-passphrase                     >= ^F=wipe passphrase(s) from memory
+<decrypt-copy                          >= =make decrypted copy
+<decrypt-save                          >= =make decrypted copy and delete
+<what-key                              >= =display the keycode for a key press
+<check-stats                           >= =calculate message statistics for all mailboxes
+<sidebar-first                         >= =move the highlight to the first mailbox
+<sidebar-last                          >= =move the highlight to the last mailbox
+<sidebar-next                          >= =move the highlight to next mailbox
+<sidebar-next-new                      >= =move the highlight to next mailbox with new mail
+<sidebar-open                          >= =open highlighted mailbox
+<sidebar-page-down                     >= =scroll the sidebar down 1 page
+<sidebar-page-up                       >= =scroll the sidebar up 1 page
+<sidebar-prev                          >= =move the highlight to previous mailbox
+<sidebar-prev-new                      >= =move the highlight to previous mailbox with new mail
+<sidebar-toggle-visible                >= =make the sidebar (in)visible
+<delete-entry                          >= d=delete the current entry
+<undelete-entry                        >= u=undelete the current entry
+<create-alias                          >= a=create an alias from a message sender
+<mail                                  >= m=compose a new mail message
+<query                                 >= Q=query external program for addresses
+<query-append                          >= A=append new query results to current results
+<bounce-message                        >= b=remail a message to another user
+<display-toggle-weed                   >= h=display message and toggle header weeding
+<compose-to-sender                     >= =compose new message to the current message sender
+<edit-type                             >= ^E=edit attachment content type
+<print-entry                           >= p=print the current entry
+<save-entry                            >= s=save message/attachment to a mailbox/file
+<pipe-entry                            >= |=pipe message/attachment to a shell command
+<view-mailcap                          >= m=force viewing of attachment using mailcap
+<reply                                 >= r=reply to a message
+<resend-message                        >= Esc e=use the current message as a template for a new one
+<group-chat-reply                      >= =reply to all recipients preserving To/Cc
+<group-reply                           >= g=reply to all recipients
+<list-reply                            >= L=reply to specified mailing list
+<forward-message                       >= f=forward a message with comments
+<view-text                             >= T=view attachment as text
+<view-attach                           >= MUTT_ENTER_S=view attachment using mailcap entry if necessary
+<delete-entry                          >= d=delete the current entry
+<undelete-entry                        >= u=undelete the current entry
+<collapse-parts                        >= v=Toggle display of subparts
+<check-traditional-pgp                 >= Esc P=check for classic PGP
+<extract-keys                          >= ^K=extract supported public keys
+<forget-passphrase                     >= ^F=wipe passphrase(s) from memory
+<attach-file                           >= a=attach file(s) to this message
+<attach-message                        >= A=attach message(s) to this message
+<edit-bcc                              >= b=edit the BCC list
+<edit-cc                               >= c=edit the CC list
+<copy-file                             >= C=save message/attachment to a mailbox/file
+<detach-file                           >= D=delete the current entry
+<toggle-disposition                    >= ^D=toggle disposition between inline/attachment
+<edit-description                      >= d=edit attachment description
+<edit-message                          >= e=edit the message
+<edit-headers                          >= E=edit the message with headers
+<edit-file                             >= ^X e=edit the file to be attached
+<edit-encoding                         >= ^E=edit attachment transfer-encoding
+<edit-from                             >= Esc f=edit the from field
+<edit-fcc                              >= f=enter a file to save a copy of this message in
+<filter-entry                          >= F=filter attachment through a shell command
+<get-attachment                        >= G=get a temporary copy of an attachment
+<display-toggle-weed                   >= h=display message and toggle header weeding
+<ispell                                >= i=run ispell on the message
+<print-entry                           >= l=print the current entry
+<edit-mime                             >= m=edit attachment using mailcap entry
+<new-mime                              >= n=compose new attachment using mailcap entry
+<autocrypt-menu                        >= o=show autocrypt compose menu options
+<postpone-message                      >= P=save this message to send later
+<edit-reply-to                         >= r=edit the Reply-To field
+<rename-attachment                     >= ^O=send attachment with a different name
+<rename-file                           >= R=rename/move an attached file
+<edit-subject                          >= s=edit the subject of this message
+<edit-to                               >= t=edit the TO list
+<edit-type                             >= ^T=edit attachment content type
+<write-fcc                             >= w=write the message to a folder
+<toggle-unlink                         >= u=toggle whether to delete file after sending it
+<toggle-recode                         >= =toggle recoding of this attachment
+<update-encoding                       >= U=update an attachment's encoding info
+<view-attach                           >= MUTT_ENTER_S=view attachment using mailcap entry if necessary
+<view-alt                              >= v=view multipart/alternative
+<view-alt-text                         >= Esc v=view multipart/alternative as text
+<view-alt-mailcap                      >= V=view multipart/alternative using mailcap
+<send-message                          >= y=send the message
+<pipe-entry                            >= |=pipe message/attachment to a shell command
+<move-down                             >= =move attachment down in compose menu list
+<move-up                               >= =move attachment up in compose menu list
+<attach-key                            >= Esc k=attach a PGP public key
+<pgp-menu                              >= p=show PGP options
+<forget-passphrase                     >= ^F=wipe passphrase(s) from memory
+<smime-menu                            >= S=show S/MIME options
+<mix                                   >= M=send the message through a mixmaster remailer chain
+<delete-entry                          >= d=delete the current entry
+<undelete-entry                        >= u=undelete the current entry
+<change-dir                            >= c=change directories
+<descend-directory                     >= =descend into a directory
+<display-filename                      >= @=display the currently selected file's name
+<enter-mask                            >= m=enter a file mask
+<sort                                  >= o=sort messages
+<sort-reverse                          >= O=sort messages in reverse order
+<select-new                            >= N=select a new file in this directory
+<check-new                             >= =check mailboxes for new mail
+<toggle-mailboxes                      >= <Tab>=toggle whether to browse mailboxes or all files
+<view-file                             >= <Space>=view file
+<buffy-list                            >= .=list mailboxes with new mail
+<create-mailbox                        >= C=create a new mailbox (IMAP only)
+<delete-mailbox                        >= d=delete the current mailbox (IMAP only)
+<rename-mailbox                        >= r=rename the current mailbox (IMAP only)
+<subscribe                             >= s=subscribe to current mailbox (IMAP only)
+<unsubscribe                           >= u=unsubscribe from current mailbox (IMAP only)
+<toggle-subscribed                     >= T=toggle view all/subscribed mailboxes (IMAP only)
+<verify-key                            >= c=verify a PGP public key
+<view-name                             >= %=view the key's user id
+<verify-key                            >= c=verify a PGP public key
+<view-name                             >= %=view the key's user id
+<accept                                >= MUTT_ENTER_S=accept the chain constructed
+<append                                >= a=append a remailer to the chain
+<insert                                >= i=insert a remailer into the chain
+<delete                                >= d=delete a remailer from the chain
+<chain-prev                            >= <Left>=select the previous element of the chain
+<chain-next                            >= <Right>=select the next element of the chain
+<bol                                   >= ^A=jump to the beginning of the line
+<backward-char                         >= ^B=move the cursor one character to the left
+<backward-word                         >= Esc b=move the cursor to the beginning of the word
+<capitalize-word                       >= Esc c=capitalize the word
+<downcase-word                         >= Esc l=convert the word to lower case
+<upcase-word                           >= Esc u=convert the word to upper case
+<delete-char                           >= ^D=delete the char under the cursor
+<eol                                   >= ^E=jump to the end of the line
+<forward-char                          >= ^F=move the cursor one character to the right
+<forward-word                          >= Esc f=move the cursor to the end of the word
+<backspace                             >= <Backspace>=delete the char in front of the cursor
+<kill-eol                              >= ^K=delete chars from cursor to end of line
+<kill-eow                              >= Esc d=delete chars from the cursor to the end of the word
+<kill-line                             >= ^U=delete all chars on the line
+<quote-char                            >= ^V=quote the next typed key
+<kill-word                             >= ^W=delete the word in front of the cursor
+<complete                              >= <Tab>=complete filename or alias
+<complete-query                        >= ^T=complete address with query
+<buffy-cycle                           >= <Space>=cycle among incoming mailboxes
+<history-up                            >= ^P=scroll up through the history list
+<history-down                          >= ^N=scroll down through the history list
+<history-search                        >= ^R=search through the history list
+<transpose-chars                       >= =transpose character under cursor with previous
+<create-account                        >= c=create a new autocrypt account
+<delete-account                        >= D=delete the current account
+<toggle-active                         >= a=toggle the current account active/inactive
+<toggle-prefer-encrypt                 >= p=toggle the current account prefer-encrypt flag

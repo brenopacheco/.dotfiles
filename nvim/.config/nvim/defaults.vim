@@ -10,7 +10,6 @@ for dir in [ g:backupdir, g:plugdir, g:swapdir, g:undodir ]
     endif
 endfor
 
-
 set shell+=\ -O\ globstar                 " enables gr **/* w/ grepprg
 let mapleader     =" "                    " set leader as comma
 set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
@@ -20,11 +19,13 @@ set conceallevel  =0                      " shows |hyperlinks|
 set swapfile                              " enable swap file
 let &directory    = g:swapdir             " swap directory
 set encoding      =utf-8                  " use encoding supporting unicode
+set fileencoding  =utf-8
 set fillchars     =fold:\                 " make v:folddashes whitespace
 set foldlevel     =99                     " make folds open initially
 set foldmethod    =marker                 " default fold method using {{{}}}
-set grepformat    =%f:%l:%c:%m,%f:%l:%m   " format for grep in quickfix
-set grepprg       =internal               " defaults :gr[ep] to :vimgrep
+set grepformat    =%f:%l:%c:%m            " format for grep in quickfix
+" set grepprg       =internal               " defaults :gr[ep] to :vimgrep
+let &grepprg="rg --smart-case --color=never --no-heading --with-filename --line-number --column $*"
 set iskeyword    +=-,:,=                  " accept key-word for <cword>
 set laststatus    =2                      " always show statusline
 set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
@@ -40,10 +41,10 @@ set spelllang     =en_us                  " spellcheck uses english dict
 set tabstop       =4                      " display tab as 4 spaces
 set tags          =tags;~                 " search tags file up to $HOME
 set updatetime    =5000                   " time for writting swap to disk
-set wildignore   +=.git/**,tags           " ignore pattern using grep
-set wildignore   +=node_modules/**        " ignore pattern using grep
+set wildignore   +=.git/**,tags           " ignore pattern using vimgrep
+set wildignore   +=node_modules/**        " ignore pattern using vimgrep
 set wildmode      =full                   " how wildmenu appears
-set textwidth     =78                     " norm gq width. see formatoptions
+" set textwidth     =78                     " norm gq width. see formatoptions
 set autochdir                              " use file path as vim's dir
 set autoindent                             " new lines inherits indentation
 set cursorline                             " highlights current line
@@ -56,8 +57,8 @@ set linebreak                              " don't break word when wrapping
 set list                                   " actually use listchars
 set more                                   " show --more-- to scroll messages
 set nobackup                               " no backup for current file
-" set noexpandtab                            " do not replace tabs with spaces
-set expandtab                              " expands tabs as spaces
+set noexpandtab                            " do not replace tabs with spaces
+" set expandtab                              " expands tabs as spaces
 set noshowmode                             " don't show --INSERT-- message
 set nospell                                " block spell check
 set nosplitbelow                           " :sp creates top split
@@ -76,11 +77,10 @@ filetype plugin indent on
 syntax on
 set report=0
 
-" new uncat options // TODO
 set undolevels     =500
 set history        =500
 set virtualedit    =block,onemore
-" set formatoptions +=j
+set formatoptions +=j
 set nojoinspaces
 set breakindent
 set nostartofline
@@ -91,9 +91,6 @@ set nocompatible
 
 au BufNewFile,BufRead *.h set ft=c
 
-if executable('rg')
-    let &grepprg='rg --vimgrep --no-heading --smart-case $*'
-    set grepformat=%f:%l:%c:%m,%f:%l:%m
-  " set grepprg=ag\ --vimgrep\ $*
-  " set grepformat=%f:%l:%c:%m
-endif
+"" notes on grep/vimgrep
+" :vimgrep /regex/j file-glob-pat    (accepts **/*, no dirs)
+" :grep    "regex"  file-regex-pat   (will do recursevly dirs/files)

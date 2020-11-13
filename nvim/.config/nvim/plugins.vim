@@ -22,6 +22,7 @@
 " Gutentags{{{
 	let g:gutentags_file_list_command = 'rg --files'
 	" let g:gutentags_cache_dir = $HOME . "./configs/tags"
+	let g:gutentags_ctags_extra_args = ['--excmd=number']
 "}}}
 " Tagbar{{{
 	let g:tagbar_width=30
@@ -44,11 +45,10 @@
 if s:plugged('nvim-treesitter')
 lua <<EOF
 	require'nvim-treesitter.configs'.setup {
-	  ensure_installed = "all",     
+	  ensure_installed = "maintained",
 	  highlight = {
-		enable = true,             
-		disable = {},  
-	  }
+		enable = true,
+	  },
 	}
 EOF
 endif
@@ -170,4 +170,24 @@ endif
 " autopairs {{{
     let g:AutoPairsMapBS = 0
     let g:AutoPairsMapCh = 0
+" }}}
+" Vista {{{
+"
+" let g:vista_default_executive = 'ctags'
+	let g:vista_default_executive = 'nvim_lsp'
+" }}}
+" vim-qf {{{
+	" let g:qf_auto_resize = 0
+	" let g:qf_max_height = 10
+	let g:qf_auto_quit = 0
+	let g:qf_shorten_path = 1
+    let g:qf_auto_open_quickfix = 1
+
+	" fork things
+	" shorten path
+	" auto open
+	" Find/Keep Reject/Discard Restore
+	"    -> from anywhere. finds list
+	" toggle
+
 " }}}

@@ -49,8 +49,6 @@ call plug#begin(g:plugdir)
     Plug 'steelsojka/completion-buffers'    " word completion for buffers
     Plug 'nvim-lua/diagnostic-nvim'         " lsp diagnostics
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
-	Plug 'RishabhRD/popfix'                 " required by lsputils
-	Plug 'RishabhRD/nvim-lsputils'          " utils for lsp
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
     Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
     Plug 'honza/vim-snippets'
@@ -60,7 +58,10 @@ call plug#begin(g:plugdir)
     Plug 'bluz71/vim-nightfly-guicolors'
 	Plug 'metakirby5/codi.vim'
 
-    Plug 'nvim-treesitter/nvim-treesitter'  " syntax highlight and folds
-	" Plug 'pseewald/vim-anyfold'
+	Plug 'romainl/vim-qf'
+	" Plug 'RishabhRD/popfix'
+	" Plug 'RishabhRD/nvim-lsputils'
+
+    " Plug 'nvim-treesitter/nvim-treesitter'  " syntax highlight and folds
 
 call plug#end()
