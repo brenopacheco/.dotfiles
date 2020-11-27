@@ -1,7 +1,6 @@
 # custom
 
 alias mutt='neomutt'
-alias vim='nvim'
 alias disks='gnome-disks'
 alias dmenu='dmenu_color'
 alias pi='sudo pacman -Syu'

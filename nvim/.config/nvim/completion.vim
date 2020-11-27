@@ -5,25 +5,13 @@
 
 	let g:vsnip_extra_mapping                        =  v:false
 	let g:vsnip_snippet_dir = expand('~/.config/nvim/snippets')
-	let g:vsnip_integ_config = {}
-	let g:vsnip_integ_config.vim_lsp                 =  v:false
-	let g:vsnip_integ_config.vim_lsc                 =  v:false
-	let g:vsnip_integ_config.lamp                    =  v:false
-	let g:vsnip_integ_config.deoplete_lsp            =  v:false
-	let g:vsnip_integ_config.language_client_neovim  =  v:false
-	let g:vsnip_integ_config.asyncomplete            =  v:false
-	let g:vsnip_integ_config.deoplete                =  v:false
-	let g:vsnip_integ_config.mucomplete              =  v:false
-	let g:vsnip_integ_config.nvim_lsp                =  v:true
-	let g:vsnip_integ_config.auto_expand             =  v:false
 
 	let g:completion_enable_snippet         = "vim-vsnip"
 	let g:completion_enable_auto_popup      = 1
 	let g:completion_enable_auto_hover      = 1
 	let g:completion_enable_auto_signature  = 1
 	let g:completion_sorting                = "length"
-	" let g:completion_matching_strategy_list = ['exact']
-	let g:completion_matching_strategy_list = ['fuzzy']
+	let g:completion_matching_strategy_list = ['exact', 'fuzzy']
 	let g:completion_matching_ignore_case   = 1
 	let g:completion_trigger_keyword_length = 1
 	let g:completion_trigger_on_delete      = 1

@@ -11,7 +11,8 @@ sudo pacman -Scc
 sudo pacman -Rns $(pacman -Qtdq)
 
 # clean home cache
-rm -rf ~/.cache/*
+rm -rf ~/.cache/yay
+rm -rf ~/.cache/pacman
 
 # clean downloads
 rm -rf ~/Downloads/*

@@ -31,10 +31,10 @@ call plug#begin(g:plugdir)
     Plug 'effkay/argonaut.vim'              " argonaut theme
     Plug 'dracula/vim', { 'as': 'dracula' } " dracula theme
     Plug 'itchyny/lightline.vim'            " statusline configuration
-    Plug 'junegunn/fzf.vim', { 'commit': '18205e071dc701ed9ca51971466b9997cd3d0778' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'junegunn/fzf'
     Plug 'rbgrouleff/bclose.vim'            " required by lf
     Plug 'brenopacheco/lf.vim'              " file browser
-    Plug 'voldikss/vim-floaterm'            " pops up floating terminal 
     Plug 'brenopacheco/vim-hydra'           " hydras
     Plug 'tpope/vim-fugitive'               " git tools wrapper
     Plug 'mhinz/vim-signify'                " adds git marks to gutter
@@ -43,25 +43,30 @@ call plug#begin(g:plugdir)
     Plug 'junegunn/gv.vim'                  " git log browser
     Plug 'aperezdc/vim-template'            " inserts template on new file
     Plug 'KabbAmine/zeavim.vim'             " interfaces to zeal
-    Plug 'neovim/nvim-lsp'                  " language server features
-    Plug 'neovim/nvim-lspconfig'            " lsp default configurations
-    Plug 'nvim-lua/completion-nvim'         " lsp compatible autocomplete
-    Plug 'steelsojka/completion-buffers'    " word completion for buffers
-    Plug 'nvim-lua/diagnostic-nvim'         " lsp diagnostics
-    Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
-    Plug 'hrsh7th/vim-vsnip'                " snippets engine
-    Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
-    Plug 'honza/vim-snippets'
-    Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
-
+    " Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
     Plug 'brenopacheco/vim-tree'
     Plug 'bluz71/vim-nightfly-guicolors'
 	Plug 'metakirby5/codi.vim'
+    Plug 'editorconfig/editorconfig-vim'
 
-	Plug 'romainl/vim-qf'
-	" Plug 'RishabhRD/popfix'
-	" Plug 'RishabhRD/nvim-lsputils'
+    " Plug 'neovim/nvim-lsp'                  " language server features
+    " Plug 'neovim/nvim-lspconfig'            " lsp default configurations
+    " Plug 'nvim-lua/completion-nvim'         " lsp compatible autocomplete
+    " Plug 'steelsojka/completion-buffers'    " word completion for buffers
+    " Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
+    " Plug 'hrsh7th/vim-vsnip'                " snippets engine
+    " Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
+    " Plug 'honza/vim-snippets'
+	
 
-    " Plug 'nvim-treesitter/nvim-treesitter'  " syntax highlight and folds
+	Plug 'prabirshrestha/vim-lsp'
+	Plug 'mattn/vim-lsp-settings'
+	Plug 'prabirshrestha/asyncomplete.vim'
+	Plug 'prabirshrestha/asyncomplete-lsp.vim'
+	Plug 'prabirshrestha/asyncomplete-buffer.vim'
+	Plug 'prabirshrestha/asyncomplete-file.vim'
+    Plug 'prabirshrestha/asyncomplete-tags.vim'
+    Plug 'hrsh7th/vim-vsnip'                " snippets engine
+    Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
 
 call plug#end()

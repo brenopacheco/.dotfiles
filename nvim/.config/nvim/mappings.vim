@@ -16,8 +16,8 @@
   nnoremap  :nohlsearch<CR>
 
   " add spaces below and up
-  nnoremap ]<space> mmo<Esc>`m
-  nnoremap [<space> mmO<Esc>`m
+  nnoremap <silent> ]<space>  :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
+  nnoremap <silent> [<space>  :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
   " yank vim cmd and run
   nnoremap # yy:@"<CR>
@@ -41,27 +41,18 @@
 " NAVIGATION {{{
   " e: errors,      s: stack(tags), t: tags
   " a: arglist,     b: buffer,      q: quickfix
-  " g: gitchunk     l: loclist      c: diffnext
-  nnoremap ]e <cmd>NextDiagnostic<CR>
-  nnoremap [e <cmd>PrevDiagnostic<CR>
-  nnoremap ]g <plug>(signify-next-hunk)
-  nnoremap [g <plug>(signify-prev-hunk)
-  nnoremap ]s :tag<CR>
-  nnoremap [s :pop<CR>
-  nnoremap ]t :tnext<CR>
-  nnoremap [t :tprevious<CR>
-  nnoremap ]a :next<CR>
-  nnoremap [a :previous<CR>
-  nnoremap ]b :bnext<CR>
-  nnoremap [b :bprevious<CR>
-  " nnoremap ]q :cnext<CR>
-  " nnoremap [q :cprevious<CR>
-  nnoremap <silent> ]q :try \| cnext \| catch \| cfirst \| catch \| endtry<CR>
-  nnoremap <silent> [q :try \| cprev \| catch \| clast \| catch \| endtry<CR>
-  nnoremap ]l :lnext<CR>
-  nnoremap [l :lprevious<CR>
-  nmap q] ]q
-  nmap q[ [q
+  " c: gitchunk     l: loclist      c: diffnext
+  " L: loc history  Q: qf history
+  nnoremap ]s :tag<CR>    | nnoremap [s :pop<CR>
+  nnoremap ]t :tnext<CR>  | nnoremap [t :tprevious<CR>
+  nnoremap ]a :next<CR>   | nnoremap [a :previous<CR>
+  nnoremap ]b :bnext<CR>  | nnoremap [b :bprevious<CR>
+  nnoremap ]q :cnext<CR>  | nnoremap [q :cprevious<CR>
+  nnoremap ]l :lnext<CR>  | nnoremap [l :lprevious<CR>
+  nnoremap ]L :lnewer<CR> | nnoremap [L :lolder<CR>
+  nnoremap ]Q :cnewer<CR> | nnoremap [Q :colder<CR>
+  nmap ]c <plug>(signify-next-hunk) 
+  nmap [c <plug>(signify-prev-hunk)
 "}}}
 " FIND{{{
   nnoremap <silent> <leader>f~ :Files ~<CR>
@@ -79,25 +70,6 @@
   nnoremap <silent> <leader>f: :History:<CR>
   nnoremap <silent> <leader>fh :Helptags<CR>
 "}}}
-" ACTIONS{{{
-  " code-action, format, rename, hover, align, comment
-  nnoremap <silent> <leader>a viW<cmd>lua vim.lsp.buf.code_action()<CR><ESC>
-  xnoremap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
-  nnoremap <silent> <leader>= <cmd>lua vim.lsp.buf.formatting()<CR>
-  xnoremap <silent> <leader>= <cmd>lua vim.lsp.buf.range_formatting()<CR>
-  xnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
-  nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
-  nnoremap <silent> <leader>R :Rename<CR>
-"}}}
-" GOTOS{{{
-  nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-  nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
-  nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-  nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
-  nnoremap <silent> gy <cmd>lua vim.lsp.buf.type_definition()<CR>
-  nnoremap <silent> go <cmd>lua vim.lsp.buf.document_symbol()<CR>
-  nnoremap <silent> gs <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-"}}}
 " TOGGLES{{{
   nnoremap <leader>' :TerminalToggle<CR>
   nnoremap <leader>n :TreeToggle<CR>
@@ -108,6 +80,7 @@
 "}}}
 " HELP{{{
   nnoremap <leader>? :Hydra help<CR>
+  nnoremap <silent> <leader>r :Rename<CR>
 "}}}
 " SEARCH/QF {{{
 
@@ -120,10 +93,9 @@
 	command! QFReject  :call Jump('qf', 'copen') | exec 'Reject ' . input(':Reject ') | wincmd p
 	command! QFKeep    :call Jump('qf', 'copen') | exec 'Keep '   . input(':Keep ')   | wincmd p
 	command! QFRestore :call Jump('qf', 'copen') | exec 'Restore' | wincmd p
-	nnoremap qv :QFReject<CR>
-	nnoremap qf :QFKeep<CR>
-	nnoremap qr :QFRestore<CR>
-	
+	" nnoremap qv :QFReject<CR>
+	" nnoremap qf :QFKeep<CR>
+	" nnoremap qr :QFRestore<CR>
 
 " }}}
 " &FT MAPPINGS {{{
@@ -145,7 +117,6 @@
 " ========== COMMANDS/FUNCS {{{
 
   command! RTree          :exec 'aboveleft 30vsplit | Tree ' . <SID>root()
-  command! LspStatus      :lua print(vim.inspect(vim.lsp.buf_get_clients()))<CR>
   command! TermOpen       :call s:termopen()
   command! Backup         :call Backup()
   command! Vimrc          :so ~/.config/nvim/init.vim
@@ -198,16 +169,8 @@
   endfunction
 
   function s:termopen()
-	  vsp
-	  let buffers = map(split(execute('ls!', 'silent'), "\n"), 
-				  \ { _,s -> matchstr(s, '[0-9]\+') })
-	  for bnum in buffers            " if buf is hidden, pop it open
-          if getbufvar(bnum, '&ft') == 'term'
-			exec bnum . 'b'
-			return
-		  endif
-	  endfor
-	  term
+      let bufnr = index(map(range(1, bufnr("$")), {s -> getbufvar(s, '&ft')}), "term")
+      vsp | exec bufnr > -1 ? bufnr . "b" : "term"
   endfunction
 
   function Jump(filetype, open) abort

@@ -6,6 +6,7 @@ bind -x '"": "clear"'
 bind -x '"´": "lf"'
 bind -x '"ǘ": "fzf-vim"'
 bind '"ǵ": "fzf-dir /"'
+bind '"": "fzf-hist"'
 
 
 bind '"\C-p": previous-history'

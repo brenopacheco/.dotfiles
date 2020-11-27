@@ -204,3 +204,9 @@ function fzf-joe(){
 	echo "joe-gitignore g $ignores"
 }
 #}}}
+# fzf-hist : runs history cmd {{{
+function fzf-hist(){
+  eval $(cat ~/.bash_history | sed '/^#/d' | fzf)
+}
+#}}}
+

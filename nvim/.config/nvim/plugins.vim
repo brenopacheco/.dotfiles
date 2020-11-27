@@ -33,6 +33,9 @@
 	au  Filetype lf tmapclear
 "}}}
 " FZF{{{
+
+    let $FZF_DEFAULT_COMMAND = 'fd --hidden'
+
 "}}}
 " Limelight{{{
 	let g:limelight_default_coefficient = 0.7
@@ -135,13 +138,6 @@ endif
 			return l:path.'/'
 		endfunction
 
-		function! LspStatus() abort
-		  if luaeval('#vim.lsp.buf_get_clients() > 0')
-			return luaeval("require('lsp-status').status()")
-		  endif
-		  return ''
-		endfunction
-
 	"}}}
 "}}}
 " Anyfold {{{
@@ -190,4 +186,7 @@ endif
 	"    -> from anywhere. finds list
 	" toggle
 
+" }}}
+" editor-config {{{
+    let g:EditorConfig_exclude_patterns = ['fugitive://.*']"
 " }}}

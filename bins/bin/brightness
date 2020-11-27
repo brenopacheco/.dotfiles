@@ -8,11 +8,11 @@ function send_notification {
 function adjust_brightness {
 	case $1 in
 	  up)
-		xbacklight -inc 2
+		xbacklight -inc 1
 		send_notification
 		;;
 	  down)
-		xbacklight -dec 2
+		xbacklight -dec 1
 		send_notification
 		;;
 	  *)

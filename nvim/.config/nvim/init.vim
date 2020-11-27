@@ -8,9 +8,12 @@
 runtime defaults.vim    " general vim settings
 runtime plug.vim        " installed plugins
 runtime plugins.vim     " plugin settings
-runtime lsp.vim         " LSP settings
-runtime completion.vim  " completion settings
 runtime colors.vim      " colors
 runtime mappings.vim    " added mappings
 runtime hydras.vim      " hydra mappings
 
+runtime lsp/vim-lsp.vim
+
+
+" runtime lsp.vim         " LSP settings
+" runtime completion.vim  " completion settings

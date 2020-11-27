@@ -57,8 +57,8 @@ set linebreak                              " don't break word when wrapping
 set list                                   " actually use listchars
 set more                                   " show --more-- to scroll messages
 set nobackup                               " no backup for current file
-set noexpandtab                            " do not replace tabs with spaces
-" set expandtab                              " expands tabs as spaces
+" set noexpandtab                            " do not replace tabs with spaces
+set expandtab                              " expands tabs as spaces
 set noshowmode                             " don't show --INSERT-- message
 set nospell                                " block spell check
 set nosplitbelow                           " :sp creates top split

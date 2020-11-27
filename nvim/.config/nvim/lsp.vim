@@ -1,11 +1,6 @@
 " Language servers{{{
-" enable without git: https://github.com/neovim/nvim-lspconfig/issues/44
-" 	tsserver requires typescript, 
-" 	jdtls requires jdk-11 
-" 	run :LspInstall
-"   https://github.com/mfussenegger/nvim-jdtls
 
-lua << EOF
+silent! lua << EOF
 	require'nvim_lsp'.yamlls.setup{}
 	require'nvim_lsp'.bashls.setup{}
 	require'nvim_lsp'.ccls.setup{}
@@ -18,24 +13,12 @@ lua << EOF
 	require'nvim_lsp'.vimls.setup{}
 EOF
 
-lua << EOF
-	local on_attach = function(client)
-		require'diagnostic'.on_attach(client)
-		require'lsp-status'.on_attach(client)
-	end
-EOF
-
-" lua <<EOF
-" 	vim.lsp.callbacks['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
-" EOF
-
-
 "}}}
 " Client settings{{{
 
-	autocmd BufEnter * lua require'diagnostic'.on_attach()
 	autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
 
+    command! LspStatus      :lua print(vim.inspect(vim.lsp.buf_get_clients()))<CR>
 	nmap <C-k> :DisplayInfo<CR>
 	command! DisplayInfo :silent call s:display_info()
 	function s:display_info() abort
@@ -45,21 +28,3 @@ EOF
 	endfunction
 
 "}}}
-" Diagnostics settings{{{
-
-	let g:diagnostic_enable_virtual_text = 1
-	let g:diagnostic_virtual_text_prefix = ' '
-	let g:diagnostic_trimmed_virtual_text = '100'
-	let g:space_before_virtual_text = 5
-	let g:diagnostic_show_sign = 1
-	let g:diagnostic_sign_priority = 20
-	call sign_define("LspDiagnosticsErrorSign"       ,  {"text" : "E" ,  "texthl" : "LspDiagnosticsError"})
-	call sign_define("LspDiagnosticsWarningSign"     ,  {"text" : "W" ,  "texthl" : "LspDiagnosticsWarning"})
-	call sign_define("LspDiagnosticsInformationSign" ,  {"text" : "I" ,  "texthl" : "LspDiagnosticsInformation"})
-	call sign_define("LspDiagnosticsHintSign"        ,  {"text" : "H" ,  "texthl" : "LspDiagnosticsHint"})
-	let g:diagnostic_enable_underline = 1
-	let g:diagnostic_auto_popup_while_jump = 1
-	let g:diagnostic_insert_delay = 1
-
-"}}}
-

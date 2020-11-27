@@ -49,7 +49,7 @@ export VISUAL=nvim
 export SVN_EDITOR="$VISUAL"
 
 ## source fuzzy finder fzf settings
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.bash_fzf ] && source ~/.bash_fzf
 
 # Java 
 export JAVA_HOME=/usr/lib/jvm/default
