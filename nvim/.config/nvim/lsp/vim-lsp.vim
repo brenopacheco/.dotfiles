@@ -99,3 +99,26 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
 "     \ 'completor': function('asyncomplete#sources#tags#completor')
 "     \ }))
 
+
+
+function! s:my_asyncomplete_preprocessor(options, matches) abort
+    let l:visited = {}
+    let l:items = []
+    for [l:source_name, l:matches] in items(a:matches)
+      for l:item in l:matches['items']
+        if stridx(l:item['word'], a:options['base']) == 0
+          if !has_key(l:visited, l:item['word'])
+            call add(l:items, l:item)
+            let l:visited[l:item['word']] = 1
+          endif
+        endif
+      endfor
+    endfor
+    call sort(l:items, { a, b -> len(a.word) >= len(b.word) })
+    call asyncomplete#preprocess_complete(a:options, l:items)
+endfunction
+
+let g:asyncomplete_preprocessor = [function('s:my_asyncomplete_preprocessor')]
+
+
+

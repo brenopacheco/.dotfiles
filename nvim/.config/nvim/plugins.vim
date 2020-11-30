@@ -35,6 +35,10 @@
 " FZF{{{
 
     let $FZF_DEFAULT_COMMAND = 'fd --hidden'
+    let fd_ignore = expand('~/.fdignore')
+    if !filereadable(fd_ignore)
+        silent call writefile(['**/.git/'], fd_ignore)
+    endif
 
 "}}}
 " Limelight{{{
@@ -189,4 +193,9 @@ endif
 " }}}
 " editor-config {{{
     let g:EditorConfig_exclude_patterns = ['fugitive://.*']"
+" }}}
+" vsnip {{{
+      let g:vsnip_filetypes = {}
+      " let g:vsnip_filetypes.javascript = ['react', 'jquery', 'node', 'jsobjects']
+      let g:vsnip_filetypes.javascript = ['react']
 " }}}

@@ -160,17 +160,17 @@
       for i in range(1, winnr('$'))  " if buf is in a window, close
           let bnum = winbufnr(i)
           if getbufvar(bnum, '&ft') == a:filetype
-              " silent exe "bwipeout! " . bnum
 			  silent exe i . 'close'
               return
           endif
       endfor
-      silent exec a:open
+      exec a:open
   endfunction
 
   function s:termopen()
-      let bufnr = index(map(range(1, bufnr("$")), {s -> getbufvar(s, '&ft')}), "term")
-      vsp | exec bufnr > -1 ? bufnr . "b" : "term"
+      let bufnr = index(map(range(1, bufnr("$")), {_,s -> getbufvar(s, '&ft')}), "term") + 1
+      echo "bufnr: " . bufnr
+      vsp | exec bufnr > 0 ? bufnr . "b" : "term"
   endfunction
 
   function Jump(filetype, open) abort

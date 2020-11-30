@@ -48,7 +48,10 @@ call plug#begin(g:plugdir)
     Plug 'bluz71/vim-nightfly-guicolors'
 	Plug 'metakirby5/codi.vim'
     Plug 'editorconfig/editorconfig-vim'
+    Plug 'diepm/vim-rest-console'
 
+
+    " OLD LSP SETUP
     " Plug 'neovim/nvim-lsp'                  " language server features
     " Plug 'neovim/nvim-lspconfig'            " lsp default configurations
     " Plug 'nvim-lua/completion-nvim'         " lsp compatible autocomplete
@@ -58,7 +61,7 @@ call plug#begin(g:plugdir)
     " Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
     " Plug 'honza/vim-snippets'
 	
-
+    " NEW LSP SETUP
 	Plug 'prabirshrestha/vim-lsp'
 	Plug 'mattn/vim-lsp-settings'
 	Plug 'prabirshrestha/asyncomplete.vim'
