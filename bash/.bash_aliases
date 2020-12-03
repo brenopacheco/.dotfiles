@@ -1,5 +1,6 @@
 # custom
 
+alias vim='nvim'
 alias mutt='neomutt'
 alias disks='gnome-disks'
 alias dmenu='dmenu_color'

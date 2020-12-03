@@ -196,6 +196,21 @@ endif
 " }}}
 " vsnip {{{
       let g:vsnip_filetypes = {}
-      " let g:vsnip_filetypes.javascript = ['react', 'jquery', 'node', 'jsobjects']
-      let g:vsnip_filetypes.javascript = ['react']
+      let g:vsnip_filetypes.javascript      = ['javascriptobjects']
+      let g:vsnip_filetypes.javascriptreact = ['javascript', 'javascriptobjects', 'html']
+      let g:vsnip_filetypes.typescript      = ['javascript', 'typescriptobjects']
+      let g:vsnip_filetypes.typescriptreact = ['typescript', 'typescriptobjects', 'html']
+" }}}
+" vim-easy-align {{{
+
+    let g:easy_align_delimiters = {
+        \  ',': { 'pattern': ',',  'left_margin': 0, 'right_margin': 1, 'stick_to_left': 1 },
+        \  ';': { 'pattern': ';',  'left_margin': 0, 'right_margin': 1, 'stick_to_left': 1 },
+        \  ']': { 'pattern': ']',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 },
+        \  '[': { 'pattern': '[',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 },
+        \  '(': { 'pattern': '(',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 },
+        \  ')': { 'pattern': ')',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 },
+        \  '/': { 'pattern': '/',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 }
+        \ }
+
 " }}}

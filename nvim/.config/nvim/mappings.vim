@@ -32,10 +32,11 @@
   " MISC
   xmap ga :EasyAlign<cr>
   nmap ga :EasyAlign<cr>
+  " nmap ga :EasyAlign<space>
+  " xmap ga :EasyAlign<space>
   map  + <Plug>(wildfire-fuel)
   vmap - <Plug>(wildfire-water)
-  nnoremap - :Tree<CR>
-  nnoremap g- :RTree<CR>
+  nnoremap - :VGTree<CR>
 
 "}}}
 " NAVIGATION {{{
@@ -116,7 +117,7 @@
 "}}}
 " ========== COMMANDS/FUNCS {{{
 
-  command! RTree          :exec 'aboveleft 30vsplit | Tree ' . <SID>root()
+  command! VGTree         :call s:vgtree()
   command! TermOpen       :call s:termopen()
   command! Backup         :call Backup()
   command! Vimrc          :so ~/.config/nvim/init.vim
@@ -129,6 +130,14 @@
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
   command! Rename         :call s:rename()
+
+  function s:vgtree() abort
+    if s:root() == './'
+        VTree
+    else
+        vsp | GTree
+    endif
+  endfunction
 
   function! s:qf_filter(pat)
     let all = getqflist()
@@ -260,5 +269,8 @@
 	  \ }, <bang>0)
 
 "}}}
-"
-"TODO unify grep/vimgrep/rg/quickfix
+" autocmds {{{
+
+    au Filetype vim set foldmethod=marker
+
+" }}}

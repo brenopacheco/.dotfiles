@@ -49,6 +49,7 @@ call plug#begin(g:plugdir)
 	Plug 'metakirby5/codi.vim'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'diepm/vim-rest-console'
+    Plug 'ap/vim-css-color'
 
 
     " OLD LSP SETUP
