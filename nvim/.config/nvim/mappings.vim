@@ -87,16 +87,16 @@
 
     nnoremap <silent> g*        :exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
     nnoremap <silent><leader>*  :exec 'grep! "' . expand('<cword>') . '" ' . <SID>root()<CR>:copen<CR>:wincmd p<CR>
-	nnoremap g/ :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
+    nnoremap g/ :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
     nnoremap <expr><leader>/ ':silent grep! "" '. Root() .' \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>'
     nnoremap <expr> <leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
 
-	command! QFReject  :call Jump('qf', 'copen') | exec 'Reject ' . input(':Reject ') | wincmd p
-	command! QFKeep    :call Jump('qf', 'copen') | exec 'Keep '   . input(':Keep ')   | wincmd p
-	command! QFRestore :call Jump('qf', 'copen') | exec 'Restore' | wincmd p
-	" nnoremap qv :QFReject<CR>
-	" nnoremap qf :QFKeep<CR>
-	" nnoremap qr :QFRestore<CR>
+    command! QFReject  :call Jump('qf', 'copen') | exec 'Reject ' . input(':Reject ') | wincmd p
+    command! QFKeep    :call Jump('qf', 'copen') | exec 'Keep '   . input(':Keep ')   | wincmd p
+    command! QFRestore :call Jump('qf', 'copen') | exec 'Restore' | wincmd p
+    " nnoremap qv :QFReject<CR>
+    " nnoremap qf :QFKeep<CR>
+    " nnoremap qr :QFRestore<CR>
 
 " }}}
 " &FT MAPPINGS {{{
@@ -169,7 +169,7 @@
       for i in range(1, winnr('$'))  " if buf is in a window, close
           let bnum = winbufnr(i)
           if getbufvar(bnum, '&ft') == a:filetype
-			  silent exe i . 'close'
+              silent exe i . 'close'
               return
           endif
       endfor
@@ -186,11 +186,11 @@
       for i in range(1, winnr('$'))
           let bnum = winbufnr(i)
           if getbufvar(bnum, '&ft') == a:filetype
-			  silent call win_gotoid(win_getid(i))
+              silent call win_gotoid(win_getid(i))
               return
           endif
       endfor
-	  silent exec a:open
+      silent exec a:open
   endfunction
 
   function s:rename()
@@ -235,16 +235,18 @@
           \ { _,s -> matchstr(s, '".*"')[1:-2] })
   endfunction
 
-	" let preview_file = $HOME.'/.fzf/bin/preview.sh'
-	" command! -bang -nargs=* Tags
-	"   \ call fzf#vim#tags(<q-args>, {
-	"   \      'down': '40%',
-	"   \      'options': '
-	"   \         --with-nth 1,2
-	"   \         --prompt "=> "
-	"   \         --preview-window="50%"
-	"   \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
-	"   \ }, <bang>0)
+    " let preview_file = $HOME.'/.fzf/bin/preview.sh'
+    " command! -bang -nargs=* Tags
+    "   \ call fzf#vim#tags(<q-args>, {
+    "   \      'down': '40%',
+    "   \      'options': '
+    "   \         --with-nth 1,2
+    "   \         --prompt "=> "
+    "   \         --preview-window="50%"
+    "   \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
+    "   \ }, <bang>0)
+    "
+    command! TabRemove :%s/\t/    /g
 
 "}}}
 " autocmds {{{

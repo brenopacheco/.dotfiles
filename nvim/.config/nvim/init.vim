@@ -12,6 +12,4 @@ runtime colors.vim      " colors
 runtime mappings.vim    " added mappings
 runtime hydras.vim      " hydra mappings
 runtime lsp.vim         " LSP settings
-runtime notes/playground/vimrc2
-" runtime completion.vim  " completion settings
-" runtime lsp/vim-lsp.vim
+runtime completion.vim  " completion settings
