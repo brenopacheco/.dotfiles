@@ -3,7 +3,8 @@
 lua << EOF
     require'lspconfig'.yamlls.setup{}
     -- require'lspconfig'.bashls.setup{}
-    require'lspconfig'.ccls.setup{}
+    --require'lspconfig'.ccls.setup{}
+    require'lspconfig'.clangd.setup{}
     require'lspconfig'.cssls.setup{}
     require'lspconfig'.html.setup{}
     -- require'lspconfig'.jdtls.setup{}

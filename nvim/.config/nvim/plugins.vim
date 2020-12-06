@@ -204,6 +204,9 @@ endif
       " let g:vsnip_filetypes.javascriptreact = ['javascript', 'javascriptobjects', 'html']
       " let g:vsnip_filetypes.typescript      = ['javascript', 'typescriptobjects']
       " let g:vsnip_filetypes.typescriptreact = ['typescript', 'typescriptobjects', 'html']
+        let g:vsnip_extra_mapping = v:false
+        let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')
+
 " }}}
 " vim-easy-align {{{
 

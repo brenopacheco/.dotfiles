@@ -4,10 +4,6 @@
     set pumheight=8
 
 	autocmd BufEnter * lua require'completion'.on_attach()
-    " lua require'lspconfig'.vimls.setup{ on_attach=require'completion'.on_attach }
-
-	let g:vsnip_extra_mapping = v:false
-	let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')
 
 	let g:completion_enable_snippet         = "vim-vsnip"
 	let g:completion_enable_auto_popup      = 1
@@ -25,9 +21,12 @@
 	   \   'default' : {
 	   \     'default': [
 	   \       {'complete_items': ['lsp', 'vim-vsnip', 'buffers']},
+	   \       {'complete_items': ['lsp']},
+	   \       {'complete_items': ['vim-vsnip']},
+	   \       {'complete_items': ['buffers']},
 	   \       {'complete_items': ['path'], 'triggered_only': ['/']}],
 	   \    'comment': [
-	   \        {'complete_items': ['buffers', 'path']}],
+	   \        {'complete_items': ['buffers', 'path', 'vim-vsnip']}],
 	   \    'string': [
 	   \        {'complete_items': ['buffers', 'path']}],
 	   \    'path': [
@@ -36,6 +35,15 @@
 	   \        {'complete_items': ['path']}]
 	   \   }
 	   \ }
+
+	"omni": i_CTRL-X_CTRL-O
+	"keyn": i_CTRL-X_CTRL-N
+	"file": i_CTRL-X_CTRL-F
+	"user": i_CTRL-X_CTRL-U
+    "
+    " how to write user complete func that mixes other completion sources?
+    " i.e: files, omni, keyn,  dict, tags?
+    " getcompletion({pat}, {type} [, {filtered}])		*getcompletion()*
 
     let g:completion_items_priority = {
             \ 'vim-vsnip':  11,
@@ -52,25 +60,20 @@
             \ 'File':       1,
             \}
 
-
-    inoremap <c-j> <Plug>(completion_next_source)
-    inoremap <c-k> <Plug>(completion_prev_source)
-
-
 	au BufEnter * syn match PATH './'
 
 	inoremap <CR> <c-g>u<cr>
 	let g:completion_confirm_key = ""
-	
+
 "}}}
 " Mappings {{{
 
-	imap <expr> <TAB>  
-				\ pumvisible() ? 
+	imap <expr> <TAB>
+				\ pumvisible() ?
 				\ 	complete_info()["selected"] != "-1" ?
-				\   	"\<Plug>(completion_confirm_completion)"  : 
+				\   	"\<Plug>(completion_confirm_completion)"  :
 				\       "\<C-n>\<F5>" :
-				\   vsnip#jumpable(1) ? 
+				\   vsnip#jumpable(1) ?
 				\ 		"\<Plug>(vsnip-jump-next)" :
 				\   	"\<TAB>"
 	imap <F5> <TAB>
@@ -80,5 +83,9 @@
 	nmap <expr> <Tab>   vsnip#jumpable(1)  ? 'i<Plug>(vsnip-jump-next)' : '<Tab>'
 	nmap <expr> <S-Tab> vsnip#jumpable(1)  ? 'i<Plug>(vsnip-jump-prev)' : '<Tab>'
     xmap s <Plug>(vsnip-cut-text)
+
+    imap <silent> <C-space> <Plug>(completion_trigger)
+    imap <c-j> <Plug>(completion_next_source)
+    imap <c-k> <Plug>(completion_prev_source)
 
 " }}}

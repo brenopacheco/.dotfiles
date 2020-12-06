@@ -55,8 +55,8 @@ call plug#begin(g:plugdir)
     " OLD LSP SETUP
     Plug 'neovim/nvim-lsp'                  " language server features
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
-    Plug 'brenopacheco/completion-nvim'         " lsp compatible autocomplete
-    Plug 'steelsojka/completion-buffers'    " word completion for buffers
+    " Plug 'brenopacheco/completion-nvim'         " lsp compatible autocomplete
+    " Plug 'steelsojka/completion-buffers'    " word completion for buffers
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
     Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
