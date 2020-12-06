@@ -31,7 +31,7 @@ set laststatus    =2                      " always show statusline
 set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
 set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp
 set pumheight     =12                     " max num of items in popup menu
-set pumwidth      =15                     " max popup menu width
+" set pumwidth      =15                     " max popup menu width
 set scrolloff     =999                    " keep cursor centered
 set shiftwidth    =4                      " number of spaces for the tab
 set shortmess    +=cs                     " remove annoying messages
@@ -72,10 +72,11 @@ set showmatch                              " highlights matches [{()}]
 set smartcase                              " smart case for search
 set splitright                             " :vsp creates right split
 set wildmenu                               " tab help in cmdline
-au BufWritePost * call Backup()            " backs up file in .backups
 filetype plugin indent on
 syntax on
 set report=0
+
+set keywordprg=:help
 
 set undolevels     =500
 set history        =500
@@ -112,3 +113,15 @@ au Filetype org set
 "" notes on grep/vimgrep
 " :vimgrep /regex/j file-glob-pat    (accepts **/*, no dirs)
 " :grep    "regex"  file-regex-pat   (will do recursevly dirs/files)
+"
+
+au BufWritePost * call Backup()            " backs up file in .backups
+
+function! Backup()
+    let b:timestamp = strftime('%Y-%m-%d_%Hh%Mm')
+    let b:expanded = expand('%:p')
+    let b:subst = substitute(b:expanded, "/", "\\\\%", "g")
+    let b:dir = g:backupdir
+    let b:backupfile = b:dir . b:timestamp . "_" . b:subst
+    silent exec ':w! ' b:backupfile
+endfunction

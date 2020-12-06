@@ -43,9 +43,10 @@ let g:lsp_virtual_text_prefix = " ‣ "
 let g:lsp_highlights_enabled = 0
 
 let g:servers = {
-			\ 	'vim': 'vim-language-server',
-			\ 	'c': 'clangd',
-			\ 	'cpp': 'clangd',
+			\ 	'vim':        'vim-language-server',
+			\ 	'c':          'clangd',
+			\ 	'cpp':        'clangd',
+			\ 	'json':       'json-languageserver',
 			\ 	'typescript': 'typescript-language-server',
 			\ 	'javascript': 'typescript-language-server'
 			\ }

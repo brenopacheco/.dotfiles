@@ -1,5 +1,16 @@
-# custom
+# git
 
+alias gs='git status'
+alias gcm='git checkout master'
+gc() {
+    git checkout $(git branch -vva | fzf --reverse | sed 's/^[^a-zA-Z]\+//' | awk '{printf $1}')
+}
+
+
+
+
+
+# custom
 alias vim='nvim'
 alias mutt='neomutt'
 alias disks='gnome-disks'

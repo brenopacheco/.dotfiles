@@ -34,11 +34,11 @@
         "let $1 = 1${0}"
         ]
     },
-    "f": {
-        "prefix": "f",
-        "description": "f function",
+    "function": {
+        "prefix": "fun",
+        "description": "fun! ...",
         "body": [
-        "fun! ${1:${VIM:expand('%') =~ 'autoload' ? substitute(matchstr(expand('%:p'),'autoload/\\zs.*\\ze.vim'),'[/\\\\]','#','g').'#' : ''}}${2:function_name}(${3})",
+        "fun! ${1:${VIM:expand('%:p') =~ 'autoload' ? substitute(matchstr(expand('%:p'),'autoload/\\zs.*\\ze.vim'),'[/]','#','g').'#' : ''}}${2:function_name}(${3:args})",
         "    ${0}",
         "endf"
         ]

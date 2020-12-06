@@ -65,7 +65,7 @@
   nnoremap <silent> <leader>f/ :Rg<CR>
   nnoremap <silent> <leader>f* :exec 'Rg ' . expand("<cword>")<CR>
   nnoremap <silent> <leader>fs :Tags<CR>
-  nnoremap <silent> <leader>fo :Btags<CR>
+  nnoremap <silent> <leader>fo :BTags<CR>
   nnoremap <silent> <leader>fm :Marks<CR>
   nnoremap <silent> <leader>fr :History<CR>
   nnoremap <silent> <leader>f: :History:<CR>
@@ -122,7 +122,7 @@
   command! Backup         :call Backup()
   command! Vimrc          :so ~/.config/nvim/init.vim
   command! Trim           :%s/\s\+$//e
-  command! Fork           :silent exec '!fork'
+  command! Fork           :silent exec '!kitty & disown'
   command! NetrwToggle    :call s:toggle('netrw', 'Lexplore')
   command! TreeToggle     :call s:toggle('vimtree', 'VTree')
   command! TerminalToggle :call s:toggle('term', 'TermOpen')
@@ -193,15 +193,6 @@
 	  silent exec a:open
   endfunction
 
-  function! Backup()
-  	let b:timestamp = strftime('%Y-%m-%d_%Hh%Mm')
-  	let b:expanded = expand('%:p')
-  	let b:subst = substitute(b:expanded, "/", "\\\\%", "g")
-  	let b:dir = g:backupdir
-  	let b:backupfile = b:dir . b:timestamp . "_" . b:subst
-  	silent exec ':w! ' b:backupfile
-  endfunction
-
   function s:rename()
     let old_ignc  = &ignorecase
     let old_repo  = &report
@@ -244,29 +235,16 @@
           \ { _,s -> matchstr(s, '".*"')[1:-2] })
   endfunction
 
-
-
-	command! Changes call s:changes()
-	function s:changes() abort
-		call writefile(reverse(split(execute('changes'),"\n"))[1:-2], '/tmp/changelist')
-		call system('sed -i "/-invalid-$/d" /tmp/changelist')
-		call system('sed -i "s/^ \+[0-9]\+ \+//" /tmp/changelist')
-		call system("awk -F' ' '!_[$1]++' /tmp/changelist > /tmp/tmpfile && mv /tmp/tmpfile /tmp/changelist")
-		call system('sed -i "s/\([0-9]\+\)\([ ]\+\)\([0-9]\+\)/\1:\3:/" /tmp/changelist')
-		call system('sed -i "s/^/'.expand('%').':/" /tmp/changelist')
-		cfile! /tmp/changelist
-	endfunction
-
-	let preview_file = $HOME.'/.fzf/bin/preview.sh'
-	command! -bang -nargs=* Tags
-	  \ call fzf#vim#tags(<q-args>, {
-	  \      'down': '40%',
-	  \      'options': '
-	  \         --with-nth 1,2
-	  \         --prompt "=> "
-	  \         --preview-window="50%"
-	  \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
-	  \ }, <bang>0)
+	" let preview_file = $HOME.'/.fzf/bin/preview.sh'
+	" command! -bang -nargs=* Tags
+	"   \ call fzf#vim#tags(<q-args>, {
+	"   \      'down': '40%',
+	"   \      'options': '
+	"   \         --with-nth 1,2
+	"   \         --prompt "=> "
+	"   \         --preview-window="50%"
+	"   \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
+	"   \ }, <bang>0)
 
 "}}}
 " autocmds {{{

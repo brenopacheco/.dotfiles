@@ -132,6 +132,10 @@ endif
 			\ }
 
 	" Components {{{
+    
+        function LspStatus() abort
+            return "LSP disabled"
+        endfunction
 
 		function! ShortFolderPath() 
 			let l:path = substitute(getcwd(), expand($HOME), "~", "") 
@@ -195,11 +199,11 @@ endif
     let g:EditorConfig_exclude_patterns = ['fugitive://.*']"
 " }}}
 " vsnip {{{
-      let g:vsnip_filetypes = {}
-      let g:vsnip_filetypes.javascript      = ['javascriptobjects']
-      let g:vsnip_filetypes.javascriptreact = ['javascript', 'javascriptobjects', 'html']
-      let g:vsnip_filetypes.typescript      = ['javascript', 'typescriptobjects']
-      let g:vsnip_filetypes.typescriptreact = ['typescript', 'typescriptobjects', 'html']
+      " let g:vsnip_filetypes = {}
+      " let g:vsnip_filetypes.javascript      = ['javascriptobjects']
+      " let g:vsnip_filetypes.javascriptreact = ['javascript', 'javascriptobjects', 'html']
+      " let g:vsnip_filetypes.typescript      = ['javascript', 'typescriptobjects']
+      " let g:vsnip_filetypes.typescriptreact = ['typescript', 'typescriptobjects', 'html']
 " }}}
 " vim-easy-align {{{
 
