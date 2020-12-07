@@ -21,12 +21,12 @@ inoremap <expr> <tab>
   \   "\<tab>"
 
 fun! FileCompleteFunc(findstart, base) abort
-	if a:findstart
-	    let keywordregex = '\k\|\.\|\/'
-	    let regex = '\(' . keywordregex . '\)\+\%' . col(".") . 'c'
-	    return match(getline("."), regex)
-	endif
-	return getcompletion(a:base, "file")
+    if a:findstart
+        let keywordregex = '\k\|\.\|\/'
+        let regex = '\(' . keywordregex . '\)\+\%' . col(".") . 'c'
+        return match(getline("."), regex)
+    endif
+    return getcompletion(a:base, "file")
 endfun
 
 set completefunc=FileCompleteFunc

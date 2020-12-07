@@ -43,34 +43,34 @@ let g:lsp_virtual_text_prefix = " ‣ "
 let g:lsp_highlights_enabled = 0
 
 let g:servers = {
-			\ 	'vim':        'vim-language-server',
-			\ 	'c':          'clangd',
-			\ 	'cpp':        'clangd',
-			\ 	'json':       'json-languageserver',
-			\ 	'typescript': 'typescript-language-server',
-			\ 	'javascript': 'typescript-language-server'
-			\ }
+            \     'vim':        'vim-language-server',
+            \     'c':          'clangd',
+            \     'cpp':        'clangd',
+            \     'json':       'json-languageserver',
+            \     'typescript': 'typescript-language-server',
+            \     'javascript': 'typescript-language-server'
+            \ }
 function! LspStatus() abort
-	if has_key(g:servers, &ft)
-		if lsp#get_server_status(g:servers[&ft]) == "running"
-			let diagnostics = lsp#get_buffer_diagnostics_counts()
-			return "E[" . diagnostics.error . "] W[" . diagnostics.warning . "] ✓"
-		endif
-	endif
-	return ''
+    if has_key(g:servers, &ft)
+        if lsp#get_server_status(g:servers[&ft]) == "running"
+            let diagnostics = lsp#get_buffer_diagnostics_counts()
+            return "E[" . diagnostics.error . "] W[" . diagnostics.warning . "] ✓"
+        endif
+    endif
+    return ''
 endfunction 
 
 let g:vsnip_extra_mapping                        =  v:false
 let g:vsnip_snippet_dir = expand('~/.config/nvim/snippets')
 set completeopt=menuone,noinsert,noselect
 imap <expr> <TAB>  
-			\ pumvisible() ? 
-			\ 	complete_info()["selected"] != "-1" ?
-			\   	asyncomplete#close_popup()  : 
-			\       "\<C-n>\<F5>" :
-			\   vsnip#jumpable(1) ? 
-			\ 		"\<Plug>(vsnip-jump-next)" :
-			\   	"\<TAB>"
+            \ pumvisible() ? 
+            \     complete_info()["selected"] != "-1" ?
+            \       asyncomplete#close_popup()  : 
+            \       "\<C-n>\<F5>" :
+            \   vsnip#jumpable(1) ? 
+            \         "\<Plug>(vsnip-jump-next)" :
+            \       "\<TAB>"
 imap <F5> <TAB>
 imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
 smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'

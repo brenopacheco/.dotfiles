@@ -117,16 +117,17 @@
 "}}}
 " ========== COMMANDS/FUNCS {{{
 
-  command! VGTree         :call s:vgtree()
-  command! TermOpen       :call s:termopen()
-  command! Backup         :call Backup()
   command! Vimrc          :so ~/.config/nvim/init.vim
   command! Trim           :%s/\s\+$//e
+  command! TabRemove      :%s/\t/    /g
+  command! Format         :norm maggVG=`a
   command! Fork           :silent exec '!kitty & disown'
   command! NetrwToggle    :call s:toggle('netrw', 'Lexplore')
   command! TreeToggle     :call s:toggle('vimtree', 'VTree')
   command! TerminalToggle :call s:toggle('term', 'TermOpen')
   command! QuickfixToggle :call s:toggle('qf', 'copen')
+  command! VGTree         :call s:vgtree()
+  command! TermOpen       :call s:termopen()
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
   command! Rename         :call s:rename()
@@ -235,18 +236,16 @@
           \ { _,s -> matchstr(s, '".*"')[1:-2] })
   endfunction
 
-    " let preview_file = $HOME.'/.fzf/bin/preview.sh'
-    " command! -bang -nargs=* Tags
-    "   \ call fzf#vim#tags(<q-args>, {
-    "   \      'down': '40%',
-    "   \      'options': '
-    "   \         --with-nth 1,2
-    "   \         --prompt "=> "
-    "   \         --preview-window="50%"
-    "   \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
-    "   \ }, <bang>0)
-    "
-    command! TabRemove :%s/\t/    /g
+
+    let preview_file = $HOME.'/.fzf/bin/preview.sh'
+    command! -bang -nargs=* Tags
+      \ call fzf#vim#tags(<q-args>, {
+      \      'options': '
+      \         --with-nth 1,2
+      \         --prompt "=> "
+      \         --preview-window="50%"
+      \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
+      \ }, <bang>0)
 
 "}}}
 " autocmds {{{

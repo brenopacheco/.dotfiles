@@ -32,15 +32,15 @@ database: test
 | `2`       | on 2nd occurrence (and so on) |
 
 Interactive mode
-{Visual} ⏎ 	activate for selection
-ga {motion} 	activate for motion/text object
+{Visual} ⏎     activate for selection
+ga {motion}     activate for motion/text object
 
 Then press options (if available), then a delimiter.
 Interactive mode options
-⏎ 	Set alignment
-<ctrl-l> 4 ⏎ 	Set left_margin (to the left of the delimiter)
-<ctrl-r> 4 ⏎ 	Set right_margin
-↓ 	no margin
+⏎     Set alignment
+<ctrl-l> 4 ⏎     Set left_margin (to the left of the delimiter)
+<ctrl-r> 4 ⏎     Set right_margin
+↓     no margin
 Example
 
     gaip <ctrl-l> 8⏎ = - puts 8 spaces before the equal sign

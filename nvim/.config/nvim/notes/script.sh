@@ -2,10 +2,10 @@
 
 # set of cmds to run with vim on a buffer
 cat <<-EOF > cmds
-	:norm ihello
-	:norm ohello
-	:g/el/s/llo/WOO
-	:wq!
+    :norm ihello
+    :norm ohello
+    :g/el/s/llo/WOO
+    :wq!
 EOF
 
 # -n : disable swap files

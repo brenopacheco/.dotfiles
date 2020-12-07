@@ -17,15 +17,15 @@ BIN    := main
 all: $(BIN)
 
 $(BIN): $(OBJ)
-	@echo "Compiling output files $^"
-	$(CC) $^ -o $@ $(CFLAGS)
+    @echo "Compiling output files $^"
+    $(CC) $^ -o $@ $(CFLAGS)
 
 %.o: %.c
-	@echo "Compiling object files $<"
-	$(CC) -c $< -o $@ $(CFLAGS)
+    @echo "Compiling object files $<"
+    $(CC) -c $< -o $@ $(CFLAGS)
 
 clean:
-	rm -f $(OBJ) $(BIN)
+    rm -f $(OBJ) $(BIN)
 
 run: $(BIN)
-	./$<
+    ./$<

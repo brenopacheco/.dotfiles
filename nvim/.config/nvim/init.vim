@@ -13,3 +13,4 @@ runtime mappings.vim    " added mappings
 runtime hydras.vim      " hydra mappings
 runtime lsp.vim         " LSP settings
 runtime completion.vim  " completion settings
+runtime filetypes.vim   " filetype configurations
