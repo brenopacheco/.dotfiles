@@ -1,4 +1,4 @@
-" Directories & Backup {{{
+" Programs, Directories & Backup {{{
 
 let g:backupdir    = expand('~/.cache/nvim/backup/')
 let g:plugdir      = expand('~/.cache/nvim/plug/')
@@ -20,6 +20,13 @@ function! Backup()
     let b:backupfile = b:dir . b:timestamp . "_" . b:subst
     silent exec ':w! ' b:backupfile
 endfunction
+
+let fd_ignore = expand('~/.fdignore')
+let rg_ignore = expand('~/.rgignore')
+if !filereadable(fd_ignore) || !filereadable(rg_ignore)
+    silent call writefile(['**/.git/', '**/node_modules/', 'tags'], fd_ignore)
+    silent call system('cp ' . fd_ignore . ' ' . rg_ignore)
+endif
 
 " }}}
 " Global configurations {{{

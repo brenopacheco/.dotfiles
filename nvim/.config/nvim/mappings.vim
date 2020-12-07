@@ -32,11 +32,12 @@
   " MISC
   xmap ga :EasyAlign<cr>
   nmap ga :EasyAlign<cr>
-  " nmap ga :EasyAlign<space>
-  " xmap ga :EasyAlign<space>
-  map  + <Plug>(wildfire-fuel)
-  vmap - <Plug>(wildfire-water)
-  nnoremap - :VGTree<CR>
+  " map  + <Plug>(wildfire-fuel)
+  " vmap - <Plug>(wildfire-water)
+  nmap <CR> <Plug>(wildfire-fuel)
+  vmap <Backspace> <Plug>(wildfire-water)
+  nnoremap - :OTree<CR>
+  " nnoremap - :GTree<CR>
 
 "}}}
 " NAVIGATION {{{
@@ -85,19 +86,22 @@
 "}}}
 " SEARCH/QF {{{
 
-    nnoremap /*              :silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
-    nnoremap //              :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
-
+    " _*  grep word under cursor / selection
+    " _/  grep input
     nnoremap <leader>*       :silent exec 'grep! "' . expand('<cword>') . '" ' . <SID>root()<CR>:copen<CR>:wincmd p<CR>
+    vnoremap <leader>/       "zy:silent exec 'grep! "' . @z . '" ' . <SID>root()<CR>:copen<CR>:wincmd p<CR>
     nnoremap <expr><leader>/ ':silent grep! "" '. Root() .' \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>'
+
+    " q*  grep word under cursor / selection
+    " q/  grep input
+    nnoremap q*              :silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
+    vnoremap q*              "zy:silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
+    nnoremap q/              :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
 
     " substitute word under cursor
     nnoremap <expr><leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
     nnoremap <expr><leader>S :Rename<CR>
 
-    " command! QFReject  :call Jump('qf', 'copen') | exec 'Reject ' . input(':Reject ') | wincmd p
-    " command! QFKeep    :call Jump('qf', 'copen') | exec 'Keep '   . input(':Keep ')   | wincmd p
-    " command! QFRestore :call Jump('qf', 'copen') | exec 'Restore' | wincmd p
     " nnoremap qv :QFReject<CR>
     " nnoremap qf :QFKeep<CR>
     " nnoremap qr :QFRestore<CR>
@@ -131,10 +135,19 @@
   command! TerminalToggle :call s:toggle('term', 'TermOpen')
   command! QuickfixToggle :call s:toggle('qf', 'copen')
   command! VGTree         :call s:vgtree()
+  command! OTree          :call s:otree()
   command! TermOpen       :call s:termopen()
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
   command! Rename         :call s:rename()
+
+  function s:otree() abort
+    if s:root() == './'
+        Tree
+    else
+        GTree
+    endif
+  endfunction
 
   function s:vgtree() abort
     if s:root() == './'

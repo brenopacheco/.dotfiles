@@ -35,10 +35,6 @@
 " FZF{{{
 
     let $FZF_DEFAULT_COMMAND = 'fd --hidden'
-    let fd_ignore = expand('~/.fdignore')
-    if !filereadable(fd_ignore)
-        silent call writefile(['**/.git/'], fd_ignore)
-    endif
 
 "}}}
 " Limelight{{{
@@ -137,7 +133,7 @@ endif
 
     " Components {{{
     
-        function LspStatus() abort
+        function! LspStatus() abort
             return "LSP disabled"
         endfunction
 

@@ -5,9 +5,6 @@
 
     autocmd BufEnter * lua require'completion'.on_attach()
 
-    " au! TextChangedI * if getline('.')[col('.')-2] =~ '\S' && !pumvisible()
-    "     \ | silent exec "lua require'completion'.triggerCompletion()" | endif
-
     let g:completion_enable_snippet         = "vim-vsnip"
     let g:completion_enable_auto_popup      = 1
     let g:completion_trigger_keyword_length = 1
@@ -56,6 +53,7 @@
 "}}}
 " Mappings {{{
 
+    " i_CTRL-E closes popup
     inoremap <CR> <c-g>u<cr>
     let g:completion_confirm_key = "\<C-y>"
     imap <expr> <TAB>
