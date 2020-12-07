@@ -5,18 +5,23 @@
 
     autocmd BufEnter * lua require'completion'.on_attach()
 
+    " au! TextChangedI * if getline('.')[col('.')-2] =~ '\S' && !pumvisible()
+    "     \ | silent exec "lua require'completion'.triggerCompletion()" | endif
+
     let g:completion_enable_snippet         = "vim-vsnip"
     let g:completion_enable_auto_popup      = 1
+    let g:completion_trigger_keyword_length = 1
     let g:completion_enable_auto_hover      = 1
     let g:completion_enable_auto_signature  = 1
     let g:completion_sorting                = "length"
     let g:completion_matching_strategy_list = ['exact']
     let g:completion_matching_ignore_case   = 1
-    let g:completion_trigger_keyword_length = 1
     let g:completion_trigger_on_delete      = 1
     let g:completion_trigger_character      = ['.']
     let g:completion_abbr_length = 20
     let g:completion_menu_length = 8
+    let g:completion_timer_cycle = 50       " required for fast typing
+
     let g:completion_chain_complete_list = {
        \   'default' : {
        \     'default': [
@@ -61,7 +66,7 @@
                 \   vsnip#jumpable(1) ?
                 \         "\<Plug>(vsnip-jump-next)" :
                 \       "\<TAB>"
-    imap <F5> <TAB>
+
     imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
     smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
     smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'

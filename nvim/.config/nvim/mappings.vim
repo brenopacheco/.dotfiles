@@ -74,7 +74,7 @@
 " TOGGLES{{{
   nnoremap <leader>' :TerminalToggle<CR>
   nnoremap <leader>n :TreeToggle<CR>
-  nnoremap <leader>t :TagbarToggle<CR>
+  nnoremap <leader><tab> :TagbarToggle<CR>
   nnoremap <leader>l :Lf<CR>
   nnoremap <leader>u :UndotreeToggle<CR>
   nnoremap <leader>q :QuickfixToggle<CR>
@@ -85,15 +85,19 @@
 "}}}
 " SEARCH/QF {{{
 
-    nnoremap <silent> g*        :exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
-    nnoremap <silent><leader>*  :exec 'grep! "' . expand('<cword>') . '" ' . <SID>root()<CR>:copen<CR>:wincmd p<CR>
-    nnoremap g/ :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
-    nnoremap <expr><leader>/ ':silent grep! "" '. Root() .' \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>'
-    nnoremap <expr> <leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
+    nnoremap /*              :silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
+    nnoremap //              :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
 
-    command! QFReject  :call Jump('qf', 'copen') | exec 'Reject ' . input(':Reject ') | wincmd p
-    command! QFKeep    :call Jump('qf', 'copen') | exec 'Keep '   . input(':Keep ')   | wincmd p
-    command! QFRestore :call Jump('qf', 'copen') | exec 'Restore' | wincmd p
+    nnoremap <leader>*       :silent exec 'grep! "' . expand('<cword>') . '" ' . <SID>root()<CR>:copen<CR>:wincmd p<CR>
+    nnoremap <expr><leader>/ ':silent grep! "" '. Root() .' \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>'
+
+    " substitute word under cursor
+    nnoremap <expr><leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
+    nnoremap <expr><leader>S :Rename<CR>
+
+    " command! QFReject  :call Jump('qf', 'copen') | exec 'Reject ' . input(':Reject ') | wincmd p
+    " command! QFKeep    :call Jump('qf', 'copen') | exec 'Keep '   . input(':Keep ')   | wincmd p
+    " command! QFRestore :call Jump('qf', 'copen') | exec 'Restore' | wincmd p
     " nnoremap qv :QFReject<CR>
     " nnoremap qf :QFKeep<CR>
     " nnoremap qr :QFRestore<CR>
@@ -123,7 +127,7 @@
   command! Format         :norm maggVG=`a
   command! Fork           :silent exec '!kitty & disown'
   command! NetrwToggle    :call s:toggle('netrw', 'Lexplore')
-  command! TreeToggle     :call s:toggle('vimtree', 'VTree')
+  command! TreeToggle     :call s:toggle('vimtree', 'VGTree')
   command! TerminalToggle :call s:toggle('term', 'TermOpen')
   command! QuickfixToggle :call s:toggle('qf', 'copen')
   command! VGTree         :call s:vgtree()
@@ -180,7 +184,7 @@
   function s:termopen()
       let bufnr = index(map(range(1, bufnr("$")), {_,s -> getbufvar(s, '&ft')}), "term") + 1
       echo "bufnr: " . bufnr
-      vsp | exec bufnr > 0 ? bufnr . "b" : "term"
+      belowright sp | exec bufnr > 0 ? bufnr . "b" : "term"
   endfunction
 
   function Jump(filetype, open) abort
