@@ -28,9 +28,19 @@ if !filereadable(fd_ignore) || !filereadable(rg_ignore)
     silent call system('cp ' . fd_ignore . ' ' . rg_ignore)
 endif
 
+function! Foldtext()
+  let line = substitute(getline(v:foldstart), '{', ' ', 'g')
+  let line = substitute(line, '^[ "]\+', '', '')
+  let lines = v:foldend-v:foldstart
+  let length = 69 - strwidth(line) - len(lines)
+  return  line . repeat(' ', length) . lines . ' #lines'
+endfunction
+
+
 " }}}
 " Global configurations {{{
 
+set secure
 set shell+=\ -O\ globstar                 " enables gr **/* w/ grepprg
 let mapleader     =" "                    " set leader as comma
 set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
@@ -44,6 +54,7 @@ set fileencoding  =utf-8
 set fillchars     =fold:\                 " make v:folddashes whitespace
 set foldlevel     =99                     " make folds open initially
 set foldmethod    =marker                 " default fold method using {{{}}}
+set foldtext      =Foldtext()
 set grepformat    =%f:%l:%c:%m            " format for grep in quickfix
 let &grepprg="rg --hidden --smart-case 
   \ --color=never --no-heading --with-filename
@@ -59,7 +70,6 @@ set shiftwidth    =4                      " number of spaces used by = op.
 set shortmess    +=cs                     " remove annoying messages
 set showbreak     =↪\                     " symbol for wrapped lines
 set signcolumn    =auto                   " show signcolumns when available
-set spelllang     =en_us                  " spellcheck uses english dict
 set tabstop       =4                      " display tab as 4 spaces
 set tags          =tags;~                 " search tags file up to $HOME
 set updatetime    =5000                   " time for writting swap to disk
@@ -82,7 +92,6 @@ set more                                   " show --more-- to scroll messages
 set nobackup                               " no backup for current file
 set expandtab                              " expands tabs as spaces
 set noshowmode                             " don't show --INSERT-- message
-set nospell                                " block spell check
 set nosplitbelow                           " :sp creates top split
 set nowrap                                 " don't wrap lines
 set nowrapscan                             " search next stops at end of file
@@ -108,6 +117,11 @@ set notimeout ttimeout ttimeoutlen=10
 set nocompatible
 filetype plugin indent on
 syntax on
+
+
+set spellfile=~/.config/nvim/spell/en.utf-8.add
+set spelllang=en
+set nospell "
 
 " }}}
 " TODO {{{

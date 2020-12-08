@@ -1,13 +1,12 @@
 " Settings {{{
 
     set completeopt=menuone,noinsert,noselect
-    set complete=.,w,k
     set pumheight=8
 
     autocmd BufEnter * lua require'completion'.on_attach()
 
     let g:completion_enable_snippet         = "vim-vsnip"
-    let g:completion_enable_auto_popup      = 1
+    " let g:completion_enable_auto_popup      = 1
     let g:completion_trigger_keyword_length = 1
     let g:completion_enable_auto_hover      = 1
     let g:completion_enable_auto_signature  = 1
@@ -17,20 +16,24 @@
     let g:completion_trigger_on_delete      = 1
     let g:completion_abbr_length            = 20
     let g:completion_menu_length            = 8
-    let g:completion_timer_cycle            = 50  " required for fast typing
-    let g:completion_word_separator         = '[^a-zA-Z0-9\-_]'
-    let g:completion_word_ignored_ft        = [ "log", "tags" ]
+    let g:completion_timer_cycle            = 50 " required for fast typing
 
-    let g:completion_trigger_character      = ['.']
-    let g:completion_auto_change_source = 1
+    au CompleteDone * if getline('.')[col('.')-2] == '/' 
+                \ | call feedkeys("\<c-space>") | endif
 
+    let g:completion_trigger_character      = []
+    let g:completion_auto_change_source     = 1
+    let g:completion_enable_auto_popup      = 1
     let g:completion_chain_complete_list = {
        \     'default': [
-       \       {'complete_items': ['path'], 'triggered_only': ['/']},
        \       {'complete_items': ['lsp', 'vim-vsnip']},
-       \       {'complete_items': ['buffer']},
-       \       {'complete_items': ['buffers']},
+       \       {'mode': '<c-n>'},
+       \       {'mode': 'file'},
        \ ]}
+
+    set complete=.,w,kspell
+    set iskeyword+=/
+    set iskeyword-==
 
     let g:completion_items_priority = {
             \ 'vim-vsnip':  11,
@@ -47,6 +50,7 @@
             \ 'Buffers':    1,
             \ 'Buffer':     1,
             \}
+
 "}}}
 " Mappings {{{
 

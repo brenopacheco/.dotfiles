@@ -1,0 +1,10 @@
+#!/bin/bash
+
+read -p "How to set up git user using GPG and pass?"
+exit 1
+
+read -p "user.name: " user
+read -p "user.email " email
+
+git config user.name "Scott Chacon"
+git config user.email "schacon@gmail.com"
