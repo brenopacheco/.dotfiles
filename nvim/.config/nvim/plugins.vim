@@ -30,7 +30,7 @@
 " Lf{{{
     let g:bclose_no_plugin_maps=1
     let g:lf_map_keys = 0
-    au  Filetype lf tmapclear
+    au  FileType lf tmapclear
 "}}}
 " FZF{{{
 
@@ -55,24 +55,33 @@ lua <<EOF
       }
     }
 EOF
-au Filetype bash,c,css,html,java,javascript,json,lua,typescript
-            \ set foldmethod=expr |
-            \ set foldexpr=nvim_treesitter#foldexpr()
+augroup plugin-treesiter
+  au FileType sh,bash,c,cpp,lua,java,css,html,json,
+                \javascript,typescript,typescriptreact,javascriptreact
+                \ set foldmethod=expr |
+                \ set foldexpr=nvim_treesitter#foldexpr()
+augroup END
 endif
 " }}}
 " Zeavim{{{
+
     let g:zv_disable_mapping = 1
     augroup plugin-zeavim
       autocmd!
-      autocmd FileType c,cpp,sh,javascript,html,css
+      au FileType sh,bash,c,cpp,lua,java,css,html,json,
+                  \javascript,typescript,typescriptreact,javascriptreact
                   \ nmap <buffer>K <Plug>Zeavim
     augroup END
     let g:zv_file_types = {
         \   'css':  'css,foundation,bootstrap_4',
         \   'cpp':  'c',
         \   'sh':   'bash',
+        \   'java':   'java,spring',
         \   '\v^(md|mdown|mkd|mkdn)$': 'markdown',
+        \   'javascript,javascriptreact': 'javascript,node,react',
+        \   'typescript,typescriptreact': 'typescript,node,react',
         \ }
+
 "}}}
 " Netrw {{{
     let g:netrw_liststyle = 3
@@ -148,37 +157,13 @@ endif
 
     "}}}
 "}}}
-" Anyfold {{{
-if s:plugged('vim-anyfold')
-    let g:anyfold_fold_comments=0
-    let g:anyfold_fold_display=1
-    let g:anyfold_motion=0
-    let g:anyfold_identify_comments=2
-
-    augroup anyfold
-        autocmd!
-        autocmd Filetype * AnyFoldActivate
-    augroup END
-
-    " disable anyfold for large files
-    let g:LargeFile = 1000000 " file is large if size greater than 1MB
-    autocmd BufReadPre,BufRead * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
-    function LargeFile()
-        augroup anyfold
-            autocmd! " remove AnyFoldActivate
-            autocmd Filetype <filetype> setlocal foldmethod=indent " fall back to indent folding
-        augroup END
-    endfunction
-endif
-" }}}
 " autopairs {{{
     let g:AutoPairsMapBS = 0
     let g:AutoPairsMapCh = 0
 " }}}
 " Vista {{{
-"
-" let g:vista_default_executive = 'ctags'
-    let g:vista_default_executive = 'nvim_lsp'
+    " let g:vista_default_executive = 'ctags'
+     let g:vista_default_executive = 'nvim_lsp'
 " }}}
 " vim-qf {{{
     " let g:qf_auto_resize = 0

@@ -12,9 +12,9 @@ function OrgFold(lnum)
   endif
 endfunction
 
-au Filetype org set 
+au Filetype org setlocal
         \ foldmethod=expr 
         \ foldexpr=OrgFold(v:lnum)
-        \ foldtext=getline(v:foldstart).'...'.repeat('\ ',999)
+        " \ foldtext=getline(v:foldstart).'...'.repeat('\ ',999)
 
 

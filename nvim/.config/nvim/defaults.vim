@@ -32,7 +32,7 @@ function! Foldtext()
   let line = substitute(getline(v:foldstart), '{', ' ', 'g')
   let line = substitute(line, '^[ "]\+', '', '')
   let lines = v:foldend-v:foldstart
-  let length = 69 - strwidth(line) - len(lines)
+  let length = 71 - strwidth(line) - len(lines)
   return  line . repeat(' ', length) . lines . ' #lines'
 endfunction
 
