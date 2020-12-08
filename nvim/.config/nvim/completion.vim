@@ -1,6 +1,7 @@
 " Settings {{{
 
     set completeopt=menuone,noinsert,noselect
+    set complete=.,w,k
     set pumheight=8
 
     autocmd BufEnter * lua require'completion'.on_attach()
@@ -14,26 +15,22 @@
     let g:completion_matching_strategy_list = ['exact']
     let g:completion_matching_ignore_case   = 1
     let g:completion_trigger_on_delete      = 1
+    let g:completion_abbr_length            = 20
+    let g:completion_menu_length            = 8
+    let g:completion_timer_cycle            = 50  " required for fast typing
+    let g:completion_word_separator         = '[^a-zA-Z0-9\-_]'
+    let g:completion_word_ignored_ft        = [ "log", "tags" ]
+
     let g:completion_trigger_character      = ['.']
-    let g:completion_abbr_length = 20
-    let g:completion_menu_length = 8
-    let g:completion_timer_cycle = 50       " required for fast typing
+    let g:completion_auto_change_source = 1
 
     let g:completion_chain_complete_list = {
-       \   'default' : {
        \     'default': [
-       \       {'complete_items': ['lsp', 'vim-vsnip', 'buffer']},
+       \       {'complete_items': ['path'], 'triggered_only': ['/']},
        \       {'complete_items': ['lsp', 'vim-vsnip']},
        \       {'complete_items': ['buffer']},
-       \       {'complete_items': ['path'], 'triggered_only': ['/']}],
-       \    'comment': [
-       \        {'complete_items': ['buffers', 'path', 'vim-vsnip']}],
-       \    'string': [
-       \        {'complete_items': ['buffers', 'path']}],
-       \    'cIncluded': [
-       \        {'complete_items': ['path']}]
-       \   }
-       \ }
+       \       {'complete_items': ['buffers']},
+       \ ]}
 
     let g:completion_items_priority = {
             \ 'vim-vsnip':  11,
@@ -46,10 +43,10 @@
             \ 'Class':      10,
             \ 'Struct':     10,
             \ 'Keyword':    10,
+            \ 'File':       5,
             \ 'Buffers':    1,
-            \ 'File':       1,
+            \ 'Buffer':     1,
             \}
-
 "}}}
 " Mappings {{{
 
@@ -77,3 +74,12 @@
     imap <c-k> <Plug>(completion_prev_source)
 
 " }}}
+" Notes {{{
+    " triggered_only will IF it is in trigger_character
+    " <c-n> instead of buffer, <c-x><c-f> instead of path and omni instead
+    " i.e: {'mode': 'file', 'triggered_only': ['/']},
+    
+    " first try path, but path is only triggered by /
+    " then try lsp and snip, which is default for programming
+    " then try buffer and then buffers
+"}}}

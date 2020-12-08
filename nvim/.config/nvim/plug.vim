@@ -11,9 +11,8 @@ call plug#begin(g:plugdir)
     Plug 'kana/vim-textobj-user'            " create textobjects
     Plug 'somini/vim-textobj-fold'          " adds fold text object
     Plug 'glts/vim-textobj-comment'         " adds comment text object
-    Plug 'kana/vim-textobj-function'        " adds function text obj
     Plug 'gcmt/wildfire.vim'                " expand/contract select
-    Plug 'alvan/vim-closetag'                 " closes html/xml tags
+    Plug 'alvan/vim-closetag'               " closes html/xml tags
     Plug 'tpope/vim-commentary'             " comment lines of code
     Plug 'tpope/vim-repeat'                 " repeats commands with .
     Plug 'tpope/vim-surround'               " surrounds elements in text

@@ -127,7 +127,8 @@
 
   command! Vimrc          :so ~/.config/nvim/init.vim
   command! Trim           :%s/\s\+$//e
-  command! TabRemove      :%s/\t/    /g
+  command! TabReplace     :%s/\t/    /g
+  command! SpaceReplace   :%s/    /\t/g
   command! Format         :norm maggVG=`a
   command! Fork           :silent exec '!kitty & disown'
   command! NetrwToggle    :call s:toggle('netrw', 'Lexplore')
