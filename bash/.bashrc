@@ -84,7 +84,7 @@ export XDG_CONFIG_HOME=$HOME/.config
 # export MANPAGER="nvim -"
 
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$HOME/.gem/ruby/2.7.0/bin"
 
+GPG_TTY=$(tty)
+export GPG_TTY
 
-source /home/breno/.config/broot/launcher/bash/br

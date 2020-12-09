@@ -6,7 +6,6 @@
     autocmd BufEnter * lua require'completion'.on_attach()
 
     let g:completion_enable_snippet         = "vim-vsnip"
-    " let g:completion_enable_auto_popup      = 1
     let g:completion_trigger_keyword_length = 1
     let g:completion_enable_auto_hover      = 1
     let g:completion_enable_auto_signature  = 1
@@ -25,13 +24,16 @@
     let g:completion_auto_change_source     = 1
     let g:completion_enable_auto_popup      = 1
     let g:completion_chain_complete_list = {
-       \     'default': [
-       \       {'complete_items': ['lsp', 'vim-vsnip']},
-       \       {'mode': '<c-n>'},
-       \       {'mode': 'file'},
-       \ ]}
+       \  'default': [
+       \    {'complete_items': ['lsp', 'vim-vsnip']},
+       \    {'mode': '<c-n>'},
+       \    {'mode': 'file'},
+       \ ]
+       \ }
 
-    set complete=.,w,kspell
+    set spelllang=custom
+    set nospell
+    set complete=.,kspell
     set iskeyword+=/
     set iskeyword-==
 
@@ -69,8 +71,6 @@
     imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
     smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
     smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
-    nmap <expr> <Tab>   vsnip#jumpable(1)  ? 'i<Plug>(vsnip-jump-next)' : '<Tab>'
-    nmap <expr> <S-Tab> vsnip#jumpable(1)  ? 'i<Plug>(vsnip-jump-prev)' : '<Tab>'
     xmap s <Plug>(vsnip-cut-text)
 
     imap <silent> <C-space> <Plug>(completion_trigger)

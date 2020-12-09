@@ -70,16 +70,16 @@ endif
       autocmd!
       au FileType sh,bash,c,cpp,lua,java,css,html,json,
                   \javascript,typescript,typescriptreact,javascriptreact
-                  \ nmap <buffer>K <Plug>Zeavim
+                  \ nmap <buffer>K <Plug>Zeavim | vmap <buffer>K <Plug>ZVVisSelection
     augroup END
     let g:zv_file_types = {
-        \   'css':  'css,foundation,bootstrap_4',
-        \   'cpp':  'c',
-        \   'sh':   'bash',
-        \   'java':   'java,spring',
-        \   '\v^(md|mdown|mkd|mkdn)$': 'markdown',
-        \   'javascript,javascriptreact': 'javascript,node,react',
-        \   'typescript,typescriptreact': 'typescript,node,react',
+        \   'css':                              'css,bootstrap',
+        \   '^c\(pp\)\?$':                      'c',
+        \   '^\(sh|bash|zsh\)$':                'bash',
+        \   '^java$':                           'java,spring',
+        \   'javascript\(react\)\?':            'javascript,node,express,react',
+        \   'typescript\(react\)\?':            'typescript,node,express,react',
+        \   '\v^(md|mdown|mkd|mkdn|markdown)$': 'markdown',
         \ }
 
 "}}}
@@ -184,13 +184,13 @@ endif
     let g:EditorConfig_exclude_patterns = ['fugitive://.*']"
 " }}}
 " vsnip {{{
-      " let g:vsnip_filetypes = {}
-      " let g:vsnip_filetypes.javascript      = ['javascriptobjects']
-      " let g:vsnip_filetypes.javascriptreact = ['javascript', 'javascriptobjects', 'html']
-      " let g:vsnip_filetypes.typescript      = ['javascript', 'typescriptobjects']
-      " let g:vsnip_filetypes.typescriptreact = ['typescript', 'typescriptobjects', 'html']
-        let g:vsnip_extra_mapping = v:false
-        let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')
+      let g:vsnip_filetypes = {}
+      let g:vsnip_filetypes.javascript      = ['javascriptobjects']
+      let g:vsnip_filetypes.javascriptreact = ['javascript', 'javascriptobjects', 'html']
+      let g:vsnip_filetypes.typescript      = ['javascript', 'typescriptobjects']
+      let g:vsnip_filetypes.typescriptreact = ['typescript', 'typescriptobjects', 'html']
+      let g:vsnip_extra_mapping = v:false
+      let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')
 
 " }}}
 " vim-easy-align {{{
@@ -207,3 +207,10 @@ endif
         \ }
 
 " }}}
+" Codi {{{
+
+let g:codi#raw = 1
+let g:codi#width = 70
+let g:codi#use_buffer_dir = 1
+let g:codi#virtual_text = 0
+"}}}

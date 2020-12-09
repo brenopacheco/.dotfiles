@@ -11,10 +11,10 @@ exec 1>/tmp/xprofile.log 2>&1
 export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
 
 # gnome-keyring // gnome-keyring 
-gnome-keyring-daemon --start --components=pkcs11,secrets,ssh  
+# gnome-keyring-daemon --start --components=pkcs11,secrets,ssh  
 
 # polkit agent
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+# /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # background image
 export WALLPAPER=$HOME/Pictures/wallpapers/wallpaper-13.jpg

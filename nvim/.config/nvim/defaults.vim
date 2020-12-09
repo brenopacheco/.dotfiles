@@ -5,6 +5,9 @@ let g:plugdir      = expand('~/.cache/nvim/plug/')
 let g:undodir      = expand('~/.cache/nvim/undo/')
 let g:swapdir      = expand('~/.cache/nvim/swap//')
 
+" call map([g:backupdir, g:plugdir, g:swapdir, g:undodir],
+"             \ { _,dir -> !isdirectory(dir) ? system('mkdir -p ' . dir) : 0 })
+
 for dir in [ g:backupdir, g:plugdir, g:swapdir, g:undodir ]
     if !isdirectory(dir)
         silent call system('mkdir -p ' . dir)
@@ -30,7 +33,7 @@ endif
 
 function! Foldtext()
   let line = substitute(getline(v:foldstart), '{', ' ', 'g')
-  let line = substitute(line, '^[ "]\+', '', '')
+  let line = "# " . substitute(line, '^[ "]\+', '', '')
   let lines = v:foldend-v:foldstart
   let length = 71 - strwidth(line) - len(lines)
   return  line . repeat(' ', length) . lines . ' #lines'
@@ -108,7 +111,7 @@ set report=0                               " always report on :substitute
 set undolevels     =500                    " keep more undos
 set history        =500                    " keep more history in q:
 set virtualedit    =block,onemore          " put cursor where there is no char
-set formatoptions  =c,j,n,o,q,r          " defaults for formatting text
+set formatoptions  =c,j,n,o,q,r            " defaults for formatting text
 set nojoinspaces                           " always insert 1 spc on join J
 set nostartofline
 set visualbell
@@ -119,9 +122,10 @@ filetype plugin indent on
 syntax on
 
 
-set spellfile=~/.config/nvim/spell/en.utf-8.add
-set spelllang=en
-set nospell "
+set spellfile=~/.config/nvim/spell/custom.utf-8.add
+" set spellsuggest=fast,6
+set spelllang=custom
+set spell
 
 " }}}
 " TODO {{{

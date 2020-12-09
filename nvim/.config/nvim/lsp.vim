@@ -1,17 +1,29 @@
 " Language servers{{{
 
 lua << EOF
-    require'lspconfig'.yamlls.setup{}
-    require'lspconfig'.bashls.setup{}
-    --require'lspconfig'.ccls.setup{}
-    require'lspconfig'.clangd.setup{}
-    require'lspconfig'.cssls.setup{}
-    require'lspconfig'.html.setup{}
-    -- require'lspconfig'.jdtls.setup{}
-    require'lspconfig'.jsonls.setup{}
-    -- require'lspconfig'.sumneko_lua.setup{}
-    require'lspconfig'.tsserver.setup{}
-    require'lspconfig'.vimls.setup{}
+    -- require lspconfig for server defaults
+    local lspconfig = require'lspconfig'
+
+    -- enable snippet expansion support for all servers
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    lspconfig.util.default_config = vim.tbl_extend(
+        "force", lspconfig.util.default_config, { 
+            capabilities = capabilities,
+            init_options = { usePlaceholders = true }
+    })
+
+    -- enable lsp servers
+    lspconfig.bashls.setup{}
+    lspconfig.ccls.setup{}
+    lspconfig.cssls.setup{}
+    lspconfig.html.setup{}
+    lspconfig.jdtls.setup{}
+    lspconfig.jsonls.setup{}
+    lspconfig.sumneko_lua.setup{}
+    lspconfig.tsserver.setup{}
+    lspconfig.vimls.setup{}
+    lspconfig.yamlls.setup{}
 EOF
 
 autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc

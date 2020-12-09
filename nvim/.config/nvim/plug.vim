@@ -54,11 +54,10 @@ call plug#begin(g:plugdir)
     Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
     Plug 'neovim/nvim-lsp'                  " language server features
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
-    Plug 'brenopacheco/completion-nvim'     " lsp compatible autocomplete
-    Plug 'steelsojka/completion-buffers'    " word completion for buffers
+    Plug 'nvim-lua/completion-nvim'         " lsp compatible autocomplete
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
-
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
+
 
 call plug#end()
 

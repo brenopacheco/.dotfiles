@@ -7,6 +7,7 @@ gc() {
 }
 
 
+alias pstree="ps -aef --forest"
 
 
 
