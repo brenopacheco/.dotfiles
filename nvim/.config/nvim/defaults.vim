@@ -62,7 +62,6 @@ set grepformat    =%f:%l:%c:%m            " format for grep in quickfix
 let &grepprg="rg --hidden --smart-case 
   \ --color=never --no-heading --with-filename
   \ --line-number --column $*"
-set iskeyword    +=-,:                    " accept key-word for <cword>
 set laststatus    =2                      " always show statusline
 set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
 set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp
@@ -121,9 +120,9 @@ set nocompatible
 filetype plugin indent on
 syntax on
 
+set iskeyword    +=-                      " accept key-word for <cword>
 
 set spellfile=~/.config/nvim/spell/custom.utf-8.add
-" set spellsuggest=fast,6
 set spelllang=custom
 set spell
 

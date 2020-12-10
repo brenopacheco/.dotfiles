@@ -1,7 +1,8 @@
 
-au Filetype vim set foldmethod=marker
+au Filetype vim set foldmethod=marker | set iskeyword+=:
 au BufNewFile,BufRead *.h set ft=c
 au BufNewFile,BufRead *.org set filetype=org
+
 
 function OrgFold(lnum)
   let level = strlen(matchstr(getline(a:lnum), '\v^\s*\zs\*+'))

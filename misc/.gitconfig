@@ -2,7 +2,7 @@
     email = 1180005@isep.ipp.pt
     name = Breno Pacheco
 [credential]
-    helper = store
+	helper = /usr/share/git/credential/netrc/git-credential-netrc.perl
 [mergetool]
     prompt = false
 [merge]
@@ -19,3 +19,5 @@
     date = relative
 [alias]
     graph = !git log \"$@\" --oneline --graph --branches --remotes --date=short
+[commit]
+	gpgsign = true
