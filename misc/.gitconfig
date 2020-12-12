@@ -1,7 +1,7 @@
 [user]
     email = brenoleonhardt@gmail.com
     name = Breno Pacheco
-	signingkey = 590544F30649C13CD37B38311AD6E803AEBC3C5A
+	signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
 [credential]
 	helper = /usr/share/git/credential/netrc/git-credential-netrc.perl
 [mergetool]

@@ -19,13 +19,17 @@
 
     au CompleteDone * if getline('.')[col('.')-2] == '/' 
                 \ | call feedkeys("\<c-space>") | endif
+                
+    au TextChangedI * if getline('.')[col('.')-2] == ' ' 
+                \ && getline('.')[col('.')-3] == ':'
+                \ | call feedkeys("\<c-space>") | endif
 
-    let g:completion_trigger_character      = []
     let g:completion_auto_change_source     = 1
     let g:completion_enable_auto_popup      = 1
     let g:completion_chain_complete_list = {
        \  'default': [
        \    {'complete_items': ['lsp', 'vim-vsnip']},
+       \    {'complete_items': ['lsp']},
        \    {'mode': '<c-n>'},
        \    {'mode': 'file'},
        \ ]
@@ -38,19 +42,18 @@
     set iskeyword-==
 
     let g:completion_items_priority = {
-            \ 'vim-vsnip':  11,
-            \ 'Method':     10,
+            \ 'Value':      10,
             \ 'Field':      10,
-            \ 'Function':   10,
-            \ 'Variables':  10,
-            \ 'Interfaces': 10,
+            \ 'Method':     10,
+            \ 'Property':   10,
             \ 'Constant':   10,
-            \ 'Class':      10,
-            \ 'Struct':     10,
-            \ 'Keyword':    10,
-            \ 'File':       5,
-            \ 'Buffers':    1,
-            \ 'Buffer':     1,
+            \ 'vim-vsnip':  9,
+            \ 'Function':   8,
+            \ 'Variables':  8,
+            \ 'Interfaces': 8,
+            \ 'Class':      8,
+            \ 'Struct':     8,
+            \ 'Keyword':    8,
             \}
 
 "}}}
@@ -77,6 +80,10 @@
     imap <c-j> <Plug>(completion_next_source)
     imap <c-k> <Plug>(completion_prev_source)
 
+    " sometimes C-n C-p will trigger first completion.
+    inoremap <c-n> <Down>
+    inoremap <c-p> <Up>
+
 " }}}
 " Notes {{{
     " triggered_only will IF it is in trigger_character
@@ -87,3 +94,4 @@
     " then try lsp and snip, which is default for programming
     " then try buffer and then buffers
 "}}}
+

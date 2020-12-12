@@ -4,12 +4,19 @@ case $- in
       *) return;;
 esac
 
-# Prompt
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-export PS1="\[\e[32m\]\u\[\e[m\]\[\e[32m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\]:\[\e[34m\]\w\[\e[m\]\[\e[34m\]/\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\]\\$ "
+
+# get current branch in git repo
 export PROMPT_DIRTRIM=3
+
+function parse_git_branch() {
+	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+	if [[ ! "${BRANCH}" == "" ]]; then
+        echo " (${BRANCH})"
+	fi
+}
+
+export PS1="\[\e[32m\]\u@\h\[\e[m\] \[\e[34m\]\w/\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\]\$ "
+
 
 
 
@@ -37,6 +44,7 @@ shopt -s globstar
 # PATH
 export PATH=$PATH:$HOME/bin
 export PATH=$PATH:~/go/bin
+export PATH=$PATH:$HOME/.local/bin
 
 # Source aliases and functions and keybindings
 source $HOME/.bash_aliases
@@ -53,7 +61,6 @@ export SVN_EDITOR="$VISUAL"
 
 # Java 
 export JAVA_HOME=/usr/lib/jvm/default
-export JETTY_HOME=$HOME/Java/jetty-9.4
 
 ## NPM / NODE config
 NPM_PACKAGES="${HOME}/npm"
@@ -65,26 +72,11 @@ export NODE_PATH=/home/breno/npm/lib/node_modules
 
 
 # true color kitty support
-# tic -x -o ~/.terminfo ~/.config/kitty/xterm-24bit.terminfo
-# export TERM=xterm-24bit
+tic -x -o ~/.terminfo ~/.config/kitty/xterm-24bit.terminfo
+export TERM=xterm-24bit
 alias ssh="TERM=xterm-256color ssh"
 
-
-## CONFIG HOME (for GTK)
-##    GTK 2 user specific: ~/.gtkrc-2.0
-##    GTK 2 system wide: /etc/gtk-2.0/gtkrc
-##    GTK 3 user specific: $XDG_CONFIG_HOME/gtk-3.0/settings.ini, or $HOME/.config/gtk-3.0/settings.ini if $XDG_CONFIG_HOME is not set
-##    GTK 3 system wide: /etc/gtk-3.0/settings.ini
+# Misc settings
 export XDG_CONFIG_HOME=$HOME/.config
-
-
-# export MANPAGER='nvim +Man!'
-# export MANPAGER='nvim --startuptime vim.log +Man!'
-# export MANWIDTH=999
-# export MANPAGER="nvim -"
-
-export PATH="$PATH:$HOME/.local/bin"
-
-GPG_TTY=$(tty)
-export GPG_TTY
+export GPG_TTY=$(tty)
 

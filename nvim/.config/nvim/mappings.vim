@@ -49,7 +49,8 @@
   nnoremap ]t :tnext<CR>  | nnoremap [t :tprevious<CR>
   nnoremap ]a :next<CR>   | nnoremap [a :previous<CR>
   nnoremap ]b :bnext<CR>  | nnoremap [b :bprevious<CR>
-  nnoremap ]q :cnext<CR>  | nnoremap [q :cprevious<CR>
+  nnoremap <silent> ]q :try \| cnext \| catch \| cfirst \| catch \| endtry<CR>
+  nnoremap <silent> [q :try \| cprev \| catch \| clast \| catch \| endtry<CR>
   nnoremap ]l :lnext<CR>  | nnoremap [l :lprevious<CR>
   nnoremap ]L :lnewer<CR> | nnoremap [L :lolder<CR>
   nnoremap ]Q :cnewer<CR> | nnoremap [Q :colder<CR>

@@ -4,13 +4,20 @@ lua << EOF
     -- require lspconfig for server defaults
     local lspconfig = require'lspconfig'
 
+    -- mappings for on_attach
+    local custom_attach = function()
+          vim.api.nvim_buf_set_keymap(0, 'n', '<c-]>', 
+            '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true})
+    end
+
     -- enable snippet expansion support for all servers
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
     lspconfig.util.default_config = vim.tbl_extend(
         "force", lspconfig.util.default_config, { 
             capabilities = capabilities,
-            init_options = { usePlaceholders = true }
+            init_options = { usePlaceholders = true },
+            on_attach = custom_attach
     })
 
     -- enable lsp servers

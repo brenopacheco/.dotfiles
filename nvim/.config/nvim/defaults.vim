@@ -95,7 +95,8 @@ set nobackup                               " no backup for current file
 set expandtab                              " expands tabs as spaces
 set noshowmode                             " don't show --INSERT-- message
 set nosplitbelow                           " :sp creates top split
-set nowrap                                 " don't wrap lines
+" set nowrap                                 " don't wrap lines
+set wrap
 set nowrapscan                             " search next stops at end of file
 set nowritebackup                          " no backup for current session
 set number                                 " set numeration of lines
@@ -124,7 +125,7 @@ set iskeyword    +=-                      " accept key-word for <cword>
 
 set spellfile=~/.config/nvim/spell/custom.utf-8.add
 set spelllang=custom
-set spell
+set nospell
 
 " }}}
 " TODO {{{
