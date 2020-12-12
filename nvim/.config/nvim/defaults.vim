@@ -5,9 +5,6 @@ let g:plugdir      = expand('~/.cache/nvim/plug/')
 let g:undodir      = expand('~/.cache/nvim/undo/')
 let g:swapdir      = expand('~/.cache/nvim/swap//')
 
-" call map([g:backupdir, g:plugdir, g:swapdir, g:undodir],
-"             \ { _,dir -> !isdirectory(dir) ? system('mkdir -p ' . dir) : 0 })
-
 for dir in [ g:backupdir, g:plugdir, g:swapdir, g:undodir ]
     if !isdirectory(dir)
         silent call system('mkdir -p ' . dir)
@@ -39,12 +36,11 @@ function! Foldtext()
   return  line . repeat(' ', length) . lines . ' #lines'
 endfunction
 
-
 " }}}
 " Global configurations {{{
 
 set secure
-set shell+=\ -O\ globstar                 " enables gr **/* w/ grepprg
+set shell        +=\ -O\ globstar         " enables gr **/* w/ grepprg
 let mapleader     =" "                    " set leader as comma
 set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
 set colorcolumn   =78                     " draw column at position
@@ -61,13 +57,13 @@ set foldtext      =Foldtext()
 set grepformat    =%f:%l:%c:%m            " format for grep in quickfix
 let &grepprg="rg --hidden --smart-case 
   \ --color=never --no-heading --with-filename
-  \ --line-number --column $*"
+  \ --line-number --column -e $*"
 set laststatus    =2                      " always show statusline
 set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
 set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp
 set pumheight     =12                     " max num of items in popup menu
-set pumwidth      =15                     " min popup menu width
 set scrolloff     =999                    " keep cursor centered
+set pumwidth      =15                     " min popup menu width
 set shiftwidth    =4                      " number of spaces used by = op.
 set shortmess    +=cs                     " remove annoying messages
 set showbreak     =↪\                     " symbol for wrapped lines
@@ -95,7 +91,6 @@ set nobackup                               " no backup for current file
 set expandtab                              " expands tabs as spaces
 set noshowmode                             " don't show --INSERT-- message
 set nosplitbelow                           " :sp creates top split
-" set nowrap                                 " don't wrap lines
 set wrap
 set nowrapscan                             " search next stops at end of file
 set nowritebackup                          " no backup for current session
@@ -113,6 +108,7 @@ set history        =500                    " keep more history in q:
 set virtualedit    =block,onemore          " put cursor where there is no char
 set formatoptions  =c,j,n,o,q,r            " defaults for formatting text
 set nojoinspaces                           " always insert 1 spc on join J
+set iskeyword    +=-                      " accept key-word for <cword>
 set nostartofline
 set visualbell
 set cmdheight=1
@@ -120,18 +116,7 @@ set notimeout ttimeout ttimeoutlen=10
 set nocompatible
 filetype plugin indent on
 syntax on
-
-set iskeyword    +=-                      " accept key-word for <cword>
-
 set spellfile=~/.config/nvim/spell/custom.utf-8.add
 set spelllang=custom
 set nospell
-
-" }}}
-" TODO {{{
-" modelines...
-" amenu, emenu, menu ...
-" set breakindent
-" set breakat
-" set breakindentopt
 " }}}

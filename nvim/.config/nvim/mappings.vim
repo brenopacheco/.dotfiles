@@ -93,19 +93,28 @@
     vnoremap <leader>/       "zy:silent exec 'grep! "' . @z . '" ' . <SID>root()<CR>:copen<CR>:wincmd p<CR>
     nnoremap <expr><leader>/ ':silent grep! "" '. Root() .' \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>'
 
+    " substitute word under cursor or selection
+    nnoremap <expr><leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
+    xnoremap <leader>s "zy:%s/<c-r>z/<c-r>z/g<left><left>
+
+    " Bootstraps q<letter> so that pressing q in recording mode will stop it
+    function RecordingMode() abort
+        nmap <silent><nowait> q q<backspace>:unmap q<CR>
+    endfunction
+    nmap <backspace> <Nop>
+    call map(map(range(97, 122), 'nr2char(v:val)'), 
+            \ { _,i -> execute('nnoremap q'.i.' :call RecordingMode()<CR>q'.i)})
+
+
     " q*  grep word under cursor / selection
     " q/  grep input
-    nnoremap q*              :silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
-    vnoremap q*              "zy:silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
-    nnoremap q/              :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
-
-    " substitute word under cursor
-    nnoremap <expr><leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
-    nnoremap <expr><leader>S :Rename<CR>
-
+    nnoremap q* :silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
+    vnoremap q* "zy:silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
+    nnoremap q/ :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
     " nnoremap qv :QFReject<CR>
     " nnoremap qf :QFKeep<CR>
     " nnoremap qr :QFRestore<CR>
+
 
 " }}}
 " &FT MAPPINGS {{{
@@ -267,8 +276,21 @@
       \ }, <bang>0)
 
 "}}}
-" autocmds {{{
+" notes {{{
+"
+" CTRL-] is equivalent to nnoremap <c-]> :silent exec 'tag /' . expand('<cword>')<CR>
 
-    au Filetype vim set foldmethod=marker
-
+" |CTRL-W_T|	CTRL-W T	   move current window to a new tab page
+" |CTRL-W_]|	CTRL-W ]	   split window and jump to tag under cursor
+" |CTRL-W_c|	CTRL-W c	   close current window (like |:close|)
+" |CTRL-W_f|	CTRL-W f	   split window and edit file name under the
+" |CTRL-W_g]|	CTRL-W g ]	   split window and do |:tselect| for tag
+" |CTRL-W_gf|	CTRL-W g f	   edit file name under the cursor in a new tab
+" |CTRL-W_}|	CTRL-W }	   show tag under cursor in preview window
+"
+" augroup KeepCentered
+"   autocmd!
+"   autocmd CursorMoved * normal! zz
+" augroup END
+"
 " }}}

@@ -15,7 +15,7 @@
     let g:completion_trigger_on_delete      = 1
     let g:completion_abbr_length            = 20
     let g:completion_menu_length            = 8
-    let g:completion_timer_cycle            = 50 " required for fast typing
+    let g:completion_timer_cycle            = 100 " required for fast typing
 
     au CompleteDone * if getline('.')[col('.')-2] == '/' 
                 \ | call feedkeys("\<c-space>") | endif

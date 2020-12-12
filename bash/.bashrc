@@ -11,11 +11,11 @@ export PROMPT_DIRTRIM=3
 function parse_git_branch() {
 	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
 	if [[ ! "${BRANCH}" == "" ]]; then
-        echo " (${BRANCH})"
+        echo "(${BRANCH})"
 	fi
 }
 
-export PS1="\[\e[32m\]\u@\h\[\e[m\] \[\e[34m\]\w/\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\]\$ "
+export PS1="\[\e[32m\]\u@\h\[\e[m\]:\[\e[34m\]\w/\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\]\$ "
 
 
 
