@@ -10,7 +10,7 @@
         "prefix": "fun",
         "description": "function ...(...){...}",
         "body": [
-        "function ${1:function_name}(${2}) {",
+        "function ${1:function_name}(${2:args}) {",
         "    ${0:${TM_SELECTED_TEXT}}",
         "}"
         ]
@@ -19,18 +19,7 @@
         "prefix": "afun",
         "description": "(...) => {...}",
         "body": [
-        "(${1:${2:arg}: ${3:any}}) => {",
-        "    ${0:${TM_SELECTED_TEXT}}",
-        "}"
-        ]
-    },
-    "asfun": {
-        "prefix": "asfun",
-        "description": "(...) => {...}",
-        "body": [
-        "async (${1}) => {",
-        "    ${0:${TM_SELECTED_TEXT}}",
-        "}"
+        "(${1:args}) => ${0:${TM_SELECTED_TEXT}};"
         ]
     },
     "if": {
@@ -196,13 +185,6 @@
         "export default ${0}"
         ]
     },
-    "use": {
-        "prefix": "use",
-        "description": "use strict",
-        "body": [
-        "'use strict';"
-        ]
-    },
     "class": {
         "prefix": "class",
         "description": "class {...}",
@@ -216,17 +198,17 @@
         "prefix": "ctor",
         "description": "constructor(...) {...}",
         "body": [
-        "    constructor(${1:props}) {",
-        "        ${2:super(props)}",
-        "        ${0:${TM_SELECTED_TEXT}}",
-        "    }"
+        "constructor(${1:props}) {",
+        "    ${2:super(props)}",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
         ]
     },
     "cl": {
         "prefix": "cl",
         "description": "console.log",
         "body": [
-        "console.log(${0});"
+        "console.log(${0:${TM_SELECTED_TEXT}});"
         ]
     },
     "cd": {
@@ -276,13 +258,6 @@
         "description": "console.clear",
         "body": [
         "console.clear();"
-        ]
-    },
-    "req": {
-        "prefix": "req",
-        "description": "... = require(...)",
-        "body": [
-        "const ${1:...} = require('${2:...}');$0"
         ]
     }
 }

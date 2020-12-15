@@ -77,7 +77,7 @@ set wildmode      =full                   " how wildmenu appears
 set textwidth     =78                     " norm gq width. see formatoptions
 set autochdir                              " use file path as vim's dir
 set autoindent                             " new lines inherits indentation
-set smartindent                           " insert indent after {, }, etc
+set nosmartindent                           " ??? this fixes issue with > #
 set cursorline                             " highlights current line
 set hidden                                 " hide files don't prompt for save
 set hlsearch                               " keep search highlighted
@@ -119,4 +119,7 @@ syntax on
 set spellfile=~/.config/nvim/spell/custom.utf-8.add
 set spelllang=custom
 set nospell
+
+set suffixesadd=.jsx,.tsx,.md,.js,.ts
+
 " }}}

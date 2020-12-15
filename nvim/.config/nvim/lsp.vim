@@ -40,14 +40,29 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
 
   command! LspStatus :lua print(vim.inspect(vim.lsp.buf_get_clients()))<CR>
   command! DisplayInfo :silent call s:display_info()
+
+  let s:pos = []
   function s:display_info() abort
-      lua vim.lsp.buf.hover()
-      lua vim.lsp.buf.signature_help()
-      lua vim.lsp.diagnostic.show_line_diagnostics()
+      let new_pos = getpos('.')
+      if new_pos == s:pos
+        " change line 632 /usr/local/share/nvim/runtime/lua/vim/lsp/util.lua
+        " local contents = api.nvim_buf_get_lines(bufnr, range.start.line, 
+        " math.max(range["end"].line+1, 10), false)
+        lua peek_definition()
+        let s:pos = []
+      else
+        lua vim.lsp.buf.signature_help()
+        lua vim.lsp.buf.hover()
+        let s:pos = getpos('.')
+      endif
   endfunction
+  command! PeekDefinition :lua peek_definition()<CR>
+
+  inoremap <buffer><silent> <C-n> <C-n><Cmd>lua vim.lsp.buf.hover()<CR>
+  inoremap <buffer><silent> <C-p> <C-p><Cmd>lua vim.lsp.buf.hover()<CR>
 
   nnoremap <silent> <C-k>     :DisplayInfo<CR>
-  " nnoremap <silent> <c-]>     <cmd>lua    vim.lsp.buf.definition()<CR>
+  nnoremap <silent> <C-h>     :PeekDefinition<CR>
   nnoremap <silent> gd        <cmd>lua    vim.lsp.buf.declaration()<CR>
   nnoremap <silent> gr        <cmd>lua    vim.lsp.buf.references()<CR>
   nnoremap <silent> gi        <cmd>lua    vim.lsp.buf.implementation()<CR>

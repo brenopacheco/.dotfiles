@@ -184,13 +184,14 @@ endif
     let g:EditorConfig_exclude_patterns = ['fugitive://.*']"
 " }}}
 " vsnip {{{
-      let g:vsnip_filetypes = {}
-      let g:vsnip_filetypes.javascript      = ['javascriptobjects']
-      let g:vsnip_filetypes.javascriptreact = ['javascript', 'javascriptobjects', 'html']
-      let g:vsnip_filetypes.typescript      = ['javascript', 'typescriptobjects']
-      let g:vsnip_filetypes.typescriptreact = ['typescript', 'typescriptobjects', 'html']
-      let g:vsnip_extra_mapping = v:false
-      let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')
+
+    let g:vsnip_filetypes = {
+                \ 'javascript': [ 'javascript-express' ],
+                \ 'javascriptreact': [ 'javascript', 'html' ],
+                \ 'typescriptreact': [ 'javascript', 'html' ]
+                \ }
+    let g:vsnip_extra_mapping = v:false
+    let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')
 
 " }}}
 " vim-easy-align {{{

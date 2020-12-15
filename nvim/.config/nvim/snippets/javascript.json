@@ -1,9 +1,16 @@
 {
+    "import": {
+        "prefix": "import",
+        "description": "import ... from '...'",
+        "body": [
+            "import ${1:*} from '${2:...}'"
+        ]
+    },
     "fun": {
         "prefix": "fun",
         "description": "function ...(...){...}",
         "body": [
-        "function ${1:function_name}(${2}) {",
+        "function ${1:function_name}(${2:args}) {",
         "    ${0:${TM_SELECTED_TEXT}}",
         "}"
         ]
@@ -12,18 +19,7 @@
         "prefix": "afun",
         "description": "(...) => {...}",
         "body": [
-        "(${1}) => {",
-        "    ${0:${TM_SELECTED_TEXT}}",
-        "}"
-        ]
-    },
-    "asfun": {
-        "prefix": "asfun",
-        "description": "(...) => {...}",
-        "body": [
-        "async (${1}) => {",
-        "    ${0:${TM_SELECTED_TEXT}}",
-        "}"
+        "(${1:args}) => ${0:${TM_SELECTED_TEXT}};"
         ]
     },
     "if": {
@@ -189,20 +185,6 @@
         "export default ${0}"
         ]
     },
-    "import": {
-        "prefix": "import",
-        "description": "import xyz from 'xyz'",
-        "body": [
-        "import ${1} from '${2:$1}';"
-        ]
-    },
-    "use": {
-        "prefix": "use",
-        "description": "use strict",
-        "body": [
-        "'use strict';"
-        ]
-    },
     "class": {
         "prefix": "class",
         "description": "class {...}",
@@ -276,13 +258,6 @@
         "description": "console.clear",
         "body": [
         "console.clear();"
-        ]
-    },
-    "req": {
-        "prefix": "req",
-        "description": "... = require(...)",
-        "body": [
-        "const ${1:...} = require('${2:...}');$0"
         ]
     }
 }

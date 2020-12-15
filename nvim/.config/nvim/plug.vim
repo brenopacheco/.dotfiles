@@ -12,7 +12,7 @@ endif
 call plug#begin(g:plugdir)
     let g:plug_timeout=99999
     Plug 'editorconfig/editorconfig-vim'    " load configs from .editorconfig
-    Plug 'jiangmiao/auto-pairs'             " auto close ([{
+    " Plug 'jiangmiao/auto-pairs'             " auto close ([{
     Plug 'kana/vim-textobj-user'            " create textobjects
     Plug 'somini/vim-textobj-fold'          " adds fold text object
     Plug 'glts/vim-textobj-comment'         " adds comment text object
@@ -55,8 +55,12 @@ call plug#begin(g:plugdir)
     Plug 'neovim/nvim-lsp'                  " language server features
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
     Plug 'nvim-lua/completion-nvim'         " lsp compatible autocomplete
+    Plug 'steelsojka/completion-buffers'
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
+    " Plug 'jceb/vim-orgmode'
+    Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
+    Plug 'cohama/lexima.vim'
 
 
 call plug#end()
@@ -73,7 +77,6 @@ call plug#end()
     " Plug 'prabirshrestha/asyncomplete-file.vim'
     " Plug 'prabirshrestha/asyncomplete-tags.vim'
 
-    " Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
     " Plug 'effkay/argonaut.vim'              " argonaut theme
     " Plug 'dracula/vim', { 'as': 'dracula' } " dracula theme
 

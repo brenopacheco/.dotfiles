@@ -15,30 +15,33 @@
     let g:completion_trigger_on_delete      = 1
     let g:completion_abbr_length            = 20
     let g:completion_menu_length            = 8
+    let g:completion_trigger_character = ['.', '{', '(']
     let g:completion_timer_cycle            = 100 " required for fast typing
 
-    au CompleteDone * if getline('.')[col('.')-2] == '/' 
-                \ | call feedkeys("\<c-space>") | endif
+    " au CompleteDone * if getline('.')[col('.')-2] == '/' 
+    "             \ | call feedkeys("\<c-space>") | endif
                 
-    au TextChangedI * if getline('.')[col('.')-2] == ' ' 
-                \ && getline('.')[col('.')-3] == ':'
-                \ | call feedkeys("\<c-space>") | endif
+    " au TextChangedI * if getline('.')[col('.')-2] == ' ' 
+                " \ && getline('.')[col('.')-3] == ':'
+                " \ | call feedkeys("\<c-space>") | endif
+                
+    au CursorMovedI * if getline('.')[col('.')-2] == '/' 
+                \ | call feedkeys("\<c-x>\<c-f>") | endif
 
     let g:completion_auto_change_source     = 1
     let g:completion_enable_auto_popup      = 1
     let g:completion_chain_complete_list = {
        \  'default': [
-       \    {'complete_items': ['lsp', 'vim-vsnip']},
-       \    {'complete_items': ['lsp']},
-       \    {'mode': '<c-n>'},
+       \    {'complete_items': ['lsp', 'vim-vsnip', 'buffer']},
        \    {'mode': 'file'},
        \ ]
        \ }
+       " \    {'complete_items': ['lsp', 'vim-vsnip']},
+       " \    {'mode': '<c-n>'},
 
     set spelllang=custom
     set nospell
     set complete=.,kspell
-    set iskeyword+=/
     set iskeyword-==
 
     let g:completion_items_priority = {
@@ -54,6 +57,7 @@
             \ 'Class':      8,
             \ 'Struct':     8,
             \ 'Keyword':    8,
+            \ 'Buffer':     5,
             \}
 
 "}}}
@@ -80,9 +84,7 @@
     imap <c-j> <Plug>(completion_next_source)
     imap <c-k> <Plug>(completion_prev_source)
 
-    " sometimes C-n C-p will trigger first completion.
-    inoremap <c-n> <Down>
-    inoremap <c-p> <Up>
+    smap <Backspace> a<Backspace>
 
 " }}}
 " Notes {{{
