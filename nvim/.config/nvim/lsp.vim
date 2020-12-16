@@ -55,14 +55,14 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
         lua vim.lsp.buf.hover()
         let s:pos = getpos('.')
       endif
+      return ""
   endfunction
   command! PeekDefinition :lua peek_definition()<CR>
 
-  inoremap <buffer><silent> <C-n> <C-n><Cmd>lua vim.lsp.buf.hover()<CR>
-  inoremap <buffer><silent> <C-p> <C-p><Cmd>lua vim.lsp.buf.hover()<CR>
+  au CursorHoldI * DisplayInfo
 
   nnoremap <silent> <C-k>     :DisplayInfo<CR>
-  nnoremap <silent> <C-h>     :PeekDefinition<CR>
+  inoremap <silent> <C-k>     <c-r>=<SID>display_info()<CR>
   nnoremap <silent> gd        <cmd>lua    vim.lsp.buf.declaration()<CR>
   nnoremap <silent> gr        <cmd>lua    vim.lsp.buf.references()<CR>
   nnoremap <silent> gi        <cmd>lua    vim.lsp.buf.implementation()<CR>

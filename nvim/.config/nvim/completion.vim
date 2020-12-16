@@ -15,16 +15,9 @@
     let g:completion_trigger_on_delete      = 1
     let g:completion_abbr_length            = 20
     let g:completion_menu_length            = 8
-    let g:completion_trigger_character = ['.', '{', '(']
+    let g:completion_trigger_character = ['.', '{', '_']
     let g:completion_timer_cycle            = 100 " required for fast typing
 
-    " au CompleteDone * if getline('.')[col('.')-2] == '/' 
-    "             \ | call feedkeys("\<c-space>") | endif
-                
-    " au TextChangedI * if getline('.')[col('.')-2] == ' ' 
-                " \ && getline('.')[col('.')-3] == ':'
-                " \ | call feedkeys("\<c-space>") | endif
-                
     au CursorMovedI * if getline('.')[col('.')-2] == '/' 
                 \ | call feedkeys("\<c-x>\<c-f>") | endif
 
@@ -46,7 +39,7 @@
 
     let g:completion_items_priority = {
             \ 'Value':      10,
-            \ 'Field':      10,
+            \ 'Field':      12,
             \ 'Method':     10,
             \ 'Property':   10,
             \ 'Constant':   10,
@@ -81,8 +74,8 @@
     xmap s <Plug>(vsnip-cut-text)
 
     imap <silent> <C-space> <Plug>(completion_trigger)
-    imap <c-j> <Plug>(completion_next_source)
-    imap <c-k> <Plug>(completion_prev_source)
+    " imap <c-j> <Plug>(completion_next_source)
+    " imap <c-k> <Plug>(completion_prev_source)
 
     smap <Backspace> a<Backspace>
 

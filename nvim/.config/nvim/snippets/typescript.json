@@ -198,10 +198,7 @@
         "prefix": "ctor",
         "description": "constructor(...) {...}",
         "body": [
-        "constructor(${1:props}) {",
-        "    ${2:super(props)}",
-        "    ${0:${TM_SELECTED_TEXT}}",
-        "}"
+        "constructor(${1:props}) {${0:${TM_SELECTED_TEXT}}}"
         ]
     },
     "cl": {
