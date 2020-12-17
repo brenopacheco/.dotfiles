@@ -12,6 +12,7 @@ endif
 call plug#begin(g:plugdir)
     let g:plug_timeout=99999
 
+    Plug 'tweekmonster/startuptime.vim'
     Plug 'editorconfig/editorconfig-vim'    " load configs from .editorconfig
     Plug 'gcmt/wildfire.vim'                " expand/contract select
     Plug 'alvan/vim-closetag'               " closes html/xml tags
@@ -19,6 +20,8 @@ call plug#begin(g:plugdir)
     Plug 'tpope/vim-repeat'                 " repeats commands with .
     Plug 'tpope/vim-surround'               " surrounds elements in text
     Plug 'tpope/vim-abolish'                " make :s/ keeps uppercase
+    Plug 'tpope/vim-fugitive'               " git tools wrapper
+    Plug 'tpope/vim-projectionist'          " jump around alt files i.e: .c .h
     Plug 'AndrewRadev/bufferize.vim'        " gets cmd result into buffer
     Plug 'farmergreg/vim-lastplace'         " open file in last edited line
     Plug 'markonm/traces.vim'               " preview substitution
@@ -32,7 +35,6 @@ call plug#begin(g:plugdir)
     Plug 'rbgrouleff/bclose.vim'            " required by lf
     Plug 'brenopacheco/lf.vim'              " file browser
     Plug 'brenopacheco/vim-hydra'           " hydras
-    Plug 'tpope/vim-fugitive'               " git tools wrapper
     Plug 'mhinz/vim-signify'                " adds git marks to gutter
     Plug 'rhysd/git-messenger.vim'          " show git messsages at cursor pos.
     Plug 'sodapopcan/vim-twiggy'            " branch browser
@@ -46,13 +48,16 @@ call plug#begin(g:plugdir)
     Plug 'neovim/nvim-lsp'                  " language server features
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
     Plug 'nvim-lua/completion-nvim'         " lsp compatible autocomplete
+    Plug 'steelsojka/completion-buffers'
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
     Plug 'cohama/lexima.vim'
-    " Plug 'bluz71/vim-nightfly-guicolors'    " treesitter compatible theme
     Plug 'haishanh/night-owl.vim'
+    " Plug 'bluz71/vim-nightfly-guicolors'    " treesitter compatible theme
 
-    Plug 'tweekmonster/startuptime.vim'
+    Plug 'qpkorr/vim-bufkill'
+    Plug 'skywind3000/asyncrun.vim'
+
 call plug#end()
 
 "}}}
@@ -73,7 +78,6 @@ call plug#end()
 " }}}
 " to review {{{
 
-    " Plug 'steelsojka/completion-buffers'
     " Plug 'kana/vim-textobj-user'            " create textobjects
     " Plug 'somini/vim-textobj-fold'          " adds fold text object
     " Plug 'glts/vim-textobj-comment'         " adds comment text object

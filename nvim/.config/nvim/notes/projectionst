@@ -1,0 +1,80 @@
+
+
+1. define .projections.json file at root
+
+{
+  "src/*.ts": {
+    "alternate": "test/{}_test.ts"   (1)
+  },
+  "test/*_test.ts": {
+    "alternate": "src/{}.ts"         (2)
+  },
+  "src/*_controller.ts": {           (3)
+    "type": "controller"
+  },
+  "src/*_model.ts": {                (4)
+    "type": "model"
+  }
+}
+
+alternate files
+    (1)   :A -> from a file src/[name].ts, jump to test/[name]_test.ts
+    (2)   :A -> from a file test/[name]_test.ts, jump to src/[name].ts
+
+dynamic commands based on type
+    (3)   :EController <tab> -> shows files matching /src/*_controller.ts
+    (4)   :EModel      <tab> -> shows files matching /src/*_model.ts
+
+also available 
+    TController
+    VController
+    SController
+
+2. example:
+
+.
+├── .projections.json
+├── src
+│   ├── controllers
+│   │   └── something.controller.ts
+│   ├── models
+│   │   └── something.model.ts
+│   ├── routes
+│   │   └── something.route.ts
+│   └── services
+│       └── something.service.ts
+└── test
+    ├── controllers
+    │   └── something.controller.test.ts
+    ├── models
+    │   └── something.model.test.ts
+    ├── routes
+    │   └── something.route.test.ts
+    └── services
+        └── something.service.test.ts
+
+
+{
+    "src/*.controller.ts": {
+        "type": "Controller"
+    },
+    "src/*.model.ts": {
+        "type": "Model"
+    },
+    "src/*.route.ts": {
+        "type": "Route"
+    },
+    "src/*.service.ts": {
+        "type": "Service"
+    },
+    "src/*.ts": {
+        "alternate": "test/{}.test.ts"
+    },
+    "test/*.test.ts": {
+        "alternate": "src/{}.ts"
+    }
+}
+
+commands:
+    A, EService, EController, EModel, ERoute
+

@@ -215,3 +215,6 @@ let g:codi#width = 70
 let g:codi#use_buffer_dir = 1
 let g:codi#virtual_text = 0
 "}}}
+" Asyncrun {{{
+    let g:asyncrun_open = 10
+" }}}

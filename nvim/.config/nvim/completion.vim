@@ -16,20 +16,21 @@
     let g:completion_abbr_length            = 20
     let g:completion_menu_length            = 8
     let g:completion_trigger_character = ['.', '{', '_']
-    let g:completion_timer_cycle            = 100 " required for fast typing
+    let g:completion_timer_cycle            = 60 " required for fast typing
 
     au CursorMovedI * if getline('.')[col('.')-2] == '/' 
                 \ | call feedkeys("\<c-x>\<c-f>") | endif
 
-    let g:completion_auto_change_source     = 1
+    " issues w/ 1 completion. i.e: vim fun
+    " let g:completion_auto_change_source     = 1 
     let g:completion_enable_auto_popup      = 1
     let g:completion_chain_complete_list = {
        \  'default': [
-       \    {'complete_items': ['lsp', 'vim-vsnip']},
-       \    {'mode': '<c-n>'},
-       \    {'mode': 'file'},
+       \    {'complete_items': ['lsp', 'vim-vsnip', 'buffer']},
        \ ]
        \ }
+       " \    {'mode': '<c-n>'},
+       " \    {'mode': 'file'},
        " \    {'complete_items': ['lsp', 'vim-vsnip', 'buffer']},
 
     set spelllang=custom
@@ -44,12 +45,13 @@
             \ 'Property':   10,
             \ 'Constant':   10,
             \ 'vim-vsnip':  9,
-            \ 'Function':   8,
-            \ 'Variables':  8,
-            \ 'Interfaces': 8,
-            \ 'Class':      8,
-            \ 'Struct':     8,
-            \ 'Keyword':    8,
+            \ 'Snippet':    8,
+            \ 'Function':   7,
+            \ 'Variables':  7,
+            \ 'Interfaces': 7,
+            \ 'Class':      7,
+            \ 'Struct':     7,
+            \ 'Keyword':    7,
             \ 'Buffer':     5,
             \}
 
@@ -57,16 +59,28 @@
 " Mappings {{{
 
     " i_CTRL-E closes popup
-    inoremap <CR> <c-g>u<cr>
-    let g:completion_confirm_key = "\<C-y>"
+    " inoremap <CR> <c-e><cr>
+    let g:completion_confirm_key = ""
     imap <expr> <TAB>
                 \ pumvisible() ?
                 \     complete_info()["selected"] != "-1" ?
-                \       "\<Plug>(completion_confirm_completion)"  :
-                \       "\<C-n>\<C-y>" :
+                \       getline('.')[col('.')-1] != '(' ?
+                \           "\<Plug>(completion_confirm_completion)" :
+                \           "\<C-y>" :
+                \       "\<C-n>\<Plug>(completion_confirm_completion)" :
                 \   vsnip#jumpable(1) ?
                 \         "\<Plug>(vsnip-jump-next)" :
-                \       "\<TAB>"
+                \       "\<tab>"
+    inoremap <CR> <c-g>u<cr>
+    " let g:completion_confirm_key = "\<C-y>"
+    " imap <expr> <TAB>
+    "             \ pumvisible() ?
+    "             \     complete_info()["selected"] != "-1" ?
+    "             \       "\<Plug>(completion_confirm_completion)"  :
+    "             \       "\<C-n>\<C-y>" :
+    "             \   vsnip#jumpable(1) ?
+    "             \         "\<Plug>(vsnip-jump-next)" :
+    "             \       "\<TAB>"
 
     imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
     smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'

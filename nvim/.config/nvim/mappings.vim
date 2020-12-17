@@ -117,6 +117,12 @@
 
 
 " }}}
+" COMPILE / RUN {{{
+
+    nnoremap <leader>m :Make<CR>
+    nnoremap <leader># :Run<CR>
+
+" }}}
 " &FT MAPPINGS {{{
   au TermOpen * set ft=term
   augroup terminal-maps
