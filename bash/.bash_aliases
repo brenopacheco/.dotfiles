@@ -28,6 +28,7 @@ alias usage='du -sch .[!.]* * |sort -h'
 # directories cd's
 alias dotfiles='cd ~/.dotfiles'
 alias org='cd ~/org'
+alias vids='cd ~/Videos'
 alias mnt='cd /var/run/media/breno'
 alias aulas='cd ~/Aulas'
 alias tmp='cd /tmp/'

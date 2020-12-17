@@ -80,22 +80,22 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
   xnoremap <silent> <leader>r <cmd>lua    vim.lsp.buf.rename()<CR>
 
 "}}}
-" Status line {{{
+ " Status line {{{
 
-function! LspStatus() abort
-    let sl = ''
-    if luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
-        let sl.='E[' . luaeval("vim.lsp.diagnostic.get_count(vim.fn.bufnr('%'), [[Error]])") . '] '
-        let sl.='W[' . luaeval("vim.lsp.diagnostic.get_count(vim.fn.bufnr('%'), [[Warning]])") . '] '
-    else
-        let sl.='off'
-    endif
-    return sl
-endfunction
+  function! LspStatus() abort
+      let sl = ''
+      if luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
+          let sl.='E[' . luaeval("vim.lsp.diagnostic.get_count(vim.fn.bufnr('%'), [[Error]])") . '] '
+          let sl.='W[' . luaeval("vim.lsp.diagnostic.get_count(vim.fn.bufnr('%'), [[Warning]])") . '] '
+      else
+          let sl.='LSP off'
+      endif
+      return sl
+  endfunction
+ 
+  call sign_define("LspDiagnosticsErrorSign"       ,  {"text" : "E" ,  "texthl" : "LspDiagnosticsError"})
+  call sign_define("LspDiagnosticsWarningSign"     ,  {"text" : "W" ,  "texthl" : "LspDiagnosticsWarning"})
+  call sign_define("LspDiagnosticsInformationSign" ,  {"text" : "I" ,  "texthl" : "LspDiagnosticsInformation"})
+  call sign_define("LspDiagnosticsHintSign"        ,  {"text" : "H" ,  "texthl" : "LspDiagnosticsHint"})
 
-call sign_define("LspDiagnosticsErrorSign"       ,  {"text" : "E" ,  "texthl" : "LspDiagnosticsError"})
-call sign_define("LspDiagnosticsWarningSign"     ,  {"text" : "W" ,  "texthl" : "LspDiagnosticsWarning"})
-call sign_define("LspDiagnosticsInformationSign" ,  {"text" : "I" ,  "texthl" : "LspDiagnosticsInformation"})
-call sign_define("LspDiagnosticsHintSign"        ,  {"text" : "H" ,  "texthl" : "LspDiagnosticsHint"})
-
-" }}} 
+ " }}} 

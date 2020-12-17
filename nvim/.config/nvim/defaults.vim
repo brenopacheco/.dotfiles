@@ -123,3 +123,9 @@ set nospell
 set suffixesadd=.jsx,.tsx,.md,.js,.ts
 
 " }}}
+" notes {{{
+"
+"   replace foldmarker by >
+"   will it work?
+"
+" }}}

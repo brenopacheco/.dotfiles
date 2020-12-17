@@ -141,7 +141,7 @@ endif
             \ }
 
     " Components {{{
-    
+
         function! LspStatus() abort
             return "LSP disabled"
         endfunction

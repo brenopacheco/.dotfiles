@@ -25,12 +25,12 @@
     let g:completion_enable_auto_popup      = 1
     let g:completion_chain_complete_list = {
        \  'default': [
-       \    {'complete_items': ['lsp', 'vim-vsnip', 'buffer']},
+       \    {'complete_items': ['lsp', 'vim-vsnip']},
+       \    {'mode': '<c-n>'},
        \    {'mode': 'file'},
        \ ]
        \ }
-       " \    {'complete_items': ['lsp', 'vim-vsnip']},
-       " \    {'mode': '<c-n>'},
+       " \    {'complete_items': ['lsp', 'vim-vsnip', 'buffer']},
 
     set spelllang=custom
     set nospell
