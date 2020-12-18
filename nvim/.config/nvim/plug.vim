@@ -19,9 +19,8 @@ call plug#begin(g:plugdir)
     Plug 'tpope/vim-commentary'             " comment lines of code
     Plug 'tpope/vim-repeat'                 " repeats commands with .
     Plug 'tpope/vim-surround'               " surrounds elements in text
-    Plug 'tpope/vim-abolish'                " make :s/ keeps uppercase
     Plug 'tpope/vim-fugitive'               " git tools wrapper
-    Plug 'tpope/vim-projectionist'          " jump around alt files i.e: .c .h
+    " Plug 'tpope/vim-projectionist'          " jump around alt files i.e: .c .h
     Plug 'AndrewRadev/bufferize.vim'        " gets cmd result into buffer
     Plug 'farmergreg/vim-lastplace'         " open file in last edited line
     Plug 'markonm/traces.vim'               " preview substitution
@@ -47,16 +46,15 @@ call plug#begin(g:plugdir)
     Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
     Plug 'neovim/nvim-lsp'                  " language server features
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
-    Plug 'nvim-lua/completion-nvim'         " lsp compatible autocomplete
+    Plug 'brenopacheco/completion-nvim', { 'branch': 'custom' }
     Plug 'steelsojka/completion-buffers'
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
     Plug 'cohama/lexima.vim'
-    Plug 'haishanh/night-owl.vim'
-    " Plug 'bluz71/vim-nightfly-guicolors'    " treesitter compatible theme
-
-    Plug 'qpkorr/vim-bufkill'
     Plug 'skywind3000/asyncrun.vim'
+    Plug 'mfussenegger/nvim-dap'
+    Plug 'haishanh/night-owl.vim'
+    Plug 'bluz71/vim-nightfly-guicolors'    " treesitter compatible theme
 
 call plug#end()
 

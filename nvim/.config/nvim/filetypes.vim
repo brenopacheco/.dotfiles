@@ -17,8 +17,8 @@ au Filetype org setlocal
         \ foldmethod=expr 
         \ foldexpr=OrgFold(v:lnum)
 
-
-let s:toggables = [ "term", "quickfix", "tagbar", "vimtree" ]
+" toggables {{{
+let s:quitables = [ "term", "quickfix", "tagbar" ]
 " do not list toggable windows
 augroup ignore_buffers
     autocmd!
@@ -28,7 +28,7 @@ augroup ignore_buffers
 augroup END
 
 function! s:leave()
-    if index(s:toggables, &ft) > -1
+    if index(s:quitables, &ft) > -1
         if winbufnr(2) == -1
           quit!
         endif
@@ -37,8 +37,16 @@ endfunction
 
 " toggable windows should not be left alone. " TODO: task
 " function! s:keep_layout()
-"     if index(s:toggables, &ft) > -1
+"     if index(s:quitables, &ft) > -1
 "         echo "leaving"
 "         buffer #
 "     endif
 " endfunction
+"}}}
+" lua{{{
+
+    au Filetype lua set 
+                \ foldmethod=marker
+                \ foldmarker=[[,]]
+
+"}}}

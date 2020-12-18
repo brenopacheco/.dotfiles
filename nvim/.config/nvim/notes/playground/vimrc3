@@ -40,22 +40,30 @@ let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')
 set completeopt=menuone,noinsert,noselect
 set pumheight=8
 
-let g:completion_enable_snippet         = "vim-vsnip"
-let g:completion_trigger_keyword_length = 1
-let g:completion_enable_auto_hover      = 1
-let g:completion_enable_auto_signature  = 1
-let g:completion_sorting                = "length"
-let g:completion_matching_strategy_list = ['exact']
-let g:completion_matching_ignore_case   = 1
-let g:completion_trigger_on_delete      = 1
-let g:completion_abbr_length            = 20
-let g:completion_menu_length            = 8
-let g:completion_timer_cycle            = 50 " required for fast typing
-let g:completion_trigger_character      = ['.']
-let g:completion_auto_change_source     = 1
-let g:completion_enable_auto_popup      = 1
+" let g:completion_enable_snippet         = "vim-vsnip"
+let g:completion_trigger_keyword_length = 3
 
-let g:completion_confirm_key = ""
-imap <expr> <tab>  pumvisible() ? complete_info()["selected"] != "-1" ?
-		\ "\<Plug>(completion_confirm_completion)"  :
-		\ "\<c-e>\<tab>" : "\<tab>"
+
+let g:completion_trigger_character = []
+let g:completion_enable_auto_paren = 1
+let g:completion_trigger_keyword_length = 3
+
+
+
+" let g:completion_enable_auto_hover      = 1
+" let g:completion_enable_auto_signature  = 1
+" let g:completion_sorting                = "length"
+" let g:completion_matching_strategy_list = ['exact']
+" let g:completion_matching_ignore_case   = 1
+" let g:completion_trigger_on_delete      = 1
+" let g:completion_abbr_length            = 20
+" let g:completion_menu_length            = 8
+" let g:completion_timer_cycle            = 50 " required for fast typing
+" let g:completion_trigger_character      = ['.']
+" let g:completion_auto_change_source     = 1
+" let g:completion_enable_auto_popup      = 1
+
+" let g:completion_confirm_key = ""
+" imap <expr> <tab>  pumvisible() ? complete_info()["selected"] != "-1" ?
+" 		\ "\<Plug>(completion_confirm_completion)"  :
+" 		\ "\<c-e>\<tab>" : "\<tab>"

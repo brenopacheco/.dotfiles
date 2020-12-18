@@ -1,23 +1,21 @@
 " Language servers{{{
 
 lua << EOF
+
     -- require lspconfig for server defaults
     local lspconfig = require'lspconfig'
 
-    -- mappings for on_attach
+    -- mappings for on_attach and custom handlers
+    local custom_handlers = require('lsp-handlers')
     local custom_attach = function()
           vim.api.nvim_buf_set_keymap(0, 'n', '<c-]>', 
             '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true})
     end
 
-    -- enable snippet expansion support for all servers
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
     lspconfig.util.default_config = vim.tbl_extend(
         "force", lspconfig.util.default_config, { 
-            capabilities = capabilities,
-            init_options = { usePlaceholders = true },
-            on_attach = custom_attach
+            on_attach = custom_attach,
+            handlers = custom_handlers
     })
 
     -- enable lsp servers
@@ -45,24 +43,26 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
   function s:display_info() abort
       let new_pos = getpos('.')
       if new_pos == s:pos
-        " change line 632 /usr/local/share/nvim/runtime/lua/vim/lsp/util.lua
-        " local contents = api.nvim_buf_get_lines(bufnr, range.start.line, 
-        " math.max(range["end"].line+1, 10), false)
-        lua peek_definition()
+        lua require('lsp-utils').peek_definition()
         let s:pos = []
       else
         lua vim.lsp.buf.signature_help()
         lua vim.lsp.buf.hover()
         let s:pos = getpos('.')
       endif
-      return ""
   endfunction
-  command! PeekDefinition :lua peek_definition()<CR>
+  command! PeekDefinition :lua require('lsp-utils').peek_definition()<CR>
+  command! SignatureHelp :lua vim.lsp.buf.signature_help()<CR>
+  command! Hover :lua vim.lsp.buf.hover()<CR>
 
-  au CursorHoldI * DisplayInfo
+  fun! s:i_signaturehelp()
+      lua vim.lsp.buf.signature_help()
+      return ""
+  endf
+
+  inoremap <silent> <C-k>     <c-r>=<SID>i_signaturehelp()<CR>
 
   nnoremap <silent> <C-k>     :DisplayInfo<CR>
-  inoremap <silent> <C-k>     <c-r>=<SID>display_info()<CR>
   nnoremap <silent> gd        <cmd>lua    vim.lsp.buf.declaration()<CR>
   nnoremap <silent> gr        <cmd>lua    vim.lsp.buf.references()<CR>
   nnoremap <silent> gi        <cmd>lua    vim.lsp.buf.implementation()<CR>
@@ -92,10 +92,11 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
       endif
       return sl
   endfunction
- 
-  call sign_define("LspDiagnosticsErrorSign"       ,  {"text" : "E" ,  "texthl" : "LspDiagnosticsError"})
-  call sign_define("LspDiagnosticsWarningSign"     ,  {"text" : "W" ,  "texthl" : "LspDiagnosticsWarning"})
-  call sign_define("LspDiagnosticsInformationSign" ,  {"text" : "I" ,  "texthl" : "LspDiagnosticsInformation"})
-  call sign_define("LspDiagnosticsHintSign"        ,  {"text" : "H" ,  "texthl" : "LspDiagnosticsHint"})
 
  " }}} 
+" diagnostics
+
+hi! LspDiagnosticsUnderlineError guibg=bg gui=NONE guisp=NONE
+hi! LspDiagnosticsUnderlineWarning guibg=bg gui=NONE guisp=NONE
+hi! LspDiagnosticsUnderlineInformation guibg=bg gui=NONE guisp=NONE
+hi! LspDiagnosticsUnderlineHint guibg=bg gui=NONE guisp=NONE

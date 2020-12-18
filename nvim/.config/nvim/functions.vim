@@ -76,14 +76,18 @@ endfunction
 let s:interpreters = {
     \ "lua":        "lua",
     \ "python":     "python",
-    \ "bash":       "bash",
+    \ "sh":         "export PATH=$PATH:./ &&",
     \ "javascript": "node",
-    \ "typescript": "ts-node"
+    \ "typescript": "ts-node",
     \}
 
 command! Run :call s:run()
 fun! s:run()
     try
+        if &ft == 'vim'
+            source %
+            return
+        endif
         let interpreter = s:interpreters[&ft]
         exec 'AsyncRun ' . interpreter . ' %'
     catch /.*/

@@ -106,9 +106,9 @@ set report=0                               " always report on :substitute
 set undolevels     =500                    " keep more undos
 set history        =500                    " keep more history in q:
 set virtualedit    =block,onemore          " put cursor where there is no char
-set formatoptions  =c,j,n,o,q,r            " defaults for formatting text
+set formatoptions  =j,n,q                  " defaults for formatting text
 set nojoinspaces                           " always insert 1 spc on join J
-set iskeyword    +=-                      " accept key-word for <cword>
+set iskeyword    +=-                       " accept key-word for <cword>
 set nostartofline
 set visualbell
 set cmdheight=1
@@ -119,12 +119,15 @@ syntax on
 set spellfile=~/.config/nvim/spell/custom.utf-8.add
 set spelllang=custom
 set nospell
-
+let g:vim_indent_cont = &sw                 " \ indents shiftwidth
 set suffixesadd=.jsx,.tsx,.md,.js,.ts
+
+au Filetype * set formatoptions  =j,n,q   " defaults for formatting text
 
 " }}}
 " notes {{{
 "
+"   gotta see  which options are buffer/window inly and being overriden
 "   replace foldmarker by >
 "   will it work?
 "

@@ -34,7 +34,21 @@
 "}}}
 " FZF{{{
 
+    function! s:build_quickfix_list(lines)
+      call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+      copen
+      cc
+    endfunction
+
     let $FZF_DEFAULT_COMMAND = 'fd --hidden'
+    let g:fzf_action = {
+      \ 'ctrl-q': function('s:build_quickfix_list'),
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit' }
+
+    let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+    let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8, 'yoffset': 0.2 } }
 
 "}}}
 " Limelight{{{
@@ -157,9 +171,11 @@ endif
 
     "}}}
 "}}}
-" autopairs {{{
-    let g:AutoPairsMapBS = 0
-    let g:AutoPairsMapCh = 0
+" autopairs/lexima {{{
+    " let g:AutoPairsMapBS = 0
+    " let g:AutoPairsMapCh = 0
+    " always insert new line on <CR> regardless of pum
+    let g:lexima_accept_pum_with_enter = 0
 " }}}
 " Vista {{{
     " let g:vista_default_executive = 'ctags'

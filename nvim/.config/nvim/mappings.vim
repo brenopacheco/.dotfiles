@@ -39,6 +39,8 @@
   nnoremap - :OTree<CR>
   " nnoremap - :GTree<CR>
 
+  nnoremap <C-w>t :tabnew<CR>
+
 "}}}
 " NAVIGATION {{{
   " e: errors,      s: stack(tags), t: tags
@@ -121,6 +123,7 @@
 
     nnoremap <leader>m :Make<CR>
     nnoremap <leader># :Run<CR>
+    nnoremap <F5> :Run<CR>
 
 " }}}
 " &FT MAPPINGS {{{
