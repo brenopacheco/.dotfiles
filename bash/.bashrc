@@ -70,6 +70,8 @@ export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
 [[ ! -d ${NPM_PACKAGES} ]] && mkdir ${NPM_PACKAGES}
 export NODE_PATH=/home/breno/npm/lib/node_modules
 
+## Luarocks modules
+export PATH=$PATH:$HOME/.lua/bin
 
 # true color kitty support
 tic -x -o ~/.terminfo ~/.config/kitty/xterm-24bit.terminfo

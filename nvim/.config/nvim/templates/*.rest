@@ -1,4 +1,8 @@
-# vim: set ft=rest
+# File:   ${expand("%:t")}
+# Author: ${expand("$USER")}
+# Email:  ${$USER . "@" . hostname()}
+# Date:   ${strftime("%c")}
+
 # trigger: <C-j>
 
 # http://localhost:9200
@@ -31,3 +35,4 @@
 # http://localhost:9200
 # HEAD /testindex
 
+# vim: set ft=rest

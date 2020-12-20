@@ -12,6 +12,8 @@
   nnoremap < <<
   inoremap jk <C-[>l
   inoremap kj <C-[>l
+  imap jj <c-e><Down>
+  imap kk <c-e><Up>
   vnoremap * "zy/\V<C-r>=escape(@z, '\/')<CR><CR>
   nnoremap  :nohlsearch<CR>
 

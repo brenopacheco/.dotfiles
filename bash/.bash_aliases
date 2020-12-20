@@ -1,5 +1,8 @@
-# git
+# lua
+alias lua="lua5.1"
 
+
+# git
 alias gs='git status'
 alias gcm='git checkout master'
 gc() {

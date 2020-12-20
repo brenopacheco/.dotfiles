@@ -5,18 +5,23 @@ lua << EOF
     -- require lspconfig for server defaults
     local lspconfig = require'lspconfig'
 
-    -- mappings for on_attach and custom handlers
-    local custom_handlers = require('lsp-handlers')
-    local custom_attach = function()
-          vim.api.nvim_buf_set_keymap(0, 'n', '<c-]>', 
-            '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true})
-    end
+    -- -- mappings for on_attach and custom handlers
+    -- local custom_handlers = require('lsp-handlers')
+    -- local custom_attach = function()
+    --       vim.api.nvim_buf_set_keymap(0, 'n', '<c-]>', 
+    --         '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true})
+    -- end
 
-    lspconfig.util.default_config = vim.tbl_extend(
-        "force", lspconfig.util.default_config, { 
-            on_attach = custom_attach,
-            handlers = custom_handlers
-    })
+    -- -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+    -- -- capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+    -- lspconfig.util.default_config = vim.tbl_extend(
+    --     "force", lspconfig.util.default_config, { 
+    --         -- capabilities = capabilities,
+    --         -- init_options = { usePlaceholders = true },
+    --         on_attach = custom_attach,
+    --         handlers = custom_handlers
+    -- })
 
     -- enable lsp servers
     lspconfig.bashls.setup{}
@@ -25,7 +30,22 @@ lua << EOF
     lspconfig.html.setup{}
     lspconfig.jdtls.setup{}
     lspconfig.jsonls.setup{}
-    lspconfig.sumneko_lua.setup{}
+    lspconfig.sumneko_lua.setup{
+      on_attach = custom_attach,
+      handlers = custom_handlers,
+      -- capabilities = {
+      --     textDocument = {
+      --       completion = {
+      --         completionItem = {
+      --           snippetSupport = false}}}},
+      settings = {
+            Lua = {
+                -- completion = { 
+                --     keywordSnippet = { "Disable"}},
+                diagnostics = {
+                    globals = {"vim", "love"},
+                    disable = {"lowercase-global",
+                               "unused-vararg"}}}}}
     lspconfig.tsserver.setup{}
     lspconfig.vimls.setup{}
     lspconfig.yamlls.setup{}
@@ -61,6 +81,9 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
   endf
 
   inoremap <silent> <C-k>     <c-r>=<SID>i_signaturehelp()<CR>
+  " idea: from insert mode jump to popup
+  " clickin c-k toggles popup in insert mode
+  " clicking c-k 3 times closes popup in normal mode
 
   nnoremap <silent> <C-k>     :DisplayInfo<CR>
   nnoremap <silent> gd        <cmd>lua    vim.lsp.buf.declaration()<CR>
@@ -74,8 +97,8 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
   nnoremap <silent> <leader>d <cmd>lua    vim.lsp.diagnostic.set_loclist()<CR>
   xnoremap <silent> <leader>a <cmd>lua    vim.lsp.buf.code_action()<CR>
   nnoremap <silent> <leader>a <cmd>lua    vim.lsp.buf.code_action()<CR>
-  nnoremap <silent> <leader>= <cmd>lua    vim.lsp.buf.formatting()<CR>
-  xnoremap <silent> <leader>= <cmd>lua    vim.lsp.buf.range_formatting()<CR>
+  " nnoremap <silent> <leader>= <cmd>lua    vim.lsp.buf.formatting()<CR>
+  " xnoremap <silent> <leader>= <cmd>lua    vim.lsp.buf.range_formatting()<CR>
   nnoremap <silent> <leader>r <cmd>lua    vim.lsp.buf.rename()<CR>
   xnoremap <silent> <leader>r <cmd>lua    vim.lsp.buf.rename()<CR>
 

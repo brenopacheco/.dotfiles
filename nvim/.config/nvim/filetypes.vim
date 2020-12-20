@@ -50,3 +50,16 @@ endfunction
                 \ foldmarker=[[,]]
 
 "}}}
+
+" formatters
+
+    " lsp provides formatter for c,cpp 
+
+    au FileType javascript,javascriptreact setlocal formatprg=prettier
+    au FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+    au FileType html setlocal formatprg=js-beautify\ --type\ html
+    au FileType scss setlocal formatprg=prettier\ --parser\ css
+    au FileType css setlocal formatprg=prettier\ --parser\ css
+
+
+    au Filetype lua set formatprg=lua-format equalprg=lua-format

@@ -1,3 +1,8 @@
+# File:   ${expand("%:t")}
+# Author: ${expand("$USER")}
+# Email:  ${$USER . "@" . hostname()}
+# Date:   ${strftime("%c")}
+
 .ONESHELL:
 .SHELL      := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -o posix -c
@@ -29,3 +34,6 @@ clean:
 
 run: $(BIN)
     ./$<
+
+
+# vim: set ft=make

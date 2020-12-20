@@ -98,3 +98,32 @@ endfun
 
 
 " }}}
+" Templates {{{
+
+augroup templates
+    au!
+    au BufEnter * call s:templates()
+augroup end
+
+let g:template_dir = expand('~/.config/nvim/templates')
+command! Template call s:templates()
+
+fun! s:templates()
+    if line('$') != 1 || getline(1) != '' | return | endif
+    let templates = systemlist('ls ' . g:template_dir)
+    let filename = expand('%')
+    let template = ''
+    for t in templates
+        if match(filename, glob2regpat(t)) != -1
+            let template = g:template_dir . '/' . t
+            break
+        endif
+    endfor
+    if template == '' | return | endif
+    call append(0, readfile(template))
+    " the next trick will evaluate vim expressions such as ${strftime("%c")}
+    silent %s/\${\(.\{-}\)}/\=eval(submatch(1))/
+endf
+
+
+" }}}

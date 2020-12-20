@@ -118,10 +118,12 @@ filetype plugin indent on
 syntax on
 set spellfile=~/.config/nvim/spell/custom.utf-8.add
 set spelllang=custom
+set complete=.,kspell
 set nospell
 let g:vim_indent_cont = &sw                 " \ indents shiftwidth
 set suffixesadd=.jsx,.tsx,.md,.js,.ts
-
+set iskeyword-==
+set iskeyword-=/
 au Filetype * set formatoptions  =j,n,q   " defaults for formatting text
 
 " }}}

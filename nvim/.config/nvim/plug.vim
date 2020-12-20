@@ -38,7 +38,7 @@ call plug#begin(g:plugdir)
     Plug 'rhysd/git-messenger.vim'          " show git messsages at cursor pos.
     Plug 'sodapopcan/vim-twiggy'            " branch browser
     Plug 'junegunn/gv.vim'                  " git log browser
-    Plug 'aperezdc/vim-template'            " inserts template on new file
+    " Plug 'aperezdc/vim-template'            " inserts template on new file
     Plug 'KabbAmine/zeavim.vim'             " interfaces to zeal
     Plug 'brenopacheco/vim-tree'            " show directory structure as tree
     Plug 'diepm/vim-rest-console'           " CURL tool for http requests

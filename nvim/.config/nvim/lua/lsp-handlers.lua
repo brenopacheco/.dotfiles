@@ -5,6 +5,7 @@ local M = {}
 
 -- modified to set max width and height
 M['textDocument/hover'] = function(_, method, result)
+  print("hovering w/ custom handler")
   util.focusable_float(method, function()
     if not (result and result.contents) then
       return
@@ -17,7 +18,7 @@ M['textDocument/hover'] = function(_, method, result)
     local bufnr, winnr = util.fancy_floating_markdown(markdown_lines, {
       pad_left = 1; pad_right = 1; max_width = 60; max_height = 14;
     })
-    util.close_preview_autocmd({"CursorMoved", "BufHidden"}, winnr)
+    util.close_preview_autocmd({"CursorMoved", "BufHidden", "InsertCharPre"}, winnr)
     return bufnr, winnr
   end)
 end
