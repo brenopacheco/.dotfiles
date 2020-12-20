@@ -1,7 +1,5 @@
 local vim = vim
 
-local M = {}
-
 local function preview_location_callback(_, _, result)
   if result == nil or vim.tbl_isempty(result) then
     return nil
@@ -13,9 +11,7 @@ local function preview_location_callback(_, _, result)
   end
 end
 
-function M.peek_definition()
+vim.lsp.buf.peek_definition = function()
   local params = vim.lsp.util.make_position_params()
   return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
 end
-
-return M

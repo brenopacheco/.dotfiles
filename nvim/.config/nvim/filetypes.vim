@@ -61,5 +61,4 @@ endfunction
     au FileType scss setlocal formatprg=prettier\ --parser\ css
     au FileType css setlocal formatprg=prettier\ --parser\ css
 
-
-    au Filetype lua set formatprg=lua-format equalprg=lua-format
+    au Filetype lua setlocal formatprg=lua-format equalprg=lua-format

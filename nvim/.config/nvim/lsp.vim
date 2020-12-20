@@ -1,6 +1,8 @@
 " Language servers{{{
 
 lua << EOF
+    -- override default handlers
+    require('lsp-overrides')
 
     -- require lspconfig for server defaults
     local lspconfig = require'lspconfig'
@@ -63,7 +65,7 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
   function s:display_info() abort
       let new_pos = getpos('.')
       if new_pos == s:pos
-        lua require('lsp-utils').peek_definition()
+        lua vim.lsp.buf.peek_definition()
         let s:pos = []
       else
         lua vim.lsp.buf.signature_help()
@@ -71,12 +73,13 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
         let s:pos = getpos('.')
       endif
   endfunction
-  command! PeekDefinition :lua require('lsp-utils').peek_definition()<CR>
+  command! PeekDefinition :lua vim.lsp.buf.peek_definition()<CR>
   command! SignatureHelp :lua vim.lsp.buf.signature_help()<CR>
   command! Hover :lua vim.lsp.buf.hover()<CR>
 
   fun! s:i_signaturehelp()
       lua vim.lsp.buf.signature_help()
+      " echo map(getbufinfo(), { _,s -> s.bufnr })
       return ""
   endf
 
@@ -84,6 +87,23 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
   " idea: from insert mode jump to popup
   " clickin c-k toggles popup in insert mode
   " clicking c-k 3 times closes popup in normal mode
+
+
+    inoremap <silent><c-o> <c-r>=<SID>close_lsp_floating()<CR>
+
+    fun! s:close_lsp_floating()
+       let buffers = map(filter(getbufinfo(), 
+           \ { _,s -> has_key(s.variables, 'lsp_floating')
+           \ && s.variables.lsp_floating == v:true }),
+           \ { _,s -> s.bufnr })
+       " echo "buffers: " . string( buffers )
+       for buffer in buffers
+            call nvim_buf_delete(buffer, { 'force': v:true })
+       endfor
+       return ""
+    endf
+
+  nnoremap <silent> <leader>= gg=G''
 
   nnoremap <silent> <C-k>     :DisplayInfo<CR>
   nnoremap <silent> gd        <cmd>lua    vim.lsp.buf.declaration()<CR>
@@ -97,8 +117,6 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
   nnoremap <silent> <leader>d <cmd>lua    vim.lsp.diagnostic.set_loclist()<CR>
   xnoremap <silent> <leader>a <cmd>lua    vim.lsp.buf.code_action()<CR>
   nnoremap <silent> <leader>a <cmd>lua    vim.lsp.buf.code_action()<CR>
-  " nnoremap <silent> <leader>= <cmd>lua    vim.lsp.buf.formatting()<CR>
-  " xnoremap <silent> <leader>= <cmd>lua    vim.lsp.buf.range_formatting()<CR>
   nnoremap <silent> <leader>r <cmd>lua    vim.lsp.buf.rename()<CR>
   xnoremap <silent> <leader>r <cmd>lua    vim.lsp.buf.rename()<CR>
 
