@@ -49,17 +49,17 @@
   " a: arglist,     b: buffer,      q: quickfix
   " c: gitchunk     l: loclist      c: diffnext
   " L: loc history  Q: qf history
-  nnoremap ]s :tag<CR>    | nnoremap [s :pop<CR>
-  nnoremap ]t :tnext<CR>  | nnoremap [t :tprevious<CR>
-  nnoremap ]a :next<CR>   | nnoremap [a :previous<CR>
-  nnoremap ]b :bnext<CR>  | nnoremap [b :bprevious<CR>
+  nnoremap <silent> ]s :tag<CR>    | nnoremap <silent> [s :pop<CR>
+  nnoremap <silent> ]t :tnext<CR>  | nnoremap <silent> [t :tprevious<CR>
+  nnoremap <silent> ]a :next<CR>   | nnoremap <silent> [a :previous<CR>
+  nnoremap <silent> ]b :bnext<CR>  | nnoremap <silent> [b :bprevious<CR>
   nnoremap <silent> ]q :try \| cnext \| catch \| cfirst \| catch \| endtry<CR>
   nnoremap <silent> [q :try \| cprev \| catch \| clast \| catch \| endtry<CR>
-  nnoremap ]l :lnext<CR>  | nnoremap [l :lprevious<CR>
-  nnoremap ]L :lnewer<CR> | nnoremap [L :lolder<CR>
-  nnoremap ]Q :cnewer<CR> | nnoremap [Q :colder<CR>
-  nmap ]c <plug>(signify-next-hunk) 
-  nmap [c <plug>(signify-prev-hunk)
+  nnoremap <silent> ]l :lnext<CR>  | nnoremap <silent> [l :lprevious<CR>
+  nnoremap <silent> ]L :lnewer<CR> | nnoremap <silent> [L :lolder<CR>
+  nnoremap <silent> ]Q :cnewer<CR> | nnoremap <silent> [Q :colder<CR>
+  nmap <silent> ]c <plug>(signify-next-hunk) 
+  nmap <silent> [c <plug>(signify-prev-hunk)
 "}}}
 " FIND{{{
   nnoremap <silent> <leader>f~ :Files ~<CR>
@@ -155,7 +155,7 @@
   command! NetrwToggle    :call s:toggle('netrw', 'Lexplore')
   command! TreeToggle     :call s:toggle('vimtree', 'VGTree')
   command! TerminalToggle :call s:toggle('term', 'TermOpen')
-  command! QuickfixToggle :call s:toggle('qf', 'copen')
+  command! QuickfixToggle :call s:toggle('qf', 'copen | wincmd p')
   command! VGTree         :call s:vgtree()
   command! OTree          :call s:otree()
   command! TermOpen       :call s:termopen()

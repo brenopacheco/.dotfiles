@@ -69,12 +69,12 @@ lua <<EOF
       }
     }
 EOF
-augroup plugin-treesiter
-  au FileType sh,bash,c,cpp,lua,java,css,html,json,
-                \javascript,typescript,typescriptreact,javascriptreact
-                \ set foldmethod=expr |
-                \ set foldexpr=nvim_treesitter#foldexpr()
-augroup END
+" augroup plugin-treesiter
+"   au FileType sh,bash,c,cpp,lua,java,css,html,json,
+"                 \javascript,typescript,typescriptreact,javascriptreact
+"                 \ set foldmethod=expr |
+"                 \ set foldexpr=nvim_treesitter#foldexpr()
+" augroup END
 endif
 " }}}
 " Zeavim{{{

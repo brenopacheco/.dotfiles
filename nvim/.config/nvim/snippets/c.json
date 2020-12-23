@@ -32,7 +32,7 @@
         "prefix": "inch",
         "description": "include \"header.h\"",
         "body": [
-        "#include \"${1:${VIM:vim_snippets#Filename(\"$1.h\")}}\""
+        "#include \"$1\"$0"
         ]
     },
     "ndef": {

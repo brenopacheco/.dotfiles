@@ -43,7 +43,7 @@ shopt -s globstar
 
 # PATH
 export PATH=$PATH:$HOME/bin
-export PATH=$PATH:~/go/bin
+export PATH=$PATH:~/.go/bin
 export PATH=$PATH:$HOME/.local/bin
 
 # Source aliases and functions and keybindings
@@ -63,12 +63,12 @@ export SVN_EDITOR="$VISUAL"
 export JAVA_HOME=/usr/lib/jvm/default
 
 ## NPM / NODE config
-NPM_PACKAGES="${HOME}/npm"
+NPM_PACKAGES="${HOME}/.npm"
 export PATH="$PATH:$NPM_PACKAGES/bin"
 export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
 [[ ! -f ~/.npmrc ]] && echo "prefix=${NPM_PACKAGES}" >> ~/.npmrc
 [[ ! -d ${NPM_PACKAGES} ]] && mkdir ${NPM_PACKAGES}
-export NODE_PATH=/home/breno/npm/lib/node_modules
+export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
 
 ## Luarocks modules
 export PATH=$PATH:$HOME/.lua/bin

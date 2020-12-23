@@ -14,11 +14,11 @@
     let g:completion_sorting                = "length"
     let g:completion_matching_strategy_list = ['exact']
     let g:completion_matching_ignore_case   = 1
-    let g:completion_trigger_on_delete      = 1
+    let g:completion_trigger_on_delete      = 0
     let g:completion_abbr_length            = 20
     let g:completion_menu_length            = 8
     let g:completion_trigger_character      = []
-    let g:completion_timer_cycle            = 80
+    let g:completion_timer_cycle            = 50
     let g:completion_confirm_key = ""
     let g:completion_enable_auto_popup      = 0
     let g:completion_chain_complete_list = {
@@ -95,9 +95,9 @@
                     let info = complete_info()
                     let mode = info.mode
                     let kind = info.items[info.selected].kind
-                    if mode == "files"
+                    if mode == "files" || kind == "Variable" || kind == "Field"
                         return "\<c-y>"
-                    elseif kind == "Function"
+                    elseif kind == "Function" || kind == "Method"
                         return "\<c-y>("
                     else
                         return "\<c-y>\<space>"
@@ -127,6 +127,7 @@
     smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
 
     imap <silent> <C-space> <Plug>(completion_trigger)
+    xmap s <Plug>(vsnip-cut-text)
 
     smap <Backspace> a<Backspace>
 

@@ -125,6 +125,12 @@ set suffixesadd=.jsx,.tsx,.md,.js,.ts
 set iskeyword-==
 set iskeyword-=/
 au Filetype * set formatoptions  =j,n,q   " defaults for formatting text
+    \ foldmethod=marker
+    \ foldmarker={{{,}}}
+
+" default foldexpr like: // name ============================================
+" au Filetype * set foldexpr=getline(v:lnum+1)=~'^.*=\\{10}$'?'<1':1
+
 
 " }}}
 " notes {{{

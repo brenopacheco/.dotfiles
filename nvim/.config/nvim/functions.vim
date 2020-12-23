@@ -11,8 +11,8 @@ fun! s:clear_cache()
 endf
 "}}}
 " GPG {{{
-command! GPGEncrypt silent exec 'g/^gpg:/d' | exec '%!gpg -easq'
-command! GPGDecrypt exec '%!gpg -dq' | silent exec 'g/^gpg:/d'
+command! GPGEncrypt silent exec 'g/^gpg:/d' | exec '%!gpg -easq' "encrypt, armor, sign, quiet
+command! GPGDecrypt exec '%!gpg -dq' | silent exec 'g/^gpg:/d'   "decrypt, quiet
 "}}}
 " Make {{{
 

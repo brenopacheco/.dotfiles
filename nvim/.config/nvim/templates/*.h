@@ -4,11 +4,11 @@
  * Email:  ${$USER . "@" . hostname()}
  * Date:   ${strftime("%c")}
  */
-#ifndef ${toupper(expand("%:t"))}
-#define ${toupper(expand("%:t"))} value
+#ifndef ${toupper(expand("%:t:r"))}
+#define ${toupper(expand("%:t:r"))}
 
 
 
 
 
-#endif /* !${toupper(expand("%:t"))} */
+#endif /* !${toupper(expand("%:t:r"))} */
