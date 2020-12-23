@@ -150,7 +150,6 @@
   command! Trim           :%s/\s\+$//e
   command! TabReplace     :%s/\t/    /g
   command! SpaceReplace   :%s/    /\t/g
-  command! Format         :norm maggVG=`a
   command! Fork           :silent exec '!kitty & disown'
   command! NetrwToggle    :call s:toggle('netrw', 'Lexplore')
   command! TreeToggle     :call s:toggle('vimtree', 'VGTree')

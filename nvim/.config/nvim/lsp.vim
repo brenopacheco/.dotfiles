@@ -6,8 +6,9 @@ lua << EOF
     require('lsp-utils')
     local lspconfig = require'lspconfig'
     local util      = require('lspconfig/util')
-    local servers = { "bashls", "ccls", "cssls", "html", "sumneko_lua",
-                      "jdtls", "tsserver", "vimls", "yamlls" }
+
+    local servers = { "bashls", "ccls", "cssls", "html", "jdtls", "jsonls",
+                      "sumneko_lua", "tsserver", "vimls", "yamlls" }
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = false
@@ -30,6 +31,12 @@ lua << EOF
                     globals = {"vim", "love"},
                     disable = {"lowercase-global",
                                "unused-vararg"}}}}}
+
+    local capabilities2 = vim.lsp.protocol.make_client_capabilities()
+    capabilities2.textDocument.completion.completionItem.snippetSupport = true
+    lspconfig.jdtls.setup{
+        capabilities = capabilities2
+    }
 
 EOF
 
@@ -58,12 +65,12 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
 
     command! LspStatus           Bufferize lua print(vim.inspect(vim.lsp.buf_get_clients()))
     command! LspDisplayInfo      call s:display_info()
-    command! LspFormat           call s:format()<CR>
+    command! LspFormat           call s:format()
     command! LspClosePopup       call s:close_lsp_floating()
 
-    nnoremap <c-]> :exec <SID>lsp_on() ? 
+    nnoremap <c-]> :silent exec <SID>lsp_on() ? 
         \ 'lua vim.lsp.buf.definition()' : 
-        \ ('tag /' . expand('<cword>'))
+        \ ('tag /' . expand('<cword>'))<CR>
 
     nnoremap <silent> gd        <cmd>lua vim.lsp.buf.declaration()<CR>
     nnoremap <silent> gr        <cmd>lua vim.lsp.buf.references()<CR>
@@ -79,12 +86,25 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
     nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
     xnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
 
-    nnoremap <silent> <leader>= gg=G''
+    nnoremap <silent> <leader>= <cmd>LspFormat<CR>
     nnoremap <silent> <C-k>     <cmd>LspHover<CR>
     nnoremap <silent> <C-p>     <cmd>LspPeekDefinition<CR>
     nnoremap <silent> <C-j>     <cmd>LspClosePopup<CR>
     inoremap <silent> <C-k>     <cmd>LspSignatureHelp<CR>
     inoremap <silent> <c-j>     <cmd>LspClosePopup<CR>
+
+    fun! s:format()
+        try
+            if !s:lsp_on()
+                throw "Lsp off"
+            endif
+            lua vim.lsp.buf.formatting_sync()
+            echo "Formatting using LSP formatter"
+        catch /.*/
+            norm gg=G''
+            echo "Formatting using formatprg"
+        endtry
+    endf
 
     fun! s:close_lsp_floating()
         let buffers = 

@@ -1,4 +1,5 @@
 local vim = vim
+local util = require 'vim.lsp.util'
 
 local function preview_location_callback(_, _, result)
   if result == nil or vim.tbl_isempty(result) then
@@ -14,4 +15,12 @@ end
 vim.lsp.buf.peek_definition = function()
   local params = vim.lsp.util.make_position_params()
   return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
+end
+
+
+
+-- not working
+vim.lsp.buf.hover_diagnostics = function ()
+  local line_diagnostics = vim.lsp.diagnostic.get_line_diagnostics()
+  vim.lsp.handlers['textDocument/hover'](nil, nil, line_diagnostics)
 end

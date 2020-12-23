@@ -1,733 +1,105 @@
 {
-    "po": {
+    "protected": {
         "prefix": "po",
         "description": "po",
         "body": [
         "protected ${0}"
         ]
     },
-    "pu": {
+    "public": {
         "prefix": "pu",
         "description": "pu",
         "body": [
         "public ${0}"
         ]
     },
-    "pr": {
+    "private": {
         "prefix": "pr",
         "description": "pr",
         "body": [
         "private ${0}"
         ]
     },
-    "before": {
-        "prefix": "before",
-        "description": "before",
-        "body": [
-        "@Before",
-        "static void ${1:intercept}(${2:args}) { ${0} }"
-        ]
-    },
-    "mm": {
-        "prefix": "mm",
-        "description": "mm",
-        "body": [
-        "@ManyToMany",
-        "${0}"
-        ]
-    },
-    "mo": {
-        "prefix": "mo",
-        "description": "mo",
-        "body": [
-        "@ManyToOne",
-        "${0}"
-        ]
-    },
-    "om": {
-        "prefix": "om",
-        "description": "om",
-        "body": [
-        "@OneToMany${1:(cascade=CascadeType.ALL)}",
-        "${0}"
-        ]
-    },
-    "oo": {
-        "prefix": "oo",
-        "description": "oo",
-        "body": [
-        "@OneToOne",
-        "${1}"
-        ]
-    },
-    "im": {
+    "import": {
         "prefix": "im",
         "description": "im",
         "body": [
         "import ${0}"
         ]
     },
-    "j.b": {
-        "prefix": "j.b",
-        "description": "j.b",
-        "body": [
-        "java.beans."
-        ]
-    },
-    "j.i": {
-        "prefix": "j.i",
-        "description": "j.i",
-        "body": [
-        "java.io."
-        ]
-    },
-    "j.m": {
-        "prefix": "j.m",
-        "description": "j.m",
-        "body": [
-        "java.math."
-        ]
-    },
-    "j.n": {
-        "prefix": "j.n",
-        "description": "j.n",
-        "body": [
-        "java.net."
-        ]
-    },
-    "j.u": {
-        "prefix": "j.u",
-        "description": "j.u",
-        "body": [
-        "java.util."
-        ]
-    },
-    "cl": {
-        "prefix": "cl",
-        "description": "cl",
-        "body": [
-        "class ${1:${VIM:vim_snippets#Filename(\"$1\", \"untitled\")}} ${0}"
-        ]
-    },
-    "pcl": {
+    "class": {
         "prefix": "pcl",
         "description": "pcl",
         "body": [
         "public class ${1:${VIM:vim_snippets#Filename(\"$1\", \"untitled\")}} ${0}"
         ]
     },
-    "in": {
+    "interface": {
         "prefix": "in",
         "description": "in",
         "body": [
         "interface ${1:${VIM:vim_snippets#Filename(\"$1\", \"untitled\")}} ${2:extends Parent}"
         ]
     },
-    "tc": {
-        "prefix": "tc",
-        "description": "tc",
-        "body": [
-        "public class ${1:${VIM:vim_snippets#Filename(\"$1\")}} extends ${0:TestCase}"
-        ]
-    },
-    "ext": {
+    "extends": {
         "prefix": "ext",
         "description": "ext",
         "body": [
         "extends ${0}"
         ]
     },
-    "imp": {
+    "implements": {
         "prefix": "imp",
         "description": "imp",
         "body": [
         "implements ${0}"
         ]
     },
-    "/*": {
+    "comment": {
         "prefix": "/*",
-        "description": "/*",
+        "description": "/* enclosed comment */",
         "body": [
         "/*",
         " * ${0}",
         " */"
         ]
     },
-    "co": {
-        "prefix": "co",
-        "description": "co",
+    "field": {
+        "prefix": "field",
+        "description": "private final ... ",
         "body": [
-        "static public final ${1:String} ${2:var} = ${3};"
+        "private ${1:String} ${2:name} = ${3:value};"
         ]
     },
-    "cos": {
-        "prefix": "cos",
-        "description": "cos",
+    "method": {
+        "prefix": "method",
+        "description": "public void method(args) { ... }",
         "body": [
-        "static public final String ${1:var} = \"${2}\";"
+        "${1:public} ${2:void} ${2:method}(${3:args})",
+        "\t\t{",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "\t\t}"
         ]
     },
-    "case": {
-        "prefix": "case",
-        "description": "case",
+    "string": {
+        "prefix": "string",
+        "description": "String ... = ...",
         "body": [
-        "case ${1}:",
-        "    ${0}"
+        "String ${1:var} = ${2:value};$0"
         ]
     },
-    "def": {
-        "prefix": "def",
-        "description": "def",
-        "body": [
-        "default:",
-        "    ${0}"
-        ]
-    },
-    "el": {
-        "prefix": "el",
-        "description": "el",
-        "body": [
-        "else"
-        ]
-    },
-    "eif": {
-        "prefix": "eif",
-        "description": "eif",
-        "body": [
-        "else if (${1}) ${0}"
-        ]
-    },
-    "if": {
-        "prefix": "if",
-        "description": "if",
-        "body": [
-        "if (${1}) ${0}"
-        ]
-    },
-    "sw": {
-        "prefix": "sw",
-        "description": "sw",
-        "body": [
-        "switch (${1}) {",
-        "    ${0}",
-        "}"
-        ]
-    },
-    "m": {
-        "prefix": "m",
-        "description": "m",
-        "body": [
-        "${1:void} ${2:method}(${3}) ${4:throws }"
-        ]
-    },
-    "v": {
-        "prefix": "v",
-        "description": "v",
-        "body": [
-        "${1:String} ${2:var}${3: = null}${4};"
-        ]
-    },
-    "d.al": {
-        "prefix": "d.al",
-        "description": "d.al",
+    "arraylist": {
+        "prefix": "arraylist",
+        "description": "List<...> ... = new ArrayList<...>();",
         "body": [
         "List<${1:Object}> ${2:list} = new ArrayList<$1>();${0}"
         ]
     },
-    "d.hm": {
-        "prefix": "d.hm",
-        "description": "d.hm",
+    "hashmap": {
+        "prefix": "hashmap",
+        "description": "Map<...> ... = new HashMap<...>()",
         "body": [
         "Map<${1:Object}, ${2:Object}> ${3:map} = new HashMap<$1, $2>();${0}"
         ]
-    },
-    "d.hs": {
-        "prefix": "d.hs",
-        "description": "d.hs",
-        "body": [
-        "Set<${1:Object}> ${2:set} = new HashSet<$1>();${0}"
-        ]
-    },
-    "d.st": {
-        "prefix": "d.st",
-        "description": "d.st",
-        "body": [
-        "Stack<${1:Object}> ${2:stack} = new Stack<$1>();${0}"
-        ]
-    },
-    "singlet": {
-        "prefix": "singlet",
-        "description": "singlet",
-        "body": [
-        "private static class Holder {",
-        "    private static final ${1:${VIM:vim_snippets#Filename(\"$1\")}} INSTANCE = new $1();",
-        "}",
-        "private $1() { }",
-        "public static $1 getInstance() {",
-        "    return Holder.INSTANCE;",
-        "}"
-        ]
-    },
-    "ab": {
-        "prefix": "ab",
-        "description": "ab",
-        "body": [
-        "abstract ${0}"
-        ]
-    },
-    "fi": {
-        "prefix": "fi",
-        "description": "fi",
-        "body": [
-        "final ${0}"
-        ]
-    },
-    "st": {
-        "prefix": "st",
-        "description": "st",
-        "body": [
-        "static ${0}"
-        ]
-    },
-    "sy": {
-        "prefix": "sy",
-        "description": "sy",
-        "body": [
-        "synchronized ${0}"
-        ]
-    },
-    "err": {
-        "prefix": "err",
-        "description": "err",
-        "body": [
-        "System.err.print(\"${0:Message}\");"
-        ]
-    },
-    "errf": {
-        "prefix": "errf",
-        "description": "errf",
-        "body": [
-        "System.err.printf(\"${1:Message}\", ${0:exception});"
-        ]
-    },
-    "errln": {
-        "prefix": "errln",
-        "description": "errln",
-        "body": [
-        "System.err.println(\"${0:Message}\");"
-        ]
-    },
-    "as": {
-        "prefix": "as",
-        "description": "as",
-        "body": [
-        "assert ${1:test} : \"${2:Failure message}\";"
-        ]
-    },
-    "ae": {
-        "prefix": "ae",
-        "description": "ae",
-        "body": [
-        "assertEquals(\"${1:Failure message}\", ${2:expected}, ${3:actual});"
-        ]
-    },
-    "aae": {
-        "prefix": "aae",
-        "description": "aae",
-        "body": [
-        "assertArrayEquals(\"${1:Failure message}\", ${2:expecteds}, ${3:actuals});"
-        ]
-    },
-    "af": {
-        "prefix": "af",
-        "description": "af",
-        "body": [
-        "assertFalse(\"${1:Failure message}\", ${2:condition});"
-        ]
-    },
-    "at": {
-        "prefix": "at",
-        "description": "at",
-        "body": [
-        "assertTrue(\"${1:Failure message}\", ${2:condition});"
-        ]
-    },
-    "an": {
-        "prefix": "an",
-        "description": "an",
-        "body": [
-        "assertNull(\"${1:Failure message}\", ${2:object});"
-        ]
-    },
-    "ann": {
-        "prefix": "ann",
-        "description": "ann",
-        "body": [
-        "assertNotNull(\"${1:Failure message}\", ${2:object});"
-        ]
-    },
-    "ass": {
-        "prefix": "ass",
-        "description": "ass",
-        "body": [
-        "assertSame(\"${1:Failure message}\", ${2:expected}, ${3:actual});"
-        ]
-    },
-    "asns": {
-        "prefix": "asns",
-        "description": "asns",
-        "body": [
-        "assertNotSame(\"${1:Failure message}\", ${2:expected}, ${3:actual});"
-        ]
-    },
-    "fa": {
-        "prefix": "fa",
-        "description": "fa",
-        "body": [
-        "fail(\"${1:Failure message}\");"
-        ]
-    },
-    "ca": {
-        "prefix": "ca",
-        "description": "ca",
-        "body": [
-        "catch(${1:Exception} ${2:e}) ${0}"
-        ]
-    },
-    "thr": {
-        "prefix": "thr",
-        "description": "thr",
-        "body": [
-        "throw ${0}"
-        ]
-    },
-    "ths": {
-        "prefix": "ths",
-        "description": "ths",
-        "body": [
-        "throws ${0}"
-        ]
-    },
-    "try": {
-        "prefix": "try",
-        "description": "try",
-        "body": [
-        "try {",
-        "    ${0:${TM_SELECTED_TEXT}}",
-        "} catch(${1:Exception} ${2:e}) {",
-        "}"
-        ]
-    },
-    "tryf": {
-        "prefix": "tryf",
-        "description": "tryf",
-        "body": [
-        "try {",
-        "    ${0:${TM_SELECTED_TEXT}}",
-        "} catch(${1:Exception} ${2:e}) {",
-        "} finally {",
-        "}"
-        ]
-    },
-    "findall": {
-        "prefix": "findall",
-        "description": "findall",
-        "body": [
-        "List<${1:listName}> ${2:items} = $1.findAll();"
-        ]
-    },
-    "findbyid": {
-        "prefix": "findbyid",
-        "description": "findbyid",
-        "body": [
-        "${1:var} ${2:item} = $1.findById(${3});"
-        ]
-    },
-    "/**": {
-        "prefix": "/**",
-        "description": "/**",
-        "body": [
-        "/**",
-        " * ${0}",
-        " */"
-        ]
-    },
-    "@au": {
-        "prefix": "@au",
-        "description": "@au",
-        "body": [
-        "@author ${VIM:system(\"grep \\}id -un\\${VIM: /etc/passwd | cut -d \\\":\\\" -f5 | cut -d \\\",\\\" -f1\")}"
-        ]
-    },
-    "@br": {
-        "prefix": "@br",
-        "description": "@br",
-        "body": [
-        "@brief ${0:Description}"
-        ]
-    },
-    "@fi": {
-        "prefix": "@fi",
-        "description": "@fi",
-        "body": [
-        "@file ${0:${VIM:vim_snippets#Filename(\"$1\")}}.java"
-        ]
-    },
-    "@pa": {
-        "prefix": "@pa",
-        "description": "@pa",
-        "body": [
-        "@param ${0:param}"
-        ]
-    },
-    "@re": {
-        "prefix": "@re",
-        "description": "@re",
-        "body": [
-        "@return ${0:param}"
-        ]
-    },
-    "debug": {
-        "prefix": "debug",
-        "description": "debug",
-        "body": [
-        "Logger.debug(${1:param});"
-        ]
-    },
-    "error": {
-        "prefix": "error",
-        "description": "error",
-        "body": [
-        "Logger.error(${1:param});"
-        ]
-    },
-    "info": {
-        "prefix": "info",
-        "description": "info",
-        "body": [
-        "Logger.info(${1:param});"
-        ]
-    },
-    "warn": {
-        "prefix": "warn",
-        "description": "warn",
-        "body": [
-        "Logger.warn(${1:param});"
-        ]
-    },
-    "enfor": {
-        "prefix": "enfor",
-        "description": "enfor",
-        "body": [
-        "for (${1} : ${2}) ${0}"
-        ]
-    },
-    "for": {
-        "prefix": "for",
-        "description": "for",
-        "body": [
-        "for (${1}; ${2}; ${3}) ${0}"
-        ]
-    },
-    "wh": {
-        "prefix": "wh",
-        "description": "wh",
-        "body": [
-        "while (${1}) ${0}"
-        ]
-    },
-    "psvm": {
-        "prefix": "psvm",
-        "description": "psvm",
-        "body": [
-        "public static void main (String[] args) {",
-        "    ${0}",
-        "}"
-        ]
-    },
-    "main": {
-        "prefix": "main",
-        "description": "main",
-        "body": [
-        "public static void main (String[] args) {",
-        "    ${0}",
-        "}"
-        ]
-    },
-    "sout": {
-        "prefix": "sout",
-        "description": "sout",
-        "body": [
-        "System.out.println(${0});"
-        ]
-    },
-    "serr": {
-        "prefix": "serr",
-        "description": "serr",
-        "body": [
-        "System.err.println(${0});"
-        ]
-    },
-    "print": {
-        "prefix": "print",
-        "description": "print",
-        "body": [
-        "System.out.print(\"${0:Message}\");"
-        ]
-    },
-    "printf": {
-        "prefix": "printf",
-        "description": "printf",
-        "body": [
-        "System.out.printf(\"${1:Message}\", ${0:args});"
-        ]
-    },
-    "println": {
-        "prefix": "println",
-        "description": "println",
-        "body": [
-        "System.out.println(${0});"
-        ]
-    },
-    "printlna": {
-        "prefix": "printlna",
-        "description": "printlna",
-        "body": [
-        "System.out.println(Arrays.toString(${0}));"
-        ]
-    },
-    "ren": {
-        "prefix": "ren",
-        "description": "ren",
-        "body": [
-        "render(${1:param});"
-        ]
-    },
-    "rena": {
-        "prefix": "rena",
-        "description": "rena",
-        "body": [
-        "renderArgs.put(\"${1}\", ${2});"
-        ]
-    },
-    "renb": {
-        "prefix": "renb",
-        "description": "renb",
-        "body": [
-        "renderBinary(${1:param});"
-        ]
-    },
-    "renj": {
-        "prefix": "renj",
-        "description": "renj",
-        "body": [
-        "renderJSON(${1:param});"
-        ]
-    },
-    "renx": {
-        "prefix": "renx",
-        "description": "renx",
-        "body": [
-        "renderXml(${1:param});"
-        ]
-    },
-    "set": {
-        "prefix": "set",
-        "description": "set",
-        "body": [
-        "${1:public} void set${3:}(${2:String} ${0:}){",
-        "    this.$4 = $4;",
-        "}"
-        ]
-    },
-    "get": {
-        "prefix": "get",
-        "description": "get",
-        "body": [
-        "${1:public} ${2:String} get${3:}(){",
-        "    return this.${0:};",
-        "}"
-        ]
-    },
-    "re": {
-        "prefix": "re",
-        "description": "re",
-        "body": [
-        "return ${0}"
-        ]
-    },
-    "br": {
-        "prefix": "br",
-        "description": "br",
-        "body": [
-        "break;"
-        ]
-    },
-    "t": {
-        "prefix": "t",
-        "description": "t",
-        "body": [
-        "public void test${1:Name}() throws Exception {",
-        "    ${0}",
-        "}"
-        ]
-    },
-    "test": {
-        "prefix": "test",
-        "description": "test",
-        "body": [
-        "@Test",
-        "public void test${1:Name}() throws Exception {",
-        "    ${0}",
-        "}"
-        ]
-    },
-    "Sc": {
-        "prefix": "Sc",
-        "description": "Sc",
-        "body": [
-        "Scanner"
-        ]
-    },
-    "action": {
-        "prefix": "action",
-        "description": "action",
-        "body": [
-        "public static void ${1:index}(${2:args}) { ${0} }"
-        ]
-    },
-    "rnf": {
-        "prefix": "rnf",
-        "description": "rnf",
-        "body": [
-        "notFound(${1:param});"
-        ]
-    },
-    "rnfin": {
-        "prefix": "rnfin",
-        "description": "rnfin",
-        "body": [
-        "notFoundIfNull(${1:param});"
-        ]
-    },
-    "rr": {
-        "prefix": "rr",
-        "description": "rr",
-        "body": [
-        "redirect(${1:param});"
-        ]
-    },
-    "ru": {
-        "prefix": "ru",
-        "description": "ru",
-        "body": [
-        "unauthorized(${1:param});"
-        ]
-    },
-    "unless": {
-        "prefix": "unless",
-        "description": "unless",
-        "body": [
-        "(unless=${1:param});"        ]
     }
 }

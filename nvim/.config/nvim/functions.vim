@@ -127,3 +127,22 @@ endf
 
 
 " }}}
+" FZFSnippets
+
+fun! s:source_snippets()
+  let l:sources = eval(join(vsnip#source#find(bufnr('%')), '+'))
+  return sort(map(l:sources, { _,s -> printf("%-15s%-16s%-30s", 
+      \ s.prefix[0],  s.label, s.description)}))
+endf
+
+fun! s:sink_snippet(snippet)
+    let prefix = matchstr(a:snippet, '^\S\+')
+    exec 'norm i' . prefix . "\<plug>(vsnip-expand)"
+endf
+
+command! Snippets :call fzf#run(fzf#wrap('FZF',{
+    \ 'source': s:source_snippets(),
+    \ 'sink': function('s:sink_snippet')
+    \ }))
+
+nnoremap <leader>is :Snippet<CR>

@@ -44,12 +44,11 @@ call plug#begin(g:plugdir)
     Plug 'diepm/vim-rest-console'           " CURL tool for http requests
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
     Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
-    Plug 'neovim/nvim-lsp'                  " language server features
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
     Plug 'brenopacheco/completion-nvim', { 'branch': 'custom' }
     Plug 'steelsojka/completion-buffers'
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
+    " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
     Plug 'cohama/lexima.vim'
     Plug 'skywind3000/asyncrun.vim'
     Plug 'mfussenegger/nvim-dap'
