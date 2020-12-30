@@ -38,7 +38,6 @@ call plug#begin(g:plugdir)
     Plug 'rhysd/git-messenger.vim'          " show git messsages at cursor pos.
     Plug 'sodapopcan/vim-twiggy'            " branch browser
     Plug 'junegunn/gv.vim'                  " git log browser
-    " Plug 'aperezdc/vim-template'            " inserts template on new file
     Plug 'KabbAmine/zeavim.vim'             " interfaces to zeal
     Plug 'brenopacheco/vim-tree'            " show directory structure as tree
     Plug 'diepm/vim-rest-console'           " CURL tool for http requests
@@ -48,44 +47,15 @@ call plug#begin(g:plugdir)
     Plug 'brenopacheco/completion-nvim', { 'branch': 'custom' }
     Plug 'steelsojka/completion-buffers'
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
-    " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
     Plug 'cohama/lexima.vim'
     Plug 'skywind3000/asyncrun.vim'
     Plug 'mfussenegger/nvim-dap'
     Plug 'haishanh/night-owl.vim'
     Plug 'bluz71/vim-nightfly-guicolors'    " treesitter compatible theme
+    " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
+    " Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
+    Plug 'brenopacheco/vim-quickhelp'
 
 call plug#end()
 
 "}}}
-" deprecated {{{
-
-    " vim-lsp
-    " Plug 'prabirshrestha/vim-lsp'
-    " Plug 'mattn/vim-lsp-settings'
-    " Plug 'prabirshrestha/asyncomplete.vim'
-    " Plug 'prabirshrestha/asyncomplete-lsp.vim'
-    " Plug 'prabirshrestha/asyncomplete-buffer.vim'
-    " Plug 'prabirshrestha/asyncomplete-file.vim'
-    " Plug 'prabirshrestha/asyncomplete-tags.vim'
-
-    " Plug 'effkay/argonaut.vim'              " argonaut theme
-    " Plug 'dracula/vim', { 'as': 'dracula' } " dracula theme
-
-" }}}
-" to review {{{
-
-    " Plug 'kana/vim-textobj-user'            " create textobjects
-    " Plug 'somini/vim-textobj-fold'          " adds fold text object
-    " Plug 'glts/vim-textobj-comment'         " adds comment text object
-    " Plug 'jiangmiao/auto-pairs'             " auto close ([{
-    " Plug 'easymotion/vim-easymotion'        " easy jump 
-    " Plug 'liuchengxu/vista.vim'             " extends/beautifies tagbar
-    " Plug 'junegunn/limelight.vim'           " fades unfocused text
-    " Plug 'junegunn/goyo.vim'                " distraction-free screen
-    " Plug 'metakirby5/codi.vim'              " inline REPL
-    " Plug 'rstacruz/vim-closer'
-    " Plug 'jceb/vim-orgmode'
-    " Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
-
-" }}}

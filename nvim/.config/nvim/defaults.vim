@@ -128,15 +128,4 @@ au Filetype * set formatoptions  =j,n,q   " defaults for formatting text
     \ foldmethod=marker
     \ foldmarker={{{,}}}
 
-" default foldexpr like: // name ============================================
-" au Filetype * set foldexpr=getline(v:lnum+1)=~'^.*=\\{10}$'?'<1':1
-
-
-" }}}
-" notes {{{
-"
-"   gotta see  which options are buffer/window inly and being overriden
-"   replace foldmarker by >
-"   will it work?
-"
 " }}}

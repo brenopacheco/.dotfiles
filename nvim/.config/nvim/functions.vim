@@ -74,7 +74,7 @@ endfunction
 " Run {{{
 
 let s:interpreters = {
-    \ "lua":        "lua",
+    \ "lua":        "export LUA_PATH=\"" . s:root() . "/?.lua;;\" && lua",
     \ "python":     "python",
     \ "sh":         "export PATH=$PATH:./ &&",
     \ "javascript": "node",
@@ -127,7 +127,7 @@ endf
 
 
 " }}}
-" FZFSnippets
+" FZFSnippets{{{
 
 fun! s:source_snippets()
   let l:sources = eval(join(vsnip#source#find(bufnr('%')), '+'))
@@ -146,3 +146,4 @@ command! Snippets :call fzf#run(fzf#wrap('FZF',{
     \ }))
 
 nnoremap <leader>is :Snippet<CR>
+"}}}

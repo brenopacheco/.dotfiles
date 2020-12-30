@@ -1,190 +1,56 @@
 {
-    "nbs": {
-        "prefix": "nbs",
-        "description": "nbs",
-        "body": [
-        "&nbsp;"
-        ]
-    },
-    "left": {
-        "prefix": "left",
-        "description": "left",
-        "body": [
-        "&#x2190;"
-        ]
-    },
-    "right": {
-        "prefix": "right",
-        "description": "right",
-        "body": [
-        "&#x2192;"
-        ]
-    },
-    "up": {
-        "prefix": "up",
-        "description": "up",
-        "body": [
-        "&#x2191;"
-        ]
-    },
-    "down": {
-        "prefix": "down",
-        "description": "down",
-        "body": [
-        "&#x2193;"
-        ]
-    },
-    "return": {
-        "prefix": "return",
-        "description": "return",
-        "body": [
-        "&#x21A9;"
-        ]
-    },
-    "backtab": {
-        "prefix": "backtab",
-        "description": "backtab",
-        "body": [
-        "&#x21E4;"
-        ]
-    },
-    "tab": {
-        "prefix": "tab",
-        "description": "tab",
-        "body": [
-        "&#x21E5;"
-        ]
-    },
-    "shift": {
-        "prefix": "shift",
-        "description": "shift",
-        "body": [
-        "&#x21E7;"
-        ]
-    },
-    "ctrl": {
-        "prefix": "ctrl",
-        "description": "ctrl",
-        "body": [
-        "&#x2303;"
-        ]
-    },
-    "enter": {
-        "prefix": "enter",
-        "description": "enter",
-        "body": [
-        "&#x2305;"
-        ]
-    },
-    "cmd": {
-        "prefix": "cmd",
-        "description": "cmd",
-        "body": [
-        "&#x2318;"
-        ]
-    },
-    "option": {
-        "prefix": "option",
-        "description": "option",
-        "body": [
-        "&#x2325;"
-        ]
-    },
-    "delete": {
-        "prefix": "delete",
-        "description": "delete",
-        "body": [
-        "&#x2326;"
-        ]
-    },
-    "backspace": {
-        "prefix": "backspace",
-        "description": "backspace",
-        "body": [
-        "&#x232B;"
-        ]
-    },
-    "esc": {
-        "prefix": "esc",
-        "description": "esc",
-        "body": [
-        "&#x238B;"
-        ]
-    },
-    "//": {
-        "prefix": "//",
-        "description": "//",
-        "body": [
-        "<!-- ${1} -->${0}"
-        ]
-    },
-    "docts": {
-        "prefix": "docts",
-        "description": "docts",
-        "body": [
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"",
-        "\"http://www.w3.org/TR/html4/strict.dtd\">"
-        ]
-    },
-    "doct": {
-        "prefix": "doct",
-        "description": "doct",
-        "body": [
-        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"",
-        "\"http://www.w3.org/TR/html4/loose.dtd\">"
-        ]
-    },
-    "doct5": {
-        "prefix": "doct5",
-        "description": "doct5",
-        "body": [
-        "<!DOCTYPE HTML>"
-        ]
-    },
-    "docxf": {
-        "prefix": "docxf",
-        "description": "docxf",
-        "body": [
-        "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Frameset//EN\"",
-        "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd\">"
-        ]
-    },
-    "docxs": {
-        "prefix": "docxs",
-        "description": "docxs",
-        "body": [
-        "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"",
-        "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
-        ]
-    },
-    "docxt": {
-        "prefix": "docxt",
-        "description": "docxt",
-        "body": [
-        "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
-        "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
-        ]
-    },
-    "docx": {
-        "prefix": "docx",
-        "description": "docx",
-        "body": [
-        "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"",
-        "\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"
-        ]
+    "html-react": {
+      "prefix": ["html-react"],
+      "body": [
+        "<!DOCTYPE html>",
+        "<html>",
+        "    <head>",
+        "        <meta charset=\"UTF-8\" />",
+        "        <meta name=\"viewport\" content=\"width=device-width\">",
+        "        <script src=\"https://unpkg.com/react/umd/react.development.js\"></script>",
+        "        <script src=\"https://unpkg.com/react-dom/umd/react-dom.development.js\"></script>",
+        "        <script src=\"https://unpkg.com/react-router/umd/react-router.min.js\"></script>",
+        "        <script src=\"https://unpkg.com/react-router-dom/umd/react-router-dom.min.js\"></script>",
+        "        <script src=\"https://unpkg.com/@babel/standalone/babel.min.js\"></script>",
+        "    </head>",
+        "    <body>",
+        "        <div id='root'></div>",
+        "        <script type='text/babel'>",
+        "            const Router   = ReactRouterDOM.BrowserRouter;",
+        "            const Route    = ReactRouterDOM.Route;",
+        "            const Link     = ReactRouterDOM.Link;",
+        "            const Prompt   = ReactRouterDOM.Prompt;",
+        "            const Switch   = ReactRouterDOM.Switch;",
+        "            const Redirect = ReactRouterDOM.Redirect;",
+        "",
+        "            const App = props => (",
+        "                <ReactRouterDOM.HashRouter>",
+        "                    <ul>",
+        "                        <li><Link to=\"/\">TO HOME</Link></li>",
+        "                        <li><Link to=\"/a\">TO A</Link></li>",
+        "                        <li><Link to=\"/b\">TO B</Link></li>",
+        "                    </ul>",
+        "                    <Route path=\"/\" exact component={Home} />",
+        "                    <Route path=\"/a\" component={A} />",
+        "                    <Route path=\"/b\" component={B} />",
+        "                </ReactRouterDOM.HashRouter>",
+        "            )",
+        "",
+        "            const Home = props => <h1>HOME</h1>",
+        "            const A = props => <h1>A</h1>",
+        "            const B = props => <h1>B</h1>",
+        "",
+        "            ReactDOM.render(<App />, document.querySelector('#root'));",
+        "        </script>",
+        "    </body>",
+        "</html>"
+      ]
     },
     "attr": {
         "prefix": "attr",
         "description": "attr",
         "body": [
         "${1:attribute}=\"${0:property}\""
-        ]
-    },
-    "attr+": {
-        "prefix": "attr+",
-        "description": "attr+",
-        "body": [
-        "${1:attribute}=\"${2:property}\" attr+"
         ]
     },
     ".": {
@@ -206,13 +72,6 @@
         "description": "alt",
         "body": [
         "alt=\"${1}\""
-        ]
-    },
-    "charset": {
-        "prefix": "charset",
-        "description": "charset",
-        "body": [
-        "charset=\"${1:utf-8}\""
         ]
     },
     "data": {
@@ -2153,65 +2012,11 @@
         "<textarea name=\"${1}\" id=\"${2:$1}\" rows=\"${3:8}\" cols=\"${4:40}\">${5}</textarea>"
         ]
     },
-    "tfoot": {
-        "prefix": "tfoot",
-        "description": "tfoot",
-        "body": [
-        "<tfoot>",
-        "    ${0}",
-        "</tfoot>"
-        ]
-    },
     "th": {
         "prefix": "th",
         "description": "th",
         "body": [
         "<th>${0}</th>"
-        ]
-    },
-    "th.": {
-        "prefix": "th.",
-        "description": "th.",
-        "body": [
-        "<th class=\"${1}\">${0}</th>"
-        ]
-    },
-    "th#": {
-        "prefix": "th#",
-        "description": "th#",
-        "body": [
-        "<th id=\"${1}\">${0}</th>"
-        ]
-    },
-    "th+": {
-        "prefix": "th+",
-        "description": "th+",
-        "body": [
-        "<th>${1}</th>",
-        "th+${0}"
-        ]
-    },
-    "thead": {
-        "prefix": "thead",
-        "description": "thead",
-        "body": [
-        "<thead>",
-        "    ${0}",
-        "</thead>"
-        ]
-    },
-    "time": {
-        "prefix": "time",
-        "description": "time",
-        "body": [
-        "<time datetime=\"${1}\" pubdate=\"${2:$1}\">${0:$1}</time>"
-        ]
-    },
-    "title": {
-        "prefix": "title",
-        "description": "title",
-        "body": [
-        "<title>${0:${VIM:substitute(vim_snippets#Filename('', 'Page Title'), '^.', '\\u&', '')}}</title>"
         ]
     },
     "tr": {
@@ -2223,23 +2028,6 @@
         "</tr>"
         ]
     },
-    "tr+": {
-        "prefix": "tr+",
-        "description": "tr+",
-        "body": [
-        "<tr>",
-        "    <td>${1}</td>",
-        "    td+${0}",
-        "</tr>"
-        ]
-    },
-    "track": {
-        "prefix": "track",
-        "description": "track",
-        "body": [
-        "<track src=\"${1}\" srclang=\"${2}\" label=\"${3}\" default=\"${4:default}>${5}"
-        ]
-    },
     "ul": {
         "prefix": "ul",
         "description": "ul",
@@ -2248,67 +2036,5 @@
         "    ${0}",
         "</ul>"
         ]
-    },
-    "ul.": {
-        "prefix": "ul.",
-        "description": "ul.",
-        "body": [
-        "<ul class=\"${1}\">",
-        "    ${0}",
-        "</ul>"
-        ]
-    },
-    "ul#": {
-        "prefix": "ul#",
-        "description": "ul#",
-        "body": [
-        "<ul id=\"${1}\">",
-        "    ${0}",
-        "</ul>"
-        ]
-    },
-    "ul+": {
-        "prefix": "ul+",
-        "description": "ul+",
-        "body": [
-        "<ul>",
-        "    <li>${1}</li>",
-        "    li+${0}",
-        "</ul>"
-        ]
-    },
-    "var": {
-        "prefix": "var",
-        "description": "var",
-        "body": [
-        "<var>${0}</var>"
-        ]
-    },
-    "video": {
-        "prefix": "video",
-        "description": "video",
-        "body": [
-        "<video src=\"${1}\" height=\"${2}\" width=\"${3}\" preload=\"${4:none}\" autoplay=\"${5:autoplay}\">${6}</video>"
-        ]
-    },
-    "video.": {
-        "prefix": "video.",
-        "description": "video.",
-        "body": [
-        "<video class=\"${1}\" src=\"${2}\" height=\"${3}\" width=\"${4}\" preload=\"${5:none}\" autoplay=\"${6:autoplay}\">${7}</video>"
-        ]
-    },
-    "wbr": {
-        "prefix": "wbr",
-        "description": "wbr",
-        "body": [
-        "<wbr>"
-        ]
-    },
-    "viewport": {
-        "prefix": "viewport",
-        "description": "viewport",
-        "body": [
-        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"        ]
     }
 }
