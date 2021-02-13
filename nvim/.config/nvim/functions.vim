@@ -20,9 +20,9 @@ command! GPGDecrypt exec '%!gpg -dq' | silent exec 'g/^gpg:/d'   "decrypt, quiet
 command! Make call s:Make()
 
 let s:build_system = {
-    \ "pom.xml":      "mvn",
-    \ "package.json": "node",
-    \ "Makefile":     "make"
+    \ "pom.xml":      { "name": "mvn",  "cmd": "mvn"     },
+    \ "package.json": { "name": "node", "cmd": "npm run" },
+    \ "Makefile":     { "name": "make", "cmd": "make"    }
     \}
 
 fun! s:mvn_sources()
@@ -39,7 +39,8 @@ fun! s:make_sources()
 endf
 
 fun! s:sink(target)
-    exec 'AsyncRun ' . "cd " . s:root() . "; " . b:build_system . " " . a:target
+    echo "here"
+    exec 'AsyncRun ' . "cd " . s:root() . "; " . b:build_system.cmd . " " . a:target
 endf
 
 fun! s:set_system()
@@ -58,7 +59,7 @@ fun! s:Make()
         echomsg "Not a project"
         return
     endif
-    let sources = function('s:' . b:build_system . '_sources')()
+    let sources = function('s:' . b:build_system.name . '_sources')()
     call fzf#run(fzf#wrap('FZF', {
                 \ 'source':sources,
                 \ 'sink': function('s:sink')
@@ -146,4 +147,5 @@ command! Snippets :call fzf#run(fzf#wrap('FZF',{
     \ }))
 
 nnoremap <leader>is :Snippet<CR>
+nnoremap <leader>fi :Snippet<CR>
 "}}}

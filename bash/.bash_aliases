@@ -16,7 +16,7 @@ alias pstree="ps -aef --forest"
 
 # custom
 alias rename='perl-rename'
-# alias vim='nvim'
+alias vim='nvim'
 alias mutt='neomutt'
 alias disks='gnome-disks'
 alias dmenu='dmenu_color'

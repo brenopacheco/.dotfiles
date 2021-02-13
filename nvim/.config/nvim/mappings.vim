@@ -68,6 +68,7 @@
   nnoremap <silent> <leader>fp :PFiles<CR>
   nnoremap <silent> <leader>fa :Args<CR>
   nnoremap <silent> <leader>fb :Buffers<CR>
+  nnoremap <silent> <leader>fc :Classes<CR>
   nnoremap <silent> <leader>f/ :Rg<CR>
   nnoremap <silent> <leader>f* :exec 'Rg ' . expand("<cword>")<CR>
   nnoremap <silent> <leader>fs :Tags<CR>
@@ -108,7 +109,6 @@
     nmap <backspace> <Nop>
     call map(map(range(97, 122), 'nr2char(v:val)'), 
             \ { _,i -> execute('nnoremap q'.i.' :call RecordingMode()<CR>q'.i)})
-
 
     " q*  grep word under cursor / selection
     " q/  grep input
@@ -161,6 +161,16 @@
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
   command! Rename         :call s:rename()
+  command! -nargs=? Filter let @a='' | silent execute 'g/<args>/y A' | vnew | setlocal bt=nofile | put! a
+
+
+
+  let g:extensions = "jsx|js|tsx|ts|java|c|cpp|html|css"
+  command! Classes :call fzf#run(fzf#wrap({
+      \   'source': 'fd "('.g:extensions.')$" -t f ' . s:root(),
+      \   'sink': 'e',
+      \   'options': '--prompt "> " --preview "bat --color=\"always\" --plain {}"'
+      \}))
 
   function s:otree() abort
     if s:root() == './'
@@ -217,7 +227,7 @@
 
   function s:termopen()
       let bufnr = index(map(range(1, bufnr("$")), {_,s -> getbufvar(s, '&ft')}), "term") + 1
-      echo "bufnr: " . bufnr
+      " echo "bufnr: " . bufnr
       belowright sp | exec bufnr > 0 ? bufnr . "b" : "term"
   endfunction
 

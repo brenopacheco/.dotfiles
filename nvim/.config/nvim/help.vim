@@ -3,5 +3,5 @@ let g:quickhelp_display = "floating"
 " let g:quickhelp_display = "echo"
 let s:noft = [ "test - wow" ]
 
-call quickhelp#register("", s:noft)
+call quickhelp#register("test", s:noft)
 

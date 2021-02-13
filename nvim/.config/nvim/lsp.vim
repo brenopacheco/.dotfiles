@@ -8,7 +8,7 @@ lua << EOF
     local util      = require('lspconfig/util')
 
     local servers = { "bashls", "ccls", "cssls", "html", "jdtls", "jsonls",
-                      "sumneko_lua", "tsserver", "vimls", "yamlls" }
+                      "sumneko_lua", "tsserver", "vimls", "yamlls", "diagnosticls" }
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = false

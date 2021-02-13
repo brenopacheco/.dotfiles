@@ -63,7 +63,7 @@ export SVN_EDITOR="$VISUAL"
 export JAVA_HOME=/usr/lib/jvm/default
 
 ## NPM / NODE config
-NPM_PACKAGES="${HOME}/.npm"
+NPM_PACKAGES="${HOME}/npm"
 export PATH="$PATH:$NPM_PACKAGES/bin"
 export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
 [[ ! -f ~/.npmrc ]] && echo "prefix=${NPM_PACKAGES}" >> ~/.npmrc

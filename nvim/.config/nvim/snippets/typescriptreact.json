@@ -1,0 +1,112 @@
+{
+  "re-import": {
+    "prefix": "re-import",
+    "description": "import React, {...} from 'react'",
+    "body": [
+      "import React from 'react'",
+      "import ReactDOM from 'react-dom'"
+    ]
+  },
+  "re-fragment": {
+    "prefix": "re-fragment",
+    "body": [
+      "<>",
+      "    ${0:${TM_SELECTED_TEXT}}",
+      "</>"
+    ]
+  },
+  "re-use-state": {
+    "prefix": "re-use-state",
+    "body": [
+      "const [${1:state}, ${2:setState}] = React.useState<${3:boolean}>(${4:true});"
+    ]
+  },
+  "re-use-reduce": {
+    "prefix": "re-use-reduce",
+    "body": [
+      "const [state, dispatch] = React.useReducer(reducer, initState);"
+    ]
+  },
+  "re-use-ref": {
+    "prefix": "re-use-ref",
+    "body": [
+      "const ${1:ref} = React.useRef<${2:HTMLDivElement}>(null);"
+    ]
+  },
+  "re-use-effect": {
+    "prefix": "re-use-effect",
+    "body": [
+      "useEffect(() => {",
+      "    ${1:// ...}",
+      "    // return () => {}",
+      "}, [])"
+    ]
+  },
+  "re-reducer": {
+    "prefix": "re-reducer",
+    "body": [
+      "type Action = 'A' | 'B';",
+      "type State  = { a: number }",
+      "const initState: State = { a: 1 }",
+      "const reducer = (state: State, action: Action): State => {",
+      "    switch(action) {",
+      "        case 'A': return {...state};",
+      "        case 'B': return {...state};",
+      "        default: throw new Error();",
+      "    }",
+      "}"
+    ]
+  },
+  "re-function-component": {
+    "prefix": "re-function-component",
+    "body": [
+      "function ${1:Component}(props: any) {",
+      "    return (",
+      "        <>",
+      "            $0",
+      "        </>",
+      "        );",
+      "}"
+    ]
+  },
+  "re-arrow-component": {
+    "prefix": "re-arrow-component",
+    "body": [
+      "const ${1:Component} = () => {$0}"
+    ]
+  },
+  "re-return": {
+    "prefix": "re-return",
+    "body": [
+      "return ($0);"
+    ]
+  },
+  "re-class-component": {
+    "prefix": "re-class-component",
+    "body": [
+      "type ${2:IProps} = {",
+      "    prop: string",
+      "}",
+      "",
+      "type ${3:IState} = {",
+      "    var: string",
+      "}",
+      "",
+      "class ${1:Component} extends React.Component<${2:IProps}, ${3:IState}> {",
+      "    //static defaultProps: Readonly<${2:IProps}> = { prop: '' }",
+      "    state: Readonly<${3:IState}>               = { var: ''  }",
+      "    componentDidMount()    {} // after rendering to DOM",
+      "    componentDidUpdate()   {} // after some update",
+      "    componentWillUnmount() {} // before removing from DOM",
+      "    componentDidCatch()    {} // when an exception is thrown",
+      "    render() {",
+      "        return (",
+      "            <>",
+      "",
+      "            </>",
+      "        );",
+      "    }",
+      "}"
+    ]
+  }
+}

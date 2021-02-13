@@ -22,6 +22,17 @@
         "(${1:args}) => ${0:${TM_SELECTED_TEXT}};"
         ]
     },
+    "cfun": {
+        "prefix": "cfun",
+        "description": "const fun(...) => {...}",
+        "body": [
+        "const ${1:fun} = () => {",
+        "\treturn (",
+        "\t\t${0:${TM_SELECTED_TEXT}}",
+        "\t)",
+        "}"
+        ]
+    },
     "if": {
         "prefix": "if",
         "description": "if (...) {...}",

@@ -204,7 +204,7 @@ endif
     let g:vsnip_filetypes = {
                 \ 'javascript': [ 'javascript-express' ],
                 \ 'javascriptreact': [ 'javascript', 'html' ],
-                \ 'typescriptreact': [ 'javascript', 'html' ]
+                \ 'typescriptreact': [ 'typescript', 'html' ]
                 \ }
     let g:vsnip_extra_mapping = v:false
     let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')

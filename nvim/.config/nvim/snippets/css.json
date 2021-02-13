@@ -4150,13 +4150,6 @@
         "white-space: pre;"
         ]
     },
-    "wid": {
-        "prefix": "wid",
-        "description": "wid",
-        "body": [
-        "widows: ${1};${0}"
-        ]
-    },
     "w": {
         "prefix": "w",
         "description": "w",
