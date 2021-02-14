@@ -91,7 +91,7 @@ set nobackup                               " no backup for current file
 set expandtab                              " expands tabs as spaces
 set noshowmode                             " don't show --INSERT-- message
 set nosplitbelow                           " :sp creates top split
-set wrap
+set nowrap
 set nowrapscan                             " search next stops at end of file
 set nowritebackup                          " no backup for current session
 set number                                 " set numeration of lines

@@ -5,7 +5,7 @@
 "  |_|_| |_|_|\__(_)_/ |_|_| |_| |_|
 
 if exists('g:vscode')
-    source vscode.vim
+    source $HOME/.config/nvim/vscode.vim
 else
     runtime defaults.vim    " general vim settings
     runtime plug.vim        " installed plugins

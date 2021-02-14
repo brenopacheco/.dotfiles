@@ -44,15 +44,17 @@ call plug#begin(g:plugdir)
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
     Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
-    Plug 'brenopacheco/completion-nvim', { 'branch': 'custom' }
+    " Plug 'brenopacheco/completion-nvim', { 'branch': 'custom' }
+    Plug 'nvim-lua/completion-nvim'
     Plug 'steelsojka/completion-buffers'
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
+    Plug 'glepnir/lspsaga.nvim'
     Plug 'cohama/lexima.vim'
     Plug 'skywind3000/asyncrun.vim'
     Plug 'mfussenegger/nvim-dap'
     Plug 'haishanh/night-owl.vim'
     Plug 'bluz71/vim-nightfly-guicolors'    " treesitter compatible theme
-    " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
     " Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
     Plug 'brenopacheco/vim-quickhelp'
 

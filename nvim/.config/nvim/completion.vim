@@ -18,7 +18,7 @@
     let g:completion_abbr_length            = 20
     let g:completion_menu_length            = 8
     let g:completion_trigger_character      = []
-    let g:completion_timer_cycle            = 50
+    let g:completion_timer_cycle            = 80
     let g:completion_confirm_key = ""
     let g:completion_enable_auto_popup      = 0
     let g:completion_chain_complete_list = {

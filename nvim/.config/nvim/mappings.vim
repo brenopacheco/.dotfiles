@@ -56,8 +56,6 @@
   nnoremap <silent> ]q :try \| cnext \| catch \| cfirst \| catch \| endtry<CR>
   nnoremap <silent> [q :try \| cprev \| catch \| clast \| catch \| endtry<CR>
   nnoremap <silent> ]l :lnext<CR>  | nnoremap <silent> [l :lprevious<CR>
-  nnoremap <silent> ]L :lnewer<CR> | nnoremap <silent> [L :lolder<CR>
-  nnoremap <silent> ]Q :cnewer<CR> | nnoremap <silent> [Q :colder<CR>
   nmap <silent> ]c <plug>(signify-next-hunk) 
   nmap <silent> [c <plug>(signify-prev-hunk)
 "}}}
@@ -87,8 +85,8 @@
   nnoremap <leader>q :QuickfixToggle<CR>
 "}}}
 " HELP{{{
-  nnoremap <leader>? :Hydra help<CR>
-  nnoremap <silent> <leader>r :Rename<CR>
+  " nnoremap <leader>? :Hydra help<CR>
+  " nnoremap <silent> <leader>r :Rename<CR>
 "}}}
 " SEARCH/QF {{{
 
@@ -115,17 +113,17 @@
     nnoremap q* :silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
     vnoremap q* "zy:silent exec 'grep! "' . expand('<cword>') . '" %'<CR>:copen<CR>:wincmd p<CR>
     nnoremap q/ :silent grep! "" % \| copen \| wincmd p<Home><C-right><C-right><C-right><Left>
-    " nnoremap qv :QFReject<CR>
-    " nnoremap qf :QFKeep<CR>
-    " nnoremap qr :QFRestore<CR>
+    nnoremap qf :call <SID>qf_filter(input('QF Filter: /'))<CR>
+    nnoremap qp :silent! colder<CR>
+    nnoremap qn :silent! cnewer<CR>
 
 
 " }}}
 " COMPILE / RUN {{{
 
-    nnoremap <leader>m :Make<CR>
+    nnoremap <leader>fm :Make<CR>
     nnoremap <leader># :Run<CR>
-    nnoremap <F5> :Run<CR>
+    " nnoremap <F5> :Run<CR>
 
 " }}}
 " &FT MAPPINGS {{{
@@ -161,7 +159,8 @@
   command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
   command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
   command! Rename         :call s:rename()
-  command! -nargs=? Filter let @a='' | silent execute 'g/<args>/y A' | vnew | setlocal bt=nofile | put! a
+  command! -nargs=+ QFFilter :call <SID>qf_filter(<q-args>)
+  command! -nargs=? G let @a='' | silent execute 'g/<args>/y A' | tabnew | setlocal bt=nofile | put! a
 
 
 
@@ -172,6 +171,7 @@
       \   'options': '--prompt "> " --preview "bat --color=\"always\" --plain {}"'
       \}))
 
+  " open tree depending if it's a project
   function s:otree() abort
     if s:root() == './'
         Tree
@@ -180,11 +180,25 @@
     endif
   endfunction
 
+  " open tree in left navigator
   function s:vgtree() abort
-    if s:root() == './'
-        VTree
+    vertical topleft 40split
+    let g:vimtree_mappings['e'] = { 'cmd': 'Tree_edit_open()', 'desc': 'edit in right window' } 
+    let g:vimtree_mappings['q'] = { 'cmd': 'tree#close() \| close', 'desc': 'close (special)' } 
+    call s:otree()
+    au BufEnter <buffer> let g:vimtree_mappings['e'] = { 'cmd': 'Tree_edit_open()', 'desc': 'edit in right window' }
+    au BufEnter <buffer> let g:vimtree_mappings['q'] = { 'cmd': 'tree#close() \| close', 'desc': 'close (special)' }
+    au BufLeave <buffer> let g:vimtree_mappings['e'] = { 'cmd': 'tree#edit()',     'desc': 'edit' }
+    au BufLeave <buffer> let g:vimtree_mappings['q'] = { 'cmd': 'tree#close()', 'desc': 'close' }
+  endfunction
+
+  function Tree_edit_open() abort
+    let path = tree#path()
+    if len(tabpagebuflist()) == 1
+        exec '80vsp ' . path
     else
-        vsp | GTree
+        wincmd l
+        exec 'e ' . path
     endif
   endfunction
 
@@ -299,18 +313,5 @@
 " notes {{{
 "
 " CTRL-] is equivalent to nnoremap <c-]> :silent exec 'tag /' . expand('<cword>')<CR>
-
-" |CTRL-W_T|	CTRL-W T	   move current window to a new tab page
-" |CTRL-W_]|	CTRL-W ]	   split window and jump to tag under cursor
-" |CTRL-W_c|	CTRL-W c	   close current window (like |:close|)
-" |CTRL-W_f|	CTRL-W f	   split window and edit file name under the
-" |CTRL-W_g]|	CTRL-W g ]	   split window and do |:tselect| for tag
-" |CTRL-W_gf|	CTRL-W g f	   edit file name under the cursor in a new tab
-" |CTRL-W_}|	CTRL-W }	   show tag under cursor in preview window
-"
-" augroup KeepCentered
-"   autocmd!
-"   autocmd CursorMoved * normal! zz
-" augroup END
 "
 " }}}

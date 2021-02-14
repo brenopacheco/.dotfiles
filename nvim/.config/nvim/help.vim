@@ -1,7 +1,44 @@
 let g:quickhelp_show_clippy = v:true
 let g:quickhelp_display = "floating"
-" let g:quickhelp_display = "echo"
-let s:noft = [ "test - wow" ]
 
-call quickhelp#register("test", s:noft)
+let s:noft = [
+    \ "_______GOTO__________   ___NAVIGATE____",
+    \ "C-]   definition        ]e   diagnostic",
+    \ "gd    declaration       ]g   git hunk  ",
+    \ "gr    references        ]s   tagstack  ",
+    \ "gi    implementation    ]t   tag /     ",
+    \ "gy    type definition   ]a   arg       ",
+    \ "go    symbol document   ]b   buffer    ",
+    \ "gs    symbol workspace  ]q   quickfix  ",
+    \ "                                       ",
+    \ "____FIND_FILE____   ____FIND_MISC._____",
+    \ "spc-f-~   home      spc-f-m   marks    ",
+    \ "spc-f-.   curdir    spc-f-s   symbols  ",
+    \ "spc-f-g   gitls     spc-f-o   outline  ",
+    \ "spc-f-p   project   spc-f-/   rg pat.  ",
+    \ "spc-f-r   recent    spc-f-*   rg <word>",
+    \ "spc-f-b   buffers   spc-f-:   cmd hist ",
+    \ "spc-f-a   args      spc-f-h   helptags ",
+    \ "spc-f-c   classes   spc-f-m   make     ",
+    \ "                                       ",
+    \ "_____TOGGLE_____    ______ACTION_______",
+    \ "spc-'   terminal    spc-a   code action",
+    \ "spc-n   navbar      spc-=   format     ",
+    \ "spc-↹   tagbar      spc-r   rename     ",
+    \ "spc-l   lf          spc-s   substitute ",
+    \ "spc-u   undotree    gc      comment    ",
+    \ "spc-q   quickfix    spc-s   substitute ",
+    \ "                                       ",
+    \ "__MISCELLANEOUS__   ____QUICKFIX______ ",
+    \ "spc-#   run file    spc-*   rg word prj",
+    \ "spc--   open Tree   spc-/   rg patt prj",
+    \ "#       eval line   q-*     rg word buf",
+    \ "⏎       v. expand   q-/     rg patt buf",
+    \ "⌫       v. reduce   q-f     filter     ",
+    \ "                    q-n     cnewer     ",
+    \ "                    q-p     colder     ",
+    \ ]
 
+call quickhelp#register("noft", s:noft)
+
+nnoremap <space>? :call quickhelp#toggle("noft")<CR>
