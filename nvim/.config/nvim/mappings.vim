@@ -42,6 +42,7 @@
   " nnoremap - :GTree<CR>
 
   nnoremap <C-w>t :tabnew<CR>
+  nnoremap <C-w>e :enew<CR>
 
 "}}}
 " NAVIGATION {{{
@@ -83,10 +84,36 @@
   nnoremap <leader>l :Lf<CR>
   nnoremap <leader>u :UndotreeToggle<CR>
   nnoremap <leader>q :QuickfixToggle<CR>
+  nnoremap <leader>g :Goyo<CR>
 "}}}
-" HELP{{{
-  " nnoremap <leader>? :Hydra help<CR>
-  " nnoremap <silent> <leader>r :Rename<CR>
+" WINDOWS{{{
+
+    nnoremap <leader>ws <C-W>s
+    nnoremap <leader>wv <C-W>v
+    nnoremap <leader>wq <C-W>q
+    nnoremap <leader>wc <C-W>c
+    nnoremap <leader>wo <C-W>o
+    nnoremap <leader>wm <C-W>_<C-W>|
+    nnoremap <leader>we :enew<CR>
+    nnoremap <leader>wt :tabnew<CR>
+
+    nnoremap <leader>wK <C-W>K
+    nnoremap <leader>wJ <C-W>J
+    nnoremap <leader>wH <C-W>H
+    nnoremap <leader>wL <C-W>L
+    nnoremap <leader>wT <C-W>T
+    nnoremap <leader>w= <C-W>=
+    nnoremap <leader>w- <C-W>-
+    nnoremap <leader>w+ <C-W>+
+    nnoremap <leader>w_ <C-W>_
+    nnoremap <leader>w< <C-W><
+    nnoremap <leader>w> <C-W>>
+    nnoremap <leader>w\| <C-W>\|
+
+"}}}
+" HELP{{{ 
+  nnoremap <space>? :call quickhelp#toggle("noft")<CR>
+  nmap <S-h> <Plug>(git-messenger)
 "}}}
 " SEARCH/QF {{{
 

@@ -1,12 +1,12 @@
 {
-    "date": {
+    "global-date": {
         "prefix": "ddate",
         "description": "ddate",
         "body": [
         "${VIM:strftime(\"%B %d, %Y\")}"
         ]
     },
-    "lorem": {
+    "global-lorem": {
         "prefix": "lorem",
         "description": "lorem",
         "body": [

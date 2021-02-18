@@ -35,10 +35,8 @@ let s:noft = [
     \ "#       eval line   q-*     rg word buf",
     \ "⏎       v. expand   q-/     rg patt buf",
     \ "⌫       v. reduce   q-f     filter     ",
-    \ "                    q-n     cnewer     ",
-    \ "                    q-p     colder     ",
+    \ "spc-i   snippet     q-n     cnewer     ",
+    \ "spc-?   help        q-p     colder     ",
     \ ]
 
 call quickhelp#register("noft", s:noft)
-
-nnoremap <space>? :call quickhelp#toggle("noft")<CR>

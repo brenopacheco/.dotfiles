@@ -46,6 +46,6 @@ while true; do
 	fi
 	message=" $volume%  $disk_data  $cpu_data  $mem_data  $bat_data  $date_data "
     xsetroot -name "$message"
-    sleep 1s
+    sleep 5s
 done
 exit 0

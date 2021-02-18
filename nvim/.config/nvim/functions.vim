@@ -40,7 +40,8 @@ endf
 
 fun! s:sink(target)
     echo "here"
-    exec 'AsyncRun ' . "cd " . s:root() . "; " . b:build_system.cmd . " " . a:target
+    " exec 'AsyncRun ' . "cd " . s:root() . "; " . b:build_system.cmd . " " . a:target
+    exec 'term ' . "cd " . s:root() . "; " . b:build_system.cmd . " " . a:target
 endf
 
 fun! s:set_system()
@@ -132,7 +133,7 @@ endf
 
 fun! s:source_snippets()
   let l:sources = eval(join(vsnip#source#find(bufnr('%')), '+'))
-  return sort(map(l:sources, { _,s -> printf("%-15s%-16s%-30s", 
+  return sort(map(l:sources, { _,s -> printf("%-15s%-20s%-30s", 
       \ s.prefix[0],  s.label, s.description)}))
 endf
 
@@ -146,6 +147,5 @@ command! Snippets :call fzf#run(fzf#wrap('FZF',{
     \ 'sink': function('s:sink_snippet')
     \ }))
 
-nnoremap <leader>is :Snippet<CR>
-nnoremap <leader>fi :Snippet<CR>
+nnoremap <leader>i :Snippet<CR>
 "}}}

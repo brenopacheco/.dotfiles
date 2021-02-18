@@ -1,12 +1,12 @@
 {
-    "import": {
-        "prefix": "import",
+    "ts-import": {
+        "prefix": "imp",
         "description": "import ... from '...'",
         "body": [
             "import ${1:*} from '${2:...}'"
         ]
     },
-    "fun": {
+    "ts-fun": {
         "prefix": "fun",
         "description": "function ...(...){...}",
         "body": [
@@ -15,14 +15,16 @@
         "}"
         ]
     },
-    "afun": {
+    "ts-afun": {
         "prefix": "afun",
         "description": "(...) => {...}",
         "body": [
-        "(${1:args}) => ${0:${TM_SELECTED_TEXT}};"
+        "(${1:args}) => {",
+        "\t$0:${TM_SELECTED_TEXT}}",
+        "}"
         ]
     },
-    "cfun": {
+    "ts-cfun": {
         "prefix": "cfun",
         "description": "const fun(...) => {...}",
         "body": [
@@ -33,7 +35,7 @@
         "}"
         ]
     },
-    "if": {
+    "ts-if": {
         "prefix": "if",
         "description": "if (...) {...}",
         "body": [
@@ -42,7 +44,7 @@
         "}"
         ]
     },
-    "ife": {
+    "ts-ife": {
         "prefix": "ife",
         "description": "if (...) {...} else {...}",
         "body": [
@@ -53,7 +55,7 @@
         "}"
         ]
     },
-    "else": {
+    "ts-else": {
         "prefix": "else",
         "description": "else {...}",
         "body": [
@@ -62,7 +64,7 @@
         "}"
         ]
     },
-    "switch": {
+    "ts-switch": {
         "prefix": "switch",
         "description": "switch",
         "body": [
@@ -76,7 +78,7 @@
         "}"
         ]
     },
-    "case": {
+    "ts-case": {
         "prefix": "case",
         "description": "case 'xyz': ... break",
         "body": [
@@ -85,7 +87,7 @@
         "    break;"
         ]
     },
-    "try": {
+    "ts-try": {
         "prefix": "try",
         "description": "try { ... } catch(e) { ... }",
         "body": [
@@ -96,7 +98,7 @@
         "}"
         ]
     },
-    "tryf": {
+    "ts-tryf": {
         "prefix": "tryf",
         "description": "try { ... } catch(e) { ... } finally { ... }",
         "body": [
@@ -109,21 +111,21 @@
         "}"
         ]
     },
-    "throw": {
+    "ts-throw": {
         "prefix": "terr",
         "description": "terr",
         "body": [
         "throw new Error('${1:error message}')"
         ]
     },
-    "ret": {
+    "ts-ret": {
         "prefix": "ret",
         "description": "return ...",
         "body": [
         "return ${0:result};"
         ]
     },
-    "for": {
+    "ts-for": {
         "prefix": "for",
         "description": "for (...) {...}",
         "body": [
@@ -132,7 +134,7 @@
         "}"
         ]
     },
-    "fori": {
+    "ts-fori": {
         "prefix": "fori",
         "description": "reversed for (...) {...}",
         "body": [
@@ -141,7 +143,7 @@
         "}"
         ]
     },
-    "forr": {
+    "ts-forr": {
         "prefix": "forr",
         "description": "for (let prop of object}) { ... }",
         "body": [
@@ -150,7 +152,7 @@
         "}"
         ]
     },
-    "while": {
+    "ts-while": {
         "prefix": "wh",
         "description": "(condition) { ... }",
         "body": [
@@ -159,7 +161,7 @@
         "}"
         ]
     },
-    "dowhile": {
+    "ts-dowhile": {
         "prefix": "dowhile",
         "description": "do { ... } while (condition)",
         "body": [
@@ -168,36 +170,36 @@
         "} while (${1:/* condition */});"
         ]
     },
-    "const": {
+    "ts-const": {
         "prefix": "const",
         "description": "const",
         "body": [
         "const ${1} = ${0};"
         ]
     },
-    "let": {
+    "ts-let": {
         "prefix": "let",
         "description": "let",
         "body": [
         "let ${1} = ${0};"
         ]
     },
-    "symbol": {
+    "ts-symbol": {
         "prefix": "symbol",
         "description": "Symbol(...)",
         "body": [
         "Symbol('${0}');"
         ]
     },
-    "export": {
+    "ts-export": {
         "prefix": "export",
         "description": "ed",
         "body": [
         "export default ${0}"
         ]
     },
-    "class": {
-        "prefix": "class",
+    "ts-class": {
+        "prefix": "class-ts",
         "description": "class {...}",
         "body": [
         "class ${1} {",
@@ -205,63 +207,63 @@
         "}"
         ]
     },
-    "ctor": {
+    "ts-ctor": {
         "prefix": "ctor",
         "description": "constructor(...) {...}",
         "body": [
         "constructor(${1:props}) {${0:${TM_SELECTED_TEXT}}}"
         ]
     },
-    "cl": {
+    "ts-cl": {
         "prefix": "cl",
         "description": "console.log",
         "body": [
         "console.log(${0:${TM_SELECTED_TEXT}});"
         ]
     },
-    "cd": {
+    "ts-cd": {
         "prefix": "cd",
         "description": "console.debug",
         "body": [
         "console.debug(${0});"
         ]
     },
-    "ce": {
+    "ts-ce": {
         "prefix": "ce",
         "description": "console.error",
         "body": [
         "console.error(${0});"
         ]
     },
-    "cw": {
+    "ts-cw": {
         "prefix": "cw",
         "description": "console.warn",
         "body": [
         "console.warn(${0});"
         ]
     },
-    "ci": {
+    "ts-ci": {
         "prefix": "ci",
         "description": "console.info",
         "body": [
         "console.info(${0});"
         ]
     },
-    "ct": {
+    "ts-ct": {
         "prefix": "ct",
         "description": "console.trace",
         "body": [
         "console.trace(${0:label});"
         ]
     },
-    "ca": {
+    "ts-ca": {
         "prefix": "ca",
         "description": "console.assert",
         "body": [
         "console.assert(${1:expression}, ${0:obj});"
         ]
     },
-    "cc": {
+    "ts-cc": {
         "prefix": "cc",
         "description": "console.clear",
         "body": [

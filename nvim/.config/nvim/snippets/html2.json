@@ -1,0 +1,625 @@
+{
+    "html-a": {
+        "prefix": "a",
+        "description": "<a> ... </a>",
+        "body": [
+        "<a href=\"${1:#}\">${0:$1}</a>"
+        ]
+    },
+    "html-article": {
+        "prefix": "article",
+        "description": "<article> ... </article>",
+        "body": [
+        "<article>",
+        "    ${0}",
+        "</article>"
+        ]
+    },
+    "html-audio": {
+        "prefix": "audio",
+        "description": "<audio> ... </audio>",
+        "body": [
+        "<audio src=\"${1}\">${0}</audio>"
+        ]
+    },
+    "html-b": {
+        "prefix": "<b>",
+        "description": "<b> ... </b>",
+        "body": [
+        "<b>${0}</b>"
+        ]
+    },
+    "html-blockquote": {
+        "prefix": "blockquote",
+        "description": "<blockquote> ... </blockquote>",
+        "body": [
+        "<blockquote>",
+        "    ${0}",
+        "</blockquote>"
+        ]
+    },
+    "html-body": {
+        "prefix": "body",
+        "description": "<body> ... </body>",
+        "body": [
+        "<body>",
+        "    ${0}",
+        "</body>"
+        ]
+    },
+    "html-br": {
+        "prefix": "br",
+        "description": "<br> ... </br>",
+        "body": [
+        "<br>"
+        ]
+    },
+    "html-button": {
+        "prefix": "button",
+        "description": "<button> ... </button>",
+        "body": [
+        "<button type=\"${1:submit}\">${0}</button>"
+        ]
+    },
+    "html-details": {
+        "prefix": "details",
+        "description": "<details> ... </details>",
+        "body": [
+        "<details>",
+        "    ${0}",
+        "</details>"
+        ]
+    },
+    "html-div": {
+        "prefix": "div",
+        "description": "<div> ... </div>",
+        "body": [
+        "<div>",
+        "    ${0}",
+        "</div>"
+        ]
+    },
+    "html-em": {
+        "prefix": "em",
+        "description": "<em> ... </em>",
+        "body": [
+        "<em>${0}</em>"
+        ]
+    },
+    "html-embed": {
+        "prefix": "embed",
+        "description": "<embed> ... </embed>",
+        "body": [
+        "<embed src=\"${1}\" type=\"${0}\">"
+        ]
+    },
+    "html-footer": {
+        "prefix": "footer",
+        "description": "<footer> ... </footer>",
+        "body": [
+        "<footer>",
+        "    ${0}",
+        "</footer>"
+        ]
+    },
+    "html-form": {
+        "prefix": "form",
+        "description": "<form> ... </form>",
+        "body": [
+        "<form>",
+        "    ${0}",
+        "</form>"
+        ]
+    },
+    "html-h1": {
+        "prefix": "h1",
+        "description": "<h1> ... </h1>",
+        "body": [
+        "<h1>${0}</h1>"
+        ]
+    },
+    "html-h2": {
+        "prefix": "h2",
+        "description": "<h2> ... </h2>",
+        "body": [
+        "<h2>${0}</h2>"
+        ]
+    },
+    "html-h3": {
+        "prefix": "h3",
+        "description": "<h3> ... </h3>",
+        "body": [
+        "<h3>${0}</h3>"
+        ]
+    },
+    "html-h4": {
+        "prefix": "h4",
+        "description": "<h4> ... </h4>",
+        "body": [
+        "<h4>${0}</h4>"
+        ]
+    },
+    "html-h5": {
+        "prefix": "h5",
+        "description": "<h5> ... </h5>",
+        "body": [
+        "<h5>${0}</h5>"
+        ]
+    },
+    "html-h6": {
+        "prefix": "h6",
+        "description": "<h6> ... </h6>",
+        "body": [
+        "<h6>${0}</h6>"
+        ]
+    },
+    "html-head": {
+        "prefix": "head",
+        "description": "<head> ... </head>",
+        "body": [
+        "<head>",
+        "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">",
+        "    <title>Title</title>",
+        "</head>"
+        ]
+    },
+    "html-header": {
+        "prefix": "header",
+        "description": "<header> ... </header>",
+        "body": [
+        "<header>",
+        "    ${0}",
+        "</header>"
+        ]
+    },
+    "html-hgroup": {
+        "prefix": "hgroup",
+        "description": "<hgroup> ... </hgroup>",
+        "body": [
+        "<hgroup>",
+        "    ${0}",
+        "</hgroup>"
+        ]
+    },
+    "html-hr": {
+        "prefix": "hr",
+        "description": "<hr> ... </hr>",
+        "body": [
+        "<hr>"
+        ]
+    },
+    "html-html5": {
+        "prefix": "html5",
+        "description": "<html5> ... </html5>",
+        "body": [
+        "<!DOCTYPE html>",
+        "<html>",
+        "    <head>",
+        "        <meta charset=\"utf-8\">",
+        "        <meta name=\"viewport\" content=\"width=device-width\">",
+        "        <title>${1:${VIM:substitute(vim_snippets#Filename('', 'Page Title'), '^.', '\\u&', '')}}</title>",
+        "        ${2:link}",
+        "    </head>",
+        "    <body>",
+        "        ${0:body}",
+        "    </body>",
+        "</html>"
+        ]
+    },
+    "html-i": {
+        "prefix": "i",
+        "description": "<i> ... </i>",
+        "body": [
+        "<i>${0}</i>"
+        ]
+    },
+    "html-iframe": {
+        "prefix": "iframe",
+        "description": "<iframe> ... </iframe>",
+        "body": [
+        "<iframe src=\"${1}\" frameborder=\"0\"></iframe>"
+        ]
+    },
+    "html-img": {
+        "prefix": "img",
+        "description": "<img> ... </img>",
+        "body": [
+        "<img src=\"${1}\" alt=\"${2}\">"
+        ]
+    },
+    "html-input": {
+        "prefix": "input",
+        "description": "<input> ... </input>",
+        "body": [
+        "<input type=\"${1:text/submit/hidden/button/image}\" name=\"${2}\" id=\"${3:$2}\" value=\"${4}\">"
+        ]
+    },
+    "html-input:text": {
+        "prefix": "input:text",
+        "description": "<input:text> ... </input:text>",
+        "body": [
+        "<input type=\"text\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:submit": {
+        "prefix": "input:submit",
+        "description": "<input:submit> ... </input:submit>",
+        "body": [
+        "<input type=\"submit\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:hidden": {
+        "prefix": "input:hidden",
+        "description": "<input:hidden> ... </input:hidden>",
+        "body": [
+        "<input type=\"hidden\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:button": {
+        "prefix": "input:button",
+        "description": "<input:button> ... </input:button>",
+        "body": [
+        "<input type=\"button\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:image": {
+        "prefix": "input:image",
+        "description": "<input:image> ... </input:image>",
+        "body": [
+        "<input type=\"image\" name=\"${1}\" id=\"${2:$1}\" src=\"${3}\" alt=\"${4}\">"
+        ]
+    },
+    "html-input:checkbox": {
+        "prefix": "input:checkbox",
+        "description": "<input:checkbox> ... </input:checkbox>",
+        "body": [
+        "<input type=\"checkbox\" name=\"${1}\" id=\"${2:$1}\">"
+        ]
+    },
+    "html-input:radio": {
+        "prefix": "input:radio",
+        "description": "<input:radio> ... </input:radio>",
+        "body": [
+        "<input type=\"radio\" name=\"${1}\" id=\"${2:$1}\">"
+        ]
+    },
+    "html-input:color": {
+        "prefix": "input:color",
+        "description": "<input:color> ... </input:color>",
+        "body": [
+        "<input type=\"color\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:date": {
+        "prefix": "input:date",
+        "description": "<input:date> ... </input:date>",
+        "body": [
+        "<input type=\"date\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:datetime": {
+        "prefix": "input:datetime",
+        "description": "<input:datetime> ... </input:datetime>",
+        "body": [
+        "<input type=\"datetime\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:datetime-local": {
+        "prefix": "input:datetime-local",
+        "description": "<input:datetime-local> ... </input:datetime-local>",
+        "body": [
+        "<input type=\"datetime-local\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:email": {
+        "prefix": "input:email",
+        "description": "<input:email> ... </input:email>",
+        "body": [
+        "<input type=\"email\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:file": {
+        "prefix": "input:file",
+        "description": "<input:file> ... </input:file>",
+        "body": [
+        "<input type=\"file\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:month": {
+        "prefix": "input:month",
+        "description": "<input:month> ... </input:month>",
+        "body": [
+        "<input type=\"month\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:number": {
+        "prefix": "input:number",
+        "description": "<input:number> ... </input:number>",
+        "body": [
+        "<input type=\"number\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:password": {
+        "prefix": "input:password",
+        "description": "<input:password> ... </input:password>",
+        "body": [
+        "<input type=\"password\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:range": {
+        "prefix": "input:range",
+        "description": "<input:range> ... </input:range>",
+        "body": [
+        "<input type=\"range\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:reset": {
+        "prefix": "input:reset",
+        "description": "<input:reset> ... </input:reset>",
+        "body": [
+        "<input type=\"reset\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:search": {
+        "prefix": "input:search",
+        "description": "<input:search> ... </input:search>",
+        "body": [
+        "<input type=\"search\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:time": {
+        "prefix": "input:time",
+        "description": "<input:time> ... </input:time>",
+        "body": [
+        "<input type=\"time\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:url": {
+        "prefix": "input:url",
+        "description": "<input:url> ... </input:url>",
+        "body": [
+        "<input type=\"url\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-input:week": {
+        "prefix": "input:week",
+        "description": "<input:week> ... </input:week>",
+        "body": [
+        "<input type=\"week\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
+        ]
+    },
+    "html-label": {
+        "prefix": "label",
+        "description": "<label> ... </label>",
+        "body": [
+        "<label for=\"${0:$1}\">${1}</label>"
+        ]
+    },
+    "html-li": {
+        "prefix": "li",
+        "description": "<li> ... </li>",
+        "body": [
+        "<li>${0}</li>"
+        ]
+    },
+    "html-link": {
+        "prefix": "link",
+        "description": "<link> ... </link>",
+        "body": [
+        "<link rel=\"${1:stylesheet}\" href=\"${2:style.css}\" type=\"${3:text/css}\">"
+        ]
+    },
+    "html-main": {
+        "prefix": "main",
+        "description": "<main> ... </main>",
+        "body": [
+        "<main>",
+        "    ${0}",
+        "</main>"
+        ]
+    },
+    "html-meta": {
+        "prefix": "meta:s",
+        "description": "<meta:s> ... </meta:s>",
+        "body": [
+        "<meta ${0}>"
+        ]
+    },
+    "html-nav": {
+        "prefix": "nav",
+        "description": "<nav> ... </nav>",
+        "body": [
+        "<nav>",
+        "    ${0}",
+        "</nav>"
+        ]
+    },
+    "html-noscript": {
+        "prefix": "noscript",
+        "description": "<noscript> ... </noscript>",
+        "body": [
+        "<noscript>",
+        "    ${0}",
+        "</noscript>"
+        ]
+    },
+    "html-ol": {
+        "prefix": "ol",
+        "description": "<ol> ... </ol>",
+        "body": [
+        "<ol>",
+        "    ${0}",
+        "</ol>"
+        ]
+    },
+    "html-opt": {
+        "prefix": "opt",
+        "description": "<opt> ... </opt>",
+        "body": [
+        "<option value=\"${1}\">${0:$1}</option>"
+        ]
+    },
+    "html-p": {
+        "prefix": "p",
+        "description": "<p> ... </p>",
+        "body": [
+        "<p>${0}</p>"
+        ]
+    },
+    "html-q": {
+        "prefix": "q",
+        "description": "<q> ... </q>",
+        "body": [
+        "<q>${0}</q>"
+        ]
+    },
+    "html-s": {
+        "prefix": "s",
+        "description": "<s> ... </s>",
+        "body": [
+        "<s>${0}</s>"
+        ]
+    },
+    "html-script": {
+        "prefix": "scripts",
+        "description": "<scripts> ... </scripts>",
+        "body": [
+        "<script src=\"${0}.js\"></script>"
+        ]
+    },
+    "html-section": {
+        "prefix": "section",
+        "description": "<section> ... </section>",
+        "body": [
+        "<section>",
+        "    ${0}",
+        "</section>"
+        ]
+    },
+    "html-select": {
+        "prefix": "select",
+        "description": "<select> ... </select>",
+        "body": [
+        "<select name=\"${1}\" id=\"${2:$1}\">",
+        "    ${0}",
+        "</select>"
+        ]
+    },
+    "html-small": {
+        "prefix": "small",
+        "description": "<small> ... </small>",
+        "body": [
+        "<small>${0}</small>"
+        ]
+    },
+    "html-source": {
+        "prefix": "source",
+        "description": "<source> ... </source>",
+        "body": [
+        "<source src=\"${1}\" type=\"${2}\" media=\"${0}\">"
+        ]
+    },
+    "html-span": {
+        "prefix": "span",
+        "description": "<span> ... </span>",
+        "body": [
+        "<span>${0}</span>"
+        ]
+    },
+    "html-strong": {
+        "prefix": "strong",
+        "description": "<strong> ... </strong>",
+        "body": [
+        "<strong>${0}</strong>"
+        ]
+    },
+    "html-style": {
+        "prefix": "style",
+        "description": "<style> ... </style>",
+        "body": [
+        "<style type=\"text/css\" media=\"${1:all}\">",
+        "    ${0}",
+        "</style>"
+        ]
+    },
+    "html-sub": {
+        "prefix": "sub",
+        "description": "<sub> ... </sub>",
+        "body": [
+        "<sub>${0}</sub>"
+        ]
+    },
+    "html-summary": {
+        "prefix": "summary",
+        "description": "<summary> ... </summary>",
+        "body": [
+        "<summary>",
+        "    ${0}",
+        "</summary>"
+        ]
+    },
+    "html-sup": {
+        "prefix": "sup",
+        "description": "<sup> ... </sup>",
+        "body": [
+        "<sup>${0}</sup>"
+        ]
+    },
+    "html-table": {
+        "prefix": "table",
+        "description": "<table> ... </table>",
+        "body": [
+        "<table>",
+        "    ${0}",
+        "</table>"
+        ]
+    },
+    "html-tbody": {
+        "prefix": "tbody",
+        "description": "<tbody> ... </tbody>",
+        "body": [
+        "<tbody>",
+        "    ${0}",
+        "</tbody>"
+        ]
+    },
+    "html-td": {
+        "prefix": "td",
+        "description": "<td> ... </td>",
+        "body": [
+        "<td>${0}</td>"
+        ]
+    },
+    "html-textarea": {
+        "prefix": "textarea",
+        "description": "<textarea> ... </textarea>",
+        "body": [
+        "<textarea name=\"${1}\" id=\"${2:$1}\" rows=\"${3:8}\" cols=\"${4:40}\">${5}</textarea>"
+        ]
+    },
+    "html-th": {
+        "prefix": "th",
+        "description": "<th> ... </th>",
+        "body": [
+        "<th>${0}</th>"
+        ]
+    },
+    "html-tr": {
+        "prefix": "tr",
+        "description": "<tr> ... </tr>",
+        "body": [
+        "<tr>",
+        "    ${0}",
+        "</tr>"
+        ]
+    },
+    "html-ul": {
+        "prefix": "ul",
+        "description": "<ul> ... </ul>",
+        "body": [
+        "<ul>",
+        "    ${0}",
+        "</ul>"
+        ]
+    }
+}

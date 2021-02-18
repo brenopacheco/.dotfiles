@@ -69,12 +69,12 @@ lua <<EOF
       }
     }
 EOF
-" augroup plugin-treesiter
-"   au FileType sh,bash,c,cpp,lua,java,css,html,json,
-"                 \javascript,typescript,typescriptreact,javascriptreact
-"                 \ set foldmethod=expr |
-"                 \ set foldexpr=nvim_treesitter#foldexpr()
-" augroup END
+augroup plugin-treesiter
+  au FileType sh,bash,c,cpp,lua,java,css,html,json,
+                \javascript,typescript,typescriptreact,javascriptreact
+                \ set foldmethod=expr |
+                \ set foldexpr=nvim_treesitter#foldexpr()
+augroup END
 endif
 " }}}
 " Zeavim{{{
@@ -204,7 +204,8 @@ endif
     let g:vsnip_filetypes = {
                 \ 'javascript': [ 'javascript-express' ],
                 \ 'javascriptreact': [ 'javascript', 'html' ],
-                \ 'typescriptreact': [ 'typescript', 'html' ]
+                \ 'typescriptreact': [ 'typescript', 'html' ],
+                \ 'html': [ 'tailwind' ]
                 \ }
     let g:vsnip_extra_mapping = v:false
     let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')
@@ -234,3 +235,8 @@ let g:codi#virtual_text = 0
 " Asyncrun {{{
     let g:asyncrun_open = 10
 " }}}
+" Git-messenger {{{
+
+    let g:git_messenger_no_default_mappings = v:true
+
+"}}}

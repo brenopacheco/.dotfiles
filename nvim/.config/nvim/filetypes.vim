@@ -1,4 +1,5 @@
 
+au FileType typescript,typescriptreact compiler tsc
 au Filetype vim set foldmethod=marker | set iskeyword+=:
 au BufNewFile,BufRead *.h set ft=c
 au BufNewFile,BufRead *.org set filetype=org

@@ -150,10 +150,8 @@ function git-root() {
 # }}}
 # fzf-vim : searches for files and opens in vim {{{
 function fzf-vim() {
-    OLD_OPTS=$FZF_DEFAULT_OPTS
-    FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --preview-window 'right:50%' --preview 'bat --color=always --style=header,grid --line-range :100 {}'"
-	local CMD='fd . ~ -HIia -t f -j 5 2> /dev/null | fzf'
-    FILES=$(fd . ~ -HIia -t f -j 5 2> /dev/null | fzf)
+    FILES=$(fd . ~ -HIia -t f -j 5 2> /dev/null | fzf --ansi  \
+        --preview 'bat --color=always --style=header,grid --line-range :100 {}')
     [ $? == 0 ] && vim $FILES
     FZF_DEFAULT_OPTS=$OLD_OPTS
 }

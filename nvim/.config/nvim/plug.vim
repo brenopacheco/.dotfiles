@@ -33,7 +33,7 @@ call plug#begin(g:plugdir)
     Plug 'junegunn/fzf.vim'                 " fzf vim's interface
     Plug 'rbgrouleff/bclose.vim'            " required by lf
     Plug 'brenopacheco/lf.vim'              " file browser
-    Plug 'brenopacheco/vim-hydra'           " hydras
+    " Plug 'brenopacheco/vim-hydra'           " hydras
     Plug 'mhinz/vim-signify'                " adds git marks to gutter
     Plug 'rhysd/git-messenger.vim'          " show git messsages at cursor pos.
     Plug 'sodapopcan/vim-twiggy'            " branch browser
@@ -41,22 +41,23 @@ call plug#begin(g:plugdir)
     Plug 'KabbAmine/zeavim.vim'             " interfaces to zeal
     Plug 'brenopacheco/vim-tree'            " show directory structure as tree
     Plug 'diepm/vim-rest-console'           " CURL tool for http requests
+    Plug 'nvim-lua/completion-nvim'         " lsp compatible completion
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
     Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
-    " Plug 'brenopacheco/completion-nvim', { 'branch': 'custom' }
-    Plug 'nvim-lua/completion-nvim'
-    Plug 'steelsojka/completion-buffers'
+    Plug 'steelsojka/completion-buffers'    " adds buffer completion
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
-    Plug 'glepnir/lspsaga.nvim'
-    Plug 'cohama/lexima.vim'
-    Plug 'skywind3000/asyncrun.vim'
-    Plug 'mfussenegger/nvim-dap'
-    Plug 'haishanh/night-owl.vim'
-    Plug 'bluz71/vim-nightfly-guicolors'    " treesitter compatible theme
+    Plug 'glepnir/lspsaga.nvim'             " lsp UI utils 
+    Plug 'cohama/lexima.vim'                " auto close {} () / smarter
+    Plug 'mfussenegger/nvim-dap'            " debugger lsp equivalent
+    Plug 'skywind3000/asyncrun.vim'         " ...
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
-    " Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
-    Plug 'brenopacheco/vim-quickhelp'
+    Plug 'brenopacheco/vim-quickhelp'       " call :Help for visual help
+    Plug 'junegunn/goyo.vim'                " like vscode writer mode
+    Plug 'junegunn/limelight.vim'           " lights only hovered block
+    Plug 'haishanh/night-owl.vim'           " theme
+    Plug 'bluz71/vim-nightfly-guicolors'    " theme
+    Plug 'endel/vim-github-colorscheme'     " theme
 
 call plug#end()
 

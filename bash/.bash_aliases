@@ -4,6 +4,10 @@ alias lua="lua5.1"
 
 # git
 alias gs='git status'
+alias ga='git add -A'
+alias gm='git commit'
+alias gp='git push'
+alias gw='git-watch'
 alias gcm='git checkout master'
 gc() {
     git checkout $(git branch -vva | fzf --reverse | sed 's/^[^a-zA-Z]\+//' | awk '{printf $1}')
@@ -11,7 +15,7 @@ gc() {
 
 
 alias pstree="ps -aef --forest"
-
+alias v="nvim"
 
 
 # custom

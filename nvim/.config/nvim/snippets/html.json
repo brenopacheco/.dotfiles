@@ -1,2040 +1,844 @@
 {
-    "html-react": {
-      "prefix": ["html-react"],
-      "body": [
-        "<!DOCTYPE html>",
-        "<html>",
-        "    <head>",
-        "        <meta charset=\"UTF-8\" />",
-        "        <meta name=\"viewport\" content=\"width=device-width\">",
-        "        <script src=\"https://unpkg.com/react/umd/react.development.js\"></script>",
-        "        <script src=\"https://unpkg.com/react-dom/umd/react-dom.development.js\"></script>",
-        "        <script src=\"https://unpkg.com/react-router/umd/react-router.min.js\"></script>",
-        "        <script src=\"https://unpkg.com/react-router-dom/umd/react-router-dom.min.js\"></script>",
-        "        <script src=\"https://unpkg.com/@babel/standalone/babel.min.js\"></script>",
-        "    </head>",
-        "    <body>",
-        "        <div id='root'></div>",
-        "        <script type='text/babel'>",
-        "            const Router   = ReactRouterDOM.BrowserRouter;",
-        "            const Route    = ReactRouterDOM.Route;",
-        "            const Link     = ReactRouterDOM.Link;",
-        "            const Prompt   = ReactRouterDOM.Prompt;",
-        "            const Switch   = ReactRouterDOM.Switch;",
-        "            const Redirect = ReactRouterDOM.Redirect;",
-        "",
-        "            const App = props => (",
-        "                <ReactRouterDOM.HashRouter>",
-        "                    <ul>",
-        "                        <li><Link to=\"/\">TO HOME</Link></li>",
-        "                        <li><Link to=\"/a\">TO A</Link></li>",
-        "                        <li><Link to=\"/b\">TO B</Link></li>",
-        "                    </ul>",
-        "                    <Route path=\"/\" exact component={Home} />",
-        "                    <Route path=\"/a\" component={A} />",
-        "                    <Route path=\"/b\" component={B} />",
-        "                </ReactRouterDOM.HashRouter>",
-        "            )",
-        "",
-        "            const Home = props => <h1>HOME</h1>",
-        "            const A = props => <h1>A</h1>",
-        "            const B = props => <h1>B</h1>",
-        "",
-        "            ReactDOM.render(<App />, document.querySelector('#root'));",
-        "        </script>",
-        "    </body>",
-        "</html>"
-      ]
-    },
-    "attr": {
-        "prefix": "attr",
-        "description": "attr",
-        "body": [
-        "${1:attribute}=\"${0:property}\""
-        ]
-    },
-    ".": {
-        "prefix": ".",
-        "description": ".",
-        "body": [
-        "class=\"${1}\""
-        ]
-    },
-    "#": {
-        "prefix": "#",
-        "description": "#",
-        "body": [
-        "id=\"${1}\""
-        ]
-    },
-    "alt": {
-        "prefix": "alt",
-        "description": "alt",
-        "body": [
-        "alt=\"${1}\""
-        ]
-    },
-    "data": {
-        "prefix": "data",
-        "description": "data",
-        "body": [
-        "data-${1}=\"${2:$1}\""
-        ]
-    },
-    "for": {
-        "prefix": "for",
-        "description": "for",
-        "body": [
-        "for=\"${1}\""
-        ]
-    },
-    "height": {
-        "prefix": "height",
-        "description": "height",
-        "body": [
-        "height=\"${1}\""
-        ]
-    },
-    "href": {
-        "prefix": "href",
-        "description": "href",
-        "body": [
-        "href=\"${1:#}\""
-        ]
-    },
-    "lang": {
-        "prefix": "lang",
-        "description": "lang",
-        "body": [
-        "lang=\"${1:en}\""
-        ]
-    },
-    "media": {
-        "prefix": "media",
-        "description": "media",
-        "body": [
-        "media=\"${1}\""
-        ]
-    },
-    "name": {
-        "prefix": "name",
-        "description": "name",
-        "body": [
-        "name=\"${1}\""
-        ]
-    },
-    "rel": {
-        "prefix": "rel",
-        "description": "rel",
-        "body": [
-        "rel=\"${1}\""
-        ]
-    },
-    "scope": {
-        "prefix": "scope",
-        "description": "scope",
-        "body": [
-        "scope=\"${1:row}\""
-        ]
-    },
-    "src": {
-        "prefix": "src",
-        "description": "src",
-        "body": [
-        "src=\"${1}\""
-        ]
-    },
-    "title=": {
-        "prefix": "title=",
-        "description": "title=",
-        "body": [
-        "title=\"${1}\""
-        ]
-    },
-    "type": {
-        "prefix": "type",
-        "description": "type",
-        "body": [
-        "type=\"${1}\""
-        ]
-    },
-    "value": {
-        "prefix": "value",
-        "description": "value",
-        "body": [
-        "value=\"${1}\""
-        ]
-    },
-    "width": {
-        "prefix": "width",
-        "description": "width",
-        "body": [
-        "width=\"${1}\""
-        ]
+    "doctype": {
+    "prefix": "doctype",
+    "body": [
+        "<!DOCTYPE>",
+        "$1"
+        ],
+    "description": "HTML - Defines the document type",
+    "scope": "text.html"
     },
     "a": {
-        "prefix": "a",
-        "description": "a",
-        "body": [
-        "<a href=\"${1:#}\">${0:$1}</a>"
-        ]
-    },
-    "a.": {
-        "prefix": "a.",
-        "description": "a.",
-        "body": [
-        "<a class=\"${1}\" href=\"${2:#}\">${0:$1}</a>"
-        ]
-    },
-    "a#": {
-        "prefix": "a#",
-        "description": "a#",
-        "body": [
-        "<a id=\"${1}\" href=\"${2:#}\">${0:$1}</a>"
-        ]
-    },
-    "a:ext": {
-        "prefix": "a:ext",
-        "description": "a:ext",
-        "body": [
-        "<a href=\"http://${1:example.com}\">${0:$1}</a>"
-        ]
-    },
-    "a:mail": {
-        "prefix": "a:mail",
-        "description": "a:mail",
-        "body": [
-        "<a href=\"mailto:${1:joe@example.com}?subject=${2:feedback}\">${0:email me}</a>"
-        ]
-    },
-    "ac": {
-        "prefix": "ac",
-        "description": "ac",
-        "body": [
-        "<a href=\"${VIM:@+}\">${0:${VIM:@+}}</a>"
-        ]
+    "prefix": "a",
+    "body": "<a href=\"$1\">$2</a>$3",
+    "description": "HTML - Defines a hyperlink",
+    "scope": "text.html"
     },
     "abbr": {
-        "prefix": "abbr",
-        "description": "abbr",
-        "body": [
-        "<abbr title=\"${1}\">${0}</abbr>"
-        ]
+    "prefix": "abbr",
+    "body": "<abbr title=\"$1\">$2</abbr>$3",
+    "description": "HTML - Defines an abbreviation",
+    "scope": "text.html"
     },
     "address": {
-        "prefix": "address",
-        "description": "address",
-        "body": [
+    "prefix": "address",
+    "body": [
         "<address>",
-        "    ${0}",
+        "$1",
         "</address>"
-        ]
+        ],
+    "description": "HTML - Defines an address element",
+    "scope": "text.html"
     },
     "area": {
-        "prefix": "area",
-        "description": "area",
-        "body": [
-        "<area shape=\"${1:rect}\" coords=\"${2}\" href=\"${3}\" alt=\"${0}\">"
-        ]
-    },
-    "area+": {
-        "prefix": "area+",
-        "description": "area+",
-        "body": [
-        "<area shape=\"${1:rect}\" coords=\"${2}\" href=\"${3}\" alt=\"${4}\">",
-        "area+"
-        ]
-    },
-    "area:c": {
-        "prefix": "area:c",
-        "description": "area:c",
-        "body": [
-        "<area shape=\"circle\" coords=\"${1}\" href=\"${2}\" alt=\"${0}\">"
-        ]
-    },
-    "area:d": {
-        "prefix": "area:d",
-        "description": "area:d",
-        "body": [
-        "<area shape=\"default\" coords=\"${1}\" href=\"${2}\" alt=\"${0}\">"
-        ]
-    },
-    "area:p": {
-        "prefix": "area:p",
-        "description": "area:p",
-        "body": [
-        "<area shape=\"poly\" coords=\"${1}\" href=\"${2}\" alt=\"${0}\">"
-        ]
-    },
-    "area:r": {
-        "prefix": "area:r",
-        "description": "area:r",
-        "body": [
-        "<area shape=\"rect\" coords=\"${1}\" href=\"${2}\" alt=\"${0}\">"
-        ]
+    "prefix": "area",
+    "body": "<area shape=\"$1\" coords=\"$2\" href=\"$3\" alt=\"$4\">$5",
+    "description": "HTML - Defines an area inside an image map",
+    "scope": "text.html"
     },
     "article": {
-        "prefix": "article",
-        "description": "article",
-        "body": [
+    "prefix": "article",
+    "body": [
         "<article>",
-        "    ${0}",
+        "\t$1",
         "</article>"
-        ]
-    },
-    "article.": {
-        "prefix": "article.",
-        "description": "article.",
-        "body": [
-        "<article class=\"${1}\">",
-        "    ${0}",
-        "</article>"
-        ]
-    },
-    "article#": {
-        "prefix": "article#",
-        "description": "article#",
-        "body": [
-        "<article id=\"${1}\">",
-        "    ${0}",
-        "</article>"
-        ]
+        ],
+    "description": "HTML - Defines an article",
+    "scope": "text.html"
     },
     "aside": {
-        "prefix": "aside",
-        "description": "aside",
-        "body": [
+    "prefix": "aside",
+    "body": [
         "<aside>",
-        "    ${0}",
-        "</aside>"
-        ]
-    },
-    "aside.": {
-        "prefix": "aside.",
-        "description": "aside.",
-        "body": [
-        "<aside class=\"${1}\">",
-        "    ${0}",
-        "</aside>"
-        ]
-    },
-    "aside#": {
-        "prefix": "aside#",
-        "description": "aside#",
-        "body": [
-        "<aside id=\"${1}\">",
-        "    ${0}",
-        "</aside>"
-        ]
+        "\t$1",
+        "</aside>$2"
+        ],
+    "description": "HTML - Defines content aside from the page content",
+    "scope": "text.html"
     },
     "audio": {
-        "prefix": "audio",
-        "description": "audio",
-        "body": [
-        "<audio src=\"${1}\">${0}</audio>"
-        ]
+    "prefix": "audio",
+    "body": [
+        "<audio controls>",
+        "\t$1",
+        "</audio>"
+        ],
+    "description": "HTML - Defines sounds content",
+    "scope": "text.html"
     },
     "b": {
-        "prefix": "b",
-        "description": "b",
-        "body": [
-        "<b>${0}</b>"
-        ]
+    "prefix": "b",
+    "body": "<b>$1</b>$2",
+    "description": "HTML - Defines bold text",
+    "scope": "text.html"
     },
     "base": {
-        "prefix": "base",
-        "description": "base",
-        "body": [
-        "<base href=\"${1}\" target=\"${0}\">"
-        ]
+    "prefix": "base",
+    "body": "<base href=\"$1\" target=\"$2\">$3",
+    "description": "HTML - Defines a base URL for all the links in a page",
+    "scope": "text.html"
     },
     "bdi": {
-        "prefix": "bdi",
-        "description": "bdi",
-        "body": [
-        "<bdi>${0}</bdo>"
-        ]
+    "prefix": "bdi",
+    "body": "<bdi>$1</bdi>$2",
+    "description": "HTML - Used to isolate text that is of unknown directionality",
+    "scope": "text.html"
     },
     "bdo": {
-        "prefix": "bdo",
-        "description": "bdo",
-        "body": [
-        "<bdo dir=\"${1}\">${0}</bdo>"
-        ]
+    "prefix": "bdo",
+    "body": [
+        "<bdo dir=\"$1\">",
+        "$2",
+        "</bdo>"],
+    "description": "HTML - Defines the direction of text display",
+    "scope": "text.html"
     },
-    "bdo:l": {
-        "prefix": "bdo:l",
-        "description": "bdo:l",
-        "body": [
-        "<bdo dir=\"ltr\">${0}</bdo>"
-        ]
-    },
-    "bdo:r": {
-        "prefix": "bdo:r",
-        "description": "bdo:r",
-        "body": [
-        "<bdo dir=\"rtl\">${0}</bdo>"
-        ]
+    "big": {
+    "prefix": "big",
+    "body": "<big>$1</big>$2",
+    "description": "HTML - Used to make text bigger",
+    "scope": "text.html"
     },
     "blockquote": {
-        "prefix": "blockquote",
-        "description": "blockquote",
-        "body": [
-        "<blockquote>",
-        "    ${0}",
+    "prefix": "blockquote",
+    "body": [
+        "<blockquote cite=\"$2\">",
+        "\t$1",
         "</blockquote>"
-        ]
+        ],
+    "description": "HTML - Defines a long quotation",
+    "scope": "text.html"
     },
     "body": {
-        "prefix": "body",
-        "description": "body",
-        "body": [
+    "prefix": "body",
+    "body": [
         "<body>",
-        "    ${0}",
-        "</body>"
-        ]
+        "\t$1",
+        "</body>"],
+    "description": "HTML - Defines the body element",
+    "scope": "text.html"
     },
     "br": {
-        "prefix": "br",
-        "description": "br",
-        "body": [
-        "<br>"
-        ]
+    "prefix": "br",
+    "body": "<br>",
+    "description": "HTML - Inserts a single line break",
+    "scope": "text.html"
     },
     "button": {
-        "prefix": "button",
-        "description": "button",
-        "body": [
-        "<button type=\"${1:submit}\">${0}</button>"
-        ]
-    },
-    "button.": {
-        "prefix": "button.",
-        "description": "button.",
-        "body": [
-        "<button class=\"${1:button}\" type=\"${2:submit}\">${0}</button>"
-        ]
-    },
-    "button#": {
-        "prefix": "button#",
-        "description": "button#",
-        "body": [
-        "<button id=\"${1}\" type=\"${2:submit}\">${0}</button>"
-        ]
-    },
-    "button:s": {
-        "prefix": "button:s",
-        "description": "button:s",
-        "body": [
-        "<button type=\"submit\">${0}</button>"
-        ]
-    },
-    "button:r": {
-        "prefix": "button:r",
-        "description": "button:r",
-        "body": [
-        "<button type=\"reset\">${0}</button>"
-        ]
+    "prefix": "button",
+    "body": "<button type=\"$1\">$2</button>$3",
+    "description": "HTML - Defines a push button",
+    "scope": "text.html"
     },
     "canvas": {
-        "prefix": "canvas",
-        "description": "canvas",
-        "body": [
-        "<canvas>",
-        "    ${0}",
-        "</canvas>"
-        ]
+    "prefix": "canvas",
+    "body": "<canvas id=\"$1\">$2</canvas>$3",
+    "description": "HTML - Defines graphics",
+    "scope": "text.html"
     },
     "caption": {
-        "prefix": "caption",
-        "description": "caption",
-        "body": [
-        "<caption>${0}</caption>"
-        ]
+    "prefix": "caption",
+    "body": "<caption>$1</caption>$2",
+    "description": "HTML - Defines a table caption",
+    "scope": "text.html"
     },
     "cite": {
-        "prefix": "cite",
-        "description": "cite",
-        "body": [
-        "<cite>${0}</cite>"
-        ]
+    "prefix": "cite",
+    "body": "<cite>$1</cite>$2",
+    "description": "HTML - Defines a citation",
+    "scope": "text.html"
     },
     "code": {
-        "prefix": "code",
-        "description": "code",
-        "body": [
-        "<code>${0}</code>"
-        ]
+    "prefix": "code",
+    "body": "<code>$1</code>$2",
+    "description": "HTML - Defines computer code text",
+    "scope": "text.html"
     },
     "col": {
-        "prefix": "col",
-        "description": "col",
-        "body": [
-        "<col>"
-        ]
+    "prefix": "col",
+    "body": "<col>$2",
+    "description": "HTML - Defines attributes for table columns",
+    "scope": "text.html"
     },
     "colgroup": {
-        "prefix": "colgroup",
-        "description": "colgroup",
-        "body": [
+    "prefix": "colgroup",
+    "body": [
         "<colgroup>",
-        "    ${0}",
-        "</colgroup>"
-        ]
-    },
-    "colgroup+": {
-        "prefix": "colgroup+",
-        "description": "colgroup+",
-        "body": [
-        "<colgroup>",
-        "    <col>",
-        "    col+${0}",
-        "</colgroup>"
-        ]
+        "\t$1",
+        "</colgroup>"],
+    "description": "HTML - Defines group of table columns",
+    "scope": "text.html"
     },
     "command": {
-        "prefix": "command",
-        "description": "command",
-        "body": [
-        "<command type=\"command\" label=\"${1}\" icon=\"${0}\">"
-        ]
-    },
-    "command:c": {
-        "prefix": "command:c",
-        "description": "command:c",
-        "body": [
-        "<command type=\"checkbox\" label=\"${1}\" icon=\"${0}\">"
-        ]
-    },
-    "command:r": {
-        "prefix": "command:r",
-        "description": "command:r",
-        "body": [
-        "<command type=\"radio\" radiogroup=\"${1}\" label=\"${2}\" icon=\"${0}\">"
-        ]
-    },
-    "datagrid": {
-        "prefix": "datagrid",
-        "description": "datagrid",
-        "body": [
-        "<datagrid>",
-        "    ${0}",
-        "</datagrid>"
-        ]
+    "prefix": "command",
+    "body": "<command>$1</command>$2",
+    "description": "HTML - Defines a command button [not supported]",
+    "scope": "text.html"
     },
     "datalist": {
-        "prefix": "datalist",
-        "description": "datalist",
-        "body": [
+    "prefix": "datalist",
+    "body": [
         "<datalist>",
-        "    ${0}",
+        "\t$1",
         "</datalist>"
-        ]
-    },
-    "datatemplate": {
-        "prefix": "datatemplate",
-        "description": "datatemplate",
-        "body": [
-        "<datatemplate>",
-        "    ${0}",
-        "</datatemplate>"
-        ]
+        ],
+    "description": "HTML - Defines a dropdown list",
+    "scope": "text.html"
     },
     "dd": {
-        "prefix": "dd",
-        "description": "dd",
-        "body": [
-        "<dd>${0}</dd>"
-        ]
-    },
-    "dd.": {
-        "prefix": "dd.",
-        "description": "dd.",
-        "body": [
-        "<dd class=\"${1}\">${0}</dd>"
-        ]
-    },
-    "dd#": {
-        "prefix": "dd#",
-        "description": "dd#",
-        "body": [
-        "<dd id=\"${1}\">${0}</dd>"
-        ]
+    "prefix": "dd",
+    "body": "<dd>$1</dd>$2",
+    "description": "HTML - Defines a definition description",
+    "scope": "text.html"
     },
     "del": {
-        "prefix": "del",
-        "description": "del",
-        "body": [
-        "<del>${0}</del>"
-        ]
+    "prefix": "del",
+    "body": "<del>$1</del>$2",
+    "description": "HTML - Defines deleted text",
+    "scope": "text.html"
     },
     "details": {
-        "prefix": "details",
-        "description": "details",
-        "body": [
-        "<details>${0}</details>"
-        ]
-    },
-    "dfn": {
-        "prefix": "dfn",
-        "description": "dfn",
-        "body": [
-        "<dfn>${0}</dfn>"
-        ]
+    "prefix": "details",
+    "body": [
+        "<details>",
+        "\t$1",
+        "</details>"
+        ],
+    "description": "HTML - Defines details of an element",
+    "scope": "text.html"
     },
     "dialog": {
-        "prefix": "dialog",
-        "description": "dialog",
-        "body": [
-        "<dialog>",
-        "    ${0}",
-        "</dialog>"
-        ]
+    "prefix": "dialog",
+    "body": "<dialog>$1</dialog>$2",
+    "description": "HTML - Defines a dialog (conversation)",
+    "scope": "text.html"
+    },
+    "dfn": {
+    "prefix": "dfn",
+    "body": "<dfn>$1</dfn>$2",
+    "description": "HTML - Defines a definition term",
+    "scope": "text.html"
     },
     "div": {
-        "prefix": "div",
-        "description": "div",
-        "body": [
+    "prefix": "div",
+    "body": [
         "<div>",
-        "    ${0}",
+        "\t$1",
         "</div>"
-        ]
-    },
-    "div.": {
-        "prefix": "div.",
-        "description": "div.",
-        "body": [
-        "<div class=\"${1}\">",
-        "    ${0}",
-        "</div>"
-        ]
-    },
-    "div#": {
-        "prefix": "div#",
-        "description": "div#",
-        "body": [
-        "<div id=\"${1}\">",
-        "    ${0}",
-        "</div>"
-        ]
+        ],
+    "description": "HTML - Defines a section in a document",
+    "scope": "text.html"
     },
     "dl": {
-        "prefix": "dl",
-        "description": "dl",
-        "body": [
+    "prefix": "dl",
+    "body": [
         "<dl>",
-        "    ${0}",
+        "\t$1",
         "</dl>"
-        ]
-    },
-    "dl.": {
-        "prefix": "dl.",
-        "description": "dl.",
-        "body": [
-        "<dl class=\"${1}\">",
-        "    ${0}",
-        "</dl>"
-        ]
-    },
-    "dl#": {
-        "prefix": "dl#",
-        "description": "dl#",
-        "body": [
-        "<dl id=\"${1}\">",
-        "    ${0}",
-        "</dl>"
-        ]
-    },
-    "dl+": {
-        "prefix": "dl+",
-        "description": "dl+",
-        "body": [
-        "<dl>",
-        "    <dt>${1}</dt>",
-        "    <dd>${2}</dd>",
-        "    dt+${0}",
-        "</dl>"
-        ]
+        ],
+    "description": "HTML - Defines a definition list",
+    "scope": "text.html"
     },
     "dt": {
-        "prefix": "dt",
-        "description": "dt",
-        "body": [
-        "<dt>${0}</dt>"
-        ]
-    },
-    "dt.": {
-        "prefix": "dt.",
-        "description": "dt.",
-        "body": [
-        "<dt class=\"${1}\">${0}</dt>"
-        ]
-    },
-    "dt#": {
-        "prefix": "dt#",
-        "description": "dt#",
-        "body": [
-        "<dt id=\"${1}\">${0}</dt>"
-        ]
-    },
-    "dt+": {
-        "prefix": "dt+",
-        "description": "dt+",
-        "body": [
-        "<dt>${1}</dt>",
-        "<dd>${2}</dd>",
-        "dt+${0}"
-        ]
+    "prefix": "dt",
+    "body": "<dt>$1</dt>$2",
+    "description": "HTML - Defines a definition term",
+    "scope": "text.html"
     },
     "em": {
-        "prefix": "em",
-        "description": "em",
-        "body": [
-        "<em>${0}</em>"
-        ]
+    "prefix": "em",
+    "body": "<em>$1</em>$2",
+    "description": "HTML - Defines emphasized text",
+    "scope": "text.html"
     },
     "embed": {
-        "prefix": "embed",
-        "description": "embed",
-        "body": [
-        "<embed src=\"${1}\" type=\"${0}\">"
-        ]
+    "prefix": "embed",
+    "body": "<embed src=\"$1\">$2",
+    "description": "HTML - Defines external interactive content ot plugin",
+    "scope": "text.html"
     },
     "fieldset": {
-        "prefix": "fieldset",
-        "description": "fieldset",
-        "body": [
+    "prefix": "fieldset",
+    "body": [
         "<fieldset>",
-        "    ${0}",
-        "</fieldset>"
-        ]
-    },
-    "fieldset.": {
-        "prefix": "fieldset.",
-        "description": "fieldset.",
-        "body": [
-        "<fieldset class=\"${1}\">",
-        "    ${0}",
-        "</fieldset>"
-        ]
-    },
-    "fieldset#": {
-        "prefix": "fieldset#",
-        "description": "fieldset#",
-        "body": [
-        "<fieldset id=\"${1}\">",
-        "    ${0}",
-        "</fieldset>"
-        ]
-    },
-    "fieldset+": {
-        "prefix": "fieldset+",
-        "description": "fieldset+",
-        "body": [
-        "<fieldset>",
-        "    <legend><span>${1}</span></legend>",
-        "    ${2}",
-        "</fieldset>",
-        "fieldset+${0}"
-        ]
+        "\t$1",
+        "</fieldset>"],
+    "description": "HTML - Defines a fieldset",
+    "scope": "text.html"
     },
     "figcaption": {
-        "prefix": "figcaption",
-        "description": "figcaption",
-        "body": [
-        "<figcaption>${0}</figcaption>"
-        ]
+    "prefix": "figcaption",
+    "body": "<figcaption>$1</figcaption>$2",
+    "description": "HTML - Defines a caption for a figure",
+    "scope": "text.html"
     },
     "figure": {
-        "prefix": "figure",
-        "description": "figure",
-        "body": [
-        "<figure>${0}</figure>"
-        ]
-    },
-    "figure#": {
-        "prefix": "figure#",
-        "description": "figure#",
-        "body": [
-        "<figure id=\"${1}\">",
-        "    ${0}",
+    "prefix": "figure",
+    "body": [
+        "<figure>",
+        "\t$1",
         "</figure>"
-        ]
-    },
-    "figure.": {
-        "prefix": "figure.",
-        "description": "figure.",
-        "body": [
-        "<figure class=\"${1}\">",
-        "    ${0}",
-        "</figure>"
-        ]
+        ],
+    "description": "HTML - Defines a group of media content, and their caption",
+    "scope": "text.html"
     },
     "footer": {
-        "prefix": "footer",
-        "description": "footer",
-        "body": [
+    "prefix": "footer",
+    "body": [
         "<footer>",
-        "    ${0}",
+        "\t$1",
         "</footer>"
-        ]
-    },
-    "footer.": {
-        "prefix": "footer.",
-        "description": "footer.",
-        "body": [
-        "<footer class=\"${1}\">",
-        "    ${0}",
-        "</footer>"
-        ]
-    },
-    "footer#": {
-        "prefix": "footer#",
-        "description": "footer#",
-        "body": [
-        "<footer id=\"${1}\">",
-        "    ${0}",
-        "</footer>"
-        ]
+        ],
+    "description": "HTML - Defines a footer for a section or page",
+    "scope": "text.html"
     },
     "form": {
-        "prefix": "form",
-        "description": "form",
-        "body": [
-        "<form action=\"${1}\" method=\"${2:post}\">",
-        "    ${0}",
+    "prefix": "form",
+    "body": [
+        "<form>",
+        "\t$1",
         "</form>"
-        ]
-    },
-    "form.": {
-        "prefix": "form.",
-        "description": "form.",
-        "body": [
-        "<form class=\"${1}\" action=\"${2}\" method=\"${3:post}\">",
-        "    ${0}",
-        "</form>"
-        ]
-    },
-    "form#": {
-        "prefix": "form#",
-        "description": "form#",
-        "body": [
-        "<form id=\"${1}\" action=\"${2}\" method=\"${3:post}\">",
-        "    ${0}",
-        "</form>"
-        ]
+        ],
+    "description": "HTML - Defines a form",
+    "scope": "text.html"
     },
     "h1": {
-        "prefix": "h1",
-        "description": "h1",
-        "body": [
-        "<h1>${0}</h1>"
-        ]
-    },
-    "h1.": {
-        "prefix": "h1.",
-        "description": "h1.",
-        "body": [
-        "<h1 class=\"${1}\">${0}</h1>"
-        ]
-    },
-    "h1#": {
-        "prefix": "h1#",
-        "description": "h1#",
-        "body": [
-        "<h1 id=\"${1}\">${0}</h1>"
-        ]
+    "prefix": "h1",
+    "body": "<h1>$1</h1>$2",
+    "description": "HTML - Defines header 1",
+    "scope": "text.html"
     },
     "h2": {
-        "prefix": "h2",
-        "description": "h2",
-        "body": [
-        "<h2>${0}</h2>"
-        ]
-    },
-    "h2.": {
-        "prefix": "h2.",
-        "description": "h2.",
-        "body": [
-        "<h2 class=\"${1}\">${0}</h2>"
-        ]
-    },
-    "h2#": {
-        "prefix": "h2#",
-        "description": "h2#",
-        "body": [
-        "<h2 id=\"${1}\">${0}</h2>"
-        ]
+    "prefix": "h2",
+    "body": "<h2>$1</h2>$2",
+    "description": "HTML - Defines header 2",
+    "scope": "text.html"
     },
     "h3": {
-        "prefix": "h3",
-        "description": "h3",
-        "body": [
-        "<h3>${0}</h3>"
-        ]
-    },
-    "h3.": {
-        "prefix": "h3.",
-        "description": "h3.",
-        "body": [
-        "<h3 class=\"${1}\">${0}</h3>"
-        ]
-    },
-    "h3#": {
-        "prefix": "h3#",
-        "description": "h3#",
-        "body": [
-        "<h3 id=\"${1}\">${0}</h3>"
-        ]
+    "prefix": "h3",
+    "body": "<h3>$1</h3>$2",
+    "description": "HTML - Defines header 3",
+    "scope": "text.html"
     },
     "h4": {
-        "prefix": "h4",
-        "description": "h4",
-        "body": [
-        "<h4>${0}</h4>"
-        ]
-    },
-    "h4.": {
-        "prefix": "h4.",
-        "description": "h4.",
-        "body": [
-        "<h4 class=\"${1}\">${0}</h4>"
-        ]
-    },
-    "h4#": {
-        "prefix": "h4#",
-        "description": "h4#",
-        "body": [
-        "<h4 id=\"${1}\">${0}</h4>"
-        ]
+    "prefix": "h4",
+    "body": "<h4>$1</h4>$2",
+    "description": "HTML - Defines header 4",
+    "scope": "text.html"
     },
     "h5": {
-        "prefix": "h5",
-        "description": "h5",
-        "body": [
-        "<h5>${0}</h5>"
-        ]
-    },
-    "h5.": {
-        "prefix": "h5.",
-        "description": "h5.",
-        "body": [
-        "<h5 class=\"${1}\">${0}</h5>"
-        ]
-    },
-    "h5#": {
-        "prefix": "h5#",
-        "description": "h5#",
-        "body": [
-        "<h5 id=\"${1}\">${0}</h5>"
-        ]
+    "prefix": "h5",
+    "body": "<h5>$1</h5>$2",
+    "description": "HTML - Defines header 5",
+    "scope": "text.html"
     },
     "h6": {
-        "prefix": "h6",
-        "description": "h6",
-        "body": [
-        "<h6>${0}</h6>"
-        ]
-    },
-    "h6.": {
-        "prefix": "h6.",
-        "description": "h6.",
-        "body": [
-        "<h6 class=\"${1}\">${0}</h6>"
-        ]
-    },
-    "h6#": {
-        "prefix": "h6#",
-        "description": "h6#",
-        "body": [
-        "<h6 id=\"${1}\">${0}</h6>"
-        ]
+    "prefix": "h6",
+    "body": "<h6>$1</h6>$2",
+    "description": "HTML - Defines header 6",
+    "scope": "text.html"
     },
     "head": {
-        "prefix": "head",
-        "description": "head",
-        "body": [
+    "prefix": "head",
+    "body": [
         "<head>",
-        "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">",
-        "    <title>${1:${VIM:substitute(vim_snippets#Filename('', 'Page Title'), '^.', '\\u&', '')}}</title>",
-        "    ${0}",
+        "\t$1",
         "</head>"
-        ]
+        ],
+    "description": "HTML - Defines information about the document",
+    "scope": "text.html"
     },
     "header": {
-        "prefix": "header",
-        "description": "header",
-        "body": [
+    "prefix": "header",
+    "body": [
         "<header>",
-        "    ${0}",
+        "\t$1",
         "</header>"
-        ]
-    },
-    "header.": {
-        "prefix": "header.",
-        "description": "header.",
-        "body": [
-        "<header class=\"${1}\">",
-        "    ${0}",
-        "</header>"
-        ]
-    },
-    "header#": {
-        "prefix": "header#",
-        "description": "header#",
-        "body": [
-        "<header id=\"${1}\">",
-        "    ${0}",
-        "</header>"
-        ]
+        ],
+    "description": "HTML - Defines a header for a section of page",
+    "scope": "text.html"
     },
     "hgroup": {
-        "prefix": "hgroup",
-        "description": "hgroup",
-        "body": [
+    "prefix": "hgroup",
+    "body": [
         "<hgroup>",
-        "    ${0}",
+        "\t$1",
         "</hgroup>"
-        ]
-    },
-    "hgroup.": {
-        "prefix": "hgroup.",
-        "description": "hgroup.",
-        "body": [
-        "<hgroup class=\"${1}>",
-        "    ${0}",
-        "</hgroup>"
-        ]
+        ],
+    "description": "HTML - Defines information about a section in a document",
+    "scope": "text.html"
     },
     "hr": {
-        "prefix": "hr",
-        "description": "hr",
-        "body": [
-        "<hr>"
-        ]
+    "prefix": "hr",
+    "body": "<hr>",
+    "description": "HTML - Defines a horizontal rule",
+    "scope": "text.html"
     },
     "html": {
-        "prefix": "html",
-        "description": "html",
-        "body": [
+    "prefix": "html",
+    "body": [
         "<html>",
-        "${0}",
+        "\t$1",
         "</html>"
-        ]
-    },
-    "xhtml": {
-        "prefix": "xhtml",
-        "description": "xhtml",
-        "body": [
-        "<html xmlns=\"http://www.w3.org/1999/xhtml\">",
-        "${0}",
-        "</html>"
-        ]
+        ],
+    "description": "HTML - Defines an html document",
+    "scope": "text.html"
     },
     "html5": {
-        "prefix": "html5",
-        "description": "html5",
-        "body": [
+    "prefix": "html5",
+    "body": [
         "<!DOCTYPE html>",
-        "<html>",
-        "    <head>",
-        "        <meta charset=\"utf-8\">",
-        "        <meta name=\"viewport\" content=\"width=device-width\">",
-        "        <title>${1:${VIM:substitute(vim_snippets#Filename('', 'Page Title'), '^.', '\\u&', '')}}</title>",
-        "        ${2:link}",
-        "    </head>",
-        "    <body>",
-        "        ${0:body}",
-        "    </body>",
+        "<html lang=\"$1en\">",
+        "\t<head>",
+        "\t\t<title>$2</title>",
+        "\t\t<meta charset=\"UTF-8\">",
+        "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+        "\t\t<link href=\"$3css/style.css\" rel=\"stylesheet\">",
+        "\t</head>",
+        "\t<body>",
+        "\t$4",
+        "\t</body>",
         "</html>"
-        ]
-    },
-    "html5l": {
-        "prefix": "html5l",
-        "description": "html5l",
-        "body": [
-        "<!DOCTYPE html>",
-        "<html lang=\"${1:es}\">",
-        "    <head>",
-        "        <meta charset=\"utf-8\">",
-        "        <meta name=\"viewport\" content=\"width=device-width\">",
-        "        <title>${2:${VIM:substitute(vim_snippets#Filename('', 'Page Title'), '^.', '\\u&', '')}}</title>",
-        "        ${3:link}",
-        "    </head>",
-        "    <body>",
-        "        ${0:body}",
-        "    </body>",
-        "</html>"
-        ]
+        ],
+    "description": "HTML - Defines a template for a html5 document",
+    "scope": "text.html"
     },
     "i": {
-        "prefix": "i",
-        "description": "i",
-        "body": [
-        "<i>${0}</i>"
-        ]
+    "prefix": "i",
+    "body": "<i>$1</i>$2",
+    "description": "HTML - Defines italic text",
+    "scope": "text.html"
     },
     "iframe": {
-        "prefix": "iframe",
-        "description": "iframe",
-        "body": [
-        "<iframe src=\"${1}\" frameborder=\"0\"></iframe>"
-        ]
-    },
-    "iframe.": {
-        "prefix": "iframe.",
-        "description": "iframe.",
-        "body": [
-        "<iframe class=\"${1}\" src=\"${2}\" frameborder=\"0\"></iframe>"
-        ]
-    },
-    "iframe#": {
-        "prefix": "iframe#",
-        "description": "iframe#",
-        "body": [
-        "<iframe id=\"${1}\" src=\"${2}\" frameborder=\"0\"></iframe>"
-        ]
+    "prefix": "iframe",
+    "body": "<iframe src=\"$1\">$2</iframe>$3",
+    "description": "HTML - Defines an inline sub window",
+    "scope": "text.html"
     },
     "img": {
-        "prefix": "img",
-        "description": "img",
-        "body": [
-        "<img src=\"${1}\" alt=\"${2}\">"
-        ]
-    },
-    "img.": {
-        "prefix": "img.",
-        "description": "img.",
-        "body": [
-        "<img class=\"${1}\" src=\"${2}\" alt=\"${3}\">"
-        ]
-    },
-    "img#": {
-        "prefix": "img#",
-        "description": "img#",
-        "body": [
-        "<img id=\"${1}\" src=\"${2}\" alt=\"${3}\">"
-        ]
+    "prefix": "img",
+    "body": "<img src=\"$1\" alt=\"$2\">$3",
+    "description": "HTML - Defines an image",
+    "scope": "text.html"
     },
     "input": {
-        "prefix": "input",
-        "description": "input",
-        "body": [
-        "<input type=\"${1:text/submit/hidden/button/image}\" name=\"${2}\" id=\"${3:$2}\" value=\"${4}\">"
-        ]
-    },
-    "input.": {
-        "prefix": "input.",
-        "description": "input.",
-        "body": [
-        "<input class=\"${1}\" type=\"${2:text/submit/hidden/button/image}\" name=\"${3}\" id=\"${4:$3}\" value=\"${5}\">"
-        ]
-    },
-    "input:text": {
-        "prefix": "input:text",
-        "description": "input:text",
-        "body": [
-        "<input type=\"text\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:submit": {
-        "prefix": "input:submit",
-        "description": "input:submit",
-        "body": [
-        "<input type=\"submit\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:hidden": {
-        "prefix": "input:hidden",
-        "description": "input:hidden",
-        "body": [
-        "<input type=\"hidden\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:button": {
-        "prefix": "input:button",
-        "description": "input:button",
-        "body": [
-        "<input type=\"button\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:image": {
-        "prefix": "input:image",
-        "description": "input:image",
-        "body": [
-        "<input type=\"image\" name=\"${1}\" id=\"${2:$1}\" src=\"${3}\" alt=\"${4}\">"
-        ]
-    },
-    "input:checkbox": {
-        "prefix": "input:checkbox",
-        "description": "input:checkbox",
-        "body": [
-        "<input type=\"checkbox\" name=\"${1}\" id=\"${2:$1}\">"
-        ]
-    },
-    "input:radio": {
-        "prefix": "input:radio",
-        "description": "input:radio",
-        "body": [
-        "<input type=\"radio\" name=\"${1}\" id=\"${2:$1}\">"
-        ]
-    },
-    "input:color": {
-        "prefix": "input:color",
-        "description": "input:color",
-        "body": [
-        "<input type=\"color\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:date": {
-        "prefix": "input:date",
-        "description": "input:date",
-        "body": [
-        "<input type=\"date\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:datetime": {
-        "prefix": "input:datetime",
-        "description": "input:datetime",
-        "body": [
-        "<input type=\"datetime\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:datetime-local": {
-        "prefix": "input:datetime-local",
-        "description": "input:datetime-local",
-        "body": [
-        "<input type=\"datetime-local\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:email": {
-        "prefix": "input:email",
-        "description": "input:email",
-        "body": [
-        "<input type=\"email\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:file": {
-        "prefix": "input:file",
-        "description": "input:file",
-        "body": [
-        "<input type=\"file\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:month": {
-        "prefix": "input:month",
-        "description": "input:month",
-        "body": [
-        "<input type=\"month\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:number": {
-        "prefix": "input:number",
-        "description": "input:number",
-        "body": [
-        "<input type=\"number\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:password": {
-        "prefix": "input:password",
-        "description": "input:password",
-        "body": [
-        "<input type=\"password\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:range": {
-        "prefix": "input:range",
-        "description": "input:range",
-        "body": [
-        "<input type=\"range\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:reset": {
-        "prefix": "input:reset",
-        "description": "input:reset",
-        "body": [
-        "<input type=\"reset\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:search": {
-        "prefix": "input:search",
-        "description": "input:search",
-        "body": [
-        "<input type=\"search\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:time": {
-        "prefix": "input:time",
-        "description": "input:time",
-        "body": [
-        "<input type=\"time\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:url": {
-        "prefix": "input:url",
-        "description": "input:url",
-        "body": [
-        "<input type=\"url\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
-    },
-    "input:week": {
-        "prefix": "input:week",
-        "description": "input:week",
-        "body": [
-        "<input type=\"week\" name=\"${1}\" id=\"${2:$1}\" value=\"${3}\">"
-        ]
+    "prefix": "input",
+    "body": "<input type=\"$1\" name=\"$2\" value=\"$3\">$4",
+    "description": "HTML - Defines an input field",
+    "scope": "text.html"
     },
     "ins": {
-        "prefix": "ins",
-        "description": "ins",
-        "body": [
-        "<ins>${0}</ins>"
-        ]
+    "prefix": "ins",
+    "body": "<ins>$1</ins>$2",
+    "description": "HTML - Defines inserted text",
+    "scope": "text.html"
+    },
+    "keygen": {
+    "prefix": "keygen",
+    "body": "<keygen name=\"$1\">$2",
+    "description": "HTML - Defines a generated key in a form",
+    "scope": "text.html"
     },
     "kbd": {
-        "prefix": "kbd",
-        "description": "kbd",
-        "body": [
-        "<kbd>${0}</kbd>"
-        ]
+    "prefix": "kbd",
+    "body": "<kbd>$1</kbd>$2",
+    "description": "HTML - Defines keyboard text",
+    "scope": "text.html"
     },
     "label": {
-        "prefix": "label",
-        "description": "label",
-        "body": [
-        "<label for=\"${0:$1}\">${1}</label>"
-        ]
-    },
-    "label:i": {
-        "prefix": "label:i",
-        "description": "label:i",
-        "body": [
-        "<label for=\"${2:$1}\">${1}</label>",
-        "<input type=\"${3:text/submit/hidden/button}\" name=\"${4:$2}\" id=\"${5:$2}\" value=\"${6}\" />"
-        ]
-    },
-    "label:s": {
-        "prefix": "label:s",
-        "description": "label:s",
-        "body": [
-        "<label for=\"${2:$1}\">${1}</label>",
-        "<select name=\"${3:$2}\" id=\"${4:$2}\">",
-        "    <option value=\"${5}\">${0:$5}</option>",
-        "</select>"
-        ]
+    "prefix": "label",
+    "body": "<label for=\"$1\">$2</label>$3",
+    "description": "HTML - Defines an inline window",
+    "scope": "text.html"
     },
     "legend": {
-        "prefix": "legend",
-        "description": "legend",
-        "body": [
-        "<legend>${0}</legend>"
-        ]
-    },
-    "legend+": {
-        "prefix": "legend+",
-        "description": "legend+",
-        "body": [
-        "<legend><span>${0}</span></legend>"
-        ]
+    "prefix": "legend",
+    "body": "<legend>$1</legend>$2",
+    "description": "HTML - Defines a title in a fieldset",
+    "scope": "text.html"
     },
     "li": {
-        "prefix": "li",
-        "description": "li",
-        "body": [
-        "<li>${0}</li>"
-        ]
-    },
-    "li.": {
-        "prefix": "li.",
-        "description": "li.",
-        "body": [
-        "<li class=\"${1}\">${0}</li>"
-        ]
-    },
-    "li+": {
-        "prefix": "li+",
-        "description": "li+",
-        "body": [
-        "<li>${1}</li>",
-        "li+"
-        ]
-    },
-    "lia": {
-        "prefix": "lia",
-        "description": "lia",
-        "body": [
-        "<li><a href=\"${0:#}\">${1}</a></li>"
-        ]
-    },
-    "lia+": {
-        "prefix": "lia+",
-        "description": "lia+",
-        "body": [
-        "<li><a href=\"${2:#}\">${1}</a></li>",
-        "lia+"
-        ]
+    "prefix": "li",
+    "body": "<li>$1</li>$2",
+    "description": "HTML - Defines a list item",
+    "scope": "text.html"
     },
     "link": {
-        "prefix": "link",
-        "description": "link",
-        "body": [
-        "<link rel=\"${1}\" href=\"${2}\" title=\"${3}\" type=\"${4}\">"
-        ]
-    },
-    "link:atom": {
-        "prefix": "link:atom",
-        "description": "link:atom",
-        "body": [
-        "<link rel=\"alternate\" href=\"${1:atom.xml}\" title=\"Atom\" type=\"application/atom+xml\">"
-        ]
-    },
-    "link:s": {
-        "prefix": "link:s",
-        "description": "link:s",
-        "body": [
-        "<link rel=\"stylesheet\" href=\"${1:style.css}\">"
-        ]
-    },
-    "link:css": {
-        "prefix": "link:css",
-        "description": "link:css",
-        "body": [
-        "<link rel=\"stylesheet\" href=\"${1:style.css}\" type=\"text/css\" media=\"${2:all}\">"
-        ]
-    },
-    "link:favicon": {
-        "prefix": "link:favicon",
-        "description": "link:favicon",
-        "body": [
-        "<link rel=\"shortcut icon\" href=\"${1:favicon.ico}\" type=\"image/x-icon\">"
-        ]
-    },
-    "link:rss": {
-        "prefix": "link:rss",
-        "description": "link:rss",
-        "body": [
-        "<link rel=\"alternate\" href=\"${1:rss.xml}\" title=\"RSS\" type=\"application/atom+xml\">"
-        ]
-    },
-    "link:touch": {
-        "prefix": "link:touch",
-        "description": "link:touch",
-        "body": [
-        "<link rel=\"apple-touch-icon\" href=\"${1:favicon.png}\">"
-        ]
+    "prefix": "link",
+    "body": "<link rel=\"$1\" type=\"$2\" href=\"$3\">$4",
+    "description": "HTML - Defines a resource reference",
+    "scope": "text.html"
     },
     "main": {
-        "prefix": "main",
-        "description": "main",
-        "body": [
-        "<main role=\"main\">",
-        "    ${0}",
+    "prefix": "main",
+    "body": [
+        "<main>",
+        "\t$1",
         "</main>"
-        ]
+    ],
+    "description": "HTML - Defines an image map",
+    "scope": "text.html"
     },
     "map": {
-        "prefix": "map",
-        "description": "map",
-        "body": [
-        "<map name=\"${1}\">",
-        "    ${0}",
-        "</map>"
-        ]
-    },
-    "map.": {
-        "prefix": "map.",
-        "description": "map.",
-        "body": [
-        "<map class=\"${1}\" name=\"${2}\">",
-        "    ${0}",
-        "</map>"
-        ]
-    },
-    "map#": {
-        "prefix": "map#",
-        "description": "map#",
-        "body": [
-        "<map name=\"${1}\" id=\"${2:$1}>",
-        "    ${0}",
-        "</map>"
-        ]
-    },
-    "map+": {
-        "prefix": "map+",
-        "description": "map+",
-        "body": [
-        "<map name=\"${1}\">",
-        "    <area shape=\"${2}\" coords=\"${3}\" href=\"${4}\" alt=\"${5}\" />${6}",
-        "</map>"
-        ]
+    "prefix": "map",
+    "body": [
+        "<map name=\"$1\">",
+        "\t$2",
+        "</map>"],
+    "description": "HTML - Defines an image map",
+    "scope": "text.html"
     },
     "mark": {
-        "prefix": "mark",
-        "description": "mark",
-        "body": [
-        "<mark>${0}</mark>"
-        ]
+    "prefix": "mark",
+    "body": "<mark>$1</mark>$2",
+    "description": "HTML - Defines marked text",
+    "scope": "text.html"
     },
     "menu": {
-        "prefix": "menu",
-        "description": "menu",
-        "body": [
+    "prefix": "menu",
+    "body": [
         "<menu>",
-        "    ${0}",
+        "\t$1",
         "</menu>"
-        ]
+        ],
+    "description": "HTML - Defines a menu list",
+    "scope": "text.html"
     },
-    "menu:c": {
-        "prefix": "menu:c",
-        "description": "menu:c",
-        "body": [
-        "<menu type=\"context\">",
-        "    ${0}",
-        "</menu>"
-        ]
-    },
-    "menu:t": {
-        "prefix": "menu:t",
-        "description": "menu:t",
-        "body": [
-        "<menu type=\"toolbar\">",
-        "    ${0}",
-        "</menu>"
-        ]
+    "menuitem": {
+    "prefix": "menuitem",
+    "body": "<menuitem>$1</menuitem>$2",
+    "description": "HTML - Defines a menu item [firefox only]",
+    "scope": "text.html"
     },
     "meta": {
-        "prefix": "meta",
-        "description": "meta",
-        "body": [
-        "<meta http-equiv=\"${1}\" content=\"${2}\">"
-        ]
-    },
-    "meta:s": {
-        "prefix": "meta:s",
-        "description": "meta:s",
-        "body": [
-        "<meta ${0}>"
-        ]
-    },
-    "meta:d": {
-        "prefix": "meta:d",
-        "description": "meta:d",
-        "body": [
-        "<meta name=\"description\" content=\"${0}\">"
-        ]
-    },
-    "meta:compat": {
-        "prefix": "meta:compat",
-        "description": "meta:compat",
-        "body": [
-        "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=${1:7,8,edge}\">"
-        ]
-    },
-    "meta:refresh": {
-        "prefix": "meta:refresh",
-        "description": "meta:refresh",
-        "body": [
-        "<meta http-equiv=\"refresh\" content=\"text/html;charset=UTF-8\">"
-        ]
-    },
-    "meta:utf": {
-        "prefix": "meta:utf",
-        "description": "meta:utf",
-        "body": [
-        "<meta http-equiv=\"content-type\" content=\"text/html;charset=UTF-8\">"
-        ]
+    "prefix": "meta",
+    "body": "<meta name=\"$1\" content=\"$2\">$3",
+    "description": "HTML - Defines meta information",
+    "scope": "text.html"
     },
     "meter": {
-        "prefix": "meter",
-        "description": "meter",
-        "body": [
-        "<meter>${0}</meter>"
-        ]
+    "prefix": "meter",
+    "body": "<meter value=\"$1\">$2</meter>$3",
+    "description": "HTML - Defines measurement within a predefined range",
+    "scope": "text.html"
     },
     "nav": {
-        "prefix": "nav",
-        "description": "nav",
-        "body": [
+    "prefix": "nav",
+    "body": [
         "<nav>",
-        "    ${0}",
+        "\t$1",
         "</nav>"
-        ]
-    },
-    "nav.": {
-        "prefix": "nav.",
-        "description": "nav.",
-        "body": [
-        "<nav class=\"${1}\">",
-        "    ${0}",
-        "</nav>"
-        ]
-    },
-    "nav#": {
-        "prefix": "nav#",
-        "description": "nav#",
-        "body": [
-        "<nav id=\"${1}\">",
-        "    ${0}",
-        "</nav>"
-        ]
+        ],
+    "description": "HTML - Defines navigation links",
+    "scope": "text.html"
     },
     "noscript": {
-        "prefix": "noscript",
-        "description": "noscript",
-        "body": [
+    "prefix": "noscript",
+    "body": [
         "<noscript>",
-        "    ${0}",
+        "$1",
         "</noscript>"
-        ]
+        ],
+    "description": "HTML - Defines a noscript section",
+    "scope": "text.html"
     },
     "object": {
-        "prefix": "object",
-        "description": "object",
-        "body": [
-        "<object data=\"${1}\" type=\"${2}\">",
-        "    ${3}",
-        "</object>"
-        ]
-    },
-    "movie": {
-        "prefix": "movie",
-        "description": "movie",
-        "body": [
-        "<object width=\"$2\" height=\"$3\" classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\"",
-        "codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\">",
-        "    <param name=\"src\" value=\"$1\">",
-        "    <param name=\"controller\" value=\"$4\">",
-        "    <param name=\"autoplay\" value=\"$5\">",
-        "    <embed src=\"${1:movie.mov}\"",
-        "        width=\"${2:320}\" height=\"${3:240}\"",
-        "        controller=\"${4:true}\" autoplay=\"${5:true}\"",
-        "        scale=\"tofit\" cache=\"true\"",
-        "        pluginspage=\"http://www.apple.com/quicktime/download/\">",
-        "</object>"
-        ]
+    "prefix": "object",
+    "body": "<object width=\"$1\" height=\"$2\" data=\"$3\">$4</object>$5",
+    "description": "HTML - Defines an embedded object",
+    "scope": "text.html"
     },
     "ol": {
-        "prefix": "ol",
-        "description": "ol",
-        "body": [
+    "prefix": "ol",
+    "body": [
         "<ol>",
-        "    ${0}",
+        "\t$1",
         "</ol>"
-        ]
-    },
-    "ol.": {
-        "prefix": "ol.",
-        "description": "ol.",
-        "body": [
-        "<ol class=\"${1}\">",
-        "    ${0}",
-        "</ol>"
-        ]
-    },
-    "ol#": {
-        "prefix": "ol#",
-        "description": "ol#",
-        "body": [
-        "<ol id=\"${1}\">",
-        "    ${0}",
-        "</ol>"
-        ]
-    },
-    "ol+": {
-        "prefix": "ol+",
-        "description": "ol+",
-        "body": [
-        "<ol>",
-        "    <li>${1}</li>",
-        "    li+${0}",
-        "</ol>"
-        ]
-    },
-    "opt": {
-        "prefix": "opt",
-        "description": "opt",
-        "body": [
-        "<option value=\"${1}\">${0:$1}</option>"
-        ]
-    },
-    "opt+": {
-        "prefix": "opt+",
-        "description": "opt+",
-        "body": [
-        "<option value=\"${1}\">${2:$1}</option>",
-        "opt+${0}"
-        ]
-    },
-    "optt": {
-        "prefix": "optt",
-        "description": "optt",
-        "body": [
-        "<option>${0}</option>"
-        ]
+        ],
+    "description": "HTML - Defines an ordered list",
+    "scope": "text.html"
     },
     "optgroup": {
-        "prefix": "optgroup",
-        "description": "optgroup",
-        "body": [
+    "prefix": "optgroup",
+    "body": [
         "<optgroup>",
-        "    <option value=\"${1}\">${2:$1}</option>",
-        "    opt+${0}",
+        "\t$1",
         "</optgroup>"
-        ]
+        ],
+    "description": "HTML - Defines an option group",
+    "scope": "text.html"
+    },
+    "option": {
+    "prefix": "option",
+    "body": "<option value=\"$1\">$2</option>$3",
+    "description": "HTML - Defines an option in a drop-down list",
+    "scope": "text.html"
     },
     "output": {
-        "prefix": "output",
-        "description": "output",
-        "body": [
-        "<output>${0}</output>"
-        ]
+    "prefix": "output",
+    "body": "<output name=\"$1\" for=\"$2\">$3</output>$4",
+    "description": "HTML - Defines some types of output",
+    "scope": "text.html"
     },
     "p": {
-        "prefix": "p",
-        "description": "p",
-        "body": [
-        "<p>${0}</p>"
-        ]
-    },
-    "p.": {
-        "prefix": "p.",
-        "description": "p.",
-        "body": [
-        "<p class=\"${1}\">${0}</p>"
-        ]
-    },
-    "p#": {
-        "prefix": "p#",
-        "description": "p#",
-        "body": [
-        "<p id=\"${1}\">${0}</p>"
-        ]
+    "prefix": "p",
+    "body": "<p>$1</p>$2",
+    "description": "HTML - Defines a paragraph",
+    "scope": "text.html"
     },
     "param": {
-        "prefix": "param",
-        "description": "param",
-        "body": [
-        "<param name=\"${1}\" value=\"${2}\">"
-        ]
+    "prefix": "param",
+    "body": "<param name=\"$1\" value=\"$2\">$3",
+    "description": "HTML - Defines a parameter for an object",
+    "scope": "text.html"
     },
     "pre": {
-        "prefix": "pre",
-        "description": "pre",
-        "body": [
-        "<pre>",
-        "    ${0}",
-        "</pre>"
-        ]
+    "prefix": "pre",
+    "body": [
+        "<pre>$1</pre>"
+        ],
+    "description": "HTML - Defines preformatted text",
+    "scope": "text.html"
     },
     "progress": {
-        "prefix": "progress",
-        "description": "progress",
-        "body": [
-        "<progress>${0}</progress>"
-        ]
+    "prefix": "progress",
+    "body": "<progress value=\"$1\" max=\"$2\">$3</progress>$4",
+    "description": "HTML - Defines progress of a task of any kind",
+    "scope": "text.html"
     },
     "q": {
-        "prefix": "q",
-        "description": "q",
-        "body": [
-        "<q>${0}</q>"
-        ]
+    "prefix": "q",
+    "body": "<q>$1</q>$2",
+    "description": "HTML - Defines a short quotation",
+    "scope": "text.html"
     },
     "rp": {
-        "prefix": "rp",
-        "description": "rp",
-        "body": [
-        "<rp>${0}</rp>"
-        ]
+    "prefix": "rp",
+    "body": "<rp>$1</rp>$2",
+    "description": "HTML - Used in ruby annotations to define what to show browsers that do not support the ruby element",
+    "scope": "text.html"
     },
     "rt": {
-        "prefix": "rt",
-        "description": "rt",
-        "body": [
-        "<rt>${0}</rt>"
-        ]
+    "prefix": "rt",
+    "body": "<rt>$1</rt>$2",
+    "description": "HTML - Defines explanation to ruby annotations",
+    "scope": "text.html"
     },
     "ruby": {
-        "prefix": "ruby",
-        "description": "ruby",
-        "body": [
+    "prefix": "ruby",
+    "body": [
         "<ruby>",
-        "    <rp><rt>${0}</rt></rp>",
+        "$1",
         "</ruby>"
-        ]
+        ],
+    "description": "HTML - Defines ruby annotations",
+    "scope": "text.html"
     },
     "s": {
-        "prefix": "s",
-        "description": "s",
-        "body": [
-        "<s>${0}</s>"
-        ]
+    "prefix": "s",
+    "body": "<s>$1</s>$2",
+    "description": "HTML - Used to define strikethrough text",
+    "scope": "text.html"
     },
     "samp": {
-        "prefix": "samp",
-        "description": "samp",
-        "body": [
-        "<samp>",
-        "    ${0}",
-        "</samp>"
-        ]
+    "prefix": "samp",
+    "body": "<samp>$1</samp>$2",
+    "description": "HTML - Defines sample computer code",
+    "scope": "text.html"
     },
     "script": {
-        "prefix": "script",
-        "description": "script",
-        "body": [
-        "<script charset=\"utf-8\">",
-        "    ${0}",
+    "prefix": "script",
+    "body": [
+        "<script>",
+        "\t$1",
         "</script>"
-        ]
-    },
-    "scripts": {
-        "prefix": "scripts",
-        "description": "scripts",
-        "body": [
-        "<script src=\"${0}.js\"></script>"
-        ]
-    },
-    "scriptt": {
-        "prefix": "scriptt",
-        "description": "scriptt",
-        "body": [
-        "<script type=\"${1}\" id=\"${2}\">",
-        "    ${0}",
-        "</script>"
-        ]
-    },
-    "scriptsrc": {
-        "prefix": "scriptsrc",
-        "description": "scriptsrc",
-        "body": [
-        "<script src=\"${0}.js\" charset=\"utf-8\"></script>"
-        ]
+        ],
+    "description": "HTML - Defines a script",
+    "scope": "text.html"
     },
     "section": {
-        "prefix": "section",
-        "description": "section",
-        "body": [
+    "prefix": "section",
+    "body": [
         "<section>",
-        "    ${0}",
+        "\t$1",
         "</section>"
-        ]
-    },
-    "section.": {
-        "prefix": "section.",
-        "description": "section.",
-        "body": [
-        "<section class=\"${1}\">",
-        "    ${0}",
-        "</section>"
-        ]
-    },
-    "section#": {
-        "prefix": "section#",
-        "description": "section#",
-        "body": [
-        "<section id=\"${1}\">",
-        "    ${0}",
-        "</section>"
-        ]
+        ],
+    "description": "HTML - Defines a section",
+    "scope": "text.html"
     },
     "select": {
-        "prefix": "select",
-        "description": "select",
-        "body": [
-        "<select name=\"${1}\" id=\"${2:$1}\">",
-        "    ${0}",
+    "prefix": "select",
+    "body": [
+        "<select>",
+        "\t$1",
         "</select>"
-        ]
-    },
-    "select.": {
-        "prefix": "select.",
-        "description": "select.",
-        "body": [
-        "<select name=\"${1}\" id=\"${2:$1}\" class=\"${3}>",
-        "    ${0}",
-        "</select>"
-        ]
-    },
-    "select+": {
-        "prefix": "select+",
-        "description": "select+",
-        "body": [
-        "<select name=\"${1}\" id=\"${2:$1}\">",
-        "    <option value=\"${3}\">${4:$3}</option>",
-        "    opt+${0}",
-        "</select>"
-        ]
+        ],
+    "description": "HTML - Defines a selectable list",
+    "scope": "text.html"
     },
     "small": {
-        "prefix": "small",
-        "description": "small",
-        "body": [
-        "<small>${0}</small>"
-        ]
+    "prefix": "small",
+    "body": "<small>$1</small>$2",
+    "description": "HTML - Defines small text",
+    "scope": "text.html"
     },
     "source": {
-        "prefix": "source",
-        "description": "source",
-        "body": [
-        "<source src=\"${1}\" type=\"${2}\" media=\"${0}\">"
-        ]
+    "prefix": "source",
+    "body": "<source src=\"$1\" type=\"$2\">$3",
+    "description": "HTML - Defines media resource",
+    "scope": "text.html"
     },
     "span": {
-        "prefix": "span",
-        "description": "span",
-        "body": [
-        "<span>${0}</span>"
-        ]
-    },
-    "span.": {
-        "prefix": "span.",
-        "description": "span.",
-        "body": [
-        "<span class=\"${1}\">${0}</span>"
-        ]
-    },
-    "span#": {
-        "prefix": "span#",
-        "description": "span#",
-        "body": [
-        "<span id=\"${1}\">${0}</span>"
-        ]
+    "prefix": "span",
+    "body": "<span>$1</span>$2",
+    "description": "HTML - Defines a section in a document",
+    "scope": "text.html"
     },
     "strong": {
-        "prefix": "strong",
-        "description": "strong",
-        "body": [
-        "<strong>${0}</strong>"
-        ]
+    "prefix": "strong",
+    "body": "<strong>$1</strong>$2",
+    "description": "HTML - Defines strong text",
+    "scope": "text.html"
     },
     "style": {
-        "prefix": "style",
-        "description": "style",
-        "body": [
-        "<style type=\"text/css\" media=\"${1:all}\">",
-        "    ${0}",
+    "prefix": "style",
+    "body": [
+        "<style>",
+        "$1",
         "</style>"
-        ]
+        ],
+    "description": "HTML - Defines a style definition",
+    "scope": "text.html"
     },
     "sub": {
-        "prefix": "sub",
-        "description": "sub",
-        "body": [
-        "<sub>${0}</sub>"
-        ]
-    },
-    "summary": {
-        "prefix": "summary",
-        "description": "summary",
-        "body": [
-        "<summary>",
-        "    ${0}",
-        "</summary>"
-        ]
+    "prefix": "sub",
+    "body": "<sub>$1</sub>$2",
+    "description": "HTML - Defines sub-scripted text",
+    "scope": "text.html"
     },
     "sup": {
-        "prefix": "sup",
-        "description": "sup",
-        "body": [
-        "<sup>${0}</sup>"
-        ]
+    "prefix": "sup",
+    "body": "<sup>$1</sup>$2",
+    "description": "HTML - Defines super-scripted text",
+    "scope": "text.html"
+    },
+    "summary": {
+    "prefix": "summary",
+    "body": "<summary>$1</summary>$2",
+    "description": "HTML - Defines a visible heading for the detail element [limited support]",
+    "scope": "text.html"
     },
     "table": {
-        "prefix": "table",
-        "description": "table",
-        "body": [
+    "prefix": "table",
+    "body": [
         "<table>",
-        "    ${0}",
+        "\t$1",
         "</table>"
-        ]
-    },
-    "table.": {
-        "prefix": "table.",
-        "description": "table.",
-        "body": [
-        "<table class=\"${1}\">",
-        "    ${0}",
-        "</table>"
-        ]
-    },
-    "table#": {
-        "prefix": "table#",
-        "description": "table#",
-        "body": [
-        "<table id=\"${1}\">",
-        "    ${0}",
-        "</table>"
-        ]
+        ],
+    "description": "HTML - Defines a table",
+    "scope": "text.html"
     },
     "tbody": {
-        "prefix": "tbody",
-        "description": "tbody",
-        "body": [
+    "prefix": "tbody",
+    "body": [
         "<tbody>",
-        "    ${0}",
+        "\t$1",
         "</tbody>"
-        ]
+        ],
+    "description": "HTML - Defines a table body",
+    "scope": "text.html"
     },
     "td": {
-        "prefix": "td",
-        "description": "td",
-        "body": [
-        "<td>${0}</td>"
-        ]
-    },
-    "td.": {
-        "prefix": "td.",
-        "description": "td.",
-        "body": [
-        "<td class=\"${1}\">${0}</td>"
-        ]
-    },
-    "td#": {
-        "prefix": "td#",
-        "description": "td#",
-        "body": [
-        "<td id=\"${1}\">${0}</td>"
-        ]
-    },
-    "td+": {
-        "prefix": "td+",
-        "description": "td+",
-        "body": [
-        "<td>${1}</td>",
-        "td+${0}"
-        ]
+    "prefix": "td",
+    "body": "<td>$1</td>$2",
+    "description": "HTML - Defines a table cell",
+    "scope": "text.html"
     },
     "textarea": {
-        "prefix": "textarea",
-        "description": "textarea",
-        "body": [
-        "<textarea name=\"${1}\" id=\"${2:$1}\" rows=\"${3:8}\" cols=\"${4:40}\">${5}</textarea>"
-        ]
+    "prefix": "textarea",
+    "body": "<textarea rows=\"$1\" cols=\"$2\">$3</textarea>$4",
+    "description": "HTML - Defines a text area",
+    "scope": "text.html"
+    },
+    "tfoot": {
+    "prefix": "tfoot",
+    "body": [
+        "<tfoot>",
+        "\t$1",
+        "</tfoot>"
+        ],
+    "description": "HTML - Defines a table footer",
+    "scope": "text.html"
+    },
+    "thead": {
+    "prefix": "thead",
+    "body": [
+        "<thead>",
+        "$1",
+        "</thead>"
+        ],
+    "description": "HTML - Defines a table head",
+    "scope": "text.html"
     },
     "th": {
-        "prefix": "th",
-        "description": "th",
-        "body": [
-        "<th>${0}</th>"
-        ]
+    "prefix": "th",
+    "body": "<th>$1</th>$2",
+    "description": "HTML - Defines a table header",
+    "scope": "text.html"
+    },
+    "time": {
+    "prefix": "time",
+    "body": "<time datetime=\"$1\">$2</time>$3",
+    "description": "HTML - Defines a date/time",
+    "scope": "text.html"
+    },
+    "title": {
+    "prefix": "title",
+    "body": "<title>$1</title>$2",
+    "description": "HTML - Defines the document title",
+    "scope": "text.html"
     },
     "tr": {
-        "prefix": "tr",
-        "description": "tr",
-        "body": [
-        "<tr>",
-        "    ${0}",
-        "</tr>"
-        ]
+    "prefix": "tr",
+    "body": "<tr>$1</tr>$2",
+    "description": "HTML - Defines a table row",
+    "scope": "text.html"
+    },
+    "track": {
+    "prefix": "track",
+    "body": "<track src=\"$1\" kind=\"$2\" srclang=\"$3\" label=\"$4\">$5",
+    "description": "HTML - Defines a table row",
+    "scope": "text.html"
+    },
+    "u": {
+    "prefix": "u",
+    "body": "<u>$1</u>$2",
+    "description": "HTML - Used to define underlined text",
+    "scope": "text.html"
     },
     "ul": {
-        "prefix": "ul",
-        "description": "ul",
-        "body": [
+    "prefix": "ul",
+    "body": [
         "<ul>",
-        "    ${0}",
+        "\t$1",
         "</ul>"
-        ]
+        ],
+    "description": "HTML - Defines an unordered list",
+    "scope": "text.html"
+    },
+    "var": {
+    "prefix": "var",
+    "body": "<var>$1</var>$2",
+    "description": "HTML - Defines a variable",
+    "scope": "text.html"
+    },
+    "video": {
+    "prefix": "video",
+    "body": [
+        "<video width=\"$1\" height=\"$2\" controls>",
+        "\t$3",
+        "</video>"],
+    "description": "HTML - Defines a video",
+    "scope": "text.html"
     }
 }
