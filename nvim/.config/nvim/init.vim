@@ -13,6 +13,7 @@ else
     runtime colors.vim      " colors
     runtime mappings.vim    " added mappings
     runtime lsp.vim         " LSP settings
+    " runtime completion.vim  " completion settings
     runtime completion.vim  " completion settings
     runtime filetypes.vim   " filetype configurations
     runtime functions.vim   " filetype configurations

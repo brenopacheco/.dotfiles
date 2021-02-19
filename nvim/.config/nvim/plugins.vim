@@ -109,10 +109,6 @@ endif
     let g:doge_mapping         = 0
     let g:doge_buffer_mappings = 0
 "}}}
-" template {{{
-    let g:templates_directory = $HOME . "/.config/nvim/templates"
-    let g:templates_no_autocmd = 1
-" }}}
 " signify {{{
     let g:signify_line_highlight = 0
 " }}}
@@ -205,8 +201,8 @@ endif
                 \ 'javascript': [ 'javascript-express' ],
                 \ 'javascriptreact': [ 'javascript', 'html' ],
                 \ 'typescriptreact': [ 'typescript', 'html' ],
-                \ 'html': [ 'tailwind' ]
                 \ }
+                " \ 'html': [ 'tailwind' ]
     let g:vsnip_extra_mapping = v:false
     let g:vsnip_snippet_dir   = expand('~/.config/nvim/snippets')
 
@@ -239,4 +235,7 @@ let g:codi#virtual_text = 0
 
     let g:git_messenger_no_default_mappings = v:true
 
+"}}}
+" Wildfire{{{
+    let g:wildfire_objects = ["iw", "iW", "i'", 'i`', 'i"', "i)", "i]", "i}", "ip", "it"]
 "}}}

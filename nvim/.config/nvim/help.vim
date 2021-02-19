@@ -26,17 +26,41 @@ let s:noft = [
     \ "spc-n   navbar      spc-=   format     ",
     \ "spc-↹   tagbar      spc-r   rename     ",
     \ "spc-l   lf          spc-s   substitute ",
-    \ "spc-u   undotree    gc      comment    ",
-    \ "spc-q   quickfix    spc-s   substitute ",
+    \ "spc-u   undotree    spc-#   run file   ",
+    \ "spc-q   quickfix    spc--   open Tree  ",
+    \ "spc-g   goyo        spc-i   snippet    ",
     \ "                                       ",
-    \ "__MISCELLANEOUS__   ____QUICKFIX______ ",
-    \ "spc-#   run file    spc-*   rg word prj",
-    \ "spc--   open Tree   spc-/   rg patt prj",
-    \ "#       eval line   q-*     rg word buf",
-    \ "⏎       v. expand   q-/     rg patt buf",
-    \ "⌫       v. reduce   q-f     filter     ",
-    \ "spc-i   snippet     q-n     cnewer     ",
-    \ "spc-?   help        q-p     colder     ",
+    \ "____QUICKFIX______   __MISCELLANEOUS___",
+    \ "spc-*   rg word prj  spc-w   window    ",
+    \ "spc-/   rg patt prj  spc-?   help      ",
+    \ "q-*     rg word buf  #       eval line ",
+    \ "q-/     rg patt buf  ⏎/⌫     wildfire  ",
+    \ "q-f     filter qf    q-n/p   cnewer/old",
+    \ ]
+       
+let s:window = [
+    \ "_____SPLIT______    ___OVERRIDES____",
+    \ "spc-w-s   <c-w>s    spc-w-e    :enew",
+    \ "spc-w-v   <c-w>v    spc-w-t    :tabe",
+    \ "spc-w-q   <c-w>q    spc-w-m    maxim",
+    \ "spc-w-c   <c-w>c    spc-w-a    :ball",
+    \ "                                    ",
+    \ "___RESIZE MULT.__   __RESIZE SING.__",
+    \ "spc-w-=   <c-w>=    spc-w--   <c-w>-",
+    \ "spc-w-_   <c-w>_    spc-w-+   <c-w>+",
+    \ "spc-w-|   <c-w>|    spc-w-<   <c-w><",
+    \ "spc-w-o   <c-w>o    spc-w->   <c-w>>",
+    \ "                                    ",
+    \ "_____MOVE_TO_____   ______JUMP______",
+    \ "spc-w-K   <c-w>K    spc-w-h   <c-w>h",
+    \ "spc-w-J   <c-w>J    spc-w-j   <c-w>j",
+    \ "spc-w-H   <c-w>H    spc-w-k   <c-w>k",
+    \ "spc-w-L   <c-w>L    spc-w-l   <c-w>l",
+    \ "spc-w-T   <c-w>T    spc-w-w   <c-w>w",
     \ ]
 
+
 call quickhelp#register("noft", s:noft)
+call quickhelp#register("window", s:window)
+
+

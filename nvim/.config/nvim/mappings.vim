@@ -1,7 +1,7 @@
 " DEFAULTS {{{
 
   " FIXES
-  nnoremap Y :norm v$y<cr>
+  nnoremap Y :norm v$hy<cr>
   xnoremap v v0v$h
   nnoremap Q <Nop>
   xnoremap p pgvy
@@ -34,22 +34,13 @@
   " MISC
   xmap ga :EasyAlign<cr>
   nmap ga :EasyAlign<cr>
-  " map  + <Plug>(wildfire-fuel)
-  " vmap - <Plug>(wildfire-water)
   nmap <CR> <Plug>(wildfire-fuel)
+  vmap <CR> <Plug>(wildfire-fuel)
   vmap <Backspace> <Plug>(wildfire-water)
-  nnoremap - :OTree<CR>
-  " nnoremap - :GTree<CR>
-
-  nnoremap <C-w>t :tabnew<CR>
-  nnoremap <C-w>e :enew<CR>
+  nnoremap <leader>- :OTree<CR>
 
 "}}}
 " NAVIGATION {{{
-  " e: errors,      s: stack(tags), t: tags
-  " a: arglist,     b: buffer,      q: quickfix
-  " c: gitchunk     l: loclist      c: diffnext
-  " L: loc history  Q: qf history
   nnoremap <silent> ]s :tag<CR>    | nnoremap <silent> [s :pop<CR>
   nnoremap <silent> ]t :tnext<CR>  | nnoremap <silent> [t :tprevious<CR>
   nnoremap <silent> ]a :next<CR>   | nnoremap <silent> [a :previous<CR>
@@ -88,34 +79,47 @@
 "}}}
 " WINDOWS{{{
 
-    nnoremap <leader>ws <C-W>s
-    nnoremap <leader>wv <C-W>v
-    nnoremap <leader>wq <C-W>q
-    nnoremap <leader>wc <C-W>c
-    nnoremap <leader>wo <C-W>o
-    nnoremap <leader>wm <C-W>_<C-W>|
-    nnoremap <leader>we :enew<CR>
-    nnoremap <leader>wt :tabnew<CR>
+  nnoremap <C-w>t :tabnew<CR>
+  nnoremap <C-w>e :enew<CR>
 
-    nnoremap <leader>wK <C-W>K
-    nnoremap <leader>wJ <C-W>J
-    nnoremap <leader>wH <C-W>H
-    nnoremap <leader>wL <C-W>L
-    nnoremap <leader>wT <C-W>T
-    nnoremap <leader>w= <C-W>=
-    nnoremap <leader>w- <C-W>-
-    nnoremap <leader>w+ <C-W>+
-    nnoremap <leader>w_ <C-W>_
-    nnoremap <leader>w< <C-W><
-    nnoremap <leader>w> <C-W>>
-    nnoremap <leader>w\| <C-W>\|
+  nnoremap <leader>ws <C-W>s
+  nnoremap <leader>wv <C-W>v
+  nnoremap <leader>wq <C-W>q
+  nnoremap <leader>wc <C-W>c
+  nnoremap <leader>wo <C-W>o
+  nnoremap <leader>ww <C-W>w
+  nnoremap <leader>wm <C-W>_<C-W>\|
+  nnoremap <leader>we :enew<CR>
+  nnoremap <leader>wt :tabnew<CR>
+
+  nnoremap <leader>wh <C-W>h
+  nnoremap <leader>wj <C-W>j
+  nnoremap <leader>wk <C-W>k
+  nnoremap <leader>wl <C-W>l
+
+  nnoremap <leader>wK <C-W>K
+  nnoremap <leader>wJ <C-W>J
+  nnoremap <leader>wH <C-W>H
+  nnoremap <leader>wL <C-W>L
+  nnoremap <leader>wT <C-W>T
+  nnoremap <leader>w= <C-W>=
+  nnoremap <leader>w- <C-W>-
+  nnoremap <leader>w+ <C-W>+
+  nnoremap <leader>w_ <C-W>_
+  nnoremap <leader>w< <C-W><
+  nnoremap <leader>w> <C-W>>
+  nnoremap <leader>w\| <C-W>\|
+
 
 "}}}
 " HELP{{{ 
+  nnoremap <leader>w? :call quickhelp#toggle("window")<CR>
   nnoremap <space>? :call quickhelp#toggle("noft")<CR>
   nmap <S-h> <Plug>(git-messenger)
 "}}}
 " SEARCH/QF {{{
+    
+    " TODO: REFACTOR THIS INTO FUNCTIONS
 
     " _*  grep word under cursor / selection
     " _/  grep input
@@ -171,21 +175,21 @@
 "}}}
 " ========== COMMANDS/FUNCS {{{
 
-  command! Vimrc          :so ~/.config/nvim/init.vim
-  command! Trim           :%s/\s\+$//e
-  command! TabReplace     :%s/\t/    /g
-  command! SpaceReplace   :%s/    /\t/g
-  command! Fork           :silent exec '!kitty & disown'
-  command! NetrwToggle    :call s:toggle('netrw', 'Lexplore')
-  command! TreeToggle     :call s:toggle('vimtree', 'VGTree')
-  command! TerminalToggle :call s:toggle('term', 'TermOpen')
-  command! QuickfixToggle :call s:toggle('qf', 'copen | wincmd p')
-  command! VGTree         :call s:vgtree()
-  command! OTree          :call s:otree()
-  command! TermOpen       :call s:termopen()
-  command! Args           :call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
-  command! PFiles         :call fzf#vim#files(s:root(),fzf#vim#with_preview())
-  command! Rename         :call s:rename()
+  command! Vimrc          so ~/.config/nvim/init.vim
+  command! Trim           %s/\s\+$//e
+  command! TabReplace     %s/\t/    /g
+  command! SpaceReplace   %s/    /\t/g
+  command! Fork           silent exec '!kitty & disown'
+  command! NetrwToggle    call s:toggle('netrw', 'Lexplore')
+  command! TreeToggle     call s:toggle('vimtree', 'VGTree')
+  command! TerminalToggle call s:toggle('term', 'Term') | wincmd p
+  command! QuickfixToggle call s:toggle('qf', 'copen') | wincmd p
+  command! VGTree         call s:vgtree()
+  command! OTree          call s:otree()
+  command! Term           call s:termopen()
+  command! Args           call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
+  command! PFiles         call fzf#vim#files(s:root(),fzf#vim#with_preview())
+  command! Rename         call s:rename()
   command! -nargs=+ QFFilter :call <SID>qf_filter(<q-args>)
   command! -nargs=? G let @a='' | silent execute 'g/<args>/y A' | tabnew | setlocal bt=nofile | put! a
 
@@ -267,9 +271,12 @@
   endfunction
 
   function s:termopen()
-      let bufnr = index(map(range(1, bufnr("$")), {_,s -> getbufvar(s, '&ft')}), "term") + 1
-      " echo "bufnr: " . bufnr
-      belowright sp | exec bufnr > 0 ? bufnr . "b" : "term"
+      let bufnr = index(map(range(1, bufnr("$")),
+          \ {_,s -> getbufvar(s, '&ft')}), "term") + 1
+      if index(tabpagebuflist(), bufnr) != -1
+          silent exe bufwinnr(bufnr) . 'close'
+      endif
+      belowright 13sp | exec bufnr > 0 ? bufnr . "b" : "term"
   endfunction
 
   function Jump(filetype, open) abort

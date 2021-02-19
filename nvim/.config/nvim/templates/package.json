@@ -1,0 +1,15 @@
+{
+  "name": "lint",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:css": "csslint --format=compact **/*.css",
+    "lint:js":  "eslint --format=compact **/*.css",
+    "lint:ts":  "tsc --format=compact **/*.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

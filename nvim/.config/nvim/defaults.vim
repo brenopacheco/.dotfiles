@@ -40,7 +40,7 @@ endfunction
 " Global configurations {{{
 
 set secure
-set shell        +=\ -O\ globstar         " enables gr **/* w/ grepprg
+let &shellcmdflag ="-O globstar -c"     " enables gr **/* w/ grepprg
 let mapleader     =" "                    " set leader as comma
 set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
 set colorcolumn   =78                     " draw column at position
@@ -56,8 +56,8 @@ set foldmethod    =marker                 " default fold method using {{{}}}
 set foldtext      =Foldtext()
 set grepformat    =%f:%l:%c:%m            " format for grep in quickfix
 let &grepprg="rg --hidden --smart-case 
-  \ --color=never --no-heading --with-filename
-  \ --line-number --column -e $*"
+  \ --color=never --no-heading --column
+  \ --with-filename --line-number  -e $*"
 set laststatus    =2                      " always show statusline
 set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
 set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp
@@ -116,16 +116,16 @@ set notimeout ttimeout ttimeoutlen=10
 set nocompatible
 filetype plugin indent on
 syntax on
-set spellfile=~/.config/nvim/spell/custom.utf-8.add
-set spelllang=custom
-set complete=.,kspell
-set nospell
-let g:vim_indent_cont = &sw                 " \ indents shiftwidth
-set suffixesadd=.jsx,.tsx,.md,.js,.ts
-set iskeyword-==
-set iskeyword-=/
-au Filetype * set formatoptions  =j,n,q   " defaults for formatting text
-    \ foldmethod=marker
-    \ foldmarker={{{,}}}
-
+" set spellfile=~/.config/nvim/spell/custom.utf-8.add
+" set spelllang=custom
+" set complete=.,kspell
+" set nospell
+" let g:vim_indent_cont = &sw                 " \ indents shiftwidth
+" set suffixesadd=.jsx,.tsx,.md,.js,.ts
+" set iskeyword-==
+" set iskeyword-=/
+" au Filetype * set 
+"     \ formatoptions=j,n,q
+"     \ foldmethod=marker
+"     \ foldmarker={{{,}}}
 " }}}

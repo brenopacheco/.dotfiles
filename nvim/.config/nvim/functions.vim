@@ -1,4 +1,5 @@
 " ClearCache{{{
+
 command! ClearCache :call s:clear_cache()
 
 fun! s:clear_cache()
@@ -9,71 +10,35 @@ fun! s:clear_cache()
         echo system('rm -f ' . s:base_dir . cache_file . '/*')
     endfor
 endf
+
 "}}}
 " GPG {{{
-command! GPGEncrypt silent exec 'g/^gpg:/d' | exec '%!gpg -easq' "encrypt, armor, sign, quiet
-command! GPGDecrypt exec '%!gpg -dq' | silent exec 'g/^gpg:/d'   "decrypt, quiet
+
+"encrypt, armor, sign, quiet
+command! GPGEncrypt silent exec 'g/^gpg:/d' | exec '%!gpg -easq'
+
+"decrypt, quiet
+command! GPGDecrypt exec '%!gpg -dq' | silent exec 'g/^gpg:/d'
+
 "}}}
 " Make {{{
 
+" mvn targets for :make   -> [ 'validate', 'clean', 'compile', 'package', 'test', 'install' ] 
+" c/cpp targets for :make -> systemlist('cat ' . s:root() . '/Makefile  | egrep "^[a-z]+:" | cut -d: -f1') 
+" npm scripts (terminal)  -> systemlist('npm run-script | sed -n "/^  [a-zA-Z]/p" | tr -d " "')
 
-command! Make call s:Make()
+" }}}
+" Run {{{
 
-let s:build_system = {
-    \ "pom.xml":      { "name": "mvn",  "cmd": "mvn"     },
-    \ "package.json": { "name": "node", "cmd": "npm run" },
-    \ "Makefile":     { "name": "make", "cmd": "make"    }
-    \}
-
-fun! s:mvn_sources()
-    return [ "validate", "clean", "compile", "package", "test", "install" ]
-endf
-
-fun! s:node_sources()
-    exec 'let b:package_json = ' . join(systemlist('cat ' . s:root() . '/package.json'), '')
-    return keys(b:package_json.scripts)
-endf
-
-fun! s:make_sources()
-    return systemlist('cat ' . s:root() . '/Makefile  | egrep "^[a-z]+:" | cut -d: -f1')
-endf
-
-fun! s:sink(target)
-    echo "here"
-    " exec 'AsyncRun ' . "cd " . s:root() . "; " . b:build_system.cmd . " " . a:target
-    exec 'term ' . "cd " . s:root() . "; " . b:build_system.cmd . " " . a:target
-endf
-
-fun! s:set_system()
-    let dir = s:root()
-    for key in keys(s:build_system)
-        let file = dir . '/' . key
-        if filewritable(file)
-            let b:build_system = s:build_system[key]
-        endif
-    endfor
-endfun
-
-fun! s:Make()
-    let system =  s:set_system()
-    if !exists('b:build_system')
-        echomsg "Not a project"
-        return
-    endif
-    let sources = function('s:' . b:build_system.name . '_sources')()
-    call fzf#run(fzf#wrap('FZF', {
-                \ 'source':sources,
-                \ 'sink': function('s:sink')
-                \ }))
-endf
+" Run the current file through an interpreter
+" Results are shown in qf
+command! -nargs=? Run :call s:run(<q-args>)
 
 function s:root() abort
- let l:root = system('git rev-parse --show-toplevel 2>/dev/null')
- let l:root = substitute(l:root, '\n', '', '')
- return len(l:root) == 0 ? '.' : l:root
+    let l:root = system('git rev-parse --show-toplevel 2>/dev/null')
+    let l:root = substitute(l:root, '\n', '', '')
+    return len(l:root) == 0 ? './' : l:root
 endfunction
-"}}}
-" Run {{{
 
 let s:interpreters = {
     \ "lua":        "export LUA_PATH=\"" . s:root() . "/?.lua;;\" && lua",
@@ -83,20 +48,38 @@ let s:interpreters = {
     \ "typescript": "ts-node",
     \}
 
-command! Run :call s:run()
-fun! s:run()
+fun! s:run(arg)
     try
         if &ft == 'vim'
             source %
             return
         endif
         let interpreter = s:interpreters[&ft]
-        exec 'AsyncRun ' . interpreter . ' %'
+        let file = tempname()
+        let cmd = (a:arg ? a:arg : interpreter) . ' ' . expand('%:p') . ' >> ' . file
+        silent call writefile(["[" . expand('%:p') . "] " . cmd , ""], file, "a")
+        let jobid = jobstart(cmd, { 
+            \   'on_stdout':   { j,d,e -> s:run_callback(file) }
+            \ })
     catch /.*/
-        echomsg "Unknown interpreter"
         echomsg v:exception
     endtry
 endfun
+
+fun! s:run_callback(file)
+    let olderrorfmt = &efm
+    set efm=%E[%f]%m,%+Cm
+    exec 'cf! '. a:file
+    let &efm = olderrorfmt
+    copen
+    setlocal modifiable
+    exe '%s/|//g'
+    norm gg
+    exec 's/^\(.\{-}\) \(.*\) >\(.*\)/[\2 >\3]'
+    setlocal nomodifiable
+    setlocal bufhidden=hide
+    wincmd p
+endf
 
 
 " }}}
@@ -124,7 +107,7 @@ fun! s:templates()
     if template == '' | return | endif
     call append(0, readfile(template))
     " the next trick will evaluate vim expressions such as ${strftime("%c")}
-    silent %s/\${\(.\{-}\)}/\=eval(submatch(1))/
+    silent exec '%s/\${\(.\{-}\)}/\=eval(submatch(1))/e'
 endf
 
 
@@ -132,9 +115,9 @@ endf
 " FZFSnippets{{{
 
 fun! s:source_snippets()
-  let l:sources = eval(join(vsnip#source#find(bufnr('%')), '+'))
-  return sort(map(l:sources, { _,s -> printf("%-15s%-20s%-30s", 
-      \ s.prefix[0],  s.label, s.description)}))
+    let l:sources = eval(join(vsnip#source#find(bufnr('%')), '+'))
+    return sort(map(l:sources, { _,s -> printf("%-15s%-20s%-30s", 
+        \ s.prefix[0],  s.label, s.description)}))
 endf
 
 fun! s:sink_snippet(snippet)

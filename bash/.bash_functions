@@ -40,7 +40,7 @@ function extract() {
 # }}}
 # fork : forks current shell {{{
     function fork () {
-        kitty & disown $!
+        st & disown $!
     }
 # }}}
 # shut : Asks if user wants to shutdown {{{

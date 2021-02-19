@@ -18,7 +18,7 @@ lua << EOF
     end
 EOF
 
-autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
+" autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
 
 "}}}
 " Client mappings {{{
@@ -66,7 +66,8 @@ autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
     nnoremap <silent><leader>a :Lspsaga code_action<CR>
     vnoremap <silent><leader>a :<C-U>Lspsaga range_code_action<CR>
     nnoremap <silent><leader>r :Lspsaga rename<CR>
-    nnoremap <c-k>             :call <SID>signature()<CR>
+    " nnoremap <c-k>             :call <SID>signature()<CR>
+    nnoremap <c-k>             :Lspsaga hover_doc<CR>
     nnoremap <silent><c-p>     :Lspsaga preview_definition<CR>
     nnoremap <silent><c-d>     :Lspsaga show_line_diagnostics<CR>
 

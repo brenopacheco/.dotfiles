@@ -41,16 +41,17 @@ call plug#begin(g:plugdir)
     Plug 'KabbAmine/zeavim.vim'             " interfaces to zeal
     Plug 'brenopacheco/vim-tree'            " show directory structure as tree
     Plug 'diepm/vim-rest-console'           " CURL tool for http requests
-    Plug 'nvim-lua/completion-nvim'         " lsp compatible completion
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
-    Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
+    " Plug 'hrsh7th/vim-vsnip-integ'          " lsp/completion integration
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
-    Plug 'steelsojka/completion-buffers'    " adds buffer completion
+    Plug 'hrsh7th/nvim-compe'
+    " Plug 'nvim-lua/completion-nvim'         " lsp compatible completion
+    " Plug 'steelsojka/completion-buffers'    " adds buffer completion
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
     Plug 'glepnir/lspsaga.nvim'             " lsp UI utils 
     Plug 'cohama/lexima.vim'                " auto close {} () / smarter
     Plug 'mfussenegger/nvim-dap'            " debugger lsp equivalent
-    Plug 'skywind3000/asyncrun.vim'         " ...
+    Plug 'vim-test/vim-test'                " run tests
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
     Plug 'brenopacheco/vim-quickhelp'       " call :Help for visual help
     Plug 'junegunn/goyo.vim'                " like vscode writer mode
@@ -58,7 +59,6 @@ call plug#begin(g:plugdir)
     Plug 'haishanh/night-owl.vim'           " theme
     Plug 'bluz71/vim-nightfly-guicolors'    " theme
     Plug 'endel/vim-github-colorscheme'     " theme
-
 call plug#end()
 
 "}}}

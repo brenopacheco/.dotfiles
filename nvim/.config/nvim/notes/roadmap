@@ -1,0 +1,11 @@
+
+REFACTOR
+    mappings => functions/commands  + mappings
+                (commands)
+    filetypes => only ft related
+
+99. COMPLETION
+    create own plugin focusing on my use case
+
+
+4. Ex command-line ranges	*cmdline-ranges* *[range]* *E16*

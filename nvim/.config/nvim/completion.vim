@@ -1,136 +1,75 @@
-" Settings {{{
+set completeopt=menuone,noinsert,noselect
+set pumheight=10
 
-    set completeopt=menuone,noinsert,noselect
-    set pumheight=8
+let g:compe                      = {}
+let g:compe.enabled              = v:true
+let g:compe.autocomplete         = v:true
+let g:compe.debug                = v:false
+let g:compe.min_length           = 1
+let g:compe.preselect            = 'always'
+let g:compe.throttle_time        = 80
+let g:compe.source_timeout       = 200
+let g:compe.incomplete_delay     = 400
+let g:compe.max_abbr_width       = 100
+let g:compe.max_kind_width       = 10000
+let g:compe.max_menu_width       = 100
+let g:compe.documentation        = v:true
 
-    autocmd BufEnter * lua require'completion'.on_attach()
+let g:compe.source               = {}
+let g:compe.source.path          = v:true
+let g:compe.source.buffer        = v:true
+let g:compe.source.vsnip         = v:true
+let g:compe.source.nvim_lsp      = v:true
+let g:compe.source.treesitter    = v:true
+let g:compe.source.omni          = v:false
+let g:compe.source.tags          = v:false
+let g:compe.source.nvim_lua      = v:false
+let g:compe.source.spell         = v:false
+let g:compe.source.calc          = v:false
+let g:compe.source.snippets_nvim = v:false
 
-    let g:completion_enable_auto_paren      = 1
-    let g:completion_enable_server_trigger  = 0
-    let g:completion_enable_snippet         = "vim-vsnip"
-    let g:completion_trigger_keyword_length = 1
-    let g:completion_enable_auto_hover      = 1
-    let g:completion_enable_auto_signature  = 1
-    let g:completion_sorting                = "length"
-    let g:completion_matching_strategy_list = ['exact']
-    let g:completion_matching_ignore_case   = 1
-    let g:completion_trigger_on_delete      = 0
-    let g:completion_abbr_length            = 20
-    let g:completion_menu_length            = 8
-    let g:completion_trigger_character      = []
-    let g:completion_timer_cycle            = 80
-    let g:completion_confirm_key = ""
-    let g:completion_enable_auto_popup      = 0
-    let g:completion_chain_complete_list = {
-       \  'default': [
-       \    {'complete_items': ['lsp', 'vim-vsnip', 'buffer']}
-       \ ]
-       \ }
-    let g:completion_items_priority = {
-            \ 'Value':      10,
-            \ 'Field':      12,
-            \ 'Method':     10,
-            \ 'Property':   10,
-            \ 'Constant':   10,
-            \ 'vim-vsnip':  9,
-            \ 'Snippet':    8,
-            \ 'Function':   7,
-            \ 'Variables':  8,
-            \ 'Interfaces': 7,
-            \ 'Class':      7,
-            \ 'Struct':     7,
-            \ 'Keyword':    8,
-            \ 'Buffer':     5,
-            \}
+if has_key(g:plugs, 'lexima.vim')
+    let g:lexima_no_default_rules = v:true
+    call lexima#set_default_rules()
+endif
+
+" inoremap <silent><expr> <CR>  compe#confirm(lexima#expand('<LT>CR>', 'i'))
+inoremap <silent><expr> <F6>  compe#confirm("\<F6>")
+inoremap <silent><expr> <C-Space> pumvisible() ? compe#close('<C-e>') : compe#complete()
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
+imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
+xmap s <Plug>(vsnip-cut-text)
+smap <Backspace> a<Backspace>
+
+imap <silent><expr> <Tab> pumvisible() ?
+        \   (complete_info()["selected"] == "-1" ? "\<F6>" : "\<F6>") :
+        \   (vsnip#available(1) ? "\<plug>(vsnip-expand-or-jump)" : "\<TAB>")
+
+" Tailwind omni completion {{{
+
+au FileType html,javascriptreact,typescriptreact
+    \ let g:compe.source.omni = v:true
+    \ | set omnifunc=TailwindOmni
+    \ | call compe#setup(g:compe, 0)
+
+" TODO: replace filread by opening a nonlisted buffer and placing contents
+"       into it. this way fileread is not called all time
+
+function g:TailwindOmni(findstart, base)
+  if a:findstart
+    let line = getline('.')
+    let start = col('.') - 1
+    while start > 0 && line[start - 1] =~ '\k'
+      let start -= 1
+    endwhile
+    return start
+  else
+    return filter(readfile('/home/breno/.config/nvim/dict/tailwind'), 
+        \ { _,s -> !match(s, '^' . a:base) })
+  endif
+endfun
 
 "}}}
-" Mappings {{{
-
-    " pum OPEN:
-    "   -> tab   complets/expands
-    "   -> s-tab jumps next
-    " pum CLOSED:
-    "   -> tab   jumps next
-    "   -> s-tab jumps prev
-
-    au TextChangedI * if !pumvisible() | call s:popup_check() | endif
-
-    fun! s:popup_check()
-        let word = matchstr(getline("."), '\(\S\+\)\%' . col(".") . 'c')
-        let char = word[len(word)-1]
-        let omni = &omnifunc != ''
-        if char == '/'
-            call feedkeys("\<c-x>\<c-f>")
-        elseif char == '.'
-            if omni 
-                call feedkeys("\<c-x>\<c-o>")
-            endif
-        elseif char =~ '\k'
-            if match(word, '\.') == -1
-                call feedkeys("\<c-space>")
-            else
-                if omni 
-                    call feedkeys("\<c-x>\<c-o>")
-                endif
-            endif
-        endif
-    endf
-
-    imap <silent><expr> <tab> <SID>handle_completion()
-
-    fun! s:handle_completion()
-        let popupopen = pumvisible()
-        let selected   = complete_info()["selected"] != "-1"
-        let expandable = vsnip#expandable()
-        let jumpable   = vsnip#jumpable(1)
-        let beforefun  = getline('.')[col('.')-1] == '('
-        if popupopen
-            if selected
-                if beforefun
-                    return "\<c-y>\<Right>"
-                endif
-                if expandable
-                    return "\<c-y>\<Plug>(vsnip-expand)"
-                else
-                    let info = complete_info()
-                    let mode = info.mode
-                    let kind = info.items[info.selected].kind
-                    if mode == "files" || kind == "Variable" || kind == "Field"
-                        return "\<c-y>"
-                    elseif kind == "Function" || kind == "Method"
-                        return "\<c-y>("
-                    else
-                        return "\<c-y>\<space>"
-                    endif
-                endif
-            else
-                return "\<c-n>\<tab>"
-            endif
-        elseif !popupopen
-            if expandable
-                return "\<Plug>(vsnip-expand)"
-            elseif jumpable
-                return "\<Plug>(vsnip-jump-next)"
-            else
-                return "\<tab>"
-            endif
-            return "none of the candidates worked"
-        endif
-    endf
-
-    imap <expr> <c-l> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ''
-    smap <expr> <c-l> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : ''
-    imap <expr> <c-h> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
-    smap <expr> <c-h> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
-    imap <expr> <S-tab> pumvisible() ? "\<c-l>" : "\<c-h>"
-    smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
-    smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
-
-    imap <silent> <C-space> <Plug>(completion_trigger)
-    xmap s <Plug>(vsnip-cut-text)
-
-    smap <Backspace> a<Backspace>
-
-
-" }}}
-
