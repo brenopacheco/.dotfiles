@@ -35,7 +35,7 @@
         ]
     },
     "function": {
-        "prefix": "fun",
+        "prefix": "function",
         "description": "fun! ...",
         "body": [
         "fun! ${VIM:expand('%:p') =~ 'autoload' ? substitute(matchstr(expand('%:p'),'autoload/\\zs.*\\ze.vim'),'[/]','#','g').'#' : ''}${2:function_name}(${3})",
