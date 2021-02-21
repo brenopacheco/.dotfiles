@@ -39,4 +39,3 @@ fun! s:complete(id)
 	endif
 endf
 
-autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc

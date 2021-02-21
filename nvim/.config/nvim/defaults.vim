@@ -108,24 +108,18 @@ set history        =500                    " keep more history in q:
 set virtualedit    =block,onemore          " put cursor where there is no char
 set formatoptions  =j,n,q                  " defaults for formatting text
 set nojoinspaces                           " always insert 1 spc on join J
-set iskeyword    +=-                       " accept key-word for <cword>
+" set iskeyword    +=-                       " accept key-word for <cword>
 set nostartofline
 set visualbell
 set cmdheight=1
 set notimeout ttimeout ttimeoutlen=10
 set nocompatible
+set suffixesadd=.jsx,.tsx,.md,.js,.ts,.java "gf will try to match suffixes
+set nospell
 filetype plugin indent on
 syntax on
-" set spellfile=~/.config/nvim/spell/custom.utf-8.add
-" set spelllang=custom
-" set complete=.,kspell
-" set nospell
-" let g:vim_indent_cont = &sw                 " \ indents shiftwidth
-" set suffixesadd=.jsx,.tsx,.md,.js,.ts
-" set iskeyword-==
-" set iskeyword-=/
-" au Filetype * set 
-"     \ formatoptions=j,n,q
-"     \ foldmethod=marker
-"     \ foldmarker={{{,}}}
+let g:vim_indent_cont = &sw                 " \ indents shiftwidth
+let c_syntax_for_h = 1                     " recognize .h as c file
+"au Filetype * set formatoptions=jnq
+
 " }}}

@@ -32,12 +32,16 @@
   xnoremap <C-h> <Esc>`<<C-v>`>odhP`<<C-v>`>hoh
 
   " MISC
+  nmap "" 0v$hS"
   xmap ga :EasyAlign<cr>
   nmap ga :EasyAlign<cr>
+  vmap gp :call Justify('tw',4)<CR>
+  vmap gl :s/\s\+/ /g<CR>
   nmap <CR> <Plug>(wildfire-fuel)
   vmap <CR> <Plug>(wildfire-fuel)
   vmap <Backspace> <Plug>(wildfire-water)
   nnoremap <leader>- :OTree<CR>
+  runtime macros/justify.vim
 
 "}}}
 " NAVIGATION {{{
@@ -112,10 +116,21 @@
 
 
 "}}}
+" PLUG {{{
+
+    nnoremap <leader>pi <cmd>PlugInstall<CR>
+    nnoremap <leader>pc <cmd>PlugClean<CR>
+    nnoremap <leader>pd <cmd>PlugDiff<CR>
+    nnoremap <leader>pu <cmd>PlugUpdate<CR>
+    nnoremap <leader>pr <cmd>Vimrc<CR>
+
+"}}}
 " HELP{{{ 
+
   nnoremap <leader>w? :call quickhelp#toggle("window")<CR>
   nnoremap <space>? :call quickhelp#toggle("noft")<CR>
   nmap <S-h> <Plug>(git-messenger)
+
 "}}}
 " SEARCH/QF {{{
     
@@ -131,13 +146,6 @@
     nnoremap <expr><leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
     xnoremap <leader>s "zy:%s/<c-r>z/<c-r>z/g<left><left>
 
-    " Bootstraps q<letter> so that pressing q in recording mode will stop it
-    function RecordingMode() abort
-        nmap <silent><nowait> q q<backspace>:unmap q<CR>
-    endfunction
-    nmap <backspace> <Nop>
-    call map(map(range(97, 122), 'nr2char(v:val)'), 
-            \ { _,i -> execute('nnoremap q'.i.' :call RecordingMode()<CR>q'.i)})
 
     " q*  grep word under cursor / selection
     " q/  grep input
@@ -158,20 +166,6 @@
 
 " }}}
 " &FT MAPPINGS {{{
-  au TermOpen * set ft=term
-  augroup terminal-maps
-    au!
-    au Filetype term tnoremap <buffer> <Esc> <C-\><C-n>
-    au Filetype term tnoremap <buffer> <C-[> <C-\><c-n>
-    au Filetype term tnoremap <buffer> jk <C-\><C-n>
-    au Filetype term tnoremap <buffer> kj <C-\><C-n>
-    au Filetype fzf  tnoremap <buffer> jk <Esc>
-    au Filetype fzf  tnoremap <buffer> kj <Esc>
-    au Filetype fzf  tnoremap <buffer> <Esc> <Esc>
-    au Filetype lf   tunmap <buffer> jk
-    au Filetype lf   tunmap <buffer> kj
-    au Filetype netrw  nnoremap <buffer> zh gh
-  augroup end
 "}}}
 " ========== COMMANDS/FUNCS {{{
 
@@ -214,13 +208,11 @@
   " open tree in left navigator
   function s:vgtree() abort
     vertical topleft 40split
+    let old_mappings = deepcopy(g:vimtree_mappings)
     let g:vimtree_mappings['e'] = { 'cmd': 'Tree_edit_open()', 'desc': 'edit in right window' } 
     let g:vimtree_mappings['q'] = { 'cmd': 'tree#close() \| close', 'desc': 'close (special)' } 
     call s:otree()
-    au BufEnter <buffer> let g:vimtree_mappings['e'] = { 'cmd': 'Tree_edit_open()', 'desc': 'edit in right window' }
-    au BufEnter <buffer> let g:vimtree_mappings['q'] = { 'cmd': 'tree#close() \| close', 'desc': 'close (special)' }
-    au BufLeave <buffer> let g:vimtree_mappings['e'] = { 'cmd': 'tree#edit()',     'desc': 'edit' }
-    au BufLeave <buffer> let g:vimtree_mappings['q'] = { 'cmd': 'tree#close()', 'desc': 'close' }
+    let g:vimtree_mappings = old_mappings
   endfunction
 
   function Tree_edit_open() abort
@@ -332,16 +324,6 @@
           \ { _,s -> matchstr(s, '".*"')[1:-2] })
   endfunction
 
-
-    let preview_file = $HOME.'/.fzf/bin/preview.sh'
-    command! -bang -nargs=* Tags
-      \ call fzf#vim#tags(<q-args>, {
-      \      'options': '
-      \         --with-nth 1,2
-      \         --prompt "=> "
-      \         --preview-window="50%"
-      \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
-      \ }, <bang>0)
 
 "}}}
 " notes {{{

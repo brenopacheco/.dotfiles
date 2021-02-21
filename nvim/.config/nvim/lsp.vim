@@ -61,28 +61,17 @@ EOF
     nnoremap <silent> <leader>= <cmd>LspFormat<CR>
     nnoremap <silent> <leader>d <cmd>LspDiagnosticsToggle<CR>
 
-    nnoremap <silent> ]e       :Lspsaga diagnostic_jump_next<CR>
-    nnoremap <silent> [e       :Lspsaga diagnostic_jump_prev<CR>
-    nnoremap <silent><leader>a :Lspsaga code_action<CR>
-    vnoremap <silent><leader>a :<C-U>Lspsaga range_code_action<CR>
-    nnoremap <silent><leader>r :Lspsaga rename<CR>
-    " nnoremap <c-k>             :call <SID>signature()<CR>
-    nnoremap <c-k>             :Lspsaga hover_doc<CR>
-    nnoremap <silent><c-p>     :Lspsaga preview_definition<CR>
-    nnoremap <silent><c-d>     :Lspsaga show_line_diagnostics<CR>
-
-    " nnoremap <silent><C-j> <cmd>lua require('lspsaga.hover').smart_scroll_hover(1)<CR>
-    " nnoremap <silent><C-k> <cmd>lua require('lspsaga.hover').smart_scroll_hover(-1)<CR>
-    " nnoremap <silent> ]e        <cmd>lua vim.lsp.diagnostic.goto_next { wrap = true }<CR>
-    " nnoremap <silent> [e        <cmd>lua vim.lsp.diagnostic.goto_prev { wrap = true }<CR>
-    " xnoremap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
-    " nnoremap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
-    " nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
-    " nnoremap <silent> <C-k>     <cmd>LspHover<CR>
-    " nnoremap <silent> <C-p>     <cmd>LspPeekDefinition<CR>
-    " nnoremap <silent> <C-j>     <cmd>LspClosePopup<CR>
-    " inoremap <silent> <C-k>     <cmd>LspSignatureHelp<CR>
-    " inoremap <silent> <c-j>     <cmd>LspClosePopup<CR>
+    nnoremap <silent>]e        <cmd>Lspsaga      diagnostic_jump_next<CR>
+    nnoremap <silent>[e        <cmd>Lspsaga      diagnostic_jump_prev<CR>
+    nnoremap <silent><leader>a <cmd>Lspsaga      code_action<CR>
+    vnoremap <silent><leader>a :<C-U>Lspsaga     range_code_action<CR>
+    nnoremap <silent><leader>r <cmd>Lspsaga      rename<CR>
+    nnoremap <silent><c-h>     <cmd>Lspsaga      signature_help<CR>
+    nnoremap <silent><c-k>     <cmd>Lspsaga      hover_doc<CR>
+    nnoremap <silent><c-p>     <cmd>Lspsaga      preview_definition<CR>
+    nnoremap <silent><c-d>     <cmd>Lspsaga      show_line_diagnostics<CR>
+    nnoremap <silent><C-n>     <cmd>lua          require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+    nnoremap <silent><C-p>     <cmd>lua          require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
 
 " }}} 
 " Auxiliary functions {{{

@@ -8,17 +8,14 @@ esac
 # get current branch in git repo
 export PROMPT_DIRTRIM=3
 
-function parse_git_branch() {
-	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
-	if [[ ! "${BRANCH}" == "" ]]; then
-        echo "(${BRANCH})"
-	fi
+PS1='\[\e[32m\]\u@\h\[\e[m\]:\[\e[34m\]\w\[\e\[m\]\[\e[31m\]$(git_branch)\[\e\[m\]\[\e[0m\]\$ '
+
+function git_branch {     # get git branch of pwd
+    local branch="$(git branch 2>/dev/null | grep "\*" | colrm 1 2)"
+    if [ -n "$branch" ]; then
+        echo " ($branch)"
+    fi
 }
-
-export PS1="\[\e[32m\]\u@\h\[\e[m\]:\[\e[34m\]\w/\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\]\$ "
-
-
-
 
 # History settings
 shopt -s histappend	# appends history entries in .bash_history
@@ -43,7 +40,7 @@ shopt -s globstar
 
 # PATH
 export PATH=$PATH:$HOME/bin
-export PATH=$PATH:~/.go/bin
+export PATH=$PATH:$HOME/.go/bin
 export PATH=$PATH:$HOME/.local/bin
 
 # Source aliases and functions and keybindings
@@ -57,7 +54,7 @@ export VISUAL=nvim
 export SVN_EDITOR="$VISUAL"
 
 ## source fuzzy finder fzf settings
-[ -f ~/.bash_fzf ] && source ~/.bash_fzf
+[ -f $HOME/.bash_fzf ] && source $HOME/.bash_fzf
 
 # Java 
 export JAVA_HOME=/usr/lib/jvm/default
@@ -66,7 +63,7 @@ export JAVA_HOME=/usr/lib/jvm/default
 NPM_PACKAGES="${HOME}/npm"
 export PATH="$PATH:$NPM_PACKAGES/bin"
 export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
-[[ ! -f ~/.npmrc ]] && echo "prefix=${NPM_PACKAGES}" >> ~/.npmrc
+[[ ! -f $HOME/.npmrc ]] && echo "prefix=${NPM_PACKAGES}" >> $HOME/.npmrc
 [[ ! -d ${NPM_PACKAGES} ]] && mkdir ${NPM_PACKAGES}
 export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
 
@@ -74,7 +71,7 @@ export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
 export PATH=$PATH:$HOME/.lua/bin
 
 # true color kitty support
-tic -x -o ~/.terminfo ~/.config/kitty/xterm-24bit.terminfo
+tic -x -o $HOME/.terminfo $HOME/.config/kitty/xterm-24bit.terminfo
 export TERM=xterm-24bit
 alias ssh="TERM=xterm-256color ssh"
 

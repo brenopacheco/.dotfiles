@@ -50,6 +50,16 @@
     let g:fzf_preview_window = ['right:50%', 'ctrl-/']
     let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8, 'yoffset': 0.2 } }
 
+    let preview_file = $HOME.'/.fzf/bin/preview.sh'
+    command! -bang -nargs=* Tags
+      \ call fzf#vim#tags(<q-args>, {
+      \      'options': '
+      \         --with-nth 1,2
+      \         --prompt "=> "
+      \         --preview-window="50%"
+      \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
+      \ }, <bang>0)
+
 "}}}
 " Limelight{{{
     let g:limelight_default_coefficient = 0.7
