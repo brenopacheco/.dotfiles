@@ -66,5 +66,6 @@
             \   (complete_info()["selected"] == "-1" ? "\<F6>" : "\<F6>") :
             \   (vsnip#available(1) ? "\<plug>(vsnip-expand-or-jump)" : "\<TAB>")
 
+    imap <expr><CR> pumvisible() ? "\<C-Space>\<CR>" : "\<CR>"
 
 "}}}

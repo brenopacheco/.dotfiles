@@ -4,9 +4,8 @@
  * Email:  ${$USER . "@" . hostname()}
  * Date:   ${strftime("%c")}
  */
+${ java#package(expand("%:p:h")) != "" ? ("package " . java#package(expand("%:p:h")) . ";") : ""}
 
-package ...
-public class ...
-{
+public class ${substitute(expand("%:p:t:r"), '[a-z]', '\U&', '')} {
 
 }

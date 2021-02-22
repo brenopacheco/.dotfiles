@@ -1,63 +1,26 @@
-" Programs, Directories & Backup {{{
+set encoding=utf-8                  
+scriptencoding utf-8
 
-let g:backupdir    = expand('~/.cache/nvim/backup/')
-let g:plugdir      = expand('~/.cache/nvim/plug/')
-let g:undodir      = expand('~/.cache/nvim/undo/')
-let g:swapdir      = expand('~/.cache/nvim/swap//')
-
-for dir in [ g:backupdir, g:plugdir, g:swapdir, g:undodir ]
-    if !isdirectory(dir)
-        silent call system('mkdir -p ' . dir)
-    endif
-endfor
-
-au BufWritePost * call Backup()
-function! Backup()
-    let b:timestamp = strftime('%Y-%m-%d_%Hh%Mm')
-    let b:expanded = expand('%:p')
-    let b:subst = substitute(b:expanded, "/", "\\\\%", "g")
-    let b:dir = g:backupdir
-    let b:backupfile = b:dir . b:timestamp . "_" . b:subst
-    silent exec ':w! ' b:backupfile
-endfunction
-
-let fd_ignore = expand('~/.fdignore')
-let rg_ignore = expand('~/.rgignore')
-if !filereadable(fd_ignore) || !filereadable(rg_ignore)
-    silent call writefile(['**/.git/', '**/node_modules/', 'tags'], fd_ignore)
-    silent call system('cp ' . fd_ignore . ' ' . rg_ignore)
-endif
-
-function! Foldtext()
-  let line = substitute(getline(v:foldstart), '{', ' ', 'g')
-  let line = "# " . substitute(line, '^[ "]\+', '', '')
-  let lines = v:foldend-v:foldstart
-  let length = 71 - strwidth(line) - len(lines)
-  return  line . repeat(' ', length) . lines . ' #lines'
-endfunction
-
-" }}}
 " Global configurations {{{
 
 set secure
-let &shellcmdflag ="-O globstar -c"     " enables gr **/* w/ grepprg
-let mapleader     =" "                    " set leader as comma
+let &shellcmdflag ='-O globstar -c'     " enables gr **/* w/ grepprg
+let mapleader     =' '                    " set leader as comma
 set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
 set colorcolumn   =78                     " draw column at position
 set completeopt   =menuone,noinsert       " defaults popup menu behavior
 set conceallevel  =0                      " shows |hyperlinks|
 set swapfile                              " enable swap file
-let &directory    = g:swapdir             " swap directory
-set encoding      =utf-8                  " use encoding supporting unicode
+"let &directory    = g:swapdir             " swap directory
 set fileencoding  =utf-8
 set fillchars     =fold:\                 " make v:folddashes whitespace
 set foldlevel     =99                     " make folds open initially
 set foldmethod    =marker                 " default fold method using {{{}}}
-set foldtext      =Foldtext()
+set foldtext      =utils#foldtext()
 set grepformat    =%f:%l:%c:%m            " format for grep in quickfix
-let &grepprg="rg --hidden --smart-case 
+let &grepprg='rg --hidden --smart-case 
   \ --color=never --no-heading --column
-  \ --with-filename --line-number  -e $*"
+  \ --with-filename --line-number  -e $*'
 set laststatus    =2                      " always show statusline
 set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
 set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp
@@ -113,7 +76,6 @@ set nostartofline
 set visualbell
 set cmdheight=1
 set notimeout ttimeout ttimeoutlen=10
-set nocompatible
 set suffixesadd=.jsx,.tsx,.md,.js,.ts,.java "gf will try to match suffixes
 set nospell
 filetype plugin indent on

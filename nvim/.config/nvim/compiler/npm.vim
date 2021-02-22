@@ -11,13 +11,13 @@ set cpo-=C
 "   eslint --format compact
 "   csslint --format=compact
 
-CompilerSet errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %trror\ -\ %m,
+setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %trror\ -\ %m,
                        \%f:\ line\ %l\\,\ col\ %c\\,\ %tarning\ -\ %m,
                        \%f%#(%l\\,%c):\ %trror\ TS%n:\ %m,
                        \%-G%.%#
 
 
-CompilerSet makeprg=npm\ --silent\ run
+setlocal makeprg=npm\ --silent\ run
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

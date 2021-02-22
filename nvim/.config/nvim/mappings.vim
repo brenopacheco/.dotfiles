@@ -45,13 +45,18 @@
 
 "}}}
 " NAVIGATION {{{
-  nnoremap <silent> ]s :tag<CR>    | nnoremap <silent> [s :pop<CR>
-  nnoremap <silent> ]t :tnext<CR>  | nnoremap <silent> [t :tprevious<CR>
-  nnoremap <silent> ]a :next<CR>   | nnoremap <silent> [a :previous<CR>
-  nnoremap <silent> ]b :bnext<CR>  | nnoremap <silent> [b :bprevious<CR>
+  nnoremap <silent> ]s :tag<CR>    
+ nnoremap <silent> [s :pop<CR>
+  nnoremap <silent> ]t :tnext<CR>  
+ nnoremap <silent> [t :tprevious<CR>
+  nnoremap <silent> ]a :next<CR>   
+ nnoremap <silent> [a :previous<CR>
+  nnoremap <silent> ]b :bnext<CR>  
+ nnoremap <silent> [b :bprevious<CR>
   nnoremap <silent> ]q :try \| cnext \| catch \| cfirst \| catch \| endtry<CR>
   nnoremap <silent> [q :try \| cprev \| catch \| clast \| catch \| endtry<CR>
-  nnoremap <silent> ]l :lnext<CR>  | nnoremap <silent> [l :lprevious<CR>
+  nnoremap <silent> ]l :lnext<CR>  
+ nnoremap <silent> [l :lprevious<CR>
   nmap <silent> ]c <plug>(signify-next-hunk) 
   nmap <silent> [c <plug>(signify-prev-hunk)
 "}}}
@@ -162,7 +167,7 @@
 
     nnoremap <leader>fm :Make<CR>
     nnoremap <leader># :Run<CR>
-    " nnoremap <F5> :Run<CR>
+    nnoremap <leader>m :make % \| copen \| wincmd p<CR>
 
 " }}}
 " &FT MAPPINGS {{{
@@ -174,31 +179,24 @@
   command! TabReplace     %s/\t/    /g
   command! SpaceReplace   %s/    /\t/g
   command! Fork           silent exec '!kitty & disown'
-  command! NetrwToggle    call s:toggle('netrw', 'Lexplore')
-  command! TreeToggle     call s:toggle('vimtree', 'VGTree')
-  command! TerminalToggle call s:toggle('term', 'Term') | wincmd p
-  command! QuickfixToggle call s:toggle('qf', 'copen') | wincmd p
+  command! NetrwToggle    call utils#toggle('netrw', 'Lexplore')
+  command! TreeToggle     call utils#toggle('vimtree', 'VGTree')
+  command! TerminalToggle call utils#toggle('term', 'Term')
+  command! QuickfixToggle call utils#toggle('qf', 'copen') | wincmd p
   command! VGTree         call s:vgtree()
   command! OTree          call s:otree()
   command! Term           call s:termopen()
-  command! Args           call fzf#run(fzf#wrap('FZF',{'source':argv(),'sink':'e',}))
-  command! PFiles         call fzf#vim#files(s:root(),fzf#vim#with_preview())
-  command! Rename         call s:rename()
-  command! -nargs=+ QFFilter :call <SID>qf_filter(<q-args>)
+
+
+
+  command! -nargs=+ QFFilter :call quickfix#filter(<q-args>)
   command! -nargs=? G let @a='' | silent execute 'g/<args>/y A' | tabnew | setlocal bt=nofile | put! a
 
 
 
-  let g:extensions = "jsx|js|tsx|ts|java|c|cpp|html|css"
-  command! Classes :call fzf#run(fzf#wrap({
-      \   'source': 'fd "('.g:extensions.')$" -t f ' . s:root(),
-      \   'sink': 'e',
-      \   'options': '--prompt "> " --preview "bat --color=\"always\" --plain {}"'
-      \}))
-
   " open tree depending if it's a project
   function s:otree() abort
-    if s:root() == './'
+    if utils#root() == './'
         Tree
     else
         GTree
@@ -225,105 +223,14 @@
     endif
   endfunction
 
-  function! s:qf_filter(pat)
-    let all = getqflist()
-    for d in all
-      if bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat
-          call remove(all, index(all,d))
-      endif
-    endfor
-    call setqflist(all)
-  endfunction
-
-
-  function SearchList(A,L,P)
-      return join(['**/*', '%', '*', '##'], "\n")
-  endfunction
-
-  function YesNo(A,L,P)
-      return join(['n', 'y'], "\n")
-  endfunction
-
-  command! Root :echo s:root()
-  function s:root() abort
-     let l:root = system('git rev-parse --show-toplevel 2>/dev/null')
-     let l:root = substitute(l:root, '\n', '', '')
-     return len(l:root) == 0 ? './' : l:root
-  endfunction
-
-  function s:toggle(filetype, open) abort
-      for i in range(1, winnr('$'))  " if buf is in a window, close
-          let bnum = winbufnr(i)
-          if getbufvar(bnum, '&ft') == a:filetype
-              silent exe i . 'close'
-              return
-          endif
-      endfor
-      exec a:open
-  endfunction
-
   function s:termopen()
-      let bufnr = index(map(range(1, bufnr("$")),
-          \ {_,s -> getbufvar(s, '&ft')}), "term") + 1
+      let bufnr = index(map(range(1, bufnr('$')),
+          \ {_,s -> getbufvar(s, '&ft')}), 'term') + 1
       if index(tabpagebuflist(), bufnr) != -1
           silent exe bufwinnr(bufnr) . 'close'
       endif
-      belowright 13sp | exec bufnr > 0 ? bufnr . "b" : "term"
+      belowright 13sp | exec bufnr > 0 ? bufnr . 'b' : 'term'
   endfunction
-
-  function Jump(filetype, open) abort
-      for i in range(1, winnr('$'))
-          let bnum = winbufnr(i)
-          if getbufvar(bnum, '&ft') == a:filetype
-              silent call win_gotoid(win_getid(i))
-              return
-          endif
-      endfor
-      silent exec a:open
-  endfunction
-
-  function s:rename()
-    let old_ignc  = &ignorecase
-    let old_repo  = &report
-    set noignorecase
-    set report=0
-    norm mR
-    let word      = expand('<cword>')
-    let replace   = input('global replace: ' . word . ' -> ', word)
-    let root  = system('git rev-parse --show-toplevel 2>/dev/null')
-    let root  = substitute(root, '\n', '', '')
-    let root  = len(root) == 0 ? './' : root
-    let files = substitute(system('fd "." -t f -a ' . root), '\n', ' ', 'g')
-    let buffers = join(map(split(execute('ls', 'silent'), "\n"), 
-          \ { _,s -> matchstr(s, '".*"')[1:-2] }), ' ')
-    let cmd       = 'set hidden | %s/' . word . '/' . replace . '/gie | echo "-> ".expand("%")'
-    exec 'args ' . files . ' ' . buffers
-    exec 'args ' . join(uniq(sort(argv())), ' ')
-    let substitutions = split(execute('argdo '.cmd,'silent'), '\n')
-    let i = 0
-    for line in substitutions
-        if len(matchstr(line, 'substitution')) > 0
-          echo substitutions[i+1] . ": " . line
-        endif
-        let i = i + 1
-    endfor
-    let &ignorecase = old_ignc
-    let &report     = old_repo
-    norm 'R
-  endfunction
-
-  function g:Root() abort
-     let l:root = system('git rev-parse --show-toplevel 2>/dev/null')
-     let l:root = substitute(l:root, '\n', '', '')
-     return len(l:root) == 0 ? './' : l:root
-  endfunction
-
-
-  function g:Buflist() abort
-      return map(split(execute('ls', 'silent'), "\n"), 
-          \ { _,s -> matchstr(s, '".*"')[1:-2] })
-  endfunction
-
 
 "}}}
 " notes {{{

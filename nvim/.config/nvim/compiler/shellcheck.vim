@@ -6,9 +6,9 @@ let current_compiler = "shellcheck"
 let s:save_cpo = &cpo
 set cpo-=C
 
-CompilerSet makeprg=shellcheck\ -f\ gcc\ $*\ %:S
+setlocal makeprg=shellcheck\ -f\ gcc\ $*\ %:S
 
-CompilerSet errorformat=
+setlocal errorformat=
   \%f:%l:%c:\ %trror:\ %m,
   \%f:%l:%c:\ %tarning:\ %m,
   \%I%f:%l:%c:\ note:\ %m

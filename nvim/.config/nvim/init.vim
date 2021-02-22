@@ -7,7 +7,8 @@
 if exists('g:vscode')
     source $HOME/.config/nvim/vscode.vim
 else
-    runtime defaults.vim    " general vim settings
+    runtime cache.vim       " setup directories and files
+    runtime defaults.vim    " default vim settings
     runtime plug.vim        " installed plugins
     runtime plugins.vim     " plugin settings
     runtime colors.vim      " colors

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# template directory
+DIR="$HOME/.ignores"
+
+function setup_templates() {
+    tmpdir=$(mktemp -d)
+    git clone https://github.com/toptal/gitignore $tmpdir
+    [ -d "$DIR" ] || mkdir $DIR
+    cp $tmpdir/templates/* $DIR
+    return $?
+}
+
+if [[ ! "$(ls -A $HOME/.ignores 2>/dev/null)" ]]; then
+    echo "Git ignore templates not found. Pulling templates..."
+    setup_templates \
+        && echo "Templates pulled." \
+        || echo "Some error occurred" && exit 1
+fi
+
+list=$(ls $DIR | sed 's/\.gitignore$//')
+ignores=""
+files=""
+while true; do
+    header="Selected: $ignores"
+    selected=$(echo "$list" | fzf -m --layout=reverse --header="$header")
+    if [[ -z "$selected" ]]; then
+       break
+    fi
+    ignores+="$selected "
+    files+="$DIR/$selected.gitignore "
+done
+
+eval "cat $files > .gitignore" && \
+    echo "Git ignore sucesfully generated" && \
+    echo "TAGS: $ignores"
+
+
+

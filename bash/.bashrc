@@ -19,8 +19,8 @@ function git_branch {     # get git branch of pwd
 
 # History settings
 shopt -s histappend	# appends history entries in .bash_history
-export HISTFILESIZE=9999999
-export HISTSIZE=9999999
+export HISTFILESIZE=9999999000
+export HISTSIZE=9999999000
 export HISTCONTROL=ignoreboth
 export HISTIGNORE='&:[ ]*'
 export HISTTIMEFORMAT='%F %T '
@@ -79,3 +79,10 @@ alias ssh="TERM=xterm-256color ssh"
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
 
+# JDTLS
+#
+export JAR=/path/to/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/plugins/org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar
+# export GRADLE_HOME=$HOME/gradle
+# export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.9.11-9.fc33.x86_64/
+export JDTLS_CONFIG=/path/to/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/config_linux
+export WORKSPACE=$HOME/.cache/jdtls

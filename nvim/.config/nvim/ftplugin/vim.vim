@@ -3,15 +3,15 @@ if exists("b:did_ftplugin")
 endif
 let b:did_ftplugin = 1
 
-" compiler
+compiler vint
 setlocal equalprg=
 setlocal foldmethod=marker 
 setlocal foldmarker={{{,}}}
 " setlocal foldexpr=
 setlocal formatoptions=croqlj
 setlocal textwidth=78
-setlocal comments=
-setlocal commentstring=\"%s
+setlocal comments=:\"\ 
+setlocal commentstring=\"\ %s
 setlocal suffixesadd=.vim
 setlocal keywordprg=:help
 setlocal iskeyword+=#

@@ -18,10 +18,11 @@
         "prefix": "header",
         "description": "header standard Vim script file header",
         "body": [
-        "\" File: ${1:${VIM:expand('%:t')}}",
-        "\" Author: ${2:${VIM:g:snips_author}}",
-        "\" Description: ${3}",
-        "${0:\" Last Modified: ${VIM:strftime(\"%B %d, %Y\")}}"
+        "\" File: ${VIM:expand('%:t')}",
+        "\" Author: Breno Leonhardt Pacheco",
+        "\" Email: brenoleonhardt@gmail.com",
+        "\" Last Modified: ${VIM:strftime(\"%B %d, %Y\")}",
+        "\" Description: ${3}"
         ]
     },
     "guard": {

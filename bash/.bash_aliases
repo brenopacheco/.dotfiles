@@ -8,7 +8,7 @@ alias ga='git add -A'
 alias gm='git commit'
 alias gp='git push'
 alias gw='git-watch'
-alias gcm='git checkout master'
+alias gb='git branch'
 gc() {
     git checkout $(git branch -vva | fzf --reverse | sed 's/^[^a-zA-Z]\+//' | awk '{printf $1}')
 }

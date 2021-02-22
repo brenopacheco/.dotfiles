@@ -22,5 +22,13 @@
     "prefix": "TODO",
     "description": "TODO: ...",
     "body": ["\" TODO: ${0:${TM_SELECTED_TEXT}}"]
+  },
+  "global-email": {
+    "prefix": "email",
+    "body": ["brenoleonhardt@gmail.com"]
+  },
+  "global-breno": {
+    "prefix": "breno",
+    "body": ["Breno Leonhardt Pacheco"]
   }
 }

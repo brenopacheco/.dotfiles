@@ -3,19 +3,31 @@
 lua << EOF
     require('lsp-overrides')
     require('lsp-utils')
+    vim.lsp.set_log_level(4)
     require('lsp-sumneko')
+    
+
     local lspconfig = require'lspconfig'
+
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
+
     local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
-    local servers = { "bashls", "ccls", "cssls", "html", "jdtls", "jsonls",
-                      "tsserver", "vimls", "yamlls" }
+
+    local servers = { "bashls", "ccls", "cssls", "jsonls", "tsserver", "vimls", 
+                      "jedi_language_server", "jdtls", "bashls"}
+
+    -- does not work alright: yamlls, html, diagnosticls, "bashls" 
+    -- bashls is not showing diagnostics (upstream)
+
     for _, server in pairs(servers) do
         lspconfig[server].setup{
             root_dir = root,
             capabilities = capabilities
         }
     end
+    lspconfig.diagnosticls.setup(require('lsp-diagnosticls'))
+
 EOF
 
 " autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
@@ -44,7 +56,7 @@ EOF
     command! LspDisplayInfo       call s:display_info()
     command! LspFormat            call s:format()
     command! LspClosePopup        call s:close_lsp_floating()
-    command! LspDiagnosticsToggle call s:toggle('qf', 
+    command! LspDiagnosticsToggle call utils#toggle('qf', 
         \ 'exec "lua vim.lsp.diagnostic.set_loclist()" | wincmd p')
 
     nnoremap <silent> <c-]> :silent exec <SID>lsp_on() ? 
@@ -59,7 +71,7 @@ EOF
     nnoremap <silent> gs        <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
     nnoremap <silent> <leader>= <cmd>LspFormat<CR>
-    nnoremap <silent> <leader>d <cmd>LspDiagnosticsToggle<CR>
+    nnoremap <silent> <leader>e <cmd>LspDiagnosticsToggle<CR>
 
     nnoremap <silent>]e        <cmd>Lspsaga      diagnostic_jump_next<CR>
     nnoremap <silent>[e        <cmd>Lspsaga      diagnostic_jump_prev<CR>
@@ -79,16 +91,6 @@ EOF
 
 
 
-    fun! s:toggle(filetype, open) abort
-        for i in range(1, winnr('$'))  " if buf is in a window, close
-            let bnum = winbufnr(i)
-            if getbufvar(bnum, '&ft') == a:filetype
-                silent exe i . 'close'
-                return
-            endif
-        endfor
-        exec a:open
-    endfunction
     
     fun! s:signature()
         try
@@ -101,13 +103,13 @@ EOF
     fun! s:format()
         try
             if !s:lsp_on()
-                throw "Lsp off"
+                throw 'Lsp off'
             endif
             lua vim.lsp.buf.formatting_sync()
-            echo "Formatting using LSP formatter"
+            echo 'Formatting using LSP formatter'
         catch /.*/
-            norm gg=G''
-            echo "Formatting using formatprg"
+            norm! gg=G''
+            echo 'Formatting using formatprg'
         endtry
     endf
 

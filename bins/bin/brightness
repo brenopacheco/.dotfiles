@@ -2,7 +2,8 @@
 
 NID=0
 function send_notification {
-	NID=$(dunstify 'Brightness' -p -i display-brightness -h int:value:$(xbacklight -get | cut -d '.' -f 1) -r $NID);
+	NID=$(dunstify 'Brightness' -p -i display-brightness \ 
+        -h int:value:$(xbacklight -get | cut -d '.' -f 1) -r $NID);
 }
 
 function adjust_brightness {
