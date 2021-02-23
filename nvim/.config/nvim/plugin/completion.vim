@@ -1,13 +1,8 @@
-"  File: plugin/completion.vim
-"  Author: Breno Leonhardt Pacheco
-"  Email: brenoleonhardt@gmail.com
-"  Last Modified: February 22, 2021
-"  Description: 
-
-if exists('g:loaded_completion_plugin')
-    finish
-endif
-let g:loaded_completion_plugin = 1
+" File: completion.vim
+" Author: Breno Leonhardt Pacheco
+" Email: brenoleonhardt@gmail.com
+" Last Modified: February 22, 2021
+" Description: 
 
 set completeopt=menuone,noinsert,noselect
 set pumheight=10
@@ -46,11 +41,12 @@ let g:compe.source = {
     \ 'path':       { 'priority': 100, 'dup': 0, 'menu': '[PATH]'},
     \ 'treesitter': { 'priority': 90,  'dup': 1, 'menu': '[TREESITTER]' },
     \ 'vsnip':      { 'priority': 80,  'dup': 1, 'menu': '[SNIP]', 'kind': 'Snippet' },
-    \ 'nvim_lsp':   { 'priority': 70,  'dup': 0, 'menu': '[LSP]' },
+    \ 'nvim_lsp':   { 'priority': 70,  'dup': 1, 'menu': '[LSP]' },
+    \ 'omni':       { 'priority': 65,  'dup': 1, 'menu': '[OMNI]' },
     \ 'buffer':     { 'priority': 60,  'dup': 0, 'menu': '[BUFFER]' },
     \ }
 
-inoremap <silent><expr> <F6>  compe#confirm("\<F6>")
+inoremap <silent><expr> <F6>      compe#confirm("\<F6>")
 inoremap <silent><expr> <C-Space> pumvisible() ? compe#close('<C-e>') : compe#complete()
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
@@ -60,11 +56,26 @@ imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
 xmap s <Plug>(vsnip-cut-text)
 smap <Backspace> a<Backspace>
 
+" using preselect = always
 imap <silent><expr> <Tab> pumvisible() ?
     \   (complete_info()["selected"] == "-1" ? "\<F6>" : "\<F6>") :
     \   (vsnip#available(1) ? "\<plug>(vsnip-expand-or-jump)" : "\<TAB>")
 
-" let g:lexima_no_default_rules = 1
-" let g:lexima_accept_pum_with_enter = 0
-" call lexima#set_default_rules()  " force load lexima.vim and define mappings
-" imap <expr><CR> (pumvisible() ? "\<C-Space>" : "") . lexima#expand('<LT>CR>', 'i')
+" using preselect = never
+" imap <silent><expr> <Tab> pumvisible() ?
+"     \   (complete_info()["selected"] == "-1" ? "\<c-n>\<F6>" : "\<F6>") :
+"     \   (vsnip#available(1) ? "\<plug>(vsnip-expand-or-jump)" : "\<TAB>")
+
+
+" fun! s:setup_lexima()
+    if exists('g:plugs["lexima.vim"]')
+        let g:lexima_enable_endwise_rules = 0
+        let g:lexima_accept_pum_with_enter = 0
+        call lexima#set_default_rules()
+        imap <expr><CR> (pumvisible() ? compe#close('<C-e>') : "") . lexima#expand('<LT>CR>', 'i')
+    endif
+" endf
+
+" augroup setup_lexima
+"     au VimEnter * call s:setup_lexima()
+" augroup END

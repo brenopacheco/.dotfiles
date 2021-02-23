@@ -1,20 +1,14 @@
-"  File: plugin/plug.vim
+"  File: plug.vim
 "  Author: Breno Leonhardt Pacheco
 "  Email: brenoleonhardt@gmail.com
 "  Last Modified: February 23, 2021
 "  Description: sets up all plugins
-
-if exists('g:loaded_plug_plugin')
-    finish
-endif
-let g:loaded_plug_plugin = 1
 
 call plug#begin(globals#get('plugdir'))
     let g:plug_timeout=99999
     Plug 'tweekmonster/startuptime.vim'
     Plug 'editorconfig/editorconfig-vim'    " load configs from .editorconfig
     Plug 'gcmt/wildfire.vim'                " expand/contract select
-    Plug 'alvan/vim-closetag'               " closes html/xml tags
     Plug 'tpope/vim-commentary'             " comment lines of code
     Plug 'tpope/vim-repeat'                 " repeats commands with .
     Plug 'tpope/vim-surround'               " surrounds elements in text
@@ -30,8 +24,6 @@ call plug#begin(globals#get('plugdir'))
     Plug 'itchyny/lightline.vim'            " statusline configuration
     Plug 'junegunn/fzf'                     " fuzzy completion binary
     Plug 'junegunn/fzf.vim'                 " fzf vim's interface
-    Plug 'rbgrouleff/bclose.vim'            " required by lf
-    Plug 'brenopacheco/lf.vim'              " file browser
     Plug 'mhinz/vim-signify'                " adds git marks to gutter
     Plug 'rhysd/git-messenger.vim'          " show git messsages at cursor pos.
     Plug 'sodapopcan/vim-twiggy'            " branch browser
@@ -39,10 +31,10 @@ call plug#begin(globals#get('plugdir'))
     Plug 'KabbAmine/zeavim.vim'             " interfaces to zeal
     Plug 'brenopacheco/vim-tree'            " show directory structure as tree
     Plug 'diepm/vim-rest-console'           " CURL tool for http requests
-    Plug 'hrsh7th/vim-vsnip'                " snippets engine
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
+    Plug 'hrsh7th/vim-vsnip'                " snippets engine
     " Plug 'hrsh7th/nvim-compe'               " good completion plugin
-    Plug 'brenopacheco/nvim-compe', { 'branch': 'dict_source' }
+    Plug 'brenopacheco/nvim-compe'
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
     Plug 'glepnir/lspsaga.nvim'             " lsp UI utils 
     Plug 'cohama/lexima.vim'                " auto close {} () / smarter

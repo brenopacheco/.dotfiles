@@ -4,10 +4,6 @@
 " Last Modified: February 22, 2021
 " Description: 
 
-
-" nnoremap <expr><leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
-" xnoremap <leader>s "zy:%s/<c-r>z/<c-r>z/g<left><left>
-
 " SEARCH ====================================================================
 
 fun! quickfix#global_grep()

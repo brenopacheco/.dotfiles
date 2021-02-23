@@ -1,4 +1,4 @@
-if exists("b:did_ftplugin")
+if exists('b:did_ftplugin')
   finish
 endif
 let b:did_ftplugin = 1
@@ -15,5 +15,6 @@ setlocal commentstring=--%s
 setlocal suffixesadd=.lua
 " setlocal keywordprg=:help
 " setlocal iskeyword+=#
+setlocal isfname-=.
 
-let b:undo_ftplugin="setl mp< efm< ep< fdm< fmr< fde fo< tw< com< cms< sua< kp< isk<"
+let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde fo< tw< com< cms< sua< kp< isk< isf<'

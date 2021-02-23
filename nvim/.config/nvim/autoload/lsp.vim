@@ -114,10 +114,12 @@ endf
 
 fun! lsp#format()
     try
-        lua vim.lsp.buf.formatting_sync()
+        if !luaeval('vim.lsp.buf.formatting_sync()')
+            throw 'Could not lsp format'
+        endif
         echo 'Formatting using LSP formatter'
     catch /.*/
-        norm! gg=G''
+        norm! maggVG=`a
         echo 'Formatting using ' . &equalprg
     endtry
 endf
@@ -158,9 +160,10 @@ endf
 " command complete used with -complete=customlist,lsp#funcs
 " {required} a:1 = cmd prefix, a:2 = cmd origin, a:3 = length
 fun! lsp#cmd_complete(...)
-    return filter(map(split(execute('function /^lsp#'), "\n"), 
+    return sort(filter(map(split(execute('function /^lsp#'), "\n"), 
         \ { _,s -> matchstr(s[13:-1], '^\S\+()')[0:-3] }), 
-        \ { _,s -> match(s, '^' . a:1) != -1 })
+        \ { _,s -> match(s, '^' . a:1) != -1 }),
+        \ { x,y -> len(x) - len(y) })
 endf
 
 ""

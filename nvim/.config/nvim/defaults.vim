@@ -82,3 +82,4 @@ let &grepprg='rg --hidden --smart-case
   \ --with-filename --line-number  -e $*'
 let g:vim_indent_cont = &sw               " \ indents shiftwidth
 let c_syntax_for_h = 1                    " recognize .h as c file
+set path=**

@@ -3,7 +3,7 @@
 " Email: brenoleonhardt@gmail.com
 " Last Modified: February 22, 2021
 " Description: 
-""
+
 " return package name from file path
 " {required} file path
 fun! java#package(path)

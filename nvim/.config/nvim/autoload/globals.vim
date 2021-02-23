@@ -13,7 +13,7 @@ let s:swapdir       = '~/.cache/nvim/swap//'
 let s:tagsdir       = '~/.cache/nvim/tags/'
 let s:snippetdir    = '~/.config/nvim/snippet/'
 let s:templatedir   = '~/.config/nvim/template/'
-let s:dictionarydir = '~/.config/nvim/dictionary/'
+let s:dictionarydir = '~/.config/nvim/dict/'
 let s:fdignore      = '~/.fdignore'
 let s:rgignore      = '~/.rgignore'
 

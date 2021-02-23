@@ -4,7 +4,6 @@
 "  Last Modified: February 23, 2021
 "  Description: mappings setup
 
-
 " DEFAULTS
     nnoremap Y :norm v$hy<cr>
     nnoremap Q <Nop>
@@ -128,8 +127,27 @@
     " xnoremap <leader>s "zy:%s/<c-r>z/<c-r>z/g<left><left>
     " nnoremap <expr><leader>gg ":g//y A \| tabnew \| setlocal bt=nofile \| put! a\<Home>\<Right>\<Right>"
 " MAKE 
-    
     " nnoremap <leader>fm :Make<CR>
     " nnoremap <leader># :Run<CR>
     " nnoremap <leader>m :make % \| copen \| wincmd p<CR>
 
+" LSP
+    nnoremap <silent> <C-]>    <cmd>call lsp#goto_definition()<CR>
+    nnoremap <silent> gd       <cmd>call lsp#goto_declaration()<CR>
+    nnoremap <silent> gr       <cmd>call lsp#goto_references()<CR>
+    nnoremap <silent> gi       <cmd>call lsp#goto_implementation()<CR>
+    nnoremap <silent> gy       <cmd>call lsp#goto_type_definition()<CR>
+    nnoremap <silent> go       <cmd>call lsp#goto_document_symbol()<CR>
+    nnoremap <silent> gs       <cmd>call lsp#goto_workspace_symbol()<CR>
+    nnoremap <silent><leader>= <cmd>call lsp#format()<CR>
+    nnoremap <silent><leader>e <cmd>call lsp#toggle_diagnostics()<CR>
+    nnoremap <silent>[e        <cmd>call lsp#goto_prev_diagnostic()<CR>
+    nnoremap <silent>]e        <cmd>call lsp#goto_next_diagnostic()<CR>
+    nnoremap <silent><leader>a <cmd>call lsp#code_action()<CR>
+    nnoremap <silent><leader>r <cmd>call lsp#rename()<CR>
+    nnoremap <silent><c-h>     <cmd>call lsp#show_signature_help()<CR>
+    nnoremap <silent><c-k>     <cmd>call lsp#show_hover()<CR>
+    nnoremap <silent><c-p>     <cmd>call lsp#show_preview()<CR>
+    nnoremap <silent><c-d>     <cmd>call lsp#show_line_diagnostic()<CR>
+    nnoremap <silent><C-n>     <cmd>call lsp#scrolldown_hover()<CR>
+    nnoremap <silent><C-p>     <cmd>call lsp#scrollup_hover()<CR>

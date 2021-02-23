@@ -11,7 +11,7 @@ let g:loaded_toggle_plugin = 1
 
 command! NetrwToggle    call utils#toggle('netrw', 'Lexplore')
 command! TreeToggle     call utils#toggle('vimtree', 'VGTree')
-command! TerminalToggle call utils#toggle('term', 'Term')
+command! TerminalToggle call utils#toggle('term', 'term')
 command! QuickfixToggle call utils#toggle('qf', 'copen') | wincmd p
 
 " command! VGTree         call s:vgtree()

@@ -4,11 +4,6 @@
 " Last Modified: February 23, 2021
 " Description: default plugin configurations
 
-set background=dark
-set termguicolors
-let g:nightflyUndercurls = 0
-colorscheme nightfly
-
 let g:tagbar_width=30
 let g:gutentags_file_list_command = 'rg --files'
 let g:gutentags_cache_dir = globals#get('tagsdir')
@@ -52,3 +47,13 @@ let g:lightline =
     \     }
     \ }
 
+" fun! s:setup_colors()
+    set background=dark
+    set termguicolors
+    let g:nightflyUndercurls = 0
+    colorscheme nightfly
+" endf
+
+" augroup setup_colors
+"     au VimEnter * call s:setup_colors()
+" augroup END

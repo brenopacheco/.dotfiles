@@ -8,10 +8,10 @@
 
 local lspconfig = require'lspconfig'
 
-lspconfig.diagnosticls.setup(require('servers.diagnosticls'))
+-- lspconfig.diagnosticls.setup(require('servers.diagnosticls'))
 lspconfig.sumneko_lua.setup(require('servers.sumneko_lua'))
 
-vim.lsp.set_log_level(4)
+-- vim.lsp.set_log_level(4)
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true

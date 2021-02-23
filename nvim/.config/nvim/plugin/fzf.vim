@@ -9,9 +9,14 @@ if exists('g:loaded_fzf_plugin')
 endif
 let g:loaded_fzf_plugin = 1
 
+command! Snippets  call fzf#run(wrapper#snippets())
+command! Args      call fzf#run(wrappers#args())
+command! PFiles    call fzf#run(wrappers#project())
+
+
+
+
 " TODO: fix here
-
-
 
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
@@ -23,7 +28,7 @@ let $FZF_DEFAULT_COMMAND = 'fd --hidden'
 let g:fzf_action = {
   \ 'ctrl-q': function('s:build_quickfix_list'),
   \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
+  \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 
 let g:fzf_preview_window = ['right:50%', 'ctrl-/']

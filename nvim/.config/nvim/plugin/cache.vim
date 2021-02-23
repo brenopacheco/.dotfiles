@@ -38,7 +38,7 @@ for dir in [ s:backupdir, s:plugdir, s:swapdir, s:undodir ]
         if !isdirectory(dir)
             silent call system('mkdir -p ' . dir)
             if v:shell_error
-                throw "Cannot create " . dir . ": " . v:shell_error
+                throw 'Cannot create ' . dir . ': ' . v:shell_error
             endif
         endif
 endfor

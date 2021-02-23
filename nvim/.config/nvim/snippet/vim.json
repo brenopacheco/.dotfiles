@@ -34,8 +34,8 @@
             "endf"
         ]
     },
-    "t": {
-        "prefix": "t",
+    "try": {
+        "prefix": "try",
         "description": "t try ... catch statement",
         "body": [
             "try",

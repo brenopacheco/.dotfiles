@@ -16,7 +16,7 @@ fun! s:sink_snippet(snippet)
 endf
 
 fun! wrappers#snippets()
-    return fzf#wrap('FZF',{
+    return fzf#wrap({
         \ 'source': s:source_snippets(),
         \ 'sink': function('s:sink_snippet')
         \ })
@@ -24,7 +24,7 @@ endf
 " }}}
 " ARGS ==================================================================={{{
 fun! wrappers#args()
-    return fzf#wrap('FZF',{
+    return fzf#wrap({
         \ 'source':argv(),
         \ 'sink':'e'
         \ })
@@ -32,7 +32,7 @@ endf
 " }}}
 " PROJECT ================================================================{{{
 fun! wrappers#project()
-    return fzf#wrap('FZF',{
+    return fzf#wrap({
         \ 'source':systemlist('fd "" -H -j2 ' . utils#root()),
         \ 'sink':'e',
         \ 'options': '--prompt "Project > " --preview "bat --color=\"always\" --plain {}"'
