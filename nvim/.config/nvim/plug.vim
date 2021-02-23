@@ -1,15 +1,15 @@
-" Bootstrap Plug manager {{{
+"  File: plugin/plug.vim
+"  Author: Breno Leonhardt Pacheco
+"  Email: brenoleonhardt@gmail.com
+"  Last Modified: February 23, 2021
+"  Description: sets up all plugins
 
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-    silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs 
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if exists('g:loaded_plug_plugin')
+    finish
 endif
+let g:loaded_plug_plugin = 1
 
-"}}}
-" Load plugins {{{
-
-call plug#begin(g:plugdir)
+call plug#begin(globals#get('plugdir'))
     let g:plug_timeout=99999
     Plug 'tweekmonster/startuptime.vim'
     Plug 'editorconfig/editorconfig-vim'    " load configs from .editorconfig
@@ -42,7 +42,7 @@ call plug#begin(g:plugdir)
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
     " Plug 'hrsh7th/nvim-compe'               " good completion plugin
-    Plug 'brenopacheco/nvim-compe', { 'branch': 'dict_source' }               " good completion plugin
+    Plug 'brenopacheco/nvim-compe', { 'branch': 'dict_source' }
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
     Plug 'glepnir/lspsaga.nvim'             " lsp UI utils 
     Plug 'cohama/lexima.vim'                " auto close {} () / smarter
@@ -56,5 +56,3 @@ call plug#begin(g:plugdir)
     Plug 'endel/vim-github-colorscheme'     " theme
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
 call plug#end()
-
-"}}}

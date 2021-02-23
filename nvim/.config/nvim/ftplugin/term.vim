@@ -11,3 +11,9 @@ tnoremap <buffer> jk <C-\><C-n>
 tnoremap <buffer> kj <C-\><C-n>
 
 let b:undo_ftplugin="call utils#unmap('tmap <buffer>')"
+
+augroup term_close
+  au!
+  au WinEnter * if winnr('$') == 1
+      \ && &buftype == "quickfix" | q |endif
+augroup END

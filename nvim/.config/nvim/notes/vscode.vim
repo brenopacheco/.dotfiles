@@ -1,5 +1,7 @@
 
-
+" if exists('g:vscode')
+"     source $HOME/.config/nvim/vscode.vim
+" else
 
 set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
 

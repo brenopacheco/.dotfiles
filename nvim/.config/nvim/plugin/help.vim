@@ -1,5 +1,13 @@
+"  File: plugin/help.vim
+"  Author: Breno Leonhardt Pacheco
+"  Email: brenoleonhardt@gmail.com
+"  Last Modified: February 23, 2021
+"  Description: configurations for the clippy help plugin
+
 let g:quickhelp_show_clippy = v:true
-let g:quickhelp_display = "floating"
+let g:quickhelp_display     = "floating"
+
+command! Help call quickhelp#toggle()
 
 let s:noft = [
     \ "_______GOTO__________   ___NAVIGATE____",
@@ -62,5 +70,3 @@ let s:window = [
 
 call quickhelp#register("noft", s:noft)
 call quickhelp#register("window", s:window)
-
-

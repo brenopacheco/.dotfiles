@@ -17,8 +17,6 @@ function s:record() abort
     nmap <silent><nowait> q q<F10>:unmap q<CR>
 endfunction
 
-" let maps = utils#maps('nmap')
-
 call map(map(range(97, 122), 'nr2char(v:val)'), 
     \ { _,i -> execute('nnoremap q'.i.' :call <SID>record()<CR>q'.i)})
 

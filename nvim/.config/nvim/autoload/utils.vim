@@ -20,6 +20,13 @@ fun! utils#root(...)
 endf
 
 ""
+" Tells wether current directory is a fit repo or not.
+fun! utils#is_git()
+    let root = system('git status')
+    return v:shell_error ? v:false : v:true
+endf
+
+""
 " returns all mappings given a command. skips <Plug>(commands).
 " returns [ "mode", "map" ] list
 " {cmd} nmap, tmap, map, vmap, ...
@@ -37,33 +44,6 @@ fun! utils#unmap(cmd)
     let unmap = substitute(a:cmd, 'map', 'unmap', '')
     let cmds =  map(maps, { _, s -> unmap . ' ' . s })
     call map(cmds, { _, s -> execute(s) })
-endf
-
-""
-" clears undo, swap and backup cache
-fun! utils#clear_cache()
-    let s:base_dir = expand('~/.cache/nvim/')
-    let s:cache_files = [ 'swap', 'backup', 'undo' ]
-    for cache_file in s:cache_files
-        echo 'rm -f ' . s:base_dir . cache_file . '/*'
-        echo system('rm -f ' . s:base_dir . cache_file . '/*')
-    endfor
-endf
-
-""
-" GPG encrypt current file
-fun! utils#gpg_encrypt()
-    set noswapfile
-    g/^gpg:/d
-    %!gpg -easq
-endf
-
-""
-" GPG decrypt current file
-fun! utils#gpg_decrypt()
-    set noswapfile
-    %!gpg -dq
-    g/^gpg:/d
 endf
 
 ""
@@ -90,5 +70,16 @@ fun! utils#toggle(filetype, open) abort
         endif
     endfor
     exec a:open
+endfunction
+
+""
+"
+fun! utils#short_folderpath() 
+    let l:path = substitute(getcwd(), expand($HOME), "~", "") 
+    let l:maxwidth = winwidth(0) / 5
+    if strlen(l:path) > l:maxwidth 
+        let l:path = '…'.matchstr(l:path, '.\{'.l:maxwidth.'\}$')
+    end
+    return l:path.'/'
 endfunction
 

@@ -16,6 +16,7 @@ gc() {
 
 alias pstree="ps -aef --forest"
 alias v="nvim"
+alias vv="cd ~/.config/nvim"
 
 
 # custom

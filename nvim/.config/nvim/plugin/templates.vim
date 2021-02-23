@@ -6,6 +6,8 @@
 " Templates in g:template_dir must match the filetype glob pattern.
 " Allow expanding snippes using ${vim_cmd} syntax inside the template.
 
+" TODO: reformat and add stuff to autoload
+
 if exists('g:loaded_templates_plugin')
     finish
 endif

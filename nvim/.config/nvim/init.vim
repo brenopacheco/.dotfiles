@@ -1,20 +1,14 @@
+"  File: init.vim
+"  Author: Breno Leonhardt Pacheco
+"  Email: brenoleonhardt@gmail.com
+"  Last Modified: February 23, 2021
 "   _       _ _         _           
 "  (_)_ __ (_) |___   _(_)_ __ ___  
 "  | | '_ \| | __\ \ / / | '_ ` _ \ 
 "  | | | | | | |_ \ V /| | | | | | |
 "  |_|_| |_|_|\__(_)_/ |_|_| |_| |_|
 
-if exists('g:vscode')
-    source $HOME/.config/nvim/vscode.vim
-else
-    runtime cache.vim       " setup directories and files
-    runtime defaults.vim    " default vim settings
-    runtime plug.vim        " installed plugins
-    runtime plugins.vim     " plugin settings
-    runtime colors.vim      " colors
-    runtime mappings.vim    " added mappings
-    runtime lsp.vim         " LSP settings
-    runtime completion.vim  " completion settings
-    runtime functions.vim   " filetype configurations
-    runtime help.vim   
-endif
+runtime plug.vim      " installed plugins
+runtime configs.vim   " plugin configurations
+runtime defaults.vim  " default settings
+runtime mappings.vim  " mappings

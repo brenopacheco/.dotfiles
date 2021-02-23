@@ -1,3 +1,9 @@
+-- File: servers/diagnosticls.lua
+-- Author: Breno Leonhardt Pacheco
+-- Email: brenoleonhardt@gmail.com
+-- Last Modified: February 22, 2021
+-- Description: 
+
 local config = {}
 
 config.eslint = {
@@ -61,13 +67,12 @@ config.luac = {
     command = "luac",
     isStderr = true,
     debounce = 100,
-    args = { "-" },
+    args = { "-p", "-" },
     offsetLine = 0,
     offsetColumn = 0,
     sourceName = "luac",
     formatLines = 1,
     formatPattern = { "^luac:[^:]+:(\\d+):\\s*(.*)$" , {
-    -- formatPattern = { "(.*)" , {
         line = 1,
         message = 2
     } }

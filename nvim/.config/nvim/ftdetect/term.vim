@@ -1,0 +1,2 @@
+
+au TermOpen * setfiletype term
