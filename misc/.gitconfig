@@ -20,5 +20,6 @@
     date = relative
 [alias]
     graph = !git log \"$@\" --oneline --graph --branches --remotes --date=short
+    ls    = !git ls-tree --name-only -r $(git branch --show-current)
 [commit]
 	gpgsign = true

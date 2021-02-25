@@ -1,4 +1,4 @@
-" File: completion.vim
+" File: after/plugin/completion.vim
 " Author: Breno Leonhardt Pacheco
 " Email: brenoleonhardt@gmail.com
 " Last Modified: February 22, 2021
@@ -11,7 +11,7 @@ let g:compe.enabled              = v:true
 let g:compe.autocomplete         = v:true
 let g:compe.debug                = v:true
 let g:compe.min_length           = 1
-let g:compe.preselect            = 'always'
+let g:compe.preselect            = 'never'
 let g:compe.throttle_time        = 80
 let g:compe.source_timeout       = 200
 let g:compe.incomplete_delay     = 400
@@ -41,13 +41,13 @@ let g:compe.source = {
     \ 'path':       { 'priority': 100, 'dup': 0, 'menu': '[PATH]'},
     \ 'treesitter': { 'priority': 90,  'dup': 1, 'menu': '[TREESITTER]' },
     \ 'vsnip':      { 'priority': 80,  'dup': 1, 'menu': '[SNIP]', 'kind': 'Snippet' },
-    \ 'nvim_lsp':   { 'priority': 70,  'dup': 1, 'menu': '[LSP]' },
-    \ 'omni':       { 'priority': 65,  'dup': 1, 'menu': '[OMNI]' },
+    \ 'nvim_lsp':   { 'priority': 70,  'dup': 0, 'menu': '[LSP]' },
     \ 'buffer':     { 'priority': 60,  'dup': 0, 'menu': '[BUFFER]' },
     \ }
 
-inoremap <silent><expr> <F6>      compe#confirm("\<F6>")
-inoremap <silent><expr> <C-Space> pumvisible() ? compe#close('<C-e>') : compe#complete()
+call compe#setup(g:compe)
+
+inoremap <silent><expr> <C-Space> pumvisible() ? compe#close() : compe#complete()
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
@@ -56,26 +56,15 @@ imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
 xmap s <Plug>(vsnip-cut-text)
 smap <Backspace> a<Backspace>
 
-" using preselect = always
+inoremap <silent><expr> <F6>      compe#confirm()
 imap <silent><expr> <Tab> pumvisible() ?
-    \   (complete_info()["selected"] == "-1" ? "\<F6>" : "\<F6>") :
+    \   (complete_info()["selected"] == "-1" ? "\<c-n>\<F6>" : "\<F6>") :
     \   (vsnip#available(1) ? "\<plug>(vsnip-expand-or-jump)" : "\<TAB>")
 
-" using preselect = never
-" imap <silent><expr> <Tab> pumvisible() ?
-"     \   (complete_info()["selected"] == "-1" ? "\<c-n>\<F6>" : "\<F6>") :
-"     \   (vsnip#available(1) ? "\<plug>(vsnip-expand-or-jump)" : "\<TAB>")
-
-
-" fun! s:setup_lexima()
-    if exists('g:plugs["lexima.vim"]')
-        let g:lexima_enable_endwise_rules = 0
-        let g:lexima_accept_pum_with_enter = 0
-        call lexima#set_default_rules()
-        imap <expr><CR> (pumvisible() ? compe#close('<C-e>') : "") . lexima#expand('<LT>CR>', 'i')
-    endif
-" endf
-
-" augroup setup_lexima
-"     au VimEnter * call s:setup_lexima()
-" augroup END
+if exists('g:plugs["lexima.vim"]')
+    let g:lexima_enable_endwise_rules = 0
+    let g:lexima_accept_pum_with_enter = 0
+    call lexima#set_default_rules()
+    " imap <silent><expr><CR> (pumvisible() ? compe#close('<C-e>') : "") . lexima#expand('<LT>CR>', 'i')
+    imap <silent><expr><CR> compe#close() . lexima#expand('<LT>CR>', 'i')
+endif

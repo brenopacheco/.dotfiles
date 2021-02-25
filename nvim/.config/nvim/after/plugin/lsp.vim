@@ -1,20 +1,16 @@
-"  File: plugin/lsp.vim
-"  Author: Breno Leonhardt Pacheco
-"  Email: brenoleonhardt@gmail.com
-"  Last Modified: February 22, 2021
-"  Description: 
+" File: after/plugin/lsp.vim
+" Author: Breno Leonhardt Pacheco
+" Email: brenoleonhardt@gmail.com
+" Last Modified: February 22, 2021
+" Description: 
 
 if exists('g:loaded_lsp_plugin')
     finish
 endif
 let g:loaded_lsp_plugin = 1
 
-augroup Lsp
-    au VimEnter * nested lua require('servers')
-    au VimEnter * nested lua require('treesitter')
-    " autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
-    au VimEnter * silent! e!
-augroup END
+lua require('servers')
+lua require('treesitter')
 
 command! -nargs=1 -complete=customlist,lsp#cmd_complete 
     \ Lsp call lsp#cmd_exec(<q-args>)

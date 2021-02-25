@@ -1,8 +1,8 @@
-"  File: mappings.vim
-"  Author: Breno Leonhardt Pacheco
-"  Email: brenoleonhardt@gmail.com
-"  Last Modified: February 23, 2021
-"  Description: mappings setup
+" File: after/plugin/mappings.vim
+" Author: Breno Leonhardt Pacheco
+" Email: brenoleonhardt@gmail.com
+" Last Modified: February 23, 2021
+" Description: mappings setup
 
 " DEFAULTS
     nnoremap Y :norm v$hy<cr>
@@ -120,12 +120,12 @@
     nnoremap qp              <cmd>call quickfix#colder()<CR>
     nnoremap qn              <cmd>call quickfix#cnewer()<CR>
 " MISC
-    vnoremap <expr><leader>s tools#substitute()
-    nnoremap <leader>s       tools#substitute()<CR>
-    nnoremap <leader>g       tools#global()<CR>
-    " nnoremap <expr><leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
-    " xnoremap <leader>s "zy:%s/<c-r>z/<c-r>z/g<left><left>
-    " nnoremap <expr><leader>gg ":g//y A \| tabnew \| setlocal bt=nofile \| put! a\<Home>\<Right>\<Right>"
+    " vnoremap <expr><leader>s tools#substitute()
+    " nnoremap <leader>s       tools#substitute()<CR>
+    " nnoremap <leader>g       tools#global()<CR>
+    nnoremap <expr><leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
+    xnoremap <leader>s "zy:%s/<c-r>z/<c-r>z/g<left><left>
+    nnoremap <expr><leader>gg ":g//y A \| tabnew \| setlocal bt=nofile \| put! a\<Home>\<Right>\<Right>"
 " MAKE 
     " nnoremap <leader>fm :Make<CR>
     " nnoremap <leader># :Run<CR>

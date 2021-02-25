@@ -50,9 +50,9 @@ endf
 fun! quickfix#filter(pat)
     let all = getqflist()
     for d in all
-      if bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat
-          call remove(all, index(all,d))
-      endif
+        if bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat
+            call remove(all, index(all,d))
+        endif
     endfor
     call setqflist(all)
 endf
@@ -87,38 +87,18 @@ fun! quickfix#colder()
     silent! colder<CR>
 endf
 
-" DOODLES ===================================================================
+" UTILS ===================================================================
 
+" pops qf open if there is any entry
+fun! quickfix#pop()
+    if getqflist({'size': v:true}).size > 0
+        copen
+        wincmd p
+    endif
+endf
 
-" TODO: see later
-" fun! quickfix#buffer_search()
-"     let pat = input('vimgrep % /')
-"     if expand('%') == ''
-"         let bufnr = bufnr()
-"         let tmpfile = fnamemodify(tempname(), ':h:t')
-"         exec 'e ' . tmpfile
-"         call appendbufline(bufnr(), 0, getbufline(bufnr, 1, '$'))
-"         exec bufnr . 'bw!'
-"     endif
-"     try
-"         echo 'vimgrep/' . pat . '/j %'
-"         silent exec 'vimgrep/' . pat . '/j %'
-"         copen 
-"         wincmd p
-"     catch /^E480.*/
-"         echomsg v:errmsg
-"     endtry
-
-" endf
-
-""
-" " pops qf open if there is any entry
-" fun! quickfix#pop(...)
-"    if getqflist({'size': v:true}).size > 0
-"        copen
-"        wincmd p
-"    else 
-"        echo 'qf empty'
-"    endif
-" endf
+" toggle quickfix
+fun! quickfix#toggle()
+    call utils#toggle('qf', 'copen | wincmd p')
+endf
 

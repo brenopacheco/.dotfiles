@@ -61,15 +61,21 @@ endfunction
 " given filetype, execute open. Otherwise, close window.
 " { required } filetype of the buffer
 " { required } open command for creating the window/buffer
-fun! utils#toggle(filetype, open) abort
-    for i in range(1, winnr('$'))  " if buf is in a window, close
+" [ optional ] direction (true or false). toggle open or close
+fun! utils#toggle(filetype, open, ...) abort
+    echo a:0
+    for i in range(1, winnr('$'))
         let bnum = winbufnr(i)
         if getbufvar(bnum, '&ft') == a:filetype
-            silent exe i . 'close'
+            if !a:0 || !a:1 
+                silent exe i . 'close'
+            endif
             return
         endif
     endfor
-    exec a:open
+    if !a:0 || a:1
+        exec a:open
+    endif
 endfunction
 
 ""

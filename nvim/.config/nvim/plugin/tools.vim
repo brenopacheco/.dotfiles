@@ -17,4 +17,4 @@ command! Vimrc          so ~/.config/nvim/init.vim
 command! Trim           %s/\s\+$//e
 command! TabReplace     %s/\t/    /g
 command! SpaceReplace   %s/    /\t/g
-command! Fork           silent exec '!kitty & disown'
+command! Fork           silent call system('st 1>/dev/null 2>&1 & disown')

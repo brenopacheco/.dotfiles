@@ -14,106 +14,13 @@ if exists('g:loaded_make_plugin')
 endif
 let g:loaded_make_plugin = 1
 
-command! Make :call s:make()
-command! -nargs=? Run :call s:run(<q-args>)
+command! Make call make#make()  " make project target
+command! Run  call make#run()   " run file through interpreter
+command! Lint call make#lint()  " lint current file ... make %
+command! Eval call make#eval()  " eval line through interpreter
 
+nnoremap #          <cmd>Eval<CR>
+nnoremap <leader>#  <cmd>Run<CR>
+nnoremap <leader>m  <cmd>Lint<CR>
+nnoremap <leader>fm <cmd>Make<CR>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-" let s:interpreters = {
-"     \ "lua":        "lua",
-"     \ "python":     "python",
-"     \ "sh":         "sh",
-"     \ "javascript": "node",
-"     \ "typescript": "ts-node",
-"     \}
-
-" fun! s:run(arg)
-"     try
-"         if &ft == 'vim'
-"             source %
-"             return
-"         endif
-"         let interpreter = s:interpreters[&ft]
-"         let file = tempname()
-"         let cmd = (a:arg ? a:arg : interpreter) . ' ' . expand('%:p') . ' >> ' . file
-"         silent call writefile(["[" . expand('%:p') . "] " . cmd , ""], file, "a")
-"         let jobid = jobstart(cmd, { 
-"             \   'on_stdout':   { j,d,e -> s:run_callback(file) }
-"             \ })
-"     catch /.*/
-"         echomsg v:exception
-"     endtry
-" endfun
-
-" fun! s:run_callback(file)
-"     let olderrorfmt = &efm
-"     set efm=%E[%f]%m,%+Cm
-"     exec 'cf! '. a:file
-"     let &efm = olderrorfmt
-"     copen
-"     setlocal modifiable
-"     exe '%s/|//g'
-"     norm gg
-"     exec 's/^\(.\{-}\) \(.*\) >\(.*\)/[\2 >\3]'
-"     setlocal nomodifiable
-"     setlocal bufhidden=hide
-"     wincmd p
-" endf
-
-
-" " mvn targets for :make   -> [ 'validate', 'clean', 'compile', 'package', 'test', 'install' ] 
-" " c/cpp targets for :make -> systemlist('cat ' . utils#root() . '/Makefile  | egrep "^[a-z]+:" | cut -d: -f1') 
-" " npm scripts (terminal)  -> systemlist('npm run-script | sed -n "/^  [a-zA-Z]/p" | tr -d " "')
-" " \ "lua":        "export LUA_PATH=\"" . utils#root() . "/?.lua;;\" && lua",
-" " \ "sh":         "export PATH=$PATH:./ &&",
-"
-" make -> !&makeprg 2>&1 | tee l:tmpfile
-"         cfile tmpfile
-" compiler -> set efm=... for quickfix loading from tmpfile
-
-
-" filetype   | compiler   | single file makeprg   | project makeprg
-" ---------- | ---------- | --------------------- | -----------------
-" c/cpp      | gcc        | gcc                   | make
-" java       | javac      | javac                 | mvn
-" js         | eslint     | eslint                | npm
-" ts         | tsc        | tsc                   | npm
-" css        | csslint    | csslint               | npm
-" lua        | luac       | luac                  | make
-" sh         | shellcheck | shellcheck            | shellcheck
-" html       | tidy       | tidy                  | tidy
-
-" for single files, the makeprg is always set with the compiler plugin
-
-
-
-
-" set makeprg=npm\ --silent\ run
-
-
-" make is equivalent to:
-" !&makeprg 2>&1 | tee l:tmpfile
-" fun! s:make(target)
-"     let tmpfile = tempname()
-"     exec '!' . &makeprg . ' '. a:target . '2>&1 | tee ' . tmpfile
-"     exec 'cfile! ' . tmpfile
-"     copen
-" endf

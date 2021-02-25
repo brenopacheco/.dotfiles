@@ -3,7 +3,7 @@
 " Email: brenoleonhardt@gmail.com
 " Last Modified: February 22, 2021
 " Description: insert a template in empty files according to filetype.
-" Templates in g:template_dir must match the filetype glob pattern.
+" Templates in s:template_dir must match the filetype glob pattern.
 " Allow expanding snippes using ${vim_cmd} syntax inside the template.
 
 " TODO: reformat and add stuff to autoload
@@ -13,16 +13,18 @@ if exists('g:loaded_templates_plugin')
 endif
 let g:loaded_templates_plugin = 1
 
-let g:template_dir = expand('~/.config/nvim/templates')
+command! Template call s:templates()
+
+let s:template_dir = globals#get('templatedir')
 
 fun! s:templates()
     if line('$') != 1 || getline(1) != '' | return | endif
-    let templates = systemlist('ls ' . g:template_dir)
+    let templates = systemlist('ls ' . s:template_dir)
     let filename = expand('%')
     let template = ''
     for t in templates
         if match(filename, glob2regpat(t)) != -1
-            let template = g:template_dir . '/' . t
+            let template = s:template_dir . '/' . t
             break
         endif
     endfor
@@ -32,9 +34,13 @@ fun! s:templates()
     silent exec '%s/\${\(.\{-}\)}/\=eval(submatch(1))/e'
 endf
 
-command! Template call s:templates()
-
-augroup templates
-    au!
-    au BufRead,BufNewFile * call s:templates()
-augroup end
+fun! s:toggle()
+    if execute('au template', 'silent!')
+        au! template 
+    else
+        augroup templates
+            au!
+            au BufRead,BufNewFile * call s:templates()
+        augroup end
+    endif
+endf

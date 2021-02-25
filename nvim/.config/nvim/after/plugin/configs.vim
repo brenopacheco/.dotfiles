@@ -1,4 +1,4 @@
-" File: configs.vim
+" File: after/plugin/configs.vim
 " Author: Breno Leonhardt Pacheco
 " Email: brenoleonhardt@gmail.com
 " Last Modified: February 23, 2021
@@ -47,13 +47,7 @@ let g:lightline =
     \     }
     \ }
 
-" fun! s:setup_colors()
-    set background=dark
-    set termguicolors
-    let g:nightflyUndercurls = 0
-    colorscheme nightfly
-" endf
-
-" augroup setup_colors
-"     au VimEnter * call s:setup_colors()
-" augroup END
+set background=dark
+set termguicolors
+let g:nightflyUndercurls = 0
+colorscheme nightfly

@@ -1,37 +1,27 @@
 {
   "#!": {
-    "prefix": "#!",
-    "description": "#!",
-    "body": ["#!/usr/bin/env python3"]
+    "prefix": "python",
+    "description": "#!/usr/bin/env python3",
+    "body": ["#!/usr/bin/env python3", "# -*- coding: utf-8 -*-"]
   },
-  "#!2": {
-    "prefix": "#!2",
-    "description": "#!2",
-    "body": ["#!/usr/bin/env python2", "# -*- coding: utf-8 -*-"]
+  "print": {
+    "prefix": "print",
+    "description": "print",
+    "body": ["print(${0:${TM_SELECTED_TEXT}}) "]
   },
-  "#!3": {
-    "prefix": "#!3",
-    "description": "#!3",
-    "body": ["#!/usr/bin/env python3"]
-  },
-  "imp": {
-    "prefix": "imp",
-    "description": "imp",
+  "import": {
+    "prefix": "import",
+    "description": "import",
     "body": ["import ${0:module}"]
-  },
-  "uni": {
-    "prefix": "uni",
-    "description": "uni",
-    "body": ["def __unicode__(self):", "    ${0:representation}"]
   },
   "from": {
     "prefix": "from",
     "description": "from",
     "body": ["from ${1:package} import ${0:module}"]
   },
-  "docs": {
-    "prefix": "docs",
-    "description": "docs",
+  "header": {
+    "prefix": "header",
+    "description": "header",
     "body": [
       "\"\"\"",
       "File: ${1:${VIM:vim_snippets#Filename('$1.py', 'foo.py')}}",
@@ -42,19 +32,13 @@
       "\"\"\""
     ]
   },
-  "sk": {
-    "prefix": "sk",
-    "description": "skip unittests",
-    "body": ["@unittest.skip(${1:skip_reason})"]
-  },
-  "wh": {
-    "prefix": "wh",
-    "description": "wh",
+  "while": {
+    "prefix": "while",
+    "description": "while",
     "body": ["while ${1:condition}:", "    ${0:${TM_SELECTED_TEXT}}"]
   },
-  "dowh": {
-    "prefix": "dowh",
-    "description": "dowh",
+  "do-while": {
+    "prefix": "dowhile",
     "body": [
       "while True:",
       "    ${1}",
@@ -62,122 +46,17 @@
       "        break"
     ]
   },
-  "with": {
-    "prefix": "with",
-    "description": "with",
-    "body": ["with ${1:expr} as ${2:var}:", "    ${0:${TM_SELECTED_TEXT}}"]
-  },
-  "awith": {
-    "prefix": "awith",
-    "description": "awith",
-    "body": [
-      "async with ${1:expr} as ${2:var}:",
-      "    ${0:${TM_SELECTED_TEXT}}"
-    ]
-  },
-  "cl": {
-    "prefix": "cl",
-    "description": "cl",
-    "body": [
-      "class ${1:ClassName}(${2:object}):",
-      "    \"\"\"${3:docstring for $1}\"\"\"",
-      "    def __init__(self, ${4:arg}):",
-      "        ${5:super($1, self).__init__()}",
-      "        self.$4 = $4",
-      "        ${0}"
-    ]
-  },
-  "cla": {
-    "prefix": "cla",
-    "description": "cla",
-    "body": ["class ${1:class_name}:", "    \"\"\"${0:description}\"\"\""]
-  },
-  "clai": {
-    "prefix": "clai",
-    "description": "clai",
-    "body": [
-      "class ${1:class_name}:",
-      "    \"\"\"${2:description}\"\"\"",
-      "    def __init__(self, ${3:args}):",
-      "        ${0}"
-    ]
-  },
-  "def": {
-    "prefix": "def",
-    "description": "def",
-    "body": [
-      "def ${1:fname}(${2:${VIM:indent('.') ? 'self' : ''}}):",
-      "    \"\"\"${3:docstring for $1}\"\"\"",
-      "    ${0}"
-    ]
-  },
-  "deff": {
-    "prefix": "deff",
-    "description": "deff",
-    "body": [
-      "def ${1:fname}(${2:${VIM:indent('.') ? 'self' : ''}}):",
-      "    ${0}"
-    ]
-  },
-  "adef": {
-    "prefix": "adef",
-    "description": "adef",
-    "body": [
-      "async def ${1:fname}(${2:${VIM:indent('.') ? 'self' : ''}}):",
-      "    \"\"\"${3:docstring for $1}\"\"\"",
-      "    ${0}"
-    ]
-  },
-  "adeff": {
-    "prefix": "adeff",
-    "description": "adeff",
-    "body": [
-      "async def ${1:fname}(${2:${VIM:indent('.') ? 'self' : ''}}):",
-      "    ${0}"
-    ]
-  },
-  "defi": {
-    "prefix": "defi",
-    "description": "defi",
-    "body": ["def __init__(self, ${1:args}):", "    ${0}"]
-  },
-  "defm": {
-    "prefix": "defm",
-    "description": "defm",
-    "body": ["def ${1:mname}(self, ${2:arg}):", "    ${0}"]
-  },
-  "adefm": {
-    "prefix": "adefm",
-    "description": "adefm",
-    "body": ["async def ${1:mname}(self, ${2:arg}):", "    ${0}"]
-  },
-  "property": {
-    "prefix": "property",
-    "description": "property",
-    "body": [
-      "def ${1:foo}():",
-      "    doc = \"${2:The $1 property.}\"",
-      "    def fget(self):",
-      "        ${3:return self._$1}",
-      "    def fset(self, value):",
-      "        ${4:self._$1 = value}",
-      "    def fdel(self):",
-      "        ${0:del self._$1}",
-      "    return locals()",
-      "$1 = property(**$1())"
-    ]
-  },
   "if": {
     "prefix": "if",
     "description": "if",
-    "body": ["if ${1:condition}:", "    ${0:${TM_SELECTED_TEXT}}"]
+    "body": ["if ${1:condition}:", "    ${0:${tm_selected_text}}"]
   },
-  "el": {
+  "else": {
     "prefix": "el",
     "description": "el",
     "body": ["else:", "    ${0:${TM_SELECTED_TEXT}}"]
   },
-  "ei": {
+  "elif": {
     "prefix": "ei",
     "description": "ei",
     "body": ["elif ${1:condition}:", "    ${0:${TM_SELECTED_TEXT}}"]
@@ -187,40 +66,10 @@
     "description": "for",
     "body": ["for ${1:item} in ${2:items}:", "    ${0}"]
   },
-  "cutf8": {
-    "prefix": "cutf8",
-    "description": "cutf8",
-    "body": ["# -*- coding: utf-8 -*-"]
-  },
-  "clatin1": {
-    "prefix": "clatin1",
-    "description": "clatin1",
-    "body": ["# -*- coding: latin-1 -*-"]
-  },
-  "cascii": {
-    "prefix": "cascii",
-    "description": "cascii",
-    "body": ["# -*- coding: ascii -*-"]
-  },
-  "ld": {
-    "prefix": "ld",
-    "description": "ld",
-    "body": ["${1:var} = lambda ${2:vars} : ${0:action}"]
-  },
   "ret": {
     "prefix": "ret",
     "description": "ret",
     "body": ["return ${0}"]
-  },
-  ".": {
-    "prefix": ".",
-    "description": ".",
-    "body": ["self."]
-  },
-  "sa": {
-    "prefix": "sa",
-    "description": "sa self.attribute = attribute",
-    "body": ["self.${1:attribute} = $1"]
   },
   "try": {
     "prefix": "try",
@@ -230,18 +79,6 @@
       "    ${1:${TM_SELECTED_TEXT}}",
       "except ${2:Exception} as ${3:e}:",
       "    ${0:raise $3}"
-    ]
-  },
-  "trye": {
-    "prefix": "trye",
-    "description": "trye Try/Except/Else",
-    "body": [
-      "try:",
-      "    ${1:${TM_SELECTED_TEXT}}",
-      "except ${2:Exception} as ${3:e}:",
-      "    ${4:raise $3}",
-      "else:",
-      "    ${0}"
     ]
   },
   "tryf": {
@@ -270,81 +107,23 @@
       "    ${0}"
     ]
   },
-  "ifmain": {
-    "prefix": "ifmain",
-    "description": "ifmain",
-    "body": ["if __name__ == '__main__':", "    ${0:main()}"]
-  },
-  "_": {
-    "prefix": "_",
-    "description": "_",
-    "body": ["__${1:init}__"]
-  },
-  "pdb": {
-    "prefix": "pdb",
-    "description": "pdb",
-    "body": ["__import__('pdb').set_trace()"]
-  },
-  "bpdb": {
-    "prefix": "bpdb",
-    "description": "bpdb",
-    "body": ["__import__('bpdb').set_trace()"]
-  },
-  "ipdb": {
-    "prefix": "ipdb",
-    "description": "ipdb",
-    "body": ["__import__('ipdb').set_trace()"]
-  },
-  "iem": {
-    "prefix": "iem",
-    "description": "iem",
-    "body": ["__import__('IPython').embed()"]
-  },
-  "rpdb": {
-    "prefix": "rpdb",
-    "description": "rpdb",
-    "body": ["__import__('rpdb').set_trace()"]
-  },
-  "wdb": {
-    "prefix": "wdb",
-    "description": "wdb",
-    "body": ["__import__('wdb').set_trace()"]
-  },
-  "ptpython": {
-    "prefix": "ptpython",
-    "description": "ptpython",
+  "def": {
+    "prefix": "def",
+    "description": "def",
     "body": [
-      "__import__('ptpython.repl', fromlist=('repl')).embed(globals(), locals(), vi_mode=${1:False}, history_filename=${2:None})"
+      "def ${1:fname}(${2:${VIM:indent('.') ? 'self' : ''}}):",
+      "    \"\"\"${3:docstring for $1}\"\"\"",
+      "    ${0}"
     ]
   },
-  "pudb": {
-    "prefix": "pudb",
-    "description": "pudb",
-    "body": ["__import__('pudb').set_trace()"]
+  "main": {
+    "prefix": "main",
+    "description": "main",
+    "body": ["if __name__ == '__main__':", "    ${0:main()}"]
   },
-  "pudbr": {
-    "prefix": "pudbr",
-    "description": "pudbr",
-    "body": ["from pudb.remote import set_trace", "set_trace()"]
-  },
-  "nosetrace": {
-    "prefix": "nosetrace",
-    "description": "nosetrace",
-    "body": ["__import__('nose').tools.set_trace()"]
-  },
-  "pprint": {
-    "prefix": "pprint",
-    "description": "pprint",
-    "body": ["__import__('pprint').pprint(${1})"]
-  },
-  "\"": {
-    "prefix": "\"",
-    "description": "",
-    "body": ["\"\"\"${0:doc}", "\"\"\""]
-  },
-  "a=": {
-    "prefix": "a=",
-    "description": "a=",
+  "assert": {
+    "prefix": "assert",
+    "description": "assert",
     "body": ["self.assertEqual(${0}, ${1})"]
   },
   "test": {
@@ -355,115 +134,39 @@
       "    ${0}"
     ]
   },
-  "testcase": {
-    "prefix": "testcase",
-    "description": "testcase",
-    "body": [
-      "class ${1:ExampleCase}(unittest.TestCase):",
-      "    def test_${2:description}(self):",
-      "        ${0}"
-    ]
-  },
-  "tgwt": {
-    "prefix": "tgwt",
-    "description": "tgwt",
-    "body": ["# given: ${1}", "# when: ${2}", "# then: ${3}"]
-  },
-  "fut": {
-    "prefix": "fut",
-    "description": "fut",
-    "body": ["from __future__ import ${0}"]
-  },
-  "getopt": {
-    "prefix": "getopt",
-    "description": "getopt",
-    "body": [
-      "try:",
-      "    # Short option syntax: \"hv:\"",
-      "    # Long option syntax: \"help\" or \"verbose=\"",
-      "    opts, args = getopt.getopt(sys.argv[1:], \"${1:short_options}\", [${2:long_options}])",
-      "except getopt.GetoptError, err:",
-      "    # Print debug info",
-      "    print str(err)",
-      "    ${3:error_action}",
-      "for option, argument in opts:",
-      "    if option in (\"-h\", \"--help\"):",
-      "        ${0}",
-      "    elif option in (\"-v\", \"--verbose\"):",
-      "        verbose = argument"
-    ]
-  },
-  "addp": {
-    "prefix": "addp",
-    "description": "addp",
-    "body": ["parser = ${TM_SELECTED_TEXT:argparse.}ArgumentParser()"]
-  },
-  "addsp": {
-    "prefix": "addsp",
-    "description": "addsp",
-    "body": [
-      "${0:sub_parser} = parser.add_subparsers().add_parser(\"${1:name}\")"
-    ]
-  },
-  "addarg": {
-    "prefix": "addarg",
-    "description": "addarg",
-    "body": [
-      "parser.add_argument(\"${0:short_arg}\", \"${1:long_arg}\", default=${2:None}, help=\"${3:Help text}\")"
-    ]
-  },
-  "addnarg": {
-    "prefix": "addnarg",
-    "description": "addnarg",
-    "body": [
-      "parser.add_argument(\"${0:arg}\", nargs=\"${1:*}\", default\"${2:None}, help=\"${3:Help text}\")"
-    ]
-  },
-  "addaarg": {
-    "prefix": "addaarg",
-    "description": "addaarg",
-    "body": [
-      "parser.add_argument(\"${0:arg}\", \"${1:long_arg}\", action=\"${2:store_true}\", default=${3:False}, help=\"${4:Help text}\")"
-    ]
-  },
-  "pargs": {
-    "prefix": "pargs",
-    "description": "pargs",
-    "body": ["\"${TM_SELECTED_TEXT:return }\"parser.parse_args()"]
-  },
-  "glog": {
-    "prefix": "glog",
-    "description": "glog",
+  "log": {
+    "prefix": "log",
+    "description": "log",
     "body": ["import logging", "LOGGER = logging.getLogger(${0:__name__})"]
   },
-  "le": {
-    "prefix": "le",
-    "description": "le",
+  "loge": {
+    "prefix": "loge",
+    "description": "loge",
     "body": ["LOGGER.error(${0:msg})"]
   },
-  "lg": {
-    "prefix": "lg",
-    "description": "lg",
+  "logg": {
+    "prefix": "logg",
+    "description": "logg",
     "body": ["LOGGER.debug(${0:msg})"]
   },
-  "lw": {
-    "prefix": "lw",
-    "description": "lw",
+  "logw": {
+    "prefix": "logw",
+    "description": "logw",
     "body": ["LOGGER.warning(${0:msg})"]
   },
-  "lc": {
-    "prefix": "lc",
-    "description": "lc",
+  "logc": {
+    "prefix": "logc",
+    "description": "logc",
     "body": ["LOGGER.critical(${0:msg})"]
   },
-  "li": {
-    "prefix": "li",
-    "description": "li",
+  "logi": {
+    "prefix": "logi",
+    "description": "logi",
     "body": ["LOGGER.info(${0:msg})"]
   },
-  "epydoc": {
-    "prefix": "epydoc",
-    "description": "epydoc",
+  "pydoc": {
+    "prefix": "pydoc",
+    "description": "pydoc",
     "body": [
       "\"\"\"${1:Description}",
       "@param ${2:param}: ${3: Description}",
@@ -472,198 +175,6 @@
       "@rtype : ${6: Type}",
       "@raise e: ${0: Description}",
       "\"\"\""
-    ]
-  },
-  "dol": {
-    "prefix": "dol",
-    "description": "dol",
-    "body": [
-      "def ${1:__init__}(self, *args, **kwargs):",
-      "    super(${0:ClassName}, self).$1(*args, **kwargs)"
-    ]
-  },
-  "kwg": {
-    "prefix": "kwg",
-    "description": "kwg",
-    "body": ["self.${1:var_name} = kwargs.get('$1', ${2:None})"]
-  },
-  "lkwg": {
-    "prefix": "lkwg",
-    "description": "lkwg",
-    "body": ["${1:var_name} = kwargs.get('$1', ${2:None})"]
-  },
-  "args": {
-    "prefix": "args",
-    "description": "args",
-    "body": ["*args${1:,}${0}"]
-  },
-  "kwargs": {
-    "prefix": "kwargs",
-    "description": "kwargs",
-    "body": ["**kwargs${1:,}${0}"]
-  },
-  "akw": {
-    "prefix": "akw",
-    "description": "akw",
-    "body": ["*args, **kwargs${1:,}${0}"]
-  },
-  "lcp": {
-    "prefix": "lcp",
-    "description": "lcp list comprehension",
-    "body": ["[${1} for ${2} in ${3:${TM_SELECTED_TEXT}}]${0}"]
-  },
-  "dcp": {
-    "prefix": "dcp",
-    "description": "dcp dict comprehension",
-    "body": ["{${1}: ${2} for ${3} in ${4:${TM_SELECTED_TEXT}}}${0}"]
-  },
-  "scp": {
-    "prefix": "scp",
-    "description": "scp set comprehension",
-    "body": ["{${1} for ${2} in ${3:${TM_SELECTED_TEXT}}}${0}"]
-  },
-  "contain": {
-    "prefix": "contain",
-    "description": "methods for emulating a container type",
-    "body": [
-      "def __len__(self):",
-      "    ${1:pass}",
-      "def __getitem__(self, key):",
-      "    ${2:pass}",
-      "def __setitem__(self, key, value):",
-      "    ${3:pass}",
-      "def __delitem__(self, key):",
-      "    ${4:pass}",
-      "def __iter__(self):",
-      "    ${5:pass}",
-      "def __reversed__(self):",
-      "    ${6:pass}",
-      "def __contains__(self, item):",
-      "    ${7:pass}"
-    ]
-  },
-  "context": {
-    "prefix": "context",
-    "description": "context manager methods",
-    "body": [
-      "def __enter__(self):",
-      "    ${1:pass}",
-      "def __exit__(self, exc_type, exc_value, traceback):",
-      "    ${2:pass}"
-    ]
-  },
-  "attr": {
-    "prefix": "attr",
-    "description": "methods for customizing attribute access",
-    "body": [
-      "def __getattr__(self, name):",
-      "    ${1:pass}",
-      "def __setattr__(self, name, value):",
-      "    ${2:pass}",
-      "def __delattr__(self, name):",
-      "    ${3:pass}"
-    ]
-  },
-  "desc": {
-    "prefix": "desc",
-    "description": "methods implementing descriptors",
-    "body": [
-      "def __get__(self, instance, owner):",
-      "    ${1:pass}",
-      "def __set__(self, instance, value):",
-      "    ${2:pass}",
-      "def __delete__(self, instance):",
-      "    ${3:pass}"
-    ]
-  },
-  "cmp": {
-    "prefix": "cmp",
-    "description": "methods implementing rich comparison",
-    "body": [
-      "def __eq__(self, other):",
-      "    ${1:pass}",
-      "def __ne__(self, other):",
-      "    ${2:pass}",
-      "def __lt__(self, other):",
-      "    ${3:pass}",
-      "def __le__(self, other):",
-      "    ${4:pass}",
-      "def __gt__(self, other):",
-      "    ${5:pass}",
-      "def __ge__(self, other):",
-      "    ${6:pass}",
-      "def __cmp__(self, other):",
-      "    ${7:pass}"
-    ]
-  },
-  "repr": {
-    "prefix": "repr",
-    "description": "methods implementing string representation",
-    "body": [
-      "def __repr__(self):",
-      "    ${1:pass}",
-      "def __str__(self):",
-      "    ${2:pass}",
-      "def __unicode__(self):",
-      "    ${3:pass}"
-    ]
-  },
-  "numeric": {
-    "prefix": "numeric",
-    "description": "methods for emulating a numeric type",
-    "body": [
-      "def __add__(self, other):",
-      "    ${1:pass}",
-      "def __sub__(self, other):",
-      "    ${2:pass}",
-      "def __mul__(self, other):",
-      "    ${3:pass}",
-      "def __div__(self, other):",
-      "    ${4:pass}",
-      "def __truediv__(self, other):",
-      "    ${5:pass}",
-      "def __floordiv__(self, other):",
-      "    ${6:pass}",
-      "def __mod__(self, other):",
-      "    ${7:pass}",
-      "def __divmod__(self, other):",
-      "    ${8:pass}",
-      "def __pow__(self, other):",
-      "    ${9:pass}",
-      "def __lshift__(self, other):",
-      "    ${10:pass}",
-      "def __rshift__(self, other):",
-      "    ${11:pass}",
-      "def __and__(self, other):",
-      "    ${12:pass}",
-      "def __xor__(self, other):",
-      "    ${13:pass}",
-      "def __or__(self, other):",
-      "    ${14:pass}",
-      "def __neg__(self):",
-      "    ${15:pass}",
-      "def __pos__(self):",
-      "    ${16:pass}",
-      "def __abs__(self):",
-      "    ${17:pass}",
-      "def __invert__(self):",
-      "    ${18:pass}",
-      "def __complex__(self):",
-      "    ${19:pass}",
-      "def __int__(self):",
-      "    ${20:pass}",
-      "def __long__(self):",
-      "    ${21:pass}",
-      "def __float__(self):",
-      "    ${22:pass}",
-      "def __oct__(self):",
-      "    ${22:pass}",
-      "def __hex__(self):",
-      "    ${23:pass}",
-      "def __index__(self):",
-      "    ${24:pass}",
-      "def __coerce__(self, other):",
-      "    ${25:pass}"
     ]
   }
 }
