@@ -19,7 +19,7 @@
         "prefix": "afun",
         "description": "(...) => {...}",
         "body": [
-        "(${1:args}) => ${0:${TM_SELECTED_TEXT}};"
+        "(${1:args}) => ${0:${TM_SELECTED_TEXT}}"
         ]
     },
     "if": {

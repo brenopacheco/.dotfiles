@@ -8,8 +8,8 @@
 
 local lspconfig = require'lspconfig'
 
--- lspconfig.diagnosticls.setup(require('servers.diagnosticls'))
-lspconfig.sumneko_lua.setup(require('servers.sumneko_lua'))
+lspconfig.diagnosticls.setup(require('conf.servers.diagnosticls'))
+lspconfig.sumneko_lua.setup(require('conf.servers.sumneko_lua'))
 
 vim.lsp.set_log_level(4)
 

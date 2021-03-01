@@ -2,7 +2,12 @@
 " Author: Breno Leonhardt Pacheco
 " Email: brenoleonhardt@gmail.com
 " Last Modified: February 22, 2021
-" Description: 
+" Description:
+
+if exists('g:loaded_completion_plugin')
+    finish
+endif
+let g:loaded_completion_plugin = 1
 
 set completeopt=menuone,noinsert,noselect
 set pumheight=10
@@ -40,12 +45,12 @@ let g:compe.source.nvim_treesitter     = v:false " nvim-treesitter completion.
 let g:compe.source = {
     \ 'path':       { 'priority': 100, 'dup': 0, 'menu': '[PATH]'},
     \ 'treesitter': { 'priority': 90,  'dup': 1, 'menu': '[TREESITTER]' },
-    \ 'vsnip':      { 'priority': 80,  'dup': 1, 'menu': '[SNIP]', 'kind': 'Snippet' },
+    \ 'vsnip':      { 'priority': 80,  'dup': 1, 'menu': '[SNIP]' },
     \ 'nvim_lsp':   { 'priority': 70,  'dup': 0, 'menu': '[LSP]' },
     \ 'buffer':     { 'priority': 60,  'dup': 0, 'menu': '[BUFFER]' },
     \ }
 
-call compe#setup(g:compe)
+au VimEnter * call compe#setup(g:compe)
 
 inoremap <silent><expr> <C-Space> pumvisible() ? compe#close() : compe#complete()
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
@@ -62,9 +67,8 @@ imap <silent><expr> <Tab> pumvisible() ?
     \   (vsnip#available(1) ? "\<plug>(vsnip-expand-or-jump)" : "\<TAB>")
 
 if exists('g:plugs["lexima.vim"]')
-    let g:lexima_enable_endwise_rules = 0
-    let g:lexima_accept_pum_with_enter = 0
+    let g:lexima_no_default_rules = 1
     call lexima#set_default_rules()
-    " imap <silent><expr><CR> (pumvisible() ? compe#close('<C-e>') : "") . lexima#expand('<LT>CR>', 'i')
+    call lexima#insmode#map_hook('before', '<CR>', '')
     imap <silent><expr><CR> compe#close() . lexima#expand('<LT>CR>', 'i')
 endif

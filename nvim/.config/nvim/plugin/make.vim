@@ -14,13 +14,13 @@ if exists('g:loaded_make_plugin')
 endif
 let g:loaded_make_plugin = 1
 
-command! Make call make#make()  " make project target
+command! Make call make#make()  " project-wide make
 command! Run  call make#run()   " run file through interpreter
-command! Lint call make#lint()  " lint current file ... make %
-command! Eval call make#eval()  " eval line through interpreter
+command! Lint call make#lint()  " lint file
+command! -range Eval call make#eval()  " eval line through interpreter
 
-nnoremap #          <cmd>Eval<CR>
-nnoremap <leader>#  <cmd>Run<CR>
-nnoremap <leader>m  <cmd>Lint<CR>
-nnoremap <leader>fm <cmd>Make<CR>
+" nnoremap #          <cmd>Eval<CR>
+" nnoremap <leader>#  <cmd>Run<CR>
+" nnoremap <leader>m  <cmd>Lint<CR>
+" nnoremap <leader>fm <cmd>Make<CR>
 

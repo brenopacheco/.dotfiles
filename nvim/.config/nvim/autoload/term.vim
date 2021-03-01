@@ -10,6 +10,7 @@ function term#open()
     if index(tabpagebuflist(), bufnr) != -1
         silent exe bufwinnr(bufnr) . 'close'
     endif
-    belowright 13sp | exec bufnr > 0 ? bufnr . 'b' : 'term'
+    " belowright 13sp | exec bufnr > 0 ? bufnr . 'b' : 'term'
+    belowright vsp | exec bufnr > 0 ? bufnr . 'b' : 'term'
 endfunction
 

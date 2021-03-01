@@ -38,10 +38,6 @@ set completion-ignore-case On
 shopt -s checkwinsize
 shopt -s globstar
 
-# PATH
-export PATH=$PATH:$HOME/bin
-export PATH=$PATH:$HOME/.go/bin
-export PATH=$PATH:$HOME/.local/bin
 
 # Source aliases and functions and keybindings
 source $HOME/.bash_aliases
@@ -61,14 +57,8 @@ export JAVA_HOME=/usr/lib/jvm/default
 
 ## NPM / NODE config
 NPM_PACKAGES="${HOME}/npm"
-export PATH="$PATH:$NPM_PACKAGES/bin"
-export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
 [[ ! -f $HOME/.npmrc ]] && echo "prefix=${NPM_PACKAGES}" >> $HOME/.npmrc
 [[ ! -d ${NPM_PACKAGES} ]] && mkdir ${NPM_PACKAGES}
-export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
-
-## Luarocks modules
-export PATH=$PATH:$HOME/.lua/bin
 
 # true color kitty support
 tic -x -o $HOME/.terminfo $HOME/.config/kitty/xterm-24bit.terminfo
@@ -86,3 +76,16 @@ export JAR=/path/to/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/
 # export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.9.11-9.fc33.x86_64/
 export JDTLS_CONFIG=/path/to/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/config_linux
 export WORKSPACE=$HOME/.cache/jdtls
+
+
+# PATH
+if [ "$SHLVL" = 1 ]; then
+    export PATH=$PATH:$HOME/bin
+    export PATH=$PATH:$HOME/.go/bin
+    export PATH=$PATH:$HOME/.local/bin
+    export PATH="$PATH:$NPM_PACKAGES/bin"
+    export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
+    export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
+    export PATH=$PATH:$HOME/.lua/bin
+fi
+

@@ -2,12 +2,11 @@
 " Author: Breno Leonhardt Pacheco
 " Email: brenoleonhardt@gmail.com
 " Last Modified: February 23, 2021
-" Description:
+" Description: exposes file/project-wide make functions
 
-" key: filetype, value: compiler plugin
 let s:compilers = {
     \ 'lua':        { 'linter': 'luac',       'interpreter': 'lua'     },
-    \ 'sh':         { 'linter': 'shellcheck', 'interpreter': 'bash'    },
+    \ 'sh':         { 'linter': 'shellcheck', 'interpreter': 'sh'      },
     \ 'python':     { 'linter': 'pylint',     'interpreter': 'python'  },
     \ 'javascript': { 'linter': 'eslint',     'interpreter': 'node'    },
     \ 'typescript': { 'linter': 'eslint',     'interpreter': 'ts-node' },
@@ -23,20 +22,17 @@ let s:systems = {
     \ 'npm':   'package.json'
     \ }
 
-fun! make#run()
-    if &ft ==# 'vim'
-        source %
-        return
-    else
-        let interpreter = s:compilers[&ft].interpreter
-        if type(interpreter) == 1
-            exec 'compiler ' . interpreter
-            make %
-            call quickfix#pop()
-        else
-            throw 'Filetype '.&ft.' has no known interpreter.'
-        endif
-    endif
+fun! make#eval_line()
+    call s:eval(getline('.'))
+endf
+
+fun! make#eval_range()
+    call range#run(funcref('s:eval'))
+endf
+
+fun! make#eval_buffer()
+    call s:repl_close()
+    call s:eval(join(getline(1,'$'),"\n"))
 endf
 
 fun! make#lint()
@@ -50,7 +46,7 @@ fun! make#lint()
     endif
 endf
 
-fun! make#make()
+fun! make#build()
     let system = make#get_system()
     call fzf#run(fzf#wrap({
         \ 'source': funcref('make#'.system.'_source')(),
@@ -59,6 +55,7 @@ fun! make#make()
         \ }))
 endf
 
+" MAKE SINKS ================================================================
 fun! make#mvn_sink(target)
     compiler mvn
     exec 'make ' . a:target
@@ -69,7 +66,7 @@ endf
 fun! make#make_sink(target)
     exec 'compiler ' . s:compilers[&ft].interpreter
     let makefile_path = systemlist('fd "^Makefile$" ' . utils#root())[0]
-    exec 'cd ' . fnamemodify(makefile_path, ':h') 
+    exec 'cd ' . fnamemodify(makefile_path, ':h')
     exec 'make ' . a:target
     copen
     wincmd p
@@ -90,6 +87,7 @@ fun! make#npm_sink(target)
     endif
 endf
 
+" MAKE SOURCES ==============================================================
 fun! make#mvn_source()
     return [ 'validate', 'clean', 'compile', 'package', 'test', 'install' ]
 endf
@@ -115,9 +113,49 @@ fun! make#get_system()
     throw 'Build system not found.'
 endf
 
-""
-" Evaluates a visual selection or current line
-fun! make#eval()
-    " vim -> exec 'getline(".")'
-    " js -> call system('| node -i -')
+" EVAL FUNCTIONS ============================================================
+fun! s:eval(what) abort
+    if &ft ==# 'vim' || &ft ==# ''
+        let @" = a:what
+        norm! :@"
+        return
+    endif
+    let content = split(a:what, "\n")
+    let id = s:repl()
+    call chansend(id, "\<C-l>")
+    for line in content
+        call chansend(id, line . "\<CR>")
+    endfor
+    call chansend(id, "\<CR>")
+endf
+
+fun! s:repl() abort
+    let interpreter = s:compilers[&ft].interpreter
+    for i in range(1, winnr('$'))
+        let bnum = winbufnr(i)
+        if getbufvar(bnum, '&ft') ==# 'repl'
+            if getbufvar(bnum, 'interpreter') != interpreter
+                exec i 'close!'
+                break
+            endif
+            return getbufvar(bnum, 'terminal_job_id')
+        endif
+    endfor
+    vsp | enew
+    call termopen(interpreter)
+    set ft=repl
+    let id = b:terminal_job_id
+    let b:interpreter = interpreter
+    wincmd p
+    return id
+endf
+
+fun! s:repl_close()
+    for i in range(1, winnr('$'))
+        let bnum = winbufnr(i)
+        if getbufvar(bnum, '&ft') ==# 'repl'
+            exec i 'close!'
+            return
+        endif
+    endfor
 endf

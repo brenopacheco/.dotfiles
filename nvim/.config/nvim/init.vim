@@ -2,12 +2,14 @@
 "  Author: Breno Leonhardt Pacheco
 "  Email: brenoleonhardt@gmail.com
 "  Last Modified: February 23, 2021
-"   _       _ _         _           
-"  (_)_ __ (_) |___   _(_)_ __ ___  
-"  | | '_ \| | __\ \ / / | '_ ` _ \ 
+"   _       _ _         _
+"  (_)_ __ (_) |___   _(_)_ __ ___
+"  | | '_ \| | __\ \ / / | '_ ` _ \
 "  | | | | | | |_ \ V /| | | | | | |
 "  |_|_| |_|_|\__(_)_/ |_|_| |_| |_|
 
+set secure
+set noexrc
 call plug#begin(globals#get('plugdir'))
     let g:plug_timeout=99999
     Plug 'tweekmonster/startuptime.vim'
@@ -40,9 +42,8 @@ call plug#begin(globals#get('plugdir'))
     " Plug 'hrsh7th/nvim-compe'               " good completion plugin
     Plug 'brenopacheco/nvim-compe'
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
-    Plug 'glepnir/lspsaga.nvim'             " lsp UI utils 
+    Plug 'glepnir/lspsaga.nvim'             " lsp UI utils
     Plug 'cohama/lexima.vim'                " auto close {} () / smarter
-    Plug 'mfussenegger/nvim-dap'            " debugger lsp equivalent
     Plug 'vim-test/vim-test'                " run tests
     Plug 'brenopacheco/vim-quickhelp'       " call :Help for visual help
     Plug 'junegunn/goyo.vim'                " like vscode writer mode
@@ -50,6 +51,13 @@ call plug#begin(globals#get('plugdir'))
     Plug 'haishanh/night-owl.vim'           " theme
     Plug 'bluz71/vim-nightfly-guicolors'    " theme
     Plug 'endel/vim-github-colorscheme'     " theme
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+
+    Plug 'puremourning/vimspector'
+    Plug 'mfussenegger/nvim-dap'            " debugger lsp equivalent
+    Plug 'theHamsta/nvim-dap-virtual-text'
     " Plug 'neomake/neomake'
+    " Plug 'sbdchd/neoformat'
+    " Plug 'mfussenegger/nvim-dap-python'
 call plug#end()

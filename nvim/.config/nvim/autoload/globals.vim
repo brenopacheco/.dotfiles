@@ -16,6 +16,7 @@ let s:templatedir   = '~/.config/nvim/template/'
 let s:dictionarydir = '~/.config/nvim/dict/'
 let s:fdignore      = '~/.fdignore'
 let s:rgignore      = '~/.rgignore'
+let s:extensions    = '^.*\.(sh|vim|lua|jsx|js|tsx|ts|java|c|h|cpp|html|css)$'
 
 fun! globals#get(name)
     return expand(get(s:, a:name, ''))

@@ -48,7 +48,7 @@ let s:noft = [
     \ 'q-/     rg patt buf  ⏎/⌫     wildfire  ',
     \ 'q-f     filter qf    q-n/p   cnewer/old',
     \ ]
-       
+
 let s:window = [
     \ '_____SPLIT______    ___OVERRIDES____',
     \ 'spc-w-s   <c-w>s    spc-w-e    :enew',
@@ -70,6 +70,24 @@ let s:window = [
     \ 'spc-w-T   <c-w>T    spc-w-w   <c-w>w',
     \ ]
 
+let s:debug = [
+    \ "_____________________DEBUG_______________________",
+    \ "F1  F2  F3  F4  F5  F6  F7  F8  F9  F10  F11  F12",
+    \ "         懶  菱   ●                     "
+    \ ]
+" <F1>       step OUT
+" <F2>       step IN
+" <F3>       step OVER
+" <F4>  懶     play / pause
+" <F5>  菱    start / restart
+" <F6>  ●     breakpoint toggle
+" <F7>       breakpoints list
+" <F8>       hover
+" <F9>       scope
+" <F10>      repl toggle
+" <F11>      stack UP
+" <F12>      stack DOWN
 
 call quickhelp#register('noft', s:noft)
 call quickhelp#register('window', s:window)
+call quickhelp#register('debug', s:debug)

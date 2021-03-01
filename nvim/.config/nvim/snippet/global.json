@@ -1,4 +1,8 @@
 {
+    "global-end": {
+        "prefix": "env",
+        "body": ["#!/usr/bin/env ${1:bash}$0"]
+    },
     "global-date": {
         "prefix": "ddate",
         "description": "ddate",
@@ -21,7 +25,9 @@
     "global-todo": {
         "prefix": "TODO",
         "description": "TODO: ...",
-        "body": ["\" TODO: ${0:${TM_SELECTED_TEXT}}"]
+        "body": ["${VIM:printf(&commentstring, ' TODO: ')}${0:${TM_SELECTED_TEXT}}"]
+
+
     },
     "global-email": {
         "prefix": "email",

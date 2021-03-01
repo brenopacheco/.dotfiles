@@ -2,21 +2,22 @@
 " Author: Breno Leonhardt Pacheco
 " Email: brenoleonhardt@gmail.com
 " Last Modified: February 22, 2021
-" Description: 
+" Description:
 
 " SEARCH ====================================================================
 
 fun! quickfix#global_grep()
-    call feedkeys(":grep! '' " . utils#root() . 
+    call feedkeys(":grep! '' " . utils#root() .
         \ '| copen | wincmd p' ."\<Home>".repeat("\<Right>", 7))
 endf
 
+" TODO: NOT WORKING. gotta escape #
 ""
 " performs grep on all project files using word under cursor.
-" may be called in visual mode. if in visual mode, map as <expr> 
+" may be called in visual mode. if in visual mode, map as <expr>
 fun! quickfix#global_star()
     if mode() ==# 'v'
-        return "\"zy:grep! '\<C-r>z' " . utils#root() . 
+        return "\"zy:grep! '\<C-r>z' " . utils#root() .
             \ " \| copen \| wincmd p\<CR>"
     else
         let cmd = "grep! '".expand('<cword>')."' " . utils#root()
@@ -26,7 +27,7 @@ fun! quickfix#global_star()
 endf
 
 ""
-" performs vimgrep on the file. if file has no name, give 
+" performs vimgrep on the file. if file has no name, give
 " it an unique name
 fun! quickfix#buffer_grep()
     call feedkeys(':vimgrep//j % | copen | wincmd p'.repeat("\<left>", 23))
@@ -34,7 +35,7 @@ endf
 
 ""
 " performs vimgrep on the file using word under cursor.
-" may be called in visual mode. if in visual mode, map as <expr> 
+" may be called in visual mode. if in visual mode, map as <expr>
 fun! quickfix#buffer_star() abort
     if mode() ==# 'v'
         return "\"zy:vimgrep/\<C-r>z/j % \| copen \| wincmd p\<CR>"
@@ -102,3 +103,10 @@ fun! quickfix#toggle()
     call utils#toggle('qf', 'copen | wincmd p')
 endf
 
+""
+" source all source files into qf
+fun! quickfix#source()
+    let files = utils#files(globals#get('extensions'))
+    call setqflist(map(copy(files), '{ "filename": v:val }'))
+    silent copen | silent wincmd p
+endf

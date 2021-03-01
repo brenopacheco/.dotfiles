@@ -20,7 +20,7 @@
         "description": "(...) => {...}",
         "body": [
         "(${1:args}) => {",
-        "\t$0:${TM_SELECTED_TEXT}}",
+        "\t${0:${TM_SELECTED_TEXT}}",
         "}"
         ]
     },

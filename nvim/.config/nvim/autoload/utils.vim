@@ -2,13 +2,23 @@
 " Author: Breno Leonhardt Pacheco
 " Email: brenoleonhardt@gmail.com
 " Last Modified: February 22, 2021
-" Description: 
+" Description:
+
+
+""
+" Return a list of files from the fd command run at the root of a git project
+" {pattern} the pattern to search for
+fun! utils#files(...)
+    let pat = a:0 == 0 ? "" : a:1
+    return systemlist('fd "'.pat.'" -H -j 2 -t f '.utils#root())
+endf
+
 
 ""
 " Returns root of given [optional] directory or current directory
 " used .git as root indicator. if not a git directory, returns current
 " directory. throws exception if given directory is invalid.
-" [optional] directory path. default: getcwd
+" [directory path] default: getcwd
 fun! utils#root(...)
     let dir = a:0 == 0 ? getcwd() : a:1
     if !isdirectory(expand(dir))
@@ -31,8 +41,8 @@ endf
 " returns [ "mode", "map" ] list
 " {cmd} nmap, tmap, map, vmap, ...
 fun! utils#maps(cmd)
-    return filter(map(split(execute(a:cmd), '\n'), 
-        \ { _,s -> [split(s, ' ')[0], split(s, ' ')[2], split(s, ' ')[3]] }), 
+    return filter(map(split(execute(a:cmd), '\n'),
+        \ { _,s -> [split(s, ' ')[0], split(s, ' ')[2], split(s, ' ')[3]] }),
         \ { _,s -> match(s[1], '^<[Pp]lug>') == -1 })
 endf
 
@@ -67,7 +77,7 @@ fun! utils#toggle(filetype, open, ...) abort
     for i in range(1, winnr('$'))
         let bnum = winbufnr(i)
         if getbufvar(bnum, '&ft') == a:filetype
-            if !a:0 || !a:1 
+            if !a:0 || !a:1
                 silent exe i . 'close'
             endif
             return
@@ -80,12 +90,39 @@ endfunction
 
 ""
 "
-fun! utils#short_folderpath() 
-    let l:path = substitute(getcwd(), expand($HOME), "~", "") 
+fun! utils#short_folderpath()
+    let l:path = substitute(getcwd(), expand($HOME), "~", "")
     let l:maxwidth = winwidth(0) / 5
-    if strlen(l:path) > l:maxwidth 
+    if strlen(l:path) > l:maxwidth
         let l:path = '…'.matchstr(l:path, '.\{'.l:maxwidth.'\}$')
     end
     return l:path.'/'
 endfunction
+
+" HELPER FUNCS ==============================================================
+
+""
+" command complete used with -complete=customlist,utils#cmd_complete
+" only works for commands whose name is the same as the autocmd file
+" requires the cmd to be defined as such:
+" com! -nargs=1 -complete=customlist,utils#cmd_complete Lsp
+"        \  call utils#cmd_exec('lsp',<q-args>)
+" {required} a:1 = cmd prefix, a:2 = cmd origin, a:3 = length
+fun! utils#cmd_complete(...)
+    let cmd = substitute(a:2, '\s.*', '', '')
+    return filter(utils#function_list(cmd),
+        \ { _,s -> match(s, '^'. a:1) != -1 && len(s) > 0 })
+endf
+
+fun! utils#function_list(name)
+    return sort(map(split(execute('function /^'.tolower(a:name).'#'),"\n"),
+        \ { _,s -> matchstr(s[13:-1], '^\S\+()')[0:-3] }),
+        \ { x,y -> len(x) - len(y) })
+endf
+
+""
+" completes cmd_complete
+fun! utils#cmd_exec(name, ...)
+    echo execute('echo ' . a:name . '#' . a:1 . '()')
+endf
 

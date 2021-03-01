@@ -12,8 +12,9 @@ tnoremap <buffer> kj <C-\><C-n>
 
 let b:undo_ftplugin="call utils#unmap('tmap <buffer>')"
 
-augroup term_close
+augroup repl
   au!
-  au WinEnter * if winnr('$') == 1
-      \ && &buftype == "term" | q |endif
+  au FileType repl setlocal nobuflisted bufhidden=unload
+  au FileType repl setlocal noswapfile nonu nornu
+  au WinEnter * if winnr('$') == 1 && &buftype == "repl" | q |endif
 augroup END

@@ -112,15 +112,28 @@ fun! lsp#rename()
     lua require('lspsaga.rename').rename()
 endf
 
-fun! lsp#format()
+" TODO: add ranged option
+fun! lsp#format() range
     try
         if !luaeval('vim.lsp.buf.formatting_sync()')
-            throw 'Could not lsp format'
+            throw 'LSP cannot format this'
+        else
+            echo 'Formatter by LSP formatter'
         endif
-        echo 'Formatting using LSP formatter'
     catch /.*/
-        norm! maggVG=`a
-        echo 'Formatting using ' . &equalprg
+        if &equalprg
+            silent exec '1,$! ' . &equalprg
+            if v:shell_error
+                echohl WarningMsg
+                echo "Formatter " . &equalprg . " failed!"
+                echohl NONE
+                undo
+            else
+                echo "Formatted by " empty(&equalprg)
+            endif
+        else
+            norm! mzggVG=`z
+        endif
     endtry
 endf
 

@@ -4,6 +4,11 @@
 " Last Modified: February 23, 2021
 " Description: default plugin configurations
 
+if exists('g:loaded_configs_plugin')
+    finish
+endif
+let g:loaded_configs_plugin = 1
+
 let g:tagbar_width=30
 let g:gutentags_file_list_command = 'rg --files'
 let g:gutentags_cache_dir = globals#get('tagsdir')
@@ -12,7 +17,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']"
 let g:zv_disable_mapping = 1
 let g:vsnip_extra_mapping = v:false
 let g:vsnip_snippet_dirs = [ globals#get('snippetdir') ]
-let g:vsnip_snippet_dir  = globals#get('snippetdir') 
+let g:vsnip_snippet_dir  = globals#get('snippetdir')
 let g:vsnip_filetypes = {
     \ 'javascript': [ 'javascript-express' ],
     \ 'javascriptreact': [ 'javascript', 'html' ],
@@ -30,10 +35,10 @@ let g:easy_align_delimiters = {
     \  '/': { 'pattern': '/',  'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 }
     \ }
 
-let g:wildfire_objects = ['iw', 'iW', "i'", "a'", 'i`', 'a`', 'i"', 'a"', 
+let g:wildfire_objects = ['iw', 'iW', "i'", "a'", 'i`', 'a`', 'i"', 'a"',
     \ 'i)', 'a)', 'i]', 'a]', 'i}', 'a}', 'ip', 'it']
 
-let g:lightline = 
+let g:lightline =
     \ {
     \     'colorscheme': 'nightfly',
     \     'active': {

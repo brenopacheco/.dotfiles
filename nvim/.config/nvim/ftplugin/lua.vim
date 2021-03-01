@@ -3,9 +3,10 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-compiler luac
+compiler lua
+" compiler luac
 setlocal equalprg=
-setlocal foldmethod=marker 
+setlocal foldmethod=marker
 setlocal foldmarker=[[,]]
 setlocal foldexpr=
 setlocal formatoptions=croqlj
