@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# rofi
+# apps=$(fd ".*\.desktop$" /usr/share/applications | sed 's#^.*/\(.*\)\.desktop#\1#')
+# app=$(echo "$apps" | rofi -i -dmenu)
+# test $? -ne 0 && exit 1
+# echo "gtk-launch $app"
+# gtk-launch $app
+
+# xfce4
+xfce4-appfinder

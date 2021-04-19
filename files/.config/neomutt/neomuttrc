@@ -1,0 +1,32 @@
+# Gmail setup
+set realname = "Breno Leonhardt Pacheco"
+set from = "brenoleonhardt@gmail.com"
+set imap_user = "brenoleonhardt@gmail.com"
+set smtp_url = "smtps://brenoleonhardt@gmail.com@smtp.gmail.com:465/"
+source "gpg -d ~/.neomutt/passwords.gpg |" # imap_pass smtp_pass
+set ssl_force_tls = yes
+	
+# Folders / mailboxes
+set folder = "imaps://imap.gmail.com/"
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Drafts"
+set record = "+[Gmail]/Sent Mail"
+set trash = "+[Gmail]/Trash"
+set mbox_type=Maildir
+mailboxes "=INBOX"
+mailboxes "=[Gmail]/Starred"
+mailboxes "=[Gmail]/Sent\ Mail"
+mailboxes "=[Gmail]/Drafts"
+mailboxes "=[Gmail]/Trash"
+mailboxes "=[Gmail]/Spam"
+
+set mailcap_path = ~/.config/neomutt/mailcap.conf
+source ~/.config/neomutt/defaults.conf
+# source ~/.config/neomutt/colors.conf
+# source ~/.config/neomutt/unbind.conf
+# source ~/.config/neomutt/keybindings.conf
+
+
+# consider switching to offlineimap
+# https://github.com/iagox86/mutt
+# vim: set ft=muttrc

@@ -1,0 +1,55 @@
+:EasyAlign :       " preset characters (\=:.,&#|)
+:EasyAlign |       " align by |
+:EasyAlign \       " \ means space
+:EasyAlign /[:;]+/ " Align by regexp
+:EasyAlign |       " align by 1st `|`
+:EasyAlign 3 |     " align by 3rd `|`
+:EasyAlign * |     " align by all `|`s
+:EasyAlign * | l4r1
+      l4     " lN     - left_margin
+      r1     " rN     - right_margin    ->  spaces to the left/right of `|`
+      ar     " a[lrc] - align           ->   align left/right/center
+      dr     " d[lrc] - delimiter_align ->  alignment of the delimiter itself
+
+:EasyAlign * /[;:]+/ l3
+:EasyAlign*/[;:]+/l3 " Spaces are optional
+Examples
+:EasyAlign = dr (delimiter_align right)
+
+apple    = 1
+banana  += apple
+cake   ||= banana
+
+:EasyAlign : (for json or yaml)
+
+url:      jdbc:mysql://localhost/test
+database: test
+
+:EasyAlign *| (markdown tables)
+
+| `<Enter>` | right align                   |
+| `1`       | on 1st occurrence             |
+| `2`       | on 2nd occurrence (and so on) |
+
+Interactive mode
+{Visual} ⏎     activate for selection
+ga {motion}     activate for motion/text object
+
+Then press options (if available), then a delimiter.
+Interactive mode options
+⏎     Set alignment
+<ctrl-l> 4 ⏎     Set left_margin (to the left of the delimiter)
+<ctrl-r> 4 ⏎     Set right_margin
+↓     no margin
+Example
+
+    gaip <ctrl-l> 8⏎ = - puts 8 spaces before the equal sign
+
+Also see
+
+    vim-easy-align
+    Examples
+    Alignment options
+
+Devhints.io cheatsheets is a collection of cheatsheets I've written over the years. Suggestions and corrections? Send them in. I'm Rico Sta. Cruz. Check out my Today I learned blog for more.
+

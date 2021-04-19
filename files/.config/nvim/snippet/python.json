@@ -1,0 +1,175 @@
+{
+  "print": {
+    "prefix": "print",
+    "description": "print",
+    "body": ["print(${1:${TM_SELECTED_TEXT}}) "]
+  },
+  "import": {
+    "prefix": "import",
+    "description": "import",
+    "body": ["import ${1:module}"]
+  },
+  "from": {
+    "prefix": "from",
+    "description": "from",
+    "body": ["from ${1:package} import ${2:module}"]
+  },
+  "header": {
+    "prefix": "header",
+    "description": "header",
+    "body": [
+      "\"\"\"",
+      "File: ${1:${VIM:vim_snippets#Filename('$1.py', 'foo.py')}}",
+      "Author: ${VIM:g:snips_author}",
+      "Email: ${VIM:g:snips_email}",
+      "Github: ${VIM:g:snips_github}",
+      "Description: ${2}",
+      "\"\"\""
+    ]
+  },
+  "while": {
+    "prefix": "while",
+    "description": "while",
+    "body": ["while ${1:condition}:", "    ${2:${TM_SELECTED_TEXT}}"]
+  },
+  "do-while": {
+    "prefix": "dowhile",
+    "body": [
+      "while True:",
+      "    ${1}",
+      "    if ${2:condition}:",
+      "        break"
+    ]
+  },
+  "if": {
+    "prefix": "if",
+    "description": "if",
+    "body": ["if ${1:condition}:", "    ${2:${tm_selected_text}}"]
+  },
+  "else": {
+    "prefix": "el",
+    "description": "el",
+    "body": ["else:", "    ${1:${TM_SELECTED_TEXT}}"]
+  },
+  "elif": {
+    "prefix": "ei",
+    "description": "ei",
+    "body": ["elif ${1:condition}:", "    ${2:${TM_SELECTED_TEXT}}"]
+  },
+  "for": {
+    "prefix": "for",
+    "description": "for",
+    "body": ["for ${1:item} in ${2:items}:", "    ${3}"]
+  },
+  "ret": {
+    "prefix": "ret",
+    "description": "ret",
+    "body": ["return ${1}"]
+  },
+  "try": {
+    "prefix": "try",
+    "description": "try Try/Except",
+    "body": [
+      "try:",
+      "    ${1:${TM_SELECTED_TEXT}}",
+      "except ${2:Exception} as ${3:e}:",
+      "    ${4:raise $3}"
+    ]
+  },
+  "tryf": {
+    "prefix": "tryf",
+    "description": "tryf Try/Except/Finally",
+    "body": [
+      "try:",
+      "    ${1:${TM_SELECTED_TEXT}}",
+      "except ${2:Exception} as ${3:e}:",
+      "    ${4:raise $3}",
+      "finally:",
+      "    ${5}"
+    ]
+  },
+  "tryef": {
+    "prefix": "tryef",
+    "description": "tryef Try/Except/Else/Finally",
+    "body": [
+      "try:",
+      "    ${1:${TM_SELECTED_TEXT}}",
+      "except ${2:Exception} as ${3:e}:",
+      "    ${4:raise $3}",
+      "else:",
+      "    ${5}",
+      "finally:",
+      "    ${6}"
+    ]
+  },
+  "def": {
+    "prefix": "def",
+    "description": "def",
+    "body": [
+      "def ${1:fname}(${2:${VIM:indent('.') ? 'self' : ''}}):",
+      "    \"\"\"${3:docstring for $1}\"\"\"",
+      "    ${4}"
+    ]
+  },
+  "main": {
+    "prefix": "main",
+    "description": "main",
+    "body": ["if __name__ == '__main__':", "    ${1:main()}"]
+  },
+  "assert": {
+    "prefix": "assert",
+    "description": "assert",
+    "body": ["self.assertEqual(${2}, ${1})"]
+  },
+  "test": {
+    "prefix": "test",
+    "description": "test",
+    "body": [
+      "def test_${1:description}(${2:${VIM:indent('.') ? 'self' : ''}}):",
+      "    ${3}"
+    ]
+  },
+  "log": {
+    "prefix": "log",
+    "description": "log",
+    "body": ["import logging", "LOGGER = logging.getLogger(${1:__name__})"]
+  },
+  "loge": {
+    "prefix": "loge",
+    "description": "loge",
+    "body": ["LOGGER.error(${1:msg})"]
+  },
+  "logg": {
+    "prefix": "logg",
+    "description": "logg",
+    "body": ["LOGGER.debug(${1:msg})"]
+  },
+  "logw": {
+    "prefix": "logw",
+    "description": "logw",
+    "body": ["LOGGER.warning(${1:msg})"]
+  },
+  "logc": {
+    "prefix": "logc",
+    "description": "logc",
+    "body": ["LOGGER.critical(${1:msg})"]
+  },
+  "logi": {
+    "prefix": "logi",
+    "description": "logi",
+    "body": ["LOGGER.info(${1:msg})"]
+  },
+  "pydoc": {
+    "prefix": "pydoc",
+    "description": "pydoc",
+    "body": [
+      "\"\"\"${1:Description}",
+      "@param ${2:param}: ${3: Description}",
+      "@type  $2: ${4: Type}",
+      "@return: ${5: Description}",
+      "@rtype : ${6: Type}",
+      "@raise e: ${7: Description}",
+      "\"\"\""
+    ]
+  }
+}

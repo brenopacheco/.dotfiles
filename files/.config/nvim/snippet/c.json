@@ -1,0 +1,416 @@
+{
+    "main": {
+        "prefix": "main",
+        "description": "main",
+        "body": [
+        "int main(int argc, char *argv[])",
+        "{",
+        "    ${1}",
+        "    return 0;",
+        "}"
+        ]
+    },
+    "mainn": {
+        "prefix": "mainn",
+        "description": "mainn",
+        "body": [
+        "int main(void)",
+        "{",
+        "    ${1}",
+        "    return 0;",
+        "}"
+        ]
+    },
+    "#inc<>": {
+        "prefix": "inc",
+        "description": "include <library.h>",
+        "body": [
+        "#include <${1:stdio}.h>"
+        ]
+    },
+    "#inc\"\"": {
+        "prefix": "inch",
+        "description": "include \"header.h\"",
+        "body": [
+        "#include \"$1\"$2"
+        ]
+    },
+    "ndef": {
+        "prefix": "ndef",
+        "description": "ndef",
+        "body": [
+        "#ifndef $1",
+        "#define ${1:SYMBOL} ${2:value}",
+        "#endif /* ifndef $1 */"
+        ]
+    },
+    "def": {
+        "prefix": "def",
+        "description": "def",
+        "body": [
+        "#define"
+        ]
+    },
+    "ifdef": {
+        "prefix": "ifdef",
+        "description": "ifdef",
+        "body": [
+        "#ifdef ${1:FOO}",
+        "    ${2:#define }",
+        "#endif"
+        ]
+    },
+    "#if": {
+        "prefix": "#if",
+        "description": "#if",
+        "body": [
+        "#if ${1:FOO}",
+        "    ${2:${TM_SELECTED_TEXT}}",
+        "#endif"
+        ]
+    },
+    "once": {
+        "prefix": "once",
+        "description": "once",
+        "body": [
+        "#ifndef ${1:${VIM:toupper(vim_snippets#Filename('$1_H', 'UNTITLED_H'))}}",
+        "#define $1",
+        "${2}",
+        "#endif /* end of include guard: $1 */"
+        ]
+    },
+    "nocxx": {
+        "prefix": "nocxx",
+        "description": "nocxx",
+        "body": [
+        "#ifdef __cplusplus",
+        "extern \"C\" {",
+        "#endif",
+        "${1}",
+        "#ifdef __cplusplus",
+        "} /* extern \"C\" */",
+        "#endif"
+        ]
+    },
+    "if": {
+        "prefix": "if",
+        "description": "if",
+        "body": [
+        "if (${1:true}) {",
+        "    ${0:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "ife": {
+        "prefix": "ife",
+        "description": "ife",
+        "body": [
+        "if (${1:true}) {",
+        "    ${2:${TM_SELECTED_TEXT}}",
+        "} else {",
+        "    ${3}",
+        "}"
+        ]
+    },
+    "el": {
+        "prefix": "el",
+        "description": "el",
+        "body": [
+        "else {",
+        "    ${1:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "elif": {
+        "prefix": "elif",
+        "description": "elif",
+        "body": [
+        "else if (${1:true}) {",
+        "    ${2:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "ifi": {
+        "prefix": "ifi",
+        "description": "ifi",
+        "body": [
+        "if (${1:true}) ${2};"
+        ]
+    },
+    "t": {
+        "prefix": "t",
+        "description": "t",
+        "body": [
+        "${1:/* condition */} ? ${2:a} : ${3:b}"
+        ]
+    },
+    "switch": {
+        "prefix": "switch",
+        "description": "switch",
+        "body": [
+        "switch (${1:/* variable */}) {",
+        "    case ${2:/* variable case */}:",
+        "        ${3}",
+        "        ${4:break;}${5}",
+        "    default:",
+        "        ${6}",
+        "}"
+        ]
+    },
+    "switchndef": {
+        "prefix": "switchndef",
+        "description": "switchndef",
+        "body": [
+        "switch (${1:/* variable */}) {",
+        "    case ${2:/* variable case */}:",
+        "        ${3}",
+        "        ${4:break;}${5}",
+        "}"
+        ]
+    },
+    "case": {
+        "prefix": "case",
+        "description": "case",
+        "body": [
+        "case ${1:/* variable case */}:",
+        "    ${2}",
+        "    ${3:break;}"
+        ]
+    },
+    "ret": {
+        "prefix": "ret",
+        "description": "ret",
+        "body": [
+        "return ${1};"
+        ]
+    },
+    "for": {
+        "prefix": "for",
+        "description": "for",
+        "body": [
+        "for (int ${2:i} = 0; $2 < ${1:count}; $2${3:++}) {",
+        "    ${4}",
+        "}"
+        ]
+    },
+    "forr": {
+        "prefix": "forr",
+        "description": "forr",
+        "body": [
+        "for (int ${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {",
+        "    ${5}",
+        "}"
+        ]
+    },
+    "wh": {
+        "prefix": "wh",
+        "description": "wh",
+        "body": [
+        "while (${1:/* condition */}) {",
+        "    ${2:${TM_SELECTED_TEXT}}",
+        "}"
+        ]
+    },
+    "do": {
+        "prefix": "do",
+        "description": "do",
+        "body": [
+        "do {",
+        "    ${2:${TM_SELECTED_TEXT}}",
+        "} while (${1:/* condition */});"
+        ]
+    },
+    "fun": {
+        "prefix": "fun",
+        "description": "fun",
+        "body": [
+        "${1:void} ${2:function_name}(${3})",
+        "{",
+        "    ${4}",
+        "}"
+        ]
+    },
+    "fun0": {
+        "prefix": "fun0",
+        "description": "fun0",
+        "body": [
+        "${1:void} ${2:function_name}()",
+        "{",
+        "    ${3}",
+        "}"
+        ]
+    },
+    "dfun0": {
+        "prefix": "dfun0",
+        "description": "dfun0",
+        "body": [
+        "/*! \\brief ${1:Brief function description here}",
+        " *",
+        " *  ${2:Detailed description of the function}",
+        " *",
+        " * \\return ${3:Return parameter description}",
+        " */",
+        "${4:void} ${5:function_name}()",
+        "{",
+        "    ${6}",
+        "}"
+        ]
+    },
+    "fun1": {
+        "prefix": "fun1",
+        "description": "fun1",
+        "body": [
+        "${1:void} ${2:function_name}(${3:Type} ${4:Parameter})",
+        "{",
+        "    ${5}",
+        "}"
+        ]
+    },
+    "dfun1": {
+        "prefix": "dfun1",
+        "description": "dfun1",
+        "body": [
+        "/*! \\brief ${1:Brief function description here}",
+        " *",
+        " *  ${2:Detailed description of the function}",
+        " *",
+        " * \\param $3 ${4:Parameter description}",
+        " * \\return ${5:Return parameter description}",
+        " */",
+        "${6:void} ${7:function_name}(${8:Type} ${3:Parameter})",
+        "{",
+        "    ${9}",
+        "}"
+        ]
+    },
+    "fun2": {
+        "prefix": "fun2",
+        "description": "fun2",
+        "body": [
+        "${1:void} ${2:function_name}(${3:Type} ${4:Parameter}, ${5:Type} ${6:Parameter})",
+        "{",
+        "    ${7}",
+        "}"
+        ]
+    },
+    "dfun2": {
+        "prefix": "dfun2",
+        "description": "dfun2",
+        "body": [
+        "/*! \\brief ${1:Brief function description here}",
+        " *",
+        " *  ${2:Detailed description of the function}",
+        " *",
+        " * \\param $3 ${4:Parameter description}",
+        " * \\param $5 ${6:Parameter description}",
+        " * \\return ${7:Return parameter description}",
+        " */",
+        "${8:void} ${9:function_name}(${10:Type} ${3:Parameter}, ${11:Type} ${5:Parameter})",
+        "{",
+        "    ${12}",
+        "}"
+        ]
+    },
+    "fun3": {
+        "prefix": "fun3",
+        "description": "fun3",
+        "body": [
+        "${1:void} ${2:function_name}(${3:Type} ${4:Parameter}, ${5:Type} ${6:Parameter}, ${7:Type} ${8:Parameter})",
+        "{",
+        "    ${9}",
+        "}"
+        ]
+    },
+    "dfun3": {
+        "prefix": "dfun3",
+        "description": "dfun3",
+        "body": [
+        "/*! \\brief ${1:Brief function description here}",
+        " *",
+        " *  ${2:Detailed description of the function}",
+        " *",
+        " * \\param $3 ${4:Parameter description}",
+        " * \\param $5 ${6:Parameter description}",
+        " * \\param $7 ${8:Parameter description}",
+        " * \\return ${9:Return parameter description}",
+        " */",
+        "${10:void} ${11:function_name}(${12:Type} ${3:Parameter}, ${13:Type} ${5:Parameter}, ${14:Type} ${7:Parameter})",
+        "{",
+        "    ${15}",
+        "}"
+        ]
+    },
+    "fund": {
+        "prefix": "fund",
+        "description": "fund",
+        "body": [
+        "${1:void} ${2:function_name}(${3});"
+        ]
+    },
+    "td": {
+        "prefix": "td",
+        "description": "td",
+        "body": [
+        "typedef ${1:int} ${2:MyCustomType};"
+        ]
+    },
+    "st": {
+        "prefix": "st",
+        "description": "st",
+        "body": [
+        "/*! \\struct $1",
+        " *  \\brief ${3:Brief struct description}",
+        " *",
+        " *  ${4:Detailed description}",
+        " */",
+        "struct ${1:${VIM:vim_snippets#Filename('$1_t', 'name')}} {",
+        "    ${2:Data} /*!< ${4:Description} */",
+        "}${5: /* optional variable list */};"
+        ]
+    },
+    "tds": {
+        "prefix": "tds",
+        "description": "tds",
+        "body": [
+        "/*! \\struct $2",
+        " *  \\brief ${5:Brief struct description}",
+        " *",
+        " *  ${6:Detailed description}",
+        " */",
+        "typedef struct ${2:_$1 }{",
+        "    m_${3:Data} /*!< ${4:Description} */",
+        "} ${1:${VIM:vim_snippets#Filename('$1_t', 'name')}};"
+        ]
+    },
+    "enum": {
+        "prefix": "enum",
+        "description": "enum",
+        "body": [
+        "/*! \\enum $1",
+        " *",
+        " *  ${2:Detailed description}",
+        " */",
+        "enum ${1:name} { ${2} };"
+        ]
+    },
+    "tde": {
+        "prefix": "tde",
+        "description": "tde",
+        "body": [
+        "/*! \\enum $2",
+        " *",
+        " *  ${4:Detailed description}",
+        " */",
+        "typedef enum {",
+        "    ${1:Data} /*!< ${3:Description} */",
+        "} ${2:foo};"
+        ]
+    },
+    "pr": {
+        "prefix": "pr",
+        "description": "pr",
+        "body": [
+        "printf(\"${1:%s}\\n\"${2});"
+        ]
+    }
+}

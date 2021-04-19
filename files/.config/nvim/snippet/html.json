@@ -1,0 +1,68 @@
+{
+    "link":   { "prefix": "link",      "body": [ "<link rel=\"stylesheet\" href=\"${1:style.css}\">" ] },
+    "script": { "prefix": "script",    "body": [ "<script src=\"${1:script.js}\"></script>"          ] },
+    "style":  { "prefix": "style",     "body": [ "<style>\n$1\n</style>"                             ] },
+    "div":    { "prefix": "div",       "body": [ "<div ${1:class=\"${2:...}\"}>\n\t$3\n</div>"       ] },
+    "a":      { "prefix": "a",         "body": [ "<a href=\"$1\">$2</a>"                             ] },
+    "button": { "prefix": "button",    "body": [ "<button type=\"submit\">$1</button>"               ] },
+    "h1":     { "prefix": "h1",        "body": [ "<h1>$1</h1>$2"                                     ] },
+    "h2":     { "prefix": "h2",        "body": [ "<h2>$1</h2>$2"                                     ] },
+    "h3":     { "prefix": "h3",        "body": [ "<h3>$1</h3>$2"                                     ] },
+    "h4":     { "prefix": "h4",        "body": [ "<h4>$1</h4>$2"                                     ] },
+    "h5":     { "prefix": "h5",        "body": [ "<h5>$1</h5>$2"                                     ] },
+    "h6":     { "prefix": "h6",        "body": [ "<h6>$1</h6>$2"                                     ] },
+    "hr":     { "prefix": "hr",        "body": [ "<hr>"                                              ] },
+    "img":    { "prefix": "img",       "body": [ "<img src=\"$1\" alt=\"$2\">$3"                     ] },
+    "input":  { "prefix": "input",     "body": [ "<input type=\"$1\" name=\"$2\" value=\"$3\">$4"    ] },
+    "label":  { "prefix": "label",     "body": [ "<label for=\"$1\">$2</label>$3"                    ] },
+    "li":     { "prefix": "li",        "body": [ "<li>$1</li>$2"                                     ] },
+    "meta":   { "prefix": "meta",      "body": [ "<meta name=\"$1\" content=\"$2\">$3"               ] },
+    "option": { "prefix": "option",    "body": [ "<option value=\"$1\">$2</option>$3"                ] },
+    "p":      { "prefix": "p",         "body": [ "<p>$1</p>$2"                                       ] },
+    "span":   { "prefix": "span",      "body": [ "<span>$1</span>$2"                                 ] },
+    "ul":     { "prefix": "ul",        "body": [ "<ul>\n\t$1\n</ul>"                                 ] },
+    "class":  { "prefix": "class",     "body": [ "class=\"$1\"$0"                                    ] },
+    "id":     { "prefix": "id",        "body": [ "id=\"$1\"$0"                                       ] },
+    "root":   { "prefix": "root",      "body": [ "<div id=\"root\"></div>"                           ] },
+
+    "cdns": {
+      "prefix": "cdns",
+      "body": [
+        "<!-- JSX + ES6 -->",
+        "<script crossorigin src=\"https://unpkg.com/babel-standalone@6/babel.min.js\"></script>",
+        "<!-- React -->",
+        "<script crossorigin src=\"https://unpkg.com/react@17/umd/react.development.js\"></script>",
+        "<!-- ReactDOM -->",
+        "<script crossorigin src=\"https://unpkg.com/react-dom@17/umd/react-dom.development.js\"></script>",
+        "<!-- ReactRouter -->",
+        "<script crossorigin src='https://unpkg.com/react-router-dom@5.0.0/umd/react-router-dom.min.js'></script>",
+        "<!-- ReactRedux -->",
+        "<script crossorigin src=\"https://unpkg.com/react-redux@5.0.6/dist/react-redux.js\"></script>",
+        "<!-- axios -->",
+        "<script crossorigin src=\"https://unpkg.com/axios@0.20.0-0/dist/axios.min.js\"></script>",
+        "<!-- tailwind style -->",
+        "<link href=\"https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css\" rel=\"stylesheet\">",
+        "<!-- components -->",
+        "<script type=\"text/babel\" src=\"index.js\"></script>"
+      ]
+    },
+    "html5": {
+        "prefix": "html5",
+        "body":[
+            "<!DOCTYPE html>",
+            "<html lang=\"$1en\">",
+            "\t<head>",
+            "\t\t<title>$2</title>",
+            "\t\t<meta charset=\"UTF-8\">",
+            "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+            "\t\t<link href=\"$3css/style.css\" rel=\"stylesheet\">",
+            "\t</head>",
+            "\t<body>",
+            "\t${4}",
+            "\t</body>",
+            "</html>"
+        ]
+   }
+}
+
+

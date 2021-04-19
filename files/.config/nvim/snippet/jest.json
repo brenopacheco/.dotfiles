@@ -1,0 +1,4 @@
+{
+    "jest-describe":  { "prefix": "desc", "body": ["describe('${1:what}', () => {", "\t${1:${TM_FILENAME_BASE}}", "})", ""] },
+    "jest-testBlock": { "prefix": "test", "body": ["test('should ${1:what}', ${2:async} () => {", "\t${1:${TM_FILENAME_BASE}}", "})", ""] }
+}

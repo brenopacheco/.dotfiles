@@ -1,0 +1,15 @@
+#!/bin/bash
+# updates cmus according to musics in Albums folder
+
+# verify that cmus has the binding for update,
+# if not, add the binding
+cmd='bind common u shell ~/bin/cmus-update'
+grep "$cmd" ~/.config/cmus/autosave
+if [[ $? != 0 ]]; then
+	echo " binding is not bound "
+	echo "$cmd" >> ~/.config/cmus/autosave
+fi
+
+cmus-remote -C clear
+cmus-remote -C "add ~/Music/Albums"
+cmus-remote -C "update-cache -f"

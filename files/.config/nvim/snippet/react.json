@@ -1,0 +1,11 @@
+{
+    "react-fragment":      { "prefix": "fragment",      "body": [ "<React.Fragment>\n\t${1:${TM_SELECTED_TEXT}}\n</React.Fragment>"               ] },
+    "react-class":         { "prefix": "class-name",    "body": [ "className=\"${1}\""                                                            ] },
+    "react-render":        { "prefix": "render",        "body": [ "render() {\n\treturn (\n\t\t<React.Fragment>\n\n\t\t</React.Fragment>\n\t)\n}" ] },
+    "react-dom":           { "prefix": "dom",           "body": [ "ReactDOM.render(\n\t<${1:App} />,\n\tdocument.getElementById('root')\n);"      ] },
+    "react-component":     { "prefix": "comp",          "body": [ "const ${1:Component} = (${2:props}) => {\n\t${3:/* state */}\n\treturn (\n\t\t<>\n\t\t\t${4:/* content */}\n\t\t</>\n\t)\n}" ] },
+    "react-template":      { "prefix": "template",      "body": [ "import React from 'react'\n\nconst ${1:Component} = (${2:props}) => {\n\treturn (\n\t\t<React.Fragment>\n\t\t\t${0:/* content */}\n\t\t</React.Fragment>\n\t)\n};\n\nexport default $1;" ] },
+    "react-import":        { "prefix": "import-react",  "body": [ "import React, {\n\tuseCallback,\n\tuseContext,\n\tuseDebugValue,\n\tuseEffect,\n\tuseMemo,\n\tuseReducer,\n\tuseRef,\n\tuseState\n} from \"react\";" ] },
+    "react-import-dom":    { "prefix": "import-dom",    "body": [ "import ReactDom from \"react-dom\";" ] },
+    "react-import-router": { "prefix": "import-router", "body": [ "import {\n\tBrowserRouter,\n\tLink,\n\tNavLink,\n\tRoute,\n\tSwitch,\n} from \"react-router-dom\";" ] }
+}

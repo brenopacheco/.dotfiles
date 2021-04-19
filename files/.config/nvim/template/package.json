@@ -1,0 +1,20 @@
+{
+  "name": "lint",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": "index.js",
+  "scripts": {
+    "lint:css": "csslint --format=compact src/**/*.css",
+    "lint:js":  "eslint  --format=compact src/**/*.js",
+    "lint:ts":  "tsc     --format=compact src/**/*.css",
+    "http-server": "http-server ./dist -p ${PORT:-8080}",
+    "livereload": "livereload ./dist -d -e html,css,js",
+    "start:static": "npm run watch & npm run serve",
+    "tailwind:build": "tailwindcss build tailwind.css -o dist/styles.css",
+    "test": "jest --silent"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

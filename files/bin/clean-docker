@@ -1,0 +1,8 @@
+#/bin/bash
+# stops docker containers and cleans all
+
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker rmi $(docker ps -q)
+docker system prune
+docker system prune -a

@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# generate some files and install base packages on new install
+
+echo 'generate dwm lightdm launcher'
+cat<<EOF > /tmp/dwm.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Name=dwm
+Comment=Dynamic window manager
+Exec=dwm
+Icon=dwm
+Type=XSession
+EOF
+sudo chown root:root /tmp/dwm.desktop
+sudo  mv /tmp/dwm.desktop /usr/share/xsessions/dwm.desktop
+
+echo 'enable tap to touch'
+cat<<EOF > /tmp/30-touchpad.conf
+Section "InputClass"
+    Identifier "touchpad"
+    Driver "libinput"
+    MatchIsTouchpad "on"
+    Option "Tapping" "on"
+    Option "TappingButtonMap" "lmr"
+EndSection
+EOF
+sudo chown root:root /tmp/30-touchpad.conf
+sudo  mv /tmp/30-touchpad.conf /etc/X11/xorg.conf.d/30-touchpad.conf
+
+echo 'installing packages'
+sudo pacman -S  \
+    arandr autoconf automake base-devel bash-completion clang conky \
+    ctags dmenu dunst fd feh file-roller fzf gnome-calculator \
+    inotify-tools inotify-tools lua51 luajit lxappearance-gtk3 m4 make \
+    matcha-gtk-theme ncdu nodejs npm npm pa-applet \
+    papirus-maia-icon-theme pass patch pavucontrol perl-rename pkgconf \
+    ripgrep rofi st stow sxiv thunar tmux trayer tree udiskie vim vlc \
+    xclip xcursor-breeze xdotool xorg-xbacklight xorg-xev xorg-xmodmap \
+    xorg-xkill xorg-xsetroot yay zathura zathura-pdf-mupdf \
+    moreutils renameutils
+
+sudo pacman -Rns st-manjaro
+
+echo 'installing dwm and st'
+cd $HOME/Desktop
+git clone https://github.com/brenopacheco/dwm && cd dwm && \
+    sudo make clean install && cd ../
+git clone https://github.com/brenopacheco/st && cd st && \
+    sudo make clean install && cd ../
+
+echo 'installing yay packages'
+# yay gotop-bin htop-vim-git lf-bin neovim-nightly-bin rtl8821ce-dkms-git
+yay -S gotop-bin htop-vim-git lf-bin neovim-nightly-bin
+

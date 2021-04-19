@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# sync pass passwords into dotfiles
+
+while true; do
+    inotifywait -e modify -e move -e create -e delete $HOME/.password-store
+    rm $HOME/.passwords/pass.tar.gz.asc
+    tar -cz $HOME/.password-store | gpg -ea -o $HOME/.passwords/pass.tar.gz.asc
+done

@@ -1,0 +1,7 @@
+# Returns executables in $PATH
+
+OLD_IFS=$IFS
+IFS=:
+find $PATH -executable -printf "%f\n" 2>/dev/null
+IFS=$OLD_IFS
+exit 0

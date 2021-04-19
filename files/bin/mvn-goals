@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# check if it is root of maven project
+test -f pom.xml || { echo "Not a mvn project." >&2; exit 1; }
+
+# make cache dir
+CACHE_DIR=$HOME/.cache/mvn
+test -d $CACHE_DIR || mkdir $CACHE_DIR
+
+# generate dependencies file
+DEPENDENCIES=$CACHE_DIR/$(realpath . | sed 's/\//\./g' | sed 's/^.//')
+function _update() {
+    mvn -B -q dependency:list -DoutputFile=$DEPENDENCIES
+    sed -i -n 's/   //p' $DEPENDENCIES
+}
+
+test ! -f $DEPENDENCIES -o $DEPENDENCIES -ot pom.xml && _update
+
+# open selection list for the dependencies
+dependency=$(cat $DEPENDENCIES | fzf)
+
+packagePath=$(echo $dependency | cut -d':' -f1 | sed -e 's/\./\//g')
+packageName=$(echo $dependency | cut -d':' -f2)
+version=$(echo $dependency | cut -d':' -f4)
+path=$packagePath/$packageName/$version
+jar=$packageName-$version.jar
+
+echo "packagePath: $packagePath"
+echo "packageName: $packageName"
+echo "version: $version"
+echo "path: $path"
+echo "jar: $jar"
+
+# shows the public methods of the classes.
+# classes=$(jar tf /home/maren/.m2/repository/$path/$jar | grep class)
+# class=$(echo $classes | fzf)
+# output=$(javap  jar:file:///home/maren/.m2/repository/$path/$jar!/$classFile)
+# bat --line-range 2:9999 -l Java <<<  $output
+
+

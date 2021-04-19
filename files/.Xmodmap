@@ -1,0 +1,27 @@
+! sets capslock as ctrl
+! removes left shift and left ctrl
+clear lock
+clear control
+keycode 66 = Control_L
+keycode 37 = 
+keycode 50 = 
+add Control = Control_L
+
+! sets altgr as insert
+clear mod5
+keycode 108 = Shift_L
+
+! other keybindings
+keycode 105 = slash question
+keycode 59 = comma less
+keycode 60 = period greater
+keycode 61 = semicolon colon 
+keycode 20 = minus underscore
+keycode 49 = apostrophe quotedbl
+keycode 94 = backslash bar
+keycode 35 = bracketleft braceleft
+keycode 51 = bracketright braceright
+keycode 11 = 2 at
+keycode 21 = dead_acute dead_grave 
+keycode 48 = dead_tilde dead_circumflex 
+keycode 47 = parenright parenleft

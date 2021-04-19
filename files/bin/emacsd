@@ -1,0 +1,11 @@
+#!/bin/bash
+# logs emacs daemon and restarts when needed
+
+exec &> >(tee -a /tmp/emacs.log)
+
+while true; do
+	# emacs --fg-daemon --with-x-toolkit=lucid
+	emacs --fg-daemon 
+	echo "Server was shut down"
+done
+
