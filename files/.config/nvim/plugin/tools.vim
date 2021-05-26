@@ -22,6 +22,6 @@ fun! s:trim()
 endf
 
 
-augroup TrimWhitespace
-    autocmd BufWritePre * call s:trim()
-augroup end
+" augroup TrimWhitespace
+"     autocmd BufWritePre * call s:trim()
+" augroup end

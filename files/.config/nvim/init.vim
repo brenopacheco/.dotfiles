@@ -9,10 +9,18 @@
 "  |_|_| |_|_|\__(_)_/ |_|_| |_| |_|
 
 " TODO: 1. fix or alter Make for easily running targets
-"       2. run node debugger and jest tests debug
-"       3. fix lsp#format()
-"       4. add notes plugin
+"       2. run node debugger and jest/mocha tests debug
+"       3. fix lsp#format() - make use of editorconfig
+"       10. add documentation to files
+"       6. mapping/command to browse docs
+"       4. add notetaking plugin
+"       8. revisit autoload
 "       5. add command to browse templates
+"       7. revisit "how"
+"       9. rethink plugin structure
+"       10. revisit debugger
+"       11. revisit fzf & lsp integration or take a look at telescope
+"       12. learn how best to use git
 
 
 set secure
@@ -46,13 +54,13 @@ call plug#begin(globals#get('plugdir'))
     Plug 'diepm/vim-rest-console'           " CURL tool for http requests
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
-    " Plug 'hrsh7th/nvim-compe'               " good completion plugin
     Plug 'brenopacheco/nvim-compe'
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
     Plug 'glepnir/lspsaga.nvim'             " lsp UI utils
     Plug 'cohama/lexima.vim'                " auto close {} () / smarter
     Plug 'vim-test/vim-test'                " run tests
     Plug 'brenopacheco/vim-quickhelp'       " call :Help for visual help
+    Plug 'brenopacheco/vim-hydra'       " call :Help for visual help
     Plug 'junegunn/goyo.vim'                " like vscode writer mode
     Plug 'junegunn/limelight.vim'           " lights only hovered block
     Plug 'haishanh/night-owl.vim'           " theme
@@ -64,11 +72,6 @@ call plug#begin(globals#get('plugdir'))
     Plug 'puremourning/vimspector'
     Plug 'mfussenegger/nvim-dap'            " debugger lsp equivalent
     Plug 'theHamsta/nvim-dap-virtual-text'
-
-    Plug 'nvim-lua/popup.nvim'
-    " Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim'
-
 
     " Plug 'mfussenegger/nvim-jdtls'
     " Plug 'neomake/neomake'

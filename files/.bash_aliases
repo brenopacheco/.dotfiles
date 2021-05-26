@@ -1,5 +1,14 @@
-# lua
-alias lua="lua5.1"
+# docker
+alias dc='docker-compose'
+alias dcd='docker-compose down'
+alias dcu='docker-compose up'
+alias dc='docker container ls'
+alias di='docker image ls'
+alias dps='docker ps -a'
+alias dr='docker stop $(docker ps -aq)'
+alias d='docker'
+alias dl='docker logs'
+# TODO: see commands and add here
 
 
 # git
@@ -9,30 +18,50 @@ alias gm='git commit'
 alias gp='git push'
 alias gw='git-watch'
 alias gb='git branch'
+alias gf='git fetch'
+alias g='git'
 gc() {
     git checkout $(git branch -vva | fzf --reverse | sed 's/^[^a-zA-Z]\+//' | awk '{printf $1}')
 }
+# TODO: better commands
 
 
-alias pstree="ps -aef --forest"
-alias v="nvim"
-alias vv="cd ~/.config/nvim"
+alias pstree='ps -aef --forest'
+alias v='nvim'
+alias f='fork'
+alias so='source'
+# TODO: how to remember that?
 
 
 # custom
-alias rename='perl-rename'
-alias vim='nvim'
-alias mutt='neomutt'
-alias disks='gnome-disks'
-alias dmenu='dmenu_color'
 alias pi='sudo pacman -Syu'
 alias pac='sudo pacman -S'
 alias pr='sudo pacman -Rncs'
 alias pq='list-pkgs'
 alias yi='yay -Syu'
 alias yr='yay -Rncs'
+alias ll='ls -l'
+alias la='ls -la'
+
 alias reload='source ~/.bashrc'
 alias usage='du -sch .[!.]* * |sort -h'
+
+
+
+# program aliasing
+alias python='python3'
+alias lua='lua5.1'
+alias rename='perl-rename'
+alias vim='nvim'
+alias mutt='neomutt'
+alias dmenu='dmenu_color'
+
+# coloring
+alias bat='bat --color=always'
+alias ls='ls -F --color=auto -1'
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias less='less -r'
 
 # directories cd's
 alias dotfiles='cd ~/.dotfiles'
@@ -45,17 +74,4 @@ alias desk='cd ~/Desktop'
 alias down='cd ~/Downloads'
 alias pics='cd ~/Pictures'
 alias bin='cd ~/.dotfiles/bins/bin'
-
-# configurations for default cmds
-alias joe="joe-gitignore"
-alias scp='scp -F ~/.ssh/config'
-alias python='python3'
-alias ll='ls -l'
-alias la='ls -la'
-
-# colors for default cmds
-alias bat='bat --color=always'
-alias ls='ls -F --color=auto -1'
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias less='less -r'
+alias vv='cd ~/.config/nvim'

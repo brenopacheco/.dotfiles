@@ -29,6 +29,7 @@
     xmap     <Backspace> <Plug>(wildfire-water)
     nnoremap <leader>-   :Tree<CR>
     nnoremap <leader>!   :Fork<CR>
+    nnoremap <leader>Q   :qa!<CR>
     " runtime macros/justify.vim
     " xmap gp :call Justify('tw',4)<CR>
     " xmap gl :s/\s\+/ /g<CR>
@@ -77,7 +78,6 @@
     nnoremap <C-w>e :enew<CR>
     nnoremap <C-w>m <C-W>_<C-W>\|
     nnoremap <C-w>e :enew<CR>
-    nnoremap <C-w>t :tabnew<CR>
 " PLUG
     nnoremap <leader>pi <cmd>PlugInstall<CR>
     nnoremap <leader>pc <cmd>PlugClean<CR>
@@ -87,31 +87,29 @@
 " HELP
     nnoremap <leader>w? <cmd>call quickhelp#toggle("window")<CR>
     nnoremap <space>?   <cmd>call quickhelp#toggle("noft")<CR>
-" SEARCH
-    xnoremap <leader>* :<c-u>call quickfix#global_star()<CR>
+" GREP/SEARCH
+    xnoremap <leader>* <cmd>call quickfix#global_star()<CR>
     nnoremap <leader>* <cmd>call quickfix#global_star()<CR>
     nnoremap <leader>/ <cmd>call quickfix#global_grep()<CR>
-    xnoremap q*        :<c-u>call quickfix#buffer_star()<CR>
+    xnoremap q*        <cmd>call quickfix#buffer_star()<CR>
     nnoremap q*        <cmd>call quickfix#buffer_star()<CR>
     nnoremap q/        <cmd>call quickfix#buffer_grep()<CR>
     nnoremap qf        <cmd>call quickfix#filter(input("QF/"))<CR>
-    nnoremap qo        <cmd>call quickfix#source()<CR>
+    nnoremap qs        <cmd>call quickfix#source()<CR>
     nnoremap qp        <cmd>call quickfix#colder()<CR>
     nnoremap qn        <cmd>call quickfix#cnewer()<CR>
 " MISC
-    " vnoremap <expr><leader>s tools#substitute()
-    " nnoremap <leader>s       tools#substitute()<CR>
-    " nnoremap <leader>g       tools#global()<CR>
-    nnoremap <expr><leader>s ':%s/'.expand('<cword>').'/'.expand('<cword>').'/g<left><left>'
-    xnoremap <leader>s "zy:%s/<c-r>z/<c-r>z/g<left><left>
-    " nnoremap <expr><leader>gg ":g//y A \| tabnew \| setlocal bt=nofile \| put! a\<Home>\<Right>\<Right>"
-" MAKE
-
-    nnoremap #          :call make#eval_line()<CR>
-    xnoremap #          :call make#eval_range()<CR>
-    nnoremap <leader>#  :call make#eval_buffer()<CR>
-    nnoremap <leader>m  :call make#lint()<CR>
-    nnoremap <leader>fm :call make#build()<CR>
+    xnoremap <leader>s <cmd>call tools#buffer_substitute()<CR>
+    nnoremap <leader>s <cmd>call tools#buffer_substitute()<CR>
+    xnoremap <leader>S <cmd>call tools#global_substitute()<CR>
+    nnoremap <leader>S <cmd>call tools#global_substitute()<CR>
+    nnoremap <leader>g <cmd>call tools#global_print()<CR>
+" MAKE/EVAL
+    nnoremap #          <cmd>call make#eval_line()<CR>
+    xnoremap #          <cmd>call make#eval_range()<CR>
+    nnoremap <leader>#  <cmd>call make#eval_buffer()<CR>
+    nnoremap <leader>m  <cmd>call make#lint()<CR>
+    nnoremap <leader>M  <cmd>call make#build()<CR>
 " LSP
     nnoremap <silent> <C-]>    <cmd>call lsp#goto_definition()<CR>
     nnoremap <silent> gd       <cmd>call lsp#goto_declaration()<CR>
@@ -121,6 +119,8 @@
     nnoremap <silent> go       <cmd>call lsp#goto_document_symbol()<CR>
     nnoremap <silent> gs       <cmd>call lsp#goto_workspace_symbol()<CR>
     nnoremap <silent><leader>= <cmd>call lsp#format()<CR>
+    xnoremap <silent><leader>= <cmd>call lsp#format()<CR>
+    xnoremap <silent>=         <cmd>call lsp#format()<CR>
     nnoremap <silent><leader>e <cmd>call lsp#toggle_diagnostics()<CR>
     nnoremap <silent>[e        <cmd>call lsp#goto_prev_diagnostic()<CR>
     nnoremap <silent>]e        <cmd>call lsp#goto_next_diagnostic()<CR>

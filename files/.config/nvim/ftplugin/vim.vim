@@ -14,7 +14,7 @@ setlocal comments=:\"
 setlocal commentstring=\"\ %s
 setlocal suffixesadd=.vim,.lua
 " setlocal keywordprg=:help
-setlocal iskeyword+=#
+" setlocal iskeyword+=#
 setlocal iskeyword-==
 
 let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde< fo< tw< com< cms< sua< kp< isk<'

@@ -7,7 +7,7 @@
     "js-let":         { "prefix": "let",     "body": [ "let ${1} = ${2:${TM_SELECTED_TEXT}};"]},
     "js-class":       { "prefix": "class",   "body": [ "class ${1:Class} {\n\t${2:${TM_SELECTED_TEXT}}\n}"]},
     "js-ctor":        { "prefix": "ctor",    "body": [ "constructor(${1:props}) {\n\t${2:super(props)}\n\t${3:${TM_SELECTED_TEXT}}\n}"]},
-    "js-fun":         { "prefix": "fun",     "body": [ "function ${1:fun}(${2:args}) {\n\t${3:${TM_SELECTED_TEXT}}\n}"]},
+    "js-fun":         { "prefix": "fun",     "body": [ "function ${1:fun}(${2:args}) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
     "js-afun":        { "prefix": "afun",    "body": [ "(${1:args}) => {\n\t${2:${TM_SELECTED_TEXT}}\n}"]},
     "js-cfun":        { "prefix": "cfun",    "body": [ "const ${1:Fun} = (${2:args}) => {\n\t${3:${TM_SELECTED_TEXT}}\n}"]},
     "js-method":      { "prefix": "method",  "body": [ "${1:fun}(${2:args}) {\n\t${3:${TM_SELECTED_TEXT}}\n}"]},

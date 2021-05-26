@@ -127,3 +127,5 @@ fun! s:enbox(list)
     call add(box, "┗" . repeat("━", width+2) . "┛")
     return box
 endf
+
+let word = "wow"

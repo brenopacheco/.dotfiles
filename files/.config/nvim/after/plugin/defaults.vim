@@ -60,13 +60,14 @@ set pumheight     =12                     " max num of items in popup menu
 set pumwidth      =15                     " min popup menu width
 set relativenumber                        " set relative numbers
 set report=0                              " always report on :substitute
-set scrolloff     =999                    " keep cursor centered
+set scrolloff     =10                    " keep cursor centered
 set shiftwidth    =4                      " number of spaces used by = op.
 set shortmess    +=cs                     " remove annoying messages
 set showbreak     =↪\                     " symbol for wrapped lines
 set showcmd                               " show commands being used
 set showmatch                             " highlights matches [{()}]
-set signcolumn    =auto                   " show signcolumns when available
+" set signcolumn    =auto                   " show signcolumns when available
+set signcolumn=yes:1
 set smartcase                             " smart case for search
 set suffixesadd   =                       " ...
 set splitright                            " :vsp creates right split

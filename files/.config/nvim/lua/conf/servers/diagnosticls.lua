@@ -2,7 +2,7 @@
 -- Author: Breno Leonhardt Pacheco
 -- Email: brenoleonhardt@gmail.com
 -- Last Modified: February 22, 2021
--- Description: 
+-- Description:
 
 local config = {}
 
@@ -48,7 +48,7 @@ config.shellcheck = {
     }
 }
 
-config.vint = {
+config.vint = { -- needs version: 0.4a3. pip3 install --pre vim-vint
     command = "vint",
     debounce = 100,
     args = { "--enable-neovim", "-" },

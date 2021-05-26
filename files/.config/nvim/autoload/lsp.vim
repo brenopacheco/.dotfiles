@@ -100,59 +100,77 @@ endf
 
 " ACTIONS ===================================================================
 
-fun! lsp#code_action(range)
-    if &ft ==# 'java'
-        lua vim.lsp.buf.code_action()
-        return
-    endif
-    if a:range
-        '<,'>lua require('lspsaga.codeaction').range_code_action()
-    else
-        lua require('lspsaga.codeaction').code_action()
-    endif
+fun! lsp#code_action(range) abort
+    try
+        if &ft ==# 'java'
+            lua vim.lsp.buf.code_action()
+            return
+        endif
+        if a:range
+            '<,'>lua require('lspsaga.codeaction').range_code_action()
+        else
+            lua require('lspsaga.codeaction').code_action()
+        endif
+    catch /.*/
+        echohl WarningMsg | echo 'No action here' | echohl None
+    endtry
 endf
 
 fun! lsp#rename()
     lua require('lspsaga.rename').rename()
 endf
 
-" TODO: add ranged option
 fun! lsp#format() range
-    echomsg "Formatting..."
-    if !s:lsp_format()
-        if !s:equalprg_format()
-            call s:indentexpr_format()
-        endif
+    let visual = v:false
+    if mode() == 'v'
+        exe "normal! \<ESC>"
+        let visual = v:true
+    endif
+    if !s:equalprg_format(visual)
+        call s:indentexpr_format(visual)
     endif
 endf
 
-fun! s:lsp_format()
-    echomsg "Formatting with LSP..."
-    if !luaeval('vim.lsp.buf.formatting_sync()')
-        echomsg "LSP failed..."
-        return v:false
-    endif
-    return v:true
+fun! s:lsp_format(visual)
+    " TODO: this doesnt work right. gotta be redone
 endf
 
-fun! s:equalprg_format()
-    echomsg "Formatting with equalprg..."
+fun! s:equalprg_format(visual) range
     if &equalprg ==# "" | return v:false | endif
-    silent exec '1,$! ' . &equalprg
+    let linenr = line('.')
+    let err = ''
+    if a:visual
+        silent exec "'<,'>!" . &equalprg
+    else
+        silent exec '1,$! ' . &equalprg
+    endif
+    let err = getbufline(bufnr(), 1, '$')
     if v:shell_error != 0
         undo
-        echomsg 'Equalprg ' . &equalprg . ' failed...'
+        exec linenr
+        echohl WarningMsg 
+        echomsg '> Equalprg ' . &equalprg . ' failed...'
+        echohl None
+        for line in err
+            echoerr line
+        endfor
         return v:false
     endif
+    exec linenr
+    echohl WarningMsg | echomsg '> Formated with ' . &equalprg | echohl None
     return v:true
 endf
 
-fun! s:indentexpr_format()
-    echomsg "Formating with indentexpr..."
+fun! s:indentexpr_format(visual)
     let l:equalprg = &equalprg
     set equalprg=
-    silent! norm! mzggVG=`z
+    if a:visual
+        norm! =
+    else
+        silent! norm! mzggVG=`z
+    endif
     let &equalprg = l:equalprg
+    echohl WarningMsg | echomsg "> Formated with indentexpr" | echohl None
     return v:true
 endf
 

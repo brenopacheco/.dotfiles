@@ -32,17 +32,29 @@ sudo pacman -S  \
     arandr autoconf automake base-devel bash-completion clang conky \
     ctags dmenu dunst fd feh file-roller fzf gnome-calculator \
     inotify-tools inotify-tools lua51 luajit lxappearance-gtk3 m4 make \
-    matcha-gtk-theme ncdu nodejs npm npm pa-applet \
+    matcha-gtk-theme ncdu nodejs npm pa-applet \
     papirus-maia-icon-theme pass patch pavucontrol perl-rename pkgconf \
     ripgrep rofi st stow sxiv thunar tmux trayer tree udiskie vim vlc \
     xclip xcursor-breeze xdotool xorg-xbacklight xorg-xev xorg-xmodmap \
     xorg-xkill xorg-xsetroot yay zathura zathura-pdf-mupdf \
-    moreutils renameutils
+    moreutils renameutils python-pip ninja
 
+echo 'installing language servers / linters / formatters'
+sudo pacman -S shellcheck tidy 
+pip install yamllint pylint cpplint 
+pip install --pre vim-vint  # version 4.3
+npm i -g bash-language-server vscode-css-languageserver-bin \
+    vscode-html-languageserver-bin vscode-json-languageserver typescript \
+    typescript-language-server vim-language-server yaml-language-server \
+    diagnostic-languageserver http-server livereload eslint tsc csslint \
+    markdownlint stylelint standard prettier
+./files/bin/sumneko_setup
+
+
+
+echo "installing dwm and st"
 sudo pacman -Rns st-manjaro
-
-echo 'installing dwm and st'
-cd $HOME/Desktop
+cd "$HOME"/Desktop || exit
 git clone https://github.com/brenopacheco/dwm && cd dwm && \
     sudo make clean install && cd ../
 git clone https://github.com/brenopacheco/st && cd st && \

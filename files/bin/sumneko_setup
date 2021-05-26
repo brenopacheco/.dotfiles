@@ -1,11 +1,12 @@
 #!/bin/bash
 
-cd ~/.cache/nvim/lsp
+[ ! -d "$HOME"/.cache/nvim/lsp ] && mkdir -p "$HOME"/.cache/nvim/lsp
+cd ~/.cache/nvim/lsp || exit
 git clone https://github.com/sumneko/lua-language-server.git
-cd lua-language-server
+cd lua-language-server || exit
 git checkout 38939bd2c062c4a04e0b7cc84f2d92dec61a80b6
 git submodule update --init --recursive
-cd 3rd/luamake
+cd 3rd/luamake || exit
 ninja -f ninja/linux.ninja
 cd ../..
 ./3rd/luamake/luamake rebuild

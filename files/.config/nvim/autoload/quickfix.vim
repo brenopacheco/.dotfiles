@@ -6,22 +6,26 @@
 
 " SEARCH ====================================================================
 
-fun! quickfix#global_grep()
-    call feedkeys(":grep! '' " . utils#root() .
-        \ '| copen | wincmd p' ."\<Home>".repeat("\<Right>", 7))
+fun! quickfix#global_grep(...)
+    if a:0 > 0
+        let pat = a:1
+        exec "silent grep! '".pat."' " . utils#root() | copen | wincmd p
+    else
+        call feedkeys(":silent grep! '' " . utils#root() .
+            \ '| copen | wincmd p' ."\<Home>".repeat("\<Right>", 14))
+    endif
 endf
 
-" TODO: NOT WORKING. gotta escape #
-""
 " performs grep on all project files using word under cursor.
-" may be called in visual mode. if in visual mode, map as <expr>
+" may be called in visual mode. if in visual mode, map as xnoremap <cmd>
 fun! quickfix#global_star()
     let word = expand('<cword>')
-    if mode() ==# 'n'
-        let word = range#text()
+    if mode() == 'v'
+        norm! "xy
+        let word = @x
     endif
     let pattern = substitute(word, '\(#\|\.\)', '\\\1', 'g')
-    let cmd = "grep! '".pattern."' " . utils#root()
+    let cmd = "silent grep! '".pattern."' " . utils#root()
     echomsg cmd
     exec cmd
     silent copen | wincmd p
@@ -36,15 +40,16 @@ endf
 
 ""
 " performs vimgrep on the file using word under cursor.
-" may be called in visual mode. if in visual mode, map as <expr>
+" may be called in visual mode. if in visual mode, map as xnoremap <cmd>
 fun! quickfix#buffer_star() abort
+    let word = expand('<cword>')
     if mode() ==# 'v'
-        return "\"zy:vimgrep/\<C-r>z/j % \| copen \| wincmd p\<CR>"
-    else
-        let cmd = 'vimgrep/'.expand('<cword>').'/j %'
-        echo cmd | exec cmd
-        silent copen | wincmd p
+        norm! "xy
+        let word = @x
     endif
+    let cmd = 'silent vimgrep/'.word.'/j %'
+    echo cmd | exec cmd
+    silent copen | wincmd p
 endf
 
 ""
@@ -82,11 +87,11 @@ fun! quickfix#prev()
 endf
 
 fun! quickfix#cnewer()
-    silent! cnewer<CR>
+    silent! cnewer
 endf
 
 fun! quickfix#colder()
-    silent! colder<CR>
+    silent! colder
 endf
 
 " UTILS ===================================================================

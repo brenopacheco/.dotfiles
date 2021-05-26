@@ -7,7 +7,38 @@
 " Example usage:
 " command! -range Echo call range#run({ text -> execute('echomsg ' . text) })
 
-command! -nargs=0 -range Echo echomsg range#run({ text -> text })
+" command! -nargs=0 -range Echo echomsg range#run({ text -> execute('echomsg ' . text) })
+" " TODO: not working
+
+""
+" Get the start and end position of a visual selection. Must be in visual mode
+fun! range#get() range
+    if mode() != "v"
+        throw "Not in visual mode"
+    endif
+    exe "normal! \<ESC>"
+    let start = getpos("'<")
+    let end   = getpos("'>")
+    if end[1] < start[1]
+        let tmp = end
+        let end = start
+        let start = end
+    endif
+    let pos = 
+        \ {
+        \   "start": {
+        \     "lnum": start[1],
+        \     "col":  start[2]
+        \   },
+        \   "end": {
+        \       "lnum": end[1],
+        \       "col":  end[2]
+        \   },
+        \ }
+    normal gv
+    return pos
+endf
+
 
 ""
 " Run a function using the text from the last visual selection.
