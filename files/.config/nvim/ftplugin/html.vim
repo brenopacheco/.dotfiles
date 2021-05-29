@@ -1,10 +1,10 @@
-if exists("b:did_ftplugin")
+if exists('b:did_ftplugin')
   finish
 endif
 let b:did_ftplugin = 1
 
 compiler tidy
-setlocal equalprg=prettier\ --parser\ html\ --tab-width\ 4
+setlocal equalprg=prettier\ --parser\ html
 setlocal foldmethod=marker
 setlocal foldmarker=<,/>
 " setlocal foldexpr=
@@ -19,5 +19,5 @@ setlocal matchpairs+=<:>
 
 call tailwind#setup()
 
-let b:undo_ftplugin="setl mp< efm< ep< fdm< fmr< fde fo< tw< com< cms< sua<"
-    \ . " kp< isk< mps< dict<"
+let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde fo< tw< com< cms< sua<'
+    \ . ' kp< isk< mps< dict<'

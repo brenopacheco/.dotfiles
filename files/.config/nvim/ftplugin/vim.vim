@@ -13,7 +13,7 @@ setlocal textwidth=78
 setlocal comments=:\"
 setlocal commentstring=\"\ %s
 setlocal suffixesadd=.vim,.lua
-" setlocal keywordprg=:help
+setlocal keywordprg=:help
 " setlocal iskeyword+=#
 setlocal iskeyword-==
 

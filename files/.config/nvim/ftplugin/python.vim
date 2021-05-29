@@ -1,3 +1,4 @@
+" TODO: fix here
 if exists('b:did_ftplugin')
   finish
 endif
@@ -33,5 +34,4 @@ set wildignore+=*.pyc
 
 setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=8
 
-" setlocal keywordprg=pydoc
-
+setlocal keywordprg=pydoc
