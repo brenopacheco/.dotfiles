@@ -1,6 +1,10 @@
+alias ns='npm start'
+alias nt='npm test'
+
 # docker
 alias dc='docker-compose'
 alias dcd='docker-compose down'
+alias dcb='docker-compose build'
 alias dcu='docker-compose up'
 alias dc='docker container ls'
 alias di='docker image ls'

@@ -20,7 +20,7 @@ let g:vsnip_snippet_dirs = [ globals#get('snippetdir') ]
 let g:vsnip_snippet_dir  = globals#get('snippetdir')
 let g:vsnip_filetypes = {
     \ 'javascript':      [ 'html', 'node',               'react', 'react-js',    'express' ],
-    \ 'typescript':      [ 'html', 'node', 'javascript', 'react', 'react-ts',    'express' ],
+    \ 'typescript':      [ 'node', 'javascript', 'express' ],
     \ 'javascriptreact': [ 'html', 'node', 'javascript', 'react', 'react-js'  ],
     \ 'typescriptreact': [ 'html', 'node', 'javascript', 'react', 'react-ts'  ],
     \ }

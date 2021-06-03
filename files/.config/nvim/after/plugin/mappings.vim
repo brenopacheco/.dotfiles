@@ -21,14 +21,14 @@
     nnoremap           :nohlsearch<CR>
     nnoremap <silent>    ]<space>  :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
     nnoremap <silent>    [<space>  :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
-    nmap     ""          0v$hS"
+    nmap     ""          ^v$hS"
     xmap     ga          :EasyAlign<cr>
     nmap     ga          :EasyAlign<cr>
     nmap     <CR>        <Plug>(wildfire-fuel)
     xmap     <CR>        <Plug>(wildfire-fuel)
     xmap     <Backspace> <Plug>(wildfire-water)
     nnoremap <leader>-   :Tree<CR>
-    nnoremap <leader>!   :Fork<CR>
+    nnoremap <leader><CR>   :Fork<CR>
     nnoremap <leader>Q   :qa!<CR>
     " runtime macros/justify.vim
     " xmap gp :call Justify('tw',4)<CR>
@@ -78,6 +78,7 @@
     nnoremap <C-w>e :enew<CR>
     nnoremap <C-w>m <C-W>_<C-W>\|
     nnoremap <C-w>e :enew<CR>
+    nnoremap <C-w>b :bd!<CR>
 " PLUG
     nnoremap <leader>pi <cmd>PlugInstall<CR>
     nnoremap <leader>pc <cmd>PlugClean<CR>
@@ -104,6 +105,7 @@
     xnoremap <leader>S <cmd>call tools#global_substitute()<CR>
     nnoremap <leader>S <cmd>call tools#global_substitute()<CR>
     nnoremap <leader>g <cmd>call tools#global_print()<CR>
+    nnoremap <leader>! <cmd>call term#spawn()<CR>
 " MAKE/EVAL
     nnoremap #          <cmd>call make#eval_line()<CR>
     xnoremap #          <cmd>call make#eval_range()<CR>

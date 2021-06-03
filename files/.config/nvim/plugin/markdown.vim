@@ -20,10 +20,13 @@ let s:reload_port = 35729
 let s:outdir = '/tmp/marked'
 let s:outpath = s:outdir . '/index.html'
 let s:logpath = s:outdir . '/log'
+let s:csspath = $HOME . '/.config/nvim/template/markdown.css'
+let s:stylesheet = "<link href='./markdown.css' rel='stylesheet'></link>"
 
 fun! s:transpile() abort
     let filepath = expand('%:p')
     call system('marked ' . filepath . ' > ' . s:outpath)
+    call system('echo "' . s:stylesheet . '" >> ' . s:outpath)
 endf
 
 fun! s:shutdown() abort
@@ -35,8 +38,8 @@ endf
 fun! s:startup() abort
     call system('http-server ' . s:outdir . ' -p ' . s:server_port
         \ . ' 2>&1 >> '.s:logpath.' &')
-    call system('livereload ' . s:outdir . ' -p ' . s:reload_port
-        \ . ' --wait 300 2>&1 >> ' . s:logpath . ' &')
+    call system('livereload -w 300 ' . s:outdir . ' -p ' . s:reload_port
+        \ . ' 2>&1 >> ' . s:logpath . ' &')
 endf
 
 fun! s:setup() abort
@@ -48,6 +51,8 @@ fun! s:setup() abort
     call system('lsof -i:' . s:server_port)
     if v:shell_error
         call s:startup()
+        echomsg 'cp ' . s:csspath . ' ' . s:outdir
+        call system('cp ' . s:csspath . ' ' . s:outdir)
     endif
     call s:toggle_hook(v:true)
     call s:transpile()

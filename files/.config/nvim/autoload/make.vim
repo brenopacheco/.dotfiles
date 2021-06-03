@@ -135,7 +135,9 @@ endf
 " EVAL FUNCTIONS ============================================================
 fun! s:eval(what) abort
     if &ft ==# 'vim' || &ft ==# ''
-        exec ':' a:what
+        let cmd = ':' . substitute(a:what, '^\s\+', '', '')
+        echomsg cmd
+        exec cmd
         return
     endif
     let content = split(a:what, "\n")

@@ -17,7 +17,7 @@ command! Lf call <SID>open()
 function! s:exit(job_id, code, event)
     if a:code == 0
         let buffer = bufnr()
-        silent exec s:last_buffer . 'b'
+        " silent exec s:last_buffer . 'b'
         silent exec buffer . 'bw!'
     endif
     try

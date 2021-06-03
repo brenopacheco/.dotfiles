@@ -6,11 +6,11 @@
 
 fun! tools#buffer_substitute()
     let word = expand('<cword>')
-    if mode() == 'v'
+    if mode() ==? 'v'
         norm! "xy
         let word = @x
     endif
-    call feedkeys(':%s/'.word.'//g'. "\<Left>\<Left>")
+    call feedkeys(':%s/'.word.'/'.word.'/g'. "\<Left>\<Left>")
 endf
 
 " not very cool. cannot see all changes
@@ -18,7 +18,7 @@ fun! tools#global_substitute()
     let word = expand('<cword>')
     call quickfix#global_grep(word)
     wincmd p
-    call feedkeys(':cdo %s/'.word.'//g'. "\<Left>\<Left>")
+    call feedkeys(':cdo %s/'.word.'/'.word.'/g'. "\<Left>\<Left>")
 endf
 
 ""
