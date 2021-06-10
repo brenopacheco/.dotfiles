@@ -30,6 +30,20 @@ fun! utils#root(...)
 endf
 
 ""
+" Returns the root of the current npm project
+fun! utils#npm_root()
+    let dir = getcwd()
+    while dir !=# '/'
+        let files = systemlist('ls ' . dir)
+        if index(files, 'package.json') > -1
+            return dir
+        endif
+        let dir = substitute(dir, '[^\/]\+\(\/\)\?$', '', '')
+    endwhile
+    return v:false
+endf
+
+""
 " return file path relative to root
 fun! utils#path()
     return substitute(expand('%:p'), utils#root(), '', '')

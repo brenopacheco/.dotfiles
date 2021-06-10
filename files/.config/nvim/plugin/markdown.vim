@@ -47,6 +47,10 @@ fun! s:setup() abort
         echoerr 'File is not markdown'
         return
     endif
+    if !executable('marked')
+        echoerr 'command "marked" not found.'
+        return
+    endif
     call system('test -d ' . s:outdir . ' . || mkdir -p ' . s:outdir)
     call system('lsof -i:' . s:server_port)
     if v:shell_error

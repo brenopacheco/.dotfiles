@@ -179,7 +179,7 @@ function fzf-dir(){
 	OPTS="--height 100% --preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
 	# CMD="find ~ -type d 2>/dev/null | fzf $OPTS"
-	CMD="fd . ~ -HIia -t d -j 5 2>/dev/null | fzf $OPTS"
+	CMD="fd . -HIia -t d -j 5 2>/dev/null | fzf $OPTS"
 	dir_to_go=$(eval $CMD)
 	[[ $dir_to_go ]] && cd $dir_to_go
 }

@@ -12,14 +12,12 @@ let s:term_buffer = -1
 function term#open(...)
     " let bufnr = index(map(range(1, bufnr('$')),
     "     \ {_,s -> getbufvar(s, '&ft')}), 'term') + 1
-    echomsg s:term_buffer
     if index(tabpagebuflist(), s:term_buffer) != -1
         silent exe bufwinnr(s:term_buffer) . 'close'
     endif
-    belowright vsp | exec s:term_buffer > 0 ? 
+    belowright vsp | exec (s:term_buffer > 0 && bufexists(s:term_buffer))  ? 
         \ s:term_buffer . 'b' : 'term ' . (a:0 ? a:1 : '')
     let s:term_buffer = bufnr()
-    echomsg s:term_buffer
 endfunction
 
 

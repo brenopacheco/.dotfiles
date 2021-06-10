@@ -1,10 +1,9 @@
 {
-  "extends": "/base_config",
   "include": ["**/*.ts"],
   "exclude": ["**/node_modules"],
-  "references": false,
-
   "compilerOptions": {
+    "types": ["node"],
+    "outDir": "./dist",
     "allowJs": true,
     "checkJs": true,
     "composite": true,
@@ -18,15 +17,10 @@
     "lib": ["es5"],
     "module": "commonjs",
     "noEmit": false,
-    "outDir": "dist",
-    "plugins": [
-      {
-        "name": "typescript-eslint-language-service"
-      }
-    ],
+    "plugins": [ { "name": "typescript-eslint-language-service" } ],
     "removeComments": true,
     "sourceMap": true,
-    "target": "es6",
+    "target": "es5",
 
     "alwaysStrict": true,
     "noImplicitAny": true,
@@ -38,18 +32,9 @@
     "strictPropertyInitialization": true,
 
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "src",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "paths": {},
     "preserveSymlinks": false,
-    "rootDirs": [],
-    "typeRoots": [],
-
-    "inlineSourceMap": true,
-    "inlineSources": true,
-    "mapRoot": "",
-    "sourceRoot": "",
 
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
