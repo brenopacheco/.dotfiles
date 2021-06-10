@@ -9,9 +9,9 @@
 fun! quickfix#global_grep(...)
     if a:0 > 0
         let pat = a:1
-        exec "silent grep! '".pat."' " . utils#root() | copen | wincmd p
+        exec "silent grep! '".pat."' " . utils#git_root() | copen | wincmd p
     else
-        call feedkeys(":silent grep! '' " . utils#root() .
+        call feedkeys(":silent grep! '' " . utils#git_root() .
             \ '| copen | wincmd p' ."\<Home>".repeat("\<Right>", 14))
     endif
 endf
@@ -25,7 +25,7 @@ fun! quickfix#global_star()
         let word = @x
     endif
     let pattern = substitute(word, '\(#\|\.\)', '\\\1', 'g')
-    let cmd = "silent grep! '".pattern."' " . utils#root()
+    let cmd = "silent grep! '".pattern."' " . utils#git_root()
     echomsg cmd
     exec cmd
     silent copen | wincmd p
@@ -112,7 +112,7 @@ endf
 ""
 " source all source files into qf
 fun! quickfix#source()
-    let files = utils#files(globals#get('extensions'))
+    let files = utils#files(globals#get('extensions'), utils#git_root())
     call setqflist(map(copy(files), '{ "filename": v:val }'))
     silent copen | silent wincmd p
 endf

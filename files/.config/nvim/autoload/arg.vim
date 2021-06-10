@@ -9,7 +9,7 @@
 " the arglist may be used for source file navigation,
 " but then there is PFiles and Classes...
 fun! arg#add() abort
-    let files = utils#files(input('argadd /', '', 'file'))
+    let files = utils#files(input('argadd /', '', 'file'), utils#git_root())
     exec 'arg ' . join(files, " ")
 endf
 

@@ -7,10 +7,12 @@
 
 ""
 " Return a list of files from the fd command run at the root of a git project
-" {pattern} the pattern to search for
-fun! utils#files(...)
-    let pat = a:0 == 0 ? '' : a:1
-    return systemlist('fd "'.pat.'" -H -j 2 -t f '.utils#root())
+" {pattern} the pattern to search for. if any, use v:false
+" {dir} the dir to search for files. if current dir, use v:false
+fun! utils#files(pat, dir)
+    let pat = a:pat != v:false ? a:pat : ''
+    let dir = a:dir != v:false ? a:dir : getcwd()
+    return systemlist('fd "' . pat . '" -H -j 2 -t f ' . dir)
 endf
 
 
@@ -19,7 +21,7 @@ endf
 " used .git as root indicator. if not a git directory, returns current
 " directory. throws exception if given directory is invalid.
 " [directory path] default: getcwd
-fun! utils#root(...)
+fun! utils#git_root(...)
     let dir = a:0 == 0 ? getcwd() : a:1
     if !isdirectory(expand(dir))
         throw 'Invalid directory.'
@@ -46,7 +48,7 @@ endf
 ""
 " return file path relative to root
 fun! utils#path()
-    return substitute(expand('%:p'), utils#root(), '', '')
+    return substitute(expand('%:p'), utils#git_root(), '', '')
 endf
 
 ""

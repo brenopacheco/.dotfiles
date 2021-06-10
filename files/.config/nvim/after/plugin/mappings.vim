@@ -53,9 +53,9 @@
     nnoremap <silent> <leader>f. <cmd>Files .<CR>
     nnoremap <silent> <leader>fg <cmd>GFiles?<CR>
     nnoremap <silent> <leader>fp <cmd>PFiles<CR>
+    nnoremap <silent> <leader>ff <cmd>FFiles<CR>
     nnoremap <silent> <leader>fa <cmd>Args<CR>
     nnoremap <silent> <leader>fb <cmd>Buffers<CR>
-    nnoremap <silent> <leader>ff <cmd>Sources<CR>
     nnoremap <silent> <leader>f/ <cmd>Rg<CR>
     nnoremap <silent> <leader>f* <cmd>exec 'Rg ' . expand("<cword>")<CR>
     nnoremap <silent> <leader>fs <cmd>Tags<CR>

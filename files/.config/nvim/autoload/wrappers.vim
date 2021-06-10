@@ -18,7 +18,7 @@ fun! s:options(preview, relative)
         let opt .= '--prompt "> " --preview "bat --color=\"always\" --plain {}"'
     endif
     if a:relative
-        let opt .= ' --with-nth='.(len(split(utils#root(), '/'))+1).'..'.' -d "/"'
+        let opt .= ' --with-nth='.(len(split(utils#git_root(), '/'))+1).'..'.' -d "/"'
     endif
     return opt
 endf
@@ -51,9 +51,9 @@ fun! wrappers#args()
 endf
 " }}}
 " PROJECT ================================================================{{{
-fun! wrappers#project()
+fun! wrappers#files(pat, dir)
     return fzf#wrap({
-        \ 'source': utils#files(''),
+        \ 'source': utils#files(a:pat, a:dir),
         \ 'options': s:options(v:true, v:true)
         \ })
 endf

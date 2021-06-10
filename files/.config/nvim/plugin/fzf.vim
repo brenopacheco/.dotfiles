@@ -11,7 +11,8 @@ let g:loaded_fzf_plugin = 1
 
 command! Snippets  call fzf#run(wrappers#snippets())
 command! Args      call fzf#run(wrappers#args())
-command! PFiles    call fzf#run(wrappers#project())
+command! PFiles    call fzf#run(wrappers#files('', utils#git_root()))
+command! FFiles    call fzf#run(wrappers#files('', utils#npm_root()))
 command! Sources   call fzf#run(wrappers#sources())
 
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path(

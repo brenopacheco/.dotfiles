@@ -67,7 +67,7 @@ endf
 
 fun! make#make_sink(target)
     compiler gcc
-    let makefile_path = systemlist('fd "^Makefile$" ' . utils#root())[0]
+    let makefile_path = systemlist('fd "^Makefile$" ' . utils#git_root())[0]
     exec 'cd ' . fnamemodify(makefile_path, ':h')
     exec 'make ' . a:target
     copen
@@ -95,7 +95,7 @@ fun! make#mvn_source()
 endf
 
 fun! make#make_source()
-    let file = systemlist('fd "^Makefile$" ' . utils#root())[0]
+    let file = systemlist('fd "^Makefile$" ' . utils#git_root())[0]
     return systemlist('egrep "^[a-z]+:" ' . file . ' | cut -d: -f1')
 endf
 
@@ -105,7 +105,7 @@ fun! make#npm_source()
 endf
 
 fun! make#get_system()
-    let dir = utils#root()
+    let dir = utils#git_root()
     if !utils#is_git()
         throw 'Not a git repository'
     endif
@@ -121,7 +121,7 @@ endf
 " ALT =======================================================================
 
 fun! make#serve()
-    let dir = fnamemodify(utils#files('index.html')[0], ':h')
+    let dir = fnamemodify(utils#files('index.html', utils#git_root())[0], ':h')
     call term#open()
     call jobsend(b:terminal_job_id, 'livereload '  . dir . ' -d -e html,css,js &' . "\<CR>")
     call jobsend(b:terminal_job_id, 'http-server ' . dir . ' -p 8080' . "\<CR>")
