@@ -34,6 +34,8 @@
     " xmap gp :call Justify('tw',4)<CR>
     " xmap gl :s/\s\+/ /g<CR>
 " NAVIGATION
+" :tag/:pop goes up in tag stack 
+" :tprev/t:next goes to next/prev in tag / search 
     nnoremap <silent> ]s :tag<CR>
     nnoremap <silent> [s :pop<CR>
     nnoremap <silent> ]t :tnext<CR>
@@ -48,6 +50,7 @@
     nnoremap <silent> [l :lprevious<CR>
     nmap     <silent> ]c <plug>(signify-next-hunk)
     nmap     <silent> [c <plug>(signify-prev-hunk)
+    nmap     <silent> !  :b #<CR>
 " FUZZY
     nnoremap <silent> <leader>f~ <cmd>Files ~<CR>
     nnoremap <silent> <leader>f. <cmd>Files .<CR>
@@ -106,6 +109,7 @@
     nnoremap <leader>S <cmd>call tools#global_substitute()<CR>
     nnoremap <leader>g <cmd>call tools#global_print()<CR>
     nnoremap <leader>! <cmd>call term#spawn()<CR>
+    nnoremap <leader>t <cmd>call tools#find_tag()<CR>
 " MAKE/EVAL
     nnoremap #          <cmd>call make#eval_line()<CR>
     xnoremap #          <cmd>call make#eval_range()<CR>
@@ -113,7 +117,8 @@
     nnoremap <leader>m  <cmd>call make#lint()<CR>
     nnoremap <leader>M  <cmd>call make#build()<CR>
 " LSP
-    nnoremap <silent> <C-]>    <cmd>call lsp#goto_definition()<CR>
+    nnoremap <silent><C-]>     <cmd>call lsp#goto_definition()<CR>
+    nnoremap <silent><C-[>     <cmd>call lsp#goto_tag()<CR>
     nnoremap <silent> gd       <cmd>call lsp#goto_declaration()<CR>
     nnoremap <silent> gr       <cmd>call lsp#goto_references()<CR>
     nnoremap <silent> gi       <cmd>call lsp#goto_implementation()<CR>
@@ -129,23 +134,21 @@
     nnoremap <silent><leader>a <cmd>call lsp#code_action(v:false)<CR>
     vnoremap <silent><leader>a :<c-u>call lsp#code_action(v:true)<CR>
     nnoremap <silent><leader>r <cmd>call lsp#rename()<CR>
-    nnoremap <silent><c-h>     <cmd>call lsp#show_signature_help()<CR>
-    inoremap <silent><c-k>     <cmd>call lsp#show_signature_help()<CR>
-    nnoremap <silent><c-k>     <cmd>call lsp#show_hover()<CR>
-    nnoremap <silent><c-p>     <cmd>call lsp#show_preview()<CR>
-    nnoremap <silent><C-n>     <cmd>call lsp#scrolldown_hover()<CR>
-    nnoremap <silent><C-p>     <cmd>call lsp#scrollup_hover()<CR>
+    inoremap <silent><c-k>     <cmd>call lsp#show_help()<CR>
+    nnoremap <silent><c-k>     <cmd>call lsp#show_help()<CR>
+    " nnoremap <silent><C-n>     <cmd>call lsp#scrolldown_hover()<CR>
+    " nnoremap <silent><C-p>     <cmd>call lsp#scrollup_hover()<CR>
 " DAP
-    nnoremap <F1>  <cmd>call dap#step_out()<CR>
-    nnoremap <F2>  <cmd>call dap#step_in()<CR>
-    nnoremap <F3>  <cmd>call dap#step_over()<CR>
-    nnoremap <F4>  <cmd>call dap#play_pause()<CR>
-    nnoremap <F5>  <cmd>call dap#start_restart()<CR>
-    nnoremap <F6>  <cmd>call dap#toggle_breakpoint()<CR>
-    nnoremap <F7> <cmd>call dap#hover()<CR>
-    nnoremap <F8> <cmd>call dap#scope()<CR>
-    nnoremap <F9>  <cmd>call dap#breakpoints()<CR>
+    " nnoremap <F1>  <cmd>call dap#step_out()<CR>
+    " nnoremap <F2>  <cmd>call dap#step_in()<CR>
+    " nnoremap <F3>  <cmd>call dap#step_over()<CR>
+    " nnoremap <F4>  <cmd>call dap#play_pause()<CR>
+    " nnoremap <F5>  <cmd>call dap#start_restart()<CR>
+    " nnoremap <F6>  <cmd>call dap#toggle_breakpoint()<CR>
+    " nnoremap <F7> <cmd>call dap#hover()<CR>
+    " nnoremap <F8> <cmd>call dap#scope()<CR>
+    " nnoremap <F9>  <cmd>call dap#breakpoints()<CR>
     " nnoremap <F10> <cmd>call dap#toggle_repl()<CR>
     " nnoremap <F11>  <cmd>call dap#stack_up()<CR>
     " nnoremap <F12>  <cmd>call dap#stack_down()<CR>
-    nnoremap <leader>d <cmd>call quickhelp#toggle("debug")<CR>
+    " nnoremap <leader>d <cmd>call quickhelp#toggle("debug")<CR>

@@ -31,3 +31,7 @@ fun! tools#global_print()
         \ '$', @a)\<Home>".repeat("\<Right>", 9))
 endf
 
+fun! tools#find_tag()
+    call feedkeys(':tag /')
+endf
+

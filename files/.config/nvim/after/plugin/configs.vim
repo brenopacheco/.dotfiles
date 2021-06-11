@@ -13,13 +13,14 @@ let g:tagbar_width=30
 let g:gutentags_file_list_command = 'rg --files'
 let g:gutentags_cache_dir = globals#get('tagsdir')
 let g:gutentags_ctags_extra_args = ['--excmd=number']
+let g:gutentags_file_list_command = 'rg --files --hidden'
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']"
 let g:zv_disable_mapping = 1
 let g:vsnip_extra_mapping = v:false
 let g:vsnip_snippet_dirs = [ globals#get('snippetdir') ]
 let g:vsnip_snippet_dir  = globals#get('snippetdir')
 let g:vsnip_filetypes = {
-    \ 'javascript':      [ 'html', 'node',               'react', 'react-js',    'express' ],
+    \ 'javascript':      [ 'node', 'express' ],
     \ 'typescript':      [ 'node', 'javascript', 'express' ],
     \ 'javascriptreact': [ 'html', 'node', 'javascript', 'react', 'react-js'  ],
     \ 'typescriptreact': [ 'html', 'node', 'javascript', 'react', 'react-ts'  ],

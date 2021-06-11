@@ -32,7 +32,13 @@ endf
 
 fun! make#eval_buffer()
     call s:repl_close()
-    call s:eval(join(getline(1,'$'),"\n"))
+    if &ft ==# 'vim'
+        so %
+        echomsg 'Sourcing vim file...'
+    else
+        call s:eval(join(getline(1,'$'),"\n"))
+        echomsg 'Evaluating buffer...'
+    endif
 endf
 
 fun! make#lint()
@@ -76,7 +82,7 @@ endf
 
 fun! make#npm_sink(target)
     let script = matchstr(a:target, '^\S\+')
-    if match(a:target, '\(eslint\|tsc\|csslint\)') > -1
+    if match(a:target, '\(eslint\|csslint\)') > -1
         compiler npm
         exec 'make ' . script
     else
@@ -101,7 +107,7 @@ endf
 
 fun! make#npm_source()
     let res = systemlist("npm run-script | sed -n '/^available/,$p'")
-    return map(range(len(res)/2), { i,_ -> res[2*i+1][2:-1] . "\t" . res[2*i+2] })
+    return map(range(len(res)/2-1), { i,_ -> res[2*i+1][2:-1] . "\t" . res[2*i+2] })
 endf
 
 fun! make#get_system()

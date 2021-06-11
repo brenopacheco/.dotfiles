@@ -6,7 +6,7 @@
 " TODO: everything
 "
 
-" GOTO ======================================================================
+" GOTO ==================================================================={{{
 
 fun! lsp#goto_definition()
     if lsp#is_on()
@@ -14,6 +14,10 @@ fun! lsp#goto_definition()
     else
         exec 'tag /' . expand('<cword>')
     endif
+endf
+
+fun! lsp#goto_tag()
+    exec 'tag /' . expand('<cword>')
 endf
 
 
@@ -57,7 +61,8 @@ fun! lsp#goto_workspace_symbol()
     endif
 endf
 
-" SHOW HELP =================================================================
+" }}}
+" SHOW HELP =============================================================={{{
 
 fun! lsp#scrolldown_hover()
     lua require('lspsaga.action').smart_scroll_with_saga(1)
@@ -72,14 +77,22 @@ fun! lsp#show_hover()
 endf
 
 fun! lsp#show_definition()
-    lua require'lspsaga.provider'.preview_definition()
+    lua require('lspsaga.provider').preview_definition()
 endf
 
 fun! lsp#show_signature_help()
     lua require('lspsaga.signaturehelp').signature_help()
 endf
 
-" DIAGNOSTICS ===============================================================
+""
+" Either show hover or, if not available, show the signature help
+fun! lsp#show_help()
+    call lsp#show_hover()
+    call lsp#show_signature_help()
+endf
+
+" }}}
+" DIAGNOSTICS ============================================================{{{
 
 fun! lsp#goto_next_diagnostic()
     lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()
@@ -98,7 +111,8 @@ fun! lsp#toggle_diagnostics()
     call utils#toggle('qf', open)
 endf
 
-" ACTIONS ===================================================================
+" }}}
+" ACTIONS ================================================================{{{
 
 fun! lsp#code_action(range) abort
     try
@@ -122,7 +136,7 @@ endf
 
 fun! lsp#format() range
     let visual = v:false
-    if mode() == 'v'
+    if mode() ==? 'v'
         exe "normal! \<ESC>"
         let visual = v:true
     endif
@@ -136,7 +150,7 @@ fun! s:lsp_format(visual)
 endf
 
 fun! s:equalprg_format(visual) range
-    if &equalprg ==# "" | return v:false | endif
+    if &equalprg ==# '' | return v:false | endif
     let linenr = line('.')
     let err = ''
     if a:visual
@@ -170,11 +184,12 @@ fun! s:indentexpr_format(visual)
         silent! norm! mzggVG=`z
     endif
     let &equalprg = l:equalprg
-    echohl WarningMsg | echomsg "> Formated with indentexpr" | echohl None
+    echohl WarningMsg | echomsg '> Formated with indentexpr' | echohl None
     return v:true
 endf
 
-" SERVERS ===================================================================
+" }}}
+" SERVERS ================================================================{{{
 
 fun! lsp#is_on()
     return luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
@@ -211,8 +226,8 @@ fun! lsp#log()
     exec 'e ' . path
 endf
 
-
-" HELPER FUNCS ==============================================================
+" }}}
+" HELPER FUNCS ==========================================================={{{
 
 ""
 " command complete used with -complete=customlist,lsp#funcs
@@ -230,3 +245,5 @@ endf
 fun! lsp#cmd_exec(name)
     exec 'echo lsp#'.a:name.'()'
 endf
+
+" }}}

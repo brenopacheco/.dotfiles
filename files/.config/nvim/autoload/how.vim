@@ -17,12 +17,6 @@ endf
 " Runs cheat.sh curl. Accepts visual selection
 fun! how#cheat() abort
     let text = ''
-    echo 'mode: '. mode()
-    if mode() !=# 'n'
-        let text = range#text()
-    endif
-    echo 'text: '. text
-    return
     let url = 'http://cheat.sh/'
     call system('curl localhost:8002')
     if !v:shell_error
