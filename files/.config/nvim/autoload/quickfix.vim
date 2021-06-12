@@ -16,11 +16,51 @@ fun! quickfix#global_grep(...)
     endif
 endf
 
+fun! quickfix#global_grep2(...)
+    let pattern = ''
+    if a:0 > 0
+        let pattern = a:1
+    else
+        let pattern = input('>Grep /')
+    endif
+    let pattern = substitute(pattern, '\(#\|\.\)', '\\\1', 'g')
+    " ask for where
+    let where = input(">Grep '".pattern."' in <complete>/",'', 'customlist,quickfix#_where')
+    let buffer = bufnr()
+    if where ==# 'buffer'
+        call feedkeys(':vimgrep /'.pattern.'/j %'."\<CR>")
+    elseif where ==# 'git'
+        call feedkeys(":grep! '" . pattern . "' " . utils#git_root() . "\<CR>")
+    elseif where ==# 'project'
+        call feedkeys(":grep! '" . pattern . "' " . utils#npm_root())
+    elseif where ==# 'buflist'
+        call feedkeys(':cexpr [] | bufdo vimgrepadd /'.pattern.'/j % | '.buffer.'b'."\<CR>")
+    elseif where ==# 'arglist'
+        call feedkeys(':vimgrep /'.pattern.'/j ## | '.buffer.'b'."\<CR>")
+    endif
+    copen | wincmd p
+endf
+
+fun! quickfix#_where(...)
+    return filter(['git', 'project', 'buffer', 'buflist', 'arglist'], 
+        \ { _, s -> !match(s, '^' . a:1) })
+endf
+
+fun! quickfix#global_star2()
+    let word = expand('<cword>')
+    if mode() ==? 'v'
+        norm! "xy
+        let word = @x
+    endif
+    call quickfix#global_grep2(word)
+endf
+
+
 " performs grep on all project files using word under cursor.
 " may be called in visual mode. if in visual mode, map as xnoremap <cmd>
 fun! quickfix#global_star()
     let word = expand('<cword>')
-    if mode() == 'v'
+    if mode() ==? 'v'
         norm! "xy
         let word = @x
     endif

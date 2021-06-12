@@ -60,7 +60,7 @@ set pumheight     =12                     " max num of items in popup menu
 set pumwidth      =15                     " min popup menu width
 set relativenumber                        " set relative numbers
 set report=0                              " always report on :substitute
-set scrolloff     =10                    " keep cursor centered
+set scrolloff     =999                    " keep cursor centered
 set shiftwidth    =4                      " number of spaces used by = op.
 set shortmess    +=cs                     " remove annoying messages
 set showbreak     =↪\                     " symbol for wrapped lines

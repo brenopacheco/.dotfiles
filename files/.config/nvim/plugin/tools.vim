@@ -17,7 +17,7 @@ command! Fork           silent call system('st 1>/dev/null 2>&1 & disown')
 
 fun! s:trim()
     let l:winview = winsaveview()
-    silent! %s/\s\+$//
+    %s/\s\+$//
     call winrestview(l:winview)
 endf
 

@@ -12,8 +12,3 @@ let g:loaded_toggle_plugin = 1
 command! TreeToggle     call utils#toggle('vimtree', 'NTree')
 command! TerminalToggle call utils#toggle('term', 'call term#open()')
 command! QuickfixToggle call quickfix#toggle()
-
-" command! VGTree         call s:vgtree()
-" command! OTree          call s:otree()
-" command! Term           call s:termopen()
-

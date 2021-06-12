@@ -92,9 +92,9 @@
     nnoremap <leader>w? <cmd>call quickhelp#toggle("window")<CR>
     nnoremap <space>?   <cmd>call quickhelp#toggle("noft")<CR>
 " GREP/SEARCH
-    xnoremap <leader>* <cmd>call quickfix#global_star()<CR>
-    nnoremap <leader>* <cmd>call quickfix#global_star()<CR>
-    nnoremap <leader>/ <cmd>call quickfix#global_grep()<CR>
+    xnoremap <leader>* <cmd>call quickfix#global_star2()<CR>
+    nnoremap <leader>* <cmd>call quickfix#global_star2()<CR>
+    nnoremap <leader>/ <cmd>call quickfix#global_grep2()<CR>
     xnoremap q*        <cmd>call quickfix#buffer_star()<CR>
     nnoremap q*        <cmd>call quickfix#buffer_star()<CR>
     nnoremap q/        <cmd>call quickfix#buffer_grep()<CR>
