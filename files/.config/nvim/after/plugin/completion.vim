@@ -2,7 +2,8 @@
 " Author: Breno Leonhardt Pacheco
 " Email: brenoleonhardt@gmail.com
 " Last Modified: February 22, 2021
-" Description:
+" Description: definitions for nvim-compe
+" Provide a fix for working with "lexima"
 
 if exists('g:loaded_completion_plugin')
     finish
@@ -53,8 +54,8 @@ let g:compe.source = {
 call compe#setup(g:compe)
 
 inoremap <silent><expr> <C-Space> pumvisible() ? compe#close() : compe#complete()
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
 smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
 imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''

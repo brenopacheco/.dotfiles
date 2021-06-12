@@ -1,0 +1,17 @@
+1. Fix up the snippet section
+2. Fix up the template section
+3. Fix up make/run
+4. Add documentation to all files
+5. Figure out what is not necessary or not ready
+6. Document the project
+7. Report features have/want
+8. Revisit .vim's structure
+9. Revisit the mappings file
+9. Update the quickhelp
+10. Study migration to lua
+95. Doc browse plugin (zeal?)
+96. Notetaking plugin
+97. Figure out how to run tests
+98. Revisit debugger
+99. Revisit fzf and telescope
+999. Menu's plugin?
