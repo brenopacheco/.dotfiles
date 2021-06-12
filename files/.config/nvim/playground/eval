@@ -1,0 +1,24 @@
+#!/bin/bash
+
+usage() {
+    echo 'Usage: eval CMDS [FILE]...'
+    echo 'Runs Ex commands from CMDS file in vim instance loaded with FILEs'
+    echo 'Example: eval cmds.vim file1.js file2.js'
+}
+
+if [[ $# -eq 0 ]]; then
+    usage
+    printf "\n...No CMDS file provided\n" >&2
+    exit 1
+fi
+
+cmd=$1
+files=("${@:2}")
+
+printf 'Running %s commands on vim with files %s\n' "$cmd" "${files[*]}"
+
+vim "${files[*]}" -E -s -n -S "$cmd" 
+# -n : disable swap files
+# -E : run as Ex mode (vim, not vi. vi is -e)
+# -s : runs cmds silently
+# -S : source the file with cmds

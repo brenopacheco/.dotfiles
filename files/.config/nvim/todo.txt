@@ -4,11 +4,12 @@
 4. Add documentation to all files
 5. Figure out what is not necessary or not ready
 6. Document the project
-7. Report features have/want
+7. Build a report features we have/want
 8. Revisit .vim's structure
-9. Revisit the mappings file
-9. Update the quickhelp
-10. Study migration to lua
+9. Refactor everything
+10. Revisit the mappings file
+11. Update the quickhelp
+12. Study migration to lua
 95. Doc browse plugin (zeal?)
 96. Notetaking plugin
 97. Figure out how to run tests

@@ -1,4 +1,0 @@
-"" notes on grep/vimgrep
-" :vimgrep /regex/j file-glob-pat    (accepts **/*, no dirs)
-" :grep    "regex"  file-regex-pat   (will do recursevly dirs/files)
-"
