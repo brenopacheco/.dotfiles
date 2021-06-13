@@ -23,7 +23,8 @@ fun! quickfix#global_grep2(...)
     else
         let pattern = input('>Grep /')
     endif
-    let pattern = substitute(pattern, '\(#\|\.\)', '\\\1', 'g')
+    " let pattern = substitute(pattern, '\(#\|\.\)', '\\\1', 'g')
+    let pattern = substitute(pattern, '\(#\)', '\\\1', 'g')
     " ask for where
     let where = input(">Grep '".pattern."' in <complete>/",'', 'customlist,quickfix#_where')
     let buffer = bufnr()

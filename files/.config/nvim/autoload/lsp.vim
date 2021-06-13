@@ -8,16 +8,18 @@
 
 " GOTO ==================================================================={{{
 
-fun! lsp#goto_definition()
+fun! lsp#goto_definition(...)
     if lsp#is_on()
         lua vim.lsp.buf.definition()
     else
-        exec 'tag /' . expand('<cword>')
+        call lsp#goto_tag()
     endif
 endf
 
 fun! lsp#goto_tag()
-    exec 'tag /' . expand('<cword>')
+    let word = expand('<cword>')
+    let word = substitute(word, '\.$', '', '')
+    exec 'tag /' . word
 endf
 
 
@@ -25,7 +27,7 @@ fun! lsp#goto_references()
     if lsp#is_on()
         lua vim.lsp.buf.references()
     else
-        throw 'Not implemented'
+        call quickfix#global_star()
     endif
 endf
 
@@ -33,7 +35,7 @@ fun! lsp#goto_implementation()
     if lsp#is_on()
         lua vim.lsp.buf.implementation()
     else
-        throw 'Not implemented'
+        call lsp#goto_tag()
     endif
 endf
 
@@ -41,7 +43,7 @@ fun! lsp#goto_type_definition()
     if lsp#is_on()
         lua vim.lsp.buf.type_definition()
     else
-        throw 'Not implemented'
+        call lsp#goto_tag()
     endif
 endf
 
@@ -49,7 +51,7 @@ fun! lsp#goto_document_symbol()
     if lsp#is_on()
         lua vim.lsp.buf.document_symbol()
     else
-        throw 'Not implemented'
+        call lsp#goto_tag()
     endif
 endf
 
@@ -57,7 +59,7 @@ fun! lsp#goto_workspace_symbol()
     if lsp#is_on()
         lua vim.lsp.buf.workspace_symbol()
     else
-        throw 'Not implemented'
+        call lsp#goto_tag()
     endif
 endf
 
@@ -76,6 +78,7 @@ fun! lsp#show_hover()
     lua require('lspsaga.hover').render_hover_doc()
 endf
 
+" not working
 fun! lsp#show_definition()
     lua require('lspsaga.provider').preview_definition()
 endf
@@ -143,10 +146,6 @@ fun! lsp#format() range
     if !s:equalprg_format(visual)
         call s:indentexpr_format(visual)
     endif
-endf
-
-fun! s:lsp_format(visual)
-    " TODO: this doesnt work right. gotta be redone
 endf
 
 fun! s:equalprg_format(visual) range

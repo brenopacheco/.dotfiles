@@ -85,3 +85,6 @@ export JAR="/usr/share/java/jdtls/plugins/org.eclipse.equinox.launcher_1.6.100.v
 export JDTLS_CONFIG="/usr/share/java/jdtls/config_linux"
 export WORKSPACE=$HOME/.cache/jdtls
 
+export LUA_PATH='/usr/share/lua/5.4/?.lua;/usr/share/lua/5.4/?/init.lua;/usr/lib/lua/5.4/?.lua;/usr/lib/lua/5.4/?/init.lua;./?.lua;./?/init.lua;/home/breno/.luarocks/share/lua/5.4/?.lua;/home/breno/.luarocks/share/lua/5.4/?/init.lua'
+export LUA_CPATH='/usr/lib/lua/5.4/?.so;/usr/lib/lua/5.4/loadall.so;./?.so;/home/breno/.luarocks/lib/lua/5.4/?.so'
+export PATH='/home/breno/.luarocks/bin:/bin:/usr/bin:/usr/local/bin:/home/breno/bin:/home/breno/.go/bin:/home/breno/.local/bin:/home/breno/.npm/bin:/home/breno/.lua/bin'

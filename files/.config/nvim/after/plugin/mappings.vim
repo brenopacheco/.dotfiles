@@ -134,10 +134,11 @@
     nnoremap <silent><leader>a <cmd>call lsp#code_action(v:false)<CR>
     vnoremap <silent><leader>a :<c-u>call lsp#code_action(v:true)<CR>
     nnoremap <silent><leader>r <cmd>call lsp#rename()<CR>
-    inoremap <silent><c-k>     <cmd>call lsp#show_help()<CR>
-    nnoremap <silent><c-k>     <cmd>call lsp#show_help()<CR>
-    " nnoremap <silent><C-n>     <cmd>call lsp#scrolldown_hover()<CR>
-    " nnoremap <silent><C-p>     <cmd>call lsp#scrollup_hover()<CR>
+    inoremap <silent><C-k>     <cmd>call lsp#show_help()<CR>
+    nnoremap <silent><C-k>     <cmd>call lsp#show_help()<CR>
+    " nnoremap <silent><C-p>     <cmd>call lsp#show_definition()<CR>
+    nnoremap <silent><C-f>     <cmd>call lsp#scrolldown_hover()<CR>
+    nnoremap <silent><C-b>     <cmd>call lsp#scrollup_hover()<CR>
 " DAP
     " nnoremap <F1>  <cmd>call dap#step_out()<CR>
     " nnoremap <F2>  <cmd>call dap#step_in()<CR>

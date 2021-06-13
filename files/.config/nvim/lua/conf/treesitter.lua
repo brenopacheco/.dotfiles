@@ -5,9 +5,16 @@
 -- Description: treesitter configuration file
 
 local supported = {
-    "bash", "c", "css", "html",
-    "java", "javascript", "json",
-    "lua", "typescript", "python"
+    "bash",
+    "c",
+    "css",
+    "html",
+    "java",
+    "javascript",
+    "json",
+    "lua",
+    "python",
+    "typescript"
 }
 
 require'nvim-treesitter.configs'.setup {
@@ -16,8 +23,3 @@ require'nvim-treesitter.configs'.setup {
     incremental_selection = { enable = true },
     textobjects           = { enable = true },
 }
-
--- vim.o.foldmethod = "expr"
--- vim.o.foldexpr = "nvim_treesitter#foldexpr()"
-
--- TODO: add foldmethod=expr and expr

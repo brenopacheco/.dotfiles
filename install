@@ -37,11 +37,11 @@ sudo pacman -S  \
     ripgrep rofi st stow sxiv thunar tmux trayer tree udiskie vim vlc \
     xclip xcursor-breeze xdotool xorg-xbacklight xorg-xev xorg-xmodmap \
     xorg-xkill xorg-xsetroot yay zathura zathura-pdf-mupdf \
-    moreutils renameutils python-pip ninja
+    moreutils renameutils python-pip ninja ccls cmake
 
 echo 'installing language servers / linters / formatters'
 sudo pacman -S shellcheck tidy 
-pip install yamllint pylint cpplint 
+pip install yamllint pylint cpplint jedi-language-server
 pip install --pre vim-vint  # version 4.3
 npm i -g bash-language-server vscode-css-languageserver-bin \
     vscode-html-languageserver-bin vscode-json-languageserver typescript \

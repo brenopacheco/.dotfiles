@@ -7,12 +7,14 @@
 
 ""
 " Get the start and end position of a visual selection.
-" Must be in visual mode. Called like this:
+" If not in visual mode, returns the last visual selection
 fun! range#get() range
-    if mode() !=? 'v' && mode() !=# "\<C-v>"
-        throw 'Not in visual mode'
+    " if mode() !=? 'v' && mode() !=# "\<C-v>"
+    "     throw 'Not in visual mode'
+    " endif
+    if mode() ==? 'v' || mode() ==# "\<C-v>"
+        exe "normal! \<ESC>"
     endif
-    exe "normal! \<ESC>"
     let start = getpos("'<")
     let end   = getpos("'>")
     if end[1] < start[1]

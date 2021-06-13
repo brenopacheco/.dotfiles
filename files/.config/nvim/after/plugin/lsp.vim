@@ -11,22 +11,22 @@ let g:loaded_lsp_plugin = 1
 
 lua require('conf.servers')
 lua require('conf.treesitter')
-lua require('conf.dap')
+" lua require('conf.dap')
 
 augroup lsp
     au!
     autocmd BufEnter * set omnifunc=v:lua.vim.lsp.omnifunc
-    au FileType LspSagaCodeActionTitle call s:saga_maps()
+    " au FileType LspSagaCodeActionTitle call s:saga_maps()
 augroup end
 
-fun! s:saga_maps()
-    nnoremap <buffer> <C-[> <cmd>lua require('lspsaga.codeaction').quit_action_window()<CR>
-    nnoremap <buffer> jk    <cmd>lua require('lspsaga.codeaction').quit_action_window()<CR>
-    nnoremap <buffer> kj    <cmd>lua require('lspsaga.codeaction').quit_action_window()<CR>
-    nnoremap <buffer> <TAB> <CR>
-    nnoremap <buffer> <C-n> j
-    nnoremap <buffer> <C-p> k
-endf
+" fun! s:saga_maps()
+"     nnoremap <buffer> <C-[> <cmd>lua require('lspsaga.codeaction').quit_action_window()<CR>
+"     nnoremap <buffer> jk    <cmd>lua require('lspsaga.codeaction').quit_action_window()<CR>
+"     nnoremap <buffer> kj    <cmd>lua require('lspsaga.codeaction').quit_action_window()<CR>
+"     nnoremap <buffer> <TAB> <CR>
+"     nnoremap <buffer> <C-n> j
+"     nnoremap <buffer> <C-p> k
+" endf
 
 " augroup treesitter
 "     set foldmethod=expr

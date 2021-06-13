@@ -34,7 +34,6 @@ call plug#begin(globals#get('plugdir'))
     Plug 'tpope/vim-repeat'                 " repeats commands with .
     Plug 'tpope/vim-surround'               " surrounds elements in text
     Plug 'tpope/vim-fugitive'               " git tools wrapper
-    " Plug 'tpope/vim-projectionist'          " jump around alt files i.e: .c .h
     Plug 'AndrewRadev/bufferize.vim'        " gets cmd result into buffer
     Plug 'farmergreg/vim-lastplace'         " open file in last edited line
     Plug 'markonm/traces.vim'               " preview substitution
@@ -49,7 +48,6 @@ call plug#begin(globals#get('plugdir'))
     Plug 'rhysd/git-messenger.vim'          " show git messsages at cursor pos.
     Plug 'sodapopcan/vim-twiggy'            " branch browser
     Plug 'junegunn/gv.vim'                  " git log browser
-    " Plug 'KabbAmine/zeavim.vim'             " interfaces to zeal
     Plug 'brenopacheco/vim-tree'            " show directory structure as tree
     Plug 'diepm/vim-rest-console'           " CURL tool for http requests
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
@@ -68,13 +66,14 @@ call plug#begin(globals#get('plugdir'))
     Plug 'endel/vim-github-colorscheme'     " theme
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-
-    Plug 'puremourning/vimspector'
-    Plug 'mfussenegger/nvim-dap'            " debugger lsp equivalent
-    Plug 'theHamsta/nvim-dap-virtual-text'
-
-    " Plug 'mfussenegger/nvim-jdtls'
+    " Plug 'puremourning/vimspector'
+    " Plug 'mfussenegger/nvim-dap'            " debugger lsp equivalent
+    " Plug 'theHamsta/nvim-dap-virtual-text'
+    " Plug 'mfussenegger/nvim-dap-python'
+    "
     " Plug 'neomake/neomake'
     " Plug 'sbdchd/neoformat'
-    " Plug 'mfussenegger/nvim-dap-python'
+    " Plug 'tpope/vim-projectionist'          " jump around alt files i.e: .c .h
+    " Plug 'KabbAmine/zeavim.vim'             " interfaces to zeal
+    " Plug 'mfussenegger/nvim-jdtls'
 call plug#end()

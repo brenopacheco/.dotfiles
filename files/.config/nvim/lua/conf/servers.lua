@@ -6,19 +6,28 @@
 
 local lspconfig = require'lspconfig'
 
+vim.lsp.set_log_level(4) -- disable logging
+
 lspconfig.diagnosticls.setup(require('conf.servers.diagnosticls'))
 lspconfig.sumneko_lua.setup(require('conf.servers.sumneko_lua'))
 
-vim.lsp.set_log_level(4) -- disable logging
+local servers = {
+    "bashls",
+    "ccls",
+    "cssls",
+    "html",
+    "jdtls",
+    "jedi_language_server",
+    "jsonls",
+    "tsserver",
+    "vimls",
+    "yamlls"
+}
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
-
-local servers = { "bashls", "ccls", "cssls", "jsonls", "vimls",
-                  "jedi_language_server", "bashls", "jdtls",
-                  "tsserver", "html", "yamlls"}
 
 for _, server in pairs(servers) do
     lspconfig[server].setup{
