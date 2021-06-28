@@ -17,4 +17,4 @@ setlocal suffixesadd+=.cjs,.css,.d.ts,.html,.js,.json,.jsx,.mjs,.ts,.tsx
 setlocal keywordprg=:zeal\ javascript:\
 " setlocal iskeyword+=#
 
-let b:undo_ftplugin='setl mp< efm< ep< sw< ts< fdm< fde fo< tw< com< cms< sua< kp< isk<'
+let b:undo_ftplugin='setl mp< efm< ep< sw< ts< fdm< fde< fo< tw< com< cms< sua< kp< isk<'

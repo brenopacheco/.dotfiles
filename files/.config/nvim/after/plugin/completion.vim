@@ -54,8 +54,6 @@ let g:compe.source = {
 call compe#setup(g:compe)
 
 inoremap <silent><expr> <C-Space> pumvisible() ? compe#close() : compe#complete()
-" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 smap <expr> <Tab>   vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<Tab>'
 smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
 imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
@@ -66,6 +64,18 @@ inoremap <silent><expr> <F6>      compe#confirm()
 imap <silent><expr> <Tab> pumvisible() ?
     \   (complete_info()["selected"] == "-1" ? "\<c-n>\<F6>" : "\<F6>") :
     \   (vsnip#available(1) ? "\<plug>(vsnip-expand-or-jump)" : "\<TAB>")
+
+" <C-k/j> mappings
+" inoremap <silent><expr> <F6>      compe#confirm()
+" imap <silent><expr> <Tab> pumvisible() ?
+"     \   (complete_info()["selected"] == "-1" ? "\<c-n>\<F6>" : "\<F6>") :
+"     \   (vsnip#available(1) ? "\<plug>(vsnip-expand)" : "\<TAB>")
+" smap <expr> <C-k> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : ''
+" imap <expr> <C-k> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : ''
+" smap <expr> <C-j> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
+" imap <expr> <C-j> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
+
+
 
 if exists('g:plugs["lexima.vim"]')
     let g:lexima_no_default_rules = 1

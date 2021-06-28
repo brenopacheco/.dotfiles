@@ -42,7 +42,7 @@ fun! utils#npm_root()
         endif
         let dir = substitute(dir, '[^\/]\+\(\/\)\?$', '', '')
     endwhile
-    return v:false
+    return utils#git_root()
 endf
 
 ""

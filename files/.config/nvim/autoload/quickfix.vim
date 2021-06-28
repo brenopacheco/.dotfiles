@@ -34,6 +34,8 @@ fun! quickfix#global_grep2(...)
         call feedkeys(":grep! '" . pattern . "' " . utils#git_root() . "\<CR>")
     elseif where ==# 'project'
         call feedkeys(":grep! '" . pattern . "' " . utils#npm_root())
+    elseif where ==# 'curdir'
+        call feedkeys(":grep! '" . pattern . "' " . utils#git_root(getcwd()))
     elseif where ==# 'buflist'
         call feedkeys(':cexpr [] | bufdo vimgrepadd /'.pattern.'/j % | '.buffer.'b'."\<CR>")
     elseif where ==# 'arglist'
@@ -43,7 +45,7 @@ fun! quickfix#global_grep2(...)
 endf
 
 fun! quickfix#_where(...)
-    return filter(['git', 'project', 'buffer', 'buflist', 'arglist'], 
+    return filter(['git', 'project', 'curdir', 'buffer', 'buflist', 'arglist'], 
         \ { _, s -> !match(s, '^' . a:1) })
 endf
 

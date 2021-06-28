@@ -19,5 +19,5 @@ setlocal matchpairs+=<:>
 
 call tailwind#setup()
 
-let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde fo< tw< com< cms< sua<'
+let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde< fo< tw< com< cms< sua<'
     \ . ' kp< isk< mps< dict<'

@@ -5,6 +5,8 @@ let b:did_ftplugin = 1
 
 compiler yaml
 setlocal equalprg=prettier\ --parser\ yaml
+setlocal shiftwidth=2
+setlocal tabstop=2
 setlocal foldmethod=indent
 setlocal formatoptions=croqlj
 setlocal textwidth=78
@@ -12,4 +14,4 @@ setlocal comments=:#
 setlocal commentstring=#\ %s
 setlocal expandtab
 
-let b:undo_ftplugin='setl mp< efm< ep< fdm< fo< tw< com< cms< et<'
+let b:undo_ftplugin='setl mp< efm< ep< sw< fdm< fo< tw< com< cms< et<'

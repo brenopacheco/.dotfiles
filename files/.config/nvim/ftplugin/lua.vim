@@ -18,4 +18,4 @@ setlocal suffixesadd=.lua
 " setlocal iskeyword+=#
 setlocal isfname-=.
 
-let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde fo< tw< com< cms< sua< kp< isk< isf<'
+let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde< fo< tw< com< cms< sua< kp< isk< isf<'

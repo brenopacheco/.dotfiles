@@ -16,4 +16,4 @@ setlocal suffixesadd=.css,.sass,.less
 " setlocal keywordprg=:help
 " setlocal iskeyword+=#
 
-let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde fo< tw< com< cms< sua< kp< isk<'
+let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde< fo< tw< com< cms< sua< kp< isk<'
