@@ -21,10 +21,9 @@
     "p":      { "prefix": "p",         "body": [ "<p>$1</p>$2"                                       ] },
     "span":   { "prefix": "span",      "body": [ "<span>$1</span>$2"                                 ] },
     "ul":     { "prefix": "ul",        "body": [ "<ul>\n\t$1\n</ul>"                                 ] },
-    "_class":  { "prefix": "class",     "body": [ "class=\"$1\"$0"                                    ] },
+    "_class": { "prefix": "_class",    "body": [ "class=\"$1\"$0"                                    ] },
     "id":     { "prefix": "id",        "body": [ "id=\"$1\"$0"                                       ] },
     "root":   { "prefix": "root",      "body": [ "<div id=\"root\"></div>"                           ] },
-
     "cdns": {
       "prefix": "cdns",
       "body": [

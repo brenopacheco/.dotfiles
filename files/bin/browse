@@ -22,8 +22,6 @@ Clear        https://novopit.clear.com.br/MinhaConta/MeusAtivos
 Discord      https://discord.com/login
 EOF
 
-
-
 # launcher
 website=$(cat /tmp/bookmarks | dmenu_color -p "Bookmarks:")
 link=$(echo "$website" | sed 's#\(.*\)\(https\?://\)#\2#')

@@ -20,10 +20,10 @@ let g:vsnip_extra_mapping = v:false
 let g:vsnip_snippet_dirs = [ globals#get('snippetdir') ]
 let g:vsnip_snippet_dir  = globals#get('snippetdir')
 let g:vsnip_filetypes = {
-    \ 'javascript':      [ 'node', 'express' ],
-    \ 'typescript':      [ 'node', 'javascript', 'express' ],
-    \ 'javascriptreact': [ 'html', 'node', 'javascript', 'react', 'react-js'  ],
-    \ 'typescriptreact': [ 'html', 'node', 'javascript', 'react', 'react-ts'  ],
+    \ 'javascript':      [ 'node' ],
+    \ 'typescript':      [ 'node', 'javascript' ],
+    \ 'javascriptreact': [ 'html', 'node', 'javascript', 'react' ],
+    \ 'typescriptreact': [ 'html', 'node', 'javascript', 'react' ],
     \ }
 
 let g:easy_align_delimiters = {
@@ -58,3 +58,5 @@ set background=dark
 set termguicolors
 let g:nightflyUndercurls = 0
 colorscheme nightfly
+
+let g:vimtree_hidden = v:true

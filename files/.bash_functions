@@ -40,7 +40,7 @@ function extract() {
 # }}}
 # fork : forks current shell {{{
     function fork () {
-        st & disown $!
+        st >/dev/null 2>&1 & disown $!
     }
 # }}}
 # shut : Asks if user wants to shutdown {{{
@@ -215,4 +215,29 @@ zeal-docs-fix() {
     popd >/dev/null || exit
 }
 #}}}
+docker-logs() {
+    local container=$(docker ps --format "{{.Names}}" | fzf)
+    test -z "$container" || docker logs -f "$container"
+}
+docker-exec() {
+    local container=$(docker ps --format "{{.Names}}" | fzf)
+    if [ ! -z "$container" ]; then
+        local shell=$(echo -e "bash\nsh" | fzf)
+        if [ ! -z "$shell" ]; then
+            docker exec -it "$container" "$shell"
+        fi
+    fi
+}
+apps() {
+    local root=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [[ ! -z "$root" ]]; then
+        local app=$(fd "package.json" "$root" | xargs -i bash -c 'grep "name" {}' \
+            | sed 's/^.*: "//' | sed 's/".*//' | fzf)
+        if [ ! -z "$app" ]; then
+            cd $(dirname $(rg "\"name\":.*\"$app\"" "$root" -l | egrep "package.json$"))
+        fi
+    else
+        echo "Not a git repository"
+    fi
+}
 

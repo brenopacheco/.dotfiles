@@ -14,7 +14,7 @@ if exists('g:loaded_make_plugin')
 endif
 let g:loaded_make_plugin = 1
 
-command! Make call make#make()  " project-wide make
+command! Make call make#build()  " project-wide make
 command! Run  call make#run()   " run file through interpreter
 command! Lint call make#lint()  " lint file
 command! Serve call make#serve()  " serve static files

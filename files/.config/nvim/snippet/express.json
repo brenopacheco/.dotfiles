@@ -1,4 +1,5 @@
 {
+    "express.app":  { "prefix": "express.app",  "body":[ "const express = require('express');", "const path = require('path');", "", "const app = express();", "", "app.use(express.json());", "", "app.get('/', (req,res) => {", "    res.status(200).json({});", "});", "", "app.post('/', (req,res) => {", "    const field = res.body.field;", "});", "", "app.listen(3000, () => {", "  console.log('App listening on port 3000!');", "});" ] },
     "app.all":      { "prefix": "app.all",      "body":[ "app.all(${1:'*'}, ${2:requireAuthentication}, ${3:loadUser});"]},
     "app.delete":   { "prefix": "app.delete",   "body":[ "app.delete('$1', ${2:(req, res)} => {\n\t${3}\n});"]},
     "app.disabled": { "prefix": "app.disabled", "body":[ "app.disabled('${1}');"]},

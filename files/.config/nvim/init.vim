@@ -1,27 +1,36 @@
 "  File: init.vim
 "  Author: Breno Leonhardt Pacheco
 "  Email: brenoleonhardt@gmail.com
-"  Last Modified: February 23, 2021
 "   _       _ _         _
 "  (_)_ __ (_) |___   _(_)_ __ ___
 "  | | '_ \| | __\ \ / / | '_ ` _ \
 "  | | | | | | |_ \ V /| | | | | | |
 "  |_|_| |_|_|\__(_)_/ |_|_| |_| |_|
 
-" TODO: 1. fix or alter Make for easily running targets
-"       2. run node debugger and jest/mocha tests debug
-"       3. fix lsp#format() - make use of editorconfig
-"       10. add documentation to files
-"       6. mapping/command to browse docs
-"       4. add notetaking plugin
-"       8. revisit autoload
-"       5. add command to browse templates
-"       7. revisit "how"
-"       9. rethink plugin structure
-"       10. revisit debugger
-"       11. revisit fzf & lsp integration or take a look at telescope
-"       12. learn how best to use git
 
+" TODO: 
+" [x] - st copy from terminal // CTRL+SHIFT+C
+" [x] - rebase nvim-compte
+" [ ] - Snippets final fix
+" [ ] - Git integration (checkout, rebase, log, stash, conflicts, vimagit?)
+" [ ] - Signify (hover,undo,redo,mappings)
+" [ ] - Replace FZF w/ telescope
+" [ ] - Simplify commands to use commonly
+" [ ] - tsconfig/eslint/prettier/editorconfig integration (actions, format)
+" [ ] - LSP (symbols, outline, references, refactor)
+" [ ] - lsp#format()
+" [ ] - Search Docs
+" [ ] - Redefine shortcuts and hydra/which-key them?
+" [ ] - Run Tests
+" [ ] - Run Debugger
+" [ ] - Migrate configs to Lua
+" [ ] - Fix Make
+" [ ] - Templates plugin
+" [ ] - Revisit autoload/plugin sources
+" [ ] - Notetaking plugin
+" [ ] - How plugin
+" [ ] - Document configs
+" [ ] - UI customizations
 
 set secure
 set noexrc
@@ -52,13 +61,13 @@ call plug#begin(globals#get('plugdir'))
     Plug 'diepm/vim-rest-console'           " CURL tool for http requests
     Plug 'neovim/nvim-lspconfig'            " lsp default configurations
     Plug 'hrsh7th/vim-vsnip'                " snippets engine
-    Plug 'brenopacheco/nvim-compe'
+    Plug 'brenopacheco/nvim-compe'               " completion that actually works
     Plug 'nvim-lua/lsp-status.nvim'         " lsp status for statusline
     Plug 'glepnir/lspsaga.nvim'             " lsp UI utils
     Plug 'cohama/lexima.vim'                " auto close {} () / smarter
     Plug 'vim-test/vim-test'                " run tests
     Plug 'brenopacheco/vim-quickhelp'       " call :Help for visual help
-    Plug 'brenopacheco/vim-hydra'       " call :Help for visual help
+    Plug 'brenopacheco/vim-hydra'           " like abo-abo's hydras
     Plug 'junegunn/goyo.vim'                " like vscode writer mode
     Plug 'junegunn/limelight.vim'           " lights only hovered block
     Plug 'haishanh/night-owl.vim'           " theme

@@ -41,7 +41,7 @@ let g:compe.source.vim_lsc             = v:false " vim-lsc completion.
 let g:compe.source.vsnip               = v:false " vim-vsnip completion.
 let g:compe.source.ultisnips           = v:false " UltiSnips completion.
 let g:compe.source.snippets_nvim       = v:false " snippets.nvim completion.
-let g:compe.source.nvim_treesitter     = v:false " nvim-treesitter completion.
+let g:compe.source.treesitter          = v:false " nvim-treesitter completion.
 
 let g:compe.source = {
     \ 'path':       { 'priority': 100, 'dup': 0, 'menu': '[PATH]'},
@@ -64,18 +64,6 @@ inoremap <silent><expr> <F6>      compe#confirm()
 imap <silent><expr> <Tab> pumvisible() ?
     \   (complete_info()["selected"] == "-1" ? "\<c-n>\<F6>" : "\<F6>") :
     \   (vsnip#available(1) ? "\<plug>(vsnip-expand-or-jump)" : "\<TAB>")
-
-" <C-k/j> mappings
-" inoremap <silent><expr> <F6>      compe#confirm()
-" imap <silent><expr> <Tab> pumvisible() ?
-"     \   (complete_info()["selected"] == "-1" ? "\<c-n>\<F6>" : "\<F6>") :
-"     \   (vsnip#available(1) ? "\<plug>(vsnip-expand)" : "\<TAB>")
-" smap <expr> <C-k> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : ''
-" imap <expr> <C-k> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : ''
-" smap <expr> <C-j> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
-" imap <expr> <C-j> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''
-
-
 
 if exists('g:plugs["lexima.vim"]')
     let g:lexima_no_default_rules = 1

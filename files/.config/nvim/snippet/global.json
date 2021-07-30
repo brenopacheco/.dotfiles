@@ -1,5 +1,5 @@
 {
-    "global-end":   { "prefix": "env",   "body": ["#!/usr/bin/env ${1:bash}$0"] },
+    "global-env":   { "prefix": "env",   "body": ["#!/usr/bin/env ${1:bash}$0"] },
     "global-date":  { "prefix": "date",  "body": ["${VIM:strftime(\"%B %d, %Y\")}"] },
     "global-todo":  { "prefix": "todo",  "body": ["${VIM:printf(&commentstring, ' TODO: ')}${0:${TM_SELECTED_TEXT}}"] },
     "global-email": { "prefix": "email", "body": ["brenoleonhardt@gmail.com"] },
@@ -20,10 +20,16 @@
     "global-header": {
         "prefix": "header",
         "body": [
-            "${VIM:printf(&commentstring, 'File: ' . ${VIM:expand('%:t')})}",
-            "${VIM:printf(&commentstring, 'Author: Breno Leonhardt Pacheco')}",
-            "${VIM:printf(&commentstring, 'Email: brenoleonhardt@gmail.com')}",
-            "${VIM:printf(&commentstring, 'Last Modified: ' . ${VIM:strftime(\"%B %d, %Y\")})}"
+            "${VIM:printf(&commentstring, ' File: ' . ${VIM:expand('%:t')})}",
+            "${VIM:printf(&commentstring, ' Author: Breno Leonhardt Pacheco')}",
+            "${VIM:printf(&commentstring, ' Email: brenoleonhardt@gmail.com')}"
         ]
-    }
+    },
+
+  "new": {
+    "prefix": ["new"],
+    "body": [
+      "${1:wow} - ${VIM:substitute('wow', '[a-z]', '_', 'g')}}"
+    ]
+  }
 }

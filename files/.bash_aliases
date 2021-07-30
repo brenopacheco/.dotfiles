@@ -11,11 +11,13 @@ alias di='docker image ls'
 alias dps='docker ps -a'
 alias dr='docker stop $(docker ps -aq)'
 alias d='docker'
-alias dl='docker logs'
+alias dl='docker-logs'
+alias de='docker-exec'
 # TODO: see commands and add here
 
 
 # git
+alias gr='git-root'
 alias gs='git status'
 alias ga='git add -A'
 alias gm='git commit'
