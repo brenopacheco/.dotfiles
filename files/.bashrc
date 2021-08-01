@@ -4,7 +4,6 @@ case $- in
       *) return;;
 esac
 
-
 # get current branch in git repo
 export PROMPT_DIRTRIM=3
 
@@ -59,11 +58,6 @@ export JAVA_HOME=/usr/lib/jvm/default
 NPM_PACKAGES="${HOME}/.npm"
 [[ ! -f $HOME/.npmrc ]] && echo "prefix=${NPM_PACKAGES}" >> $HOME/.npmrc
 [[ ! -d ${NPM_PACKAGES} ]] && mkdir ${NPM_PACKAGES}
-
-# true color kitty support
-tic -x -o $HOME/.terminfo $HOME/.config/kitty/xterm-24bit.terminfo
-export TERM=xterm-24bit
-alias ssh="TERM=xterm-256color ssh"
 
 # Misc settings
 export XDG_CONFIG_HOME=$HOME/.config
