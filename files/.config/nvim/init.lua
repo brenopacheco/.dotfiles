@@ -1,106 +1,107 @@
 --[[
-██╗███╗   ██╗██╗████████╗   ██╗     ██╗   ██╗ █████╗ 
+██╗███╗   ██╗██╗████████╗   ██╗     ██╗   ██╗ █████╗
 ██║████╗  ██║██║╚══██╔══╝   ██║     ██║   ██║██╔══██╗
 ██║██╔██╗ ██║██║   ██║      ██║     ██║   ██║███████║
 ██║██║╚██╗██║██║   ██║      ██║     ██║   ██║██╔══██║
 ██║██║ ╚████║██║   ██║   ██╗███████╗╚██████╔╝██║  ██║
 ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝
-		              Breno Leonhardt Pacheco
-		             brenoleonhardt@gmail.com
+                              Breno Leonhardt Pacheco
+                             brenoleonhardt@gmail.com
 
-[ ] lsp
-[ ] completion
 [ ] statusline
-[ ] telescope
-[ ] surround, etc
-[ ] bindings
+[ ] lsp
+[x] completion
+[ ] telescope  // quarta
+[ ] surround, etc // quinta
+[ ] bindings      // quinta
+[ ] completion/snippets adjustements
 [ ] plugin manager
 
 https://github.com/rockerBOO/awesome-neovim
 --]]
 
 vim.cmd([[
-    set clipboard=unnamed,unnamedplus
-    set secure
-    set noexrc
-    call plug#begin('~/.cache/nvim/plug')
-        let g:plug_timeout=99999
+set clipboard=unnamed,unnamedplus
+let g:plug_timeout=99999
+call plug#begin('~/.cache/nvim/plug')
 
-	" LSP
-	Plug 'neovim/nvim-lspconfig'
-	Plug 'nvim-lua/lsp-status.nvim'
-	Plug 'simrat39/symbols-outline.nvim'
-	Plug 'folke/trouble.nvim'
-	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-	Plug 'onsails/lspkind-nvim'
-	" https://github.com/ray-x/lsp_signature.nvim
+    " LSP
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'nvim-lua/lsp-status.nvim'
+    Plug 'simrat39/symbols-outline.nvim'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    " https://github.com/ray-x/lsp_signature.nvim
 
-	" FORMATTING
+    " STATUSLINE
+    Plug 'hoob3rt/lualine.nvim'
 
-	" COMPLETION
-        Plug 'hrsh7th/nvim-compe'
-	Plug 'L3MON4D3/LuaSnip'
-	Plug 'rafamadriz/friendly-snippets'
-	Plug 'windwp/nvim-autopairs'
+    " COMPLETION
+    Plug 'hrsh7th/nvim-compe'
+    Plug 'rafamadriz/friendly-snippets'
+    Plug 'windwp/nvim-autopairs'
+    Plug 'L3MON4D3/LuaSnip'
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'hrsh7th/vim-vsnip-integ'
+    Plug 'onsails/lspkind-nvim'
 
-	" TELESCOPE
-	Plug 'camspiers/snap'
-	Plug 'nvim-telescope/telescope.nvim'
+    " TELESCOPE
+    Plug 'camspiers/snap'
+    Plug 'nvim-telescope/telescope.nvim'
+    Plug 'folke/trouble.nvim'
 
-	" COLORSCHEME
-	Plug 'embark-theme/vim', { 'as': 'embark' }
-	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
-	Plug 'wadackel/vim-dogrun'
+    " COLORSCHEME
+    Plug 'embark-theme/vim', { 'as': 'embark' }
+    Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+    Plug 'wadackel/vim-dogrun'
 
-	" TREE
-	Plug 'kyazdani42/nvim-tree.lua'
+    " TREE
+    Plug 'kyazdani42/nvim-tree.lua'
 
-	" UI
-	Plug 'hoob3rt/lualine.nvim'
-	Plug 'lukas-reineke/indent-blankline.nvim'
-	Plug 'kyazdani42/nvim-web-devicons'
-	Plug 'folke/todo-comments.nvim'
-	Plug 'akinsho/nvim-bufferline.lua'
-	Plug 'folke/zen-mode.nvim'
-	Plug 'folke/which-key.nvim'
-	Plug 'edluffy/specs.nvim'
-	" norcalli/nvim-colorizer.lua
+    " UI
+    " Plug 'lukas-reineke/indent-blankline.nvim'
+    Plug 'kyazdani42/nvim-web-devicons'
+    Plug 'folke/todo-comments.nvim'
+    Plug 'akinsho/nvim-bufferline.lua'
+    Plug 'folke/zen-mode.nvim'
+    Plug 'folke/which-key.nvim'
+    Plug 'edluffy/specs.nvim'
+    " norcalli/nvim-colorizer.lua
 
-	" GIT
-	Plug 'sindrets/diffview.nvim'
-	Plug 'lewis6991/gitsigns.nvim'
-	Plug 'kdheepak/lazygit.nvim'
-	Plug 'TimUntersberger/neogit'
-	Plug 'tpope/vim-fugitive'
+    " GIT
+    Plug 'sindrets/diffview.nvim'
+    Plug 'lewis6991/gitsigns.nvim'
+    Plug 'kdheepak/lazygit.nvim'
+    Plug 'TimUntersberger/neogit'
+    Plug 'tpope/vim-fugitive'
 
-	" ACTIONS
-	Plug 'b3nj5m1n/kommentary'
-	Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+    " ACTIONS
+    Plug 'b3nj5m1n/kommentary'
+    Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 
-	" MOVEMENT
-	Plug 'andymass/vim-matchup'
+    " MOVEMENT
+    Plug 'andymass/vim-matchup'
 
-	" HELP
+    " HELP
 
-	" GENERAL
-	Plug 'nvim-lua/plenary.nvim'
-	Plug 'DanilaMihailov/vim-tips-wiki'
-	Plug 'dstein64/vim-startuptime'
+    " GENERAL
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'DanilaMihailov/vim-tips-wiki'
+    Plug 'dstein64/vim-startuptime'
 
-    call plug#end()
+call plug#end()
 ]])
 
--- require('plugins')
--- require('lsp')
+
+require('lsp')
 require('treesitter')
--- require('completion')
+require('completion')
 require('mappings')
--- require('defaults')
--- require('settings')
+require('defaults')
+require('plugins/statusline')
 
 vim.cmd([[
-" set termguicolors
-" colorscheme embark
+set termguicolors
+colorscheme embark
 " colorscheme tokyonight
 " colorscheme dogrun
 ]])

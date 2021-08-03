@@ -1,6 +1,4 @@
 -- File: lua/treesitter.lua
--- Author: Breno Leonhardt Pacheco
--- Email: brenoleonhardt@gmail.com
 -- Description: treesitter configuration file
 
 local supported = {

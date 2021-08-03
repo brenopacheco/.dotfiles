@@ -1,4 +1,5 @@
-print "mappings.lua"
+-- File: mappings.lua
+-- Description: key maps
 
 table.unpack = function(t, i)
   i = i or 1
