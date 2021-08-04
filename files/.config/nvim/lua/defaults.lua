@@ -27,13 +27,14 @@ set history       =500                    " keep more history in q:
 set hlsearch                              " keep search highlighted
 set ignorecase                            " ignore case when searching
 set incsearch                             " search as chars are entered
+set inccommand    =split                  " preview subsittution as you type
 set keywordprg    =:help                  " use help as default for <S-k>
 set laststatus    =2                      " always show statusline
 set lazyredraw                            " do not redraw during macros
 set linebreak                             " don't break word when wrapping
-set list                                  " actually use listchars
-set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
 set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp
+set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
+set list                                  " actually use listchars
 set more                                  " show --more-- to scroll messages
 set nojoinspaces                          " always insert 1 spc on join J
 set noshowmode                            " don't show --INSERT-- message

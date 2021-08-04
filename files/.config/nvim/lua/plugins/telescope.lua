@@ -1,4 +1,9 @@
 -- what do i want?
+--
+-- 1. find files in project
+-- 2. helptags
+-- 3. recent files
+-- 4. dotfiles
 
 
 
@@ -15,7 +20,6 @@ local actions = require("telescope.actions")
 local defaults = {}
 defaults.layout_strategy = "flex"
 defaults.layout_config = {
-  config = {
     height = 0.9,
     width = 0.8,
     horizontal = {
@@ -30,7 +34,6 @@ defaults.layout_config = {
       flip_columns = 120,
       flip_lines = 0
     }
-  }
 }
 
 defaults.mappings = {
@@ -54,14 +57,17 @@ defaults.mappings = {
   }
 }
 
-defaults.extensions =  {
+extensions =  {
   fzy_native = {
     override_generic_sorter = false,
     override_file_sorter = true,
   }
 }
 
-telescope.setup(defaults);
+telescope.setup({
+  defaults = defaults;
+  extensions = extensions
+});
 
 require('telescope').load_extension('fzy_native')
 
