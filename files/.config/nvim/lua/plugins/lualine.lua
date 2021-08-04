@@ -9,15 +9,16 @@ local function lsp_progress()
   end
   local status = {}
   for _, msg in pairs(messages) do
-    table.insert(status, (msg.percentage or 0) .. "%% " .. (msg.title or ""))
+    if msg.title ~= "empty title" then
+      table.insert(status, (msg.percentage or 0) .. "%% " .. (msg.title or ""))
+    end
   end
---[[
+  if #status == 0 then return end
   local spinners = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
   local ms = vim.loop.hrtime() / 1000000
   local frame = math.floor(ms / 120) % #spinners
   return table.concat(status, " | ") .. " " .. spinners[frame + 1]
- ]]
-  return table.concat(status, " | ")
+  -- return table.concat(status, " | ")
 end
 
 local function lsp_status()

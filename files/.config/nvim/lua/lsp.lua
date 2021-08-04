@@ -42,3 +42,22 @@ for _, server in pairs(servers) do
 end
 
 
+
+-- vim.fn.sign_define("LspDiagnosticsSignError",
+--     {text = "E", texthl = ""})
+-- vim.fn.sign_define("LspDiagnosticsSignWarning",
+--     {text = "W", texthl = ""})
+-- vim.fn.sign_define("LspDiagnosticsSignInformation",
+--     {text = "I", texthl = ""})
+-- vim.fn.sign_define("LspDiagnosticsSignHint",
+--     {text = "H", texthl = ""})
+
+
+
+
+local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
+
+for type, icon in pairs(signs) do
+  local hl = "LspDiagnosticsSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end

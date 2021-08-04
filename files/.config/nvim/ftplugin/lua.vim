@@ -5,7 +5,7 @@ let b:did_ftplugin = 1
 
 compiler lua
 " compiler luac
-setlocal equalprg=lua\ %
+setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
 " setlocal foldmethod=marker

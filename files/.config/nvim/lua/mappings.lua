@@ -14,13 +14,17 @@ local function _map(...)
   end
 end
 
+local l = function(key) return "<leader>" .. key end
+
 _map(
     {"i", "jk", "<C-[>l", { noremap = true }},
     {"i", "kj", "<C-[>l", { noremap = true }},
     {"c", "jk", "<C-c>", { noremap = true }},
     {"c", "kj", "<C-c>", { noremap = true }},
-    {"n", "<leader>b", "<cmd>lua cfn.goto_buf()<CR>", { noremap = true }},
-    {"n", "#", ":so %<CR>", { noremap = true}}
+    {"n", l("b"), "<cmd>lua cfn.goto_buf()<CR>", { noremap = true }},
+    {"n", "#", ":so %<CR>", { noremap = true}},
+    {"n", l("t"), ":Telescope<CR>", { noremap = true}},
+    {"n", l("fv"), ":lua require('plugins/telescope').dotfiles()<CR>", { noremap = true}}
 )
 
 _G.cfn = {}

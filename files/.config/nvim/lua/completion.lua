@@ -38,7 +38,9 @@ let g:compe.source.nvim_lua =   { 'priority': 70,  'dup': 0 }
 let g:compe.source.buffer =     { 'priority': 50,  'dup': 0 }
 ]])
 
-require('nvim-autopairs').setup{}
+require('nvim-autopairs').setup{
+
+}
 require("nvim-autopairs.completion.compe").setup({
   map_cr = true, --  map <CR> on insert mode
   map_complete = true -- it will auto insert `(` after select function or method item
@@ -75,10 +77,3 @@ vnoremap <silent> <C-j> <cmd>lua require('luasnip').jump(-1)<Cr>
 " vnoremap <silent> <C-j> <Plug>(vsnip-jump-prev)<CR>
 " xmap s <Plug>(vsnip-cut-text)
 ]])
-
-
-
-
-
-
-

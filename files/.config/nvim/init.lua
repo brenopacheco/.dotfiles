@@ -21,36 +21,34 @@ https://github.com/rockerBOO/awesome-neovim
 --]]
 
 require("paq")({
-    {'dstein64/vim-startuptime'};
-    {'andymass/vim-matchup'};
-    {'tpope/vim-surround'};
-    {'junegunn/vim-easy-align'};
-    {'bluz71/vim-nightfly-guicolors'};
+    {'dstein64/vim-startuptime'}; -- ok
+    {'andymass/vim-matchup'}; -- ok
+    {'tpope/vim-surround'}; -- ok
+    {'junegunn/vim-easy-align'}; -- ok
+    {'bluz71/vim-nightfly-guicolors'}; -- ok
+    {'lukas-reineke/indent-blankline.nvim'}; --ok
+    {'kyazdani42/nvim-web-devicons'}; -- do i need it?
+    {'b3nj5m1n/kommentary'}; -- change it?
+
+    {'tpope/vim-fugitive'}; -- ok
 
 
-    {'tpope/vim-fugitive'};
+    {'neovim/nvim-lspconfig'};                               --ok
+    {'simrat39/symbols-outline.nvim'}; -- vista replacement  --ok
+    {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'};  --ok
 
+    {'hoob3rt/lualine.nvim'}; -- ok
 
-    {'neovim/nvim-lspconfig'};
-    {'simrat39/symbols-outline.nvim'}; -- vista replacement
-    {'kosayoda/nvim-lightbulb'};       -- show lightbulb on code action
-    {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'};
+    {'hrsh7th/nvim-compe'}; -- ok
+    {'rafamadriz/friendly-snippets'}; -- ok
+    {'windwp/nvim-autopairs'};-- ok
+    {'L3MON4D3/LuaSnip'};-- ok
+    {'onsails/lspkind-nvim'};-- ok
 
-    {'hoob3rt/lualine.nvim'};
-
-    {'hrsh7th/nvim-compe'};
-    {'rafamadriz/friendly-snippets'};
-    {'windwp/nvim-autopairs'};
-    {'L3MON4D3/LuaSnip'};
-    {'onsails/lspkind-nvim'};
-
-    {'nvim-telescope/telescope.nvim',
-        requires = {
-            {'nvim-lua/popup.nvim'},
-            {'nvim-lua/plenary.nvim'},
-            {'nvim-telescope/telescope-fzy-native.nvim'}
-        }
-    };
+    {'nvim-telescope/telescope.nvim'}; -- ok
+      {'nvim-lua/popup.nvim'};
+      {'nvim-lua/plenary.nvim'};
+      {'nvim-telescope/telescope-fzy-native.nvim', hook='git submodule update --init --recursive'};
 
 })
 
@@ -71,14 +69,18 @@ vim.cmd([[
     colorscheme nightfly
 ]])
 
-    -- " TELESCOPE
-    -- " Plug 'camspiers/snap'
-    -- " Plug 'nvim-telescope/telescope.nvim'
+require'nvim-web-devicons'.setup{}
+require("indent_blankline").setup {
+  char = "|";
+  buftype_exclude = {"terminal"};
+  filetype_exclude = {'help'};
+  use_treesitter = true;
+  show_current_context = true;
+}
+
+
     -- " Plug 'folke/trouble.nvim'
 
-    -- " COLORSCHEME
-
-    -- " TREE
     -- " Plug 'kyazdani42/nvim-tree.lua'
 
     -- " UI
@@ -99,8 +101,6 @@ vim.cmd([[
     -- " Plug 'tpope/vim-fugitive'
 
     -- " ACTIONS
-    -- " Plug 'b3nj5m1n/kommentary'
     -- " Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 
     -- " MOVEMENT
-
