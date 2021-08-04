@@ -1,4 +1,6 @@
-
+-- File: plugin/lualine.vim
+-- Description: statusline with lsp/git integration
+--
 -- TODO: fix this function
 local function lsp_progress()
   local messages = vim.lsp.util.get_progress_messages()
@@ -9,24 +11,26 @@ local function lsp_progress()
   for _, msg in pairs(messages) do
     table.insert(status, (msg.percentage or 0) .. "%% " .. (msg.title or ""))
   end
+--[[
   local spinners = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
   local ms = vim.loop.hrtime() / 1000000
   local frame = math.floor(ms / 120) % #spinners
   return table.concat(status, " | ") .. " " .. spinners[frame + 1]
+ ]]
+  return table.concat(status, " | ")
 end
 
 local function lsp_status()
   if not vim.tbl_isempty(vim.lsp.buf_get_clients(0)) then
     return ''
   else
-    return ''
+    return vim.bo.filetype == '' and '  noft' or ''
   end
 end
 
 local config = {
   options = {
-    -- theme = vim.g.colors_name,
-    theme = 'tokyonight',
+    theme = 'nightfly',
     section_separators = '',
     component_separators = '',
     icons_enabled = true,

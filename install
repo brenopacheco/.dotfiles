@@ -43,11 +43,10 @@ echo 'installing language servers / linters / formatters'
 sudo pacman -S shellcheck tidy 
 pip install yamllint pylint cpplint jedi-language-server
 pip install --pre vim-vint  # version 4.3
-npm i -g bash-language-server vscode-css-languageserver-bin \
-    vscode-html-languageserver-bin vscode-json-languageserver typescript \
+npm i -g bash-language-server typescript tsc \
     typescript-language-server vim-language-server yaml-language-server \
     diagnostic-languageserver http-server livereload eslint tsc csslint \
-    markdownlint stylelint standard prettier
+    markdownlint stylelint standard prettier vscode-langservers-extracted
 ./files/bin/sumneko_setup
 
 
