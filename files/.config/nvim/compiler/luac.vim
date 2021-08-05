@@ -1,14 +1,14 @@
 if exists('current_compiler')
   finish
 endif
-let current_compiler = 'lua'
+let current_compiler = 'luac'
 
 let s:save_cpo = &cpo
 set cpo-=C
 
-setlocal errorformat=lua:\ %f:%l:%m
+setlocal errorformat=luac:\ %f:%l:\ %m
 
-setlocal makeprg=lua\ %
+setlocal makeprg=luac\ -p
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -18,7 +18,7 @@ require'nvim-treesitter.configs'.setup {
     ensure_installed      = supported,
     indent                = { enable = false },
     highlight             = { enable = true },
-    incremental_selection = { enable = true },
+    incremental_selection = { enable = false },
     textobjects           = { enable = true },
 }
 

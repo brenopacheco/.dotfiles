@@ -1,10 +1,5 @@
--- 1. decidir o mapeamento
--- 2. definir como vai ser executado
---  2.1 como pode ser attached pelo lsp
 -- 3. verificar which key
---
--- apply all mappings but complete and lsp
--- lsp is applied on buf attach
+-- 4. apply all mappings but complete and lsp
 
 local defaults = [[
     nnoremap Y           :norm v$hy<cr>
@@ -19,14 +14,14 @@ local defaults = [[
     nnoremap           :nohlsearch<cr>
     nnoremap #           :b #<cr>
     nnoremap !           <cmd>lua utils.spawn_terminal()<cr>
+    inoremap jk          <C-[>l
+    inoremap kj          <C-[>l
 ]]
 
 local actions = [[
-    nnoremap ]<space>  mzo<C-[>0D`z
-    nnoremap [<space>  mzO<C-[>0D`z
-    inoremap jk        <C-[>l
-    inoremap kj        <C-[>l
-    nmap     ""        ^v$hS"
+    nnoremap g]        mzo<C-[>0D`z
+    nnoremap g[        mzO<C-[>0D`z
+    nmap     g"        ^v$hS"
     xmap     ge        :EasyAlign<cr>
     nmap     ge        :EasyAlign<cr>
     nnoremap g#        <cmd>source %<cr>
@@ -35,48 +30,51 @@ local actions = [[
     nnoremap gs        <cmd>lua utils.substitute()<cr>
     nnoremap qf        <cmd>lua utils.qf_global()<CR>
     nnoremap qv        <cmd>lua utils.qf_vglobal()<CR>
-    nnoremap qp        <cmd>lua utils.qf_colder()<CR>
-    nnoremap qn        <cmd>lua utils.qf_cnewer()<CR>
+    nnoremap qp        <cmd>lua utils.colder()<CR>
+    nnoremap qn        <cmd>lua utils.cnewer()<CR>
 ]]
 
+
+--  nnoremap ]s            :tag<cr>
+--  nnoremap [s            :pop<cr>
+--  nnoremap ]t            :tnext<cr>
+--  nnoremap [t            :tprevious<cr>
 local movement = [[
-    nnoremap ]s            :tag<cr>
-    nnoremap [s            :pop<cr>
-    nnoremap ]t            :tnext<cr>
-    nnoremap [t            :tprevious<cr>
+    nnoremap ]t            :tabnext<cr>
+    nnoremap [t            :tabprev<cr>
     nnoremap ]a            :next<cr>
     nnoremap [a            :previous<cr>
     nnoremap ]b            :bnext<cr>
     nnoremap [b            :bprevious<cr>
-    nnoremap ]f            <cmd>lua utils.next_file()<cr>
-    nnoremap [f            <cmd>lua utils.prev_file()<cr>
-    nnoremap ]g            <cmd>lua utils.next_gitfile()<cr>
-    nnoremap [g            <cmd>lua utils.prev_gitfile()<cr>
-    nnoremap ]c            <cmd>lua utils.next_hunk()<cr>
-    nnoremap [c            <cmd>lua utils.prev_hunk()<cr>
-    nnoremap ]q            <cmd>lua utils.next_qf()<cr>
-    nnoremap [q            <cmd>lua utils.prev_qf()<cr>
-    nnoremap ]l            <cmd>lua utils.next_ll()<cr>
-    nnoremap [l            <cmd>lua utils.prev_ll()<cr>
+    nnoremap ]f            <cmd>lua utils.fnext()<cr>
+    nnoremap [f            <cmd>lua utils.fprev()<cr>
+    nnoremap ]g            <cmd>lua utils.gfnext()<cr>
+    nnoremap [g            <cmd>lua utils.gfprev()<cr>
+    nnoremap ]c            <cmd>lua utils.hnext()<cr>
+    nnoremap [c            <cmd>lua utils.hprev()<cr>
+    nnoremap ]q            <cmd>lua utils.cnext()<cr>
+    nnoremap [q            <cmd>lua utils.cprev()<cr>
+    nnoremap ]l            <cmd>lua utils.lnext()<cr>
+    nnoremap [l            <cmd>lua utils.lprev()<cr>
 ]]
 
 local bufwintabs = [[
-    nnoremap <tab>         :tabnext<cr>
-    nnoremap <s-tab>       :tabprevious<cr>
-    nnoremap <C-w>t        :tabnew<CR>
-    nnoremap <C-w>e        :enew<CR>
-    nnoremap <C-w>m        <C-W>_<C-W>\|
-    nmap     <leader>w     <c-w>
+    "nnoremap <tab>   :tabnext<cr>
+    "nnoremap <s-tab> :tabprevious<cr>
+    nnoremap  <C-w>t  :tabnew<CR>
+    nnoremap  <C-w>e  :enew<CR>
+    nnoremap  <c-w>m  <c-w>_<c-w>\|
+    nmap      ,       <c-w>
 ]]
 
 local toggles = [[
-  nnoremap <leader>´ :Lf<cr>
-  nnoremap <leader>' :Terminal<cr>
-  nnoremap <leader>n :NvimTree<cr>
-  nnoremap <leader>q :Quickfix<cr>
-  nnoremap <leader>l :Loclist<cr>
-  nnoremap <leader>t :SymbolsOutline<cr>
-  nnoremap <leader>z :ZenMode<cr>
+  nnoremap <leader>´ <cmd>lua utils.lf()<cr>
+  nnoremap <leader>' <cmd>lua utils.terminal()<cr>
+  nnoremap <leader>n <cmd>lua utils.tree()<cr>
+  nnoremap <leader>q <cmd>lua utils.copen()<cr>
+  nnoremap <leader>l <cmd>lua utils.lopen()<cr>
+  nnoremap <leader>t <cmd>lua utils.tagbar()<cr>
+  nnoremap <leader>z <cmd>lua utils.zenmode()<cr>
 ]]
 
 local find = [[
@@ -96,22 +94,13 @@ local find = [[
 ]]
 
 local git =  [[
-
-   " nnoremap hs :HunkStage<cr>
-   " vnoremap hs :HunkStage<cr>
-   " nnoremap hu :HunkUnstage<cr>
-   " nnoremap hr :HunkReset<cr>
-   " vnoremap hr :HunkReset<cr>
-   " nnoremap hp :HunkPreview<cr>
-   " nnoremap hb :HunkBlame<cr>
-
-   " nnoremap hs <cmd>lua require"gitsigns".stage_hunk()<cr>
-   " vnoremap hs <cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<cr>
-   " nnoremap hu <cmd>lua require"gitsigns".undo_stage_hunk()<cr>
-   " nnoremap hr <cmd>lua require"gitsigns".reset_hunk()<cr>
-   " vnoremap hr <cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<cr>
-   " nnoremap hp <cmd>lua require"gitsigns".preview_hunk()<cr>
-   " nnoremap hb <cmd>lua require"gitsigns".blame_line(true)<cr> // fugitive?
+   " nnoremap hs <cmd>lua require("gitsigns").stage_hunk()<cr>
+   " vnoremap hs <cmd>lua require("gitsigns").stage_hunk({vim.fn.line("."), vim.fn.line("v")})<cr>
+   " nnoremap hu <cmd>lua require("gitsigns").undo_stage_hunk()<cr>
+   " nnoremap hr <cmd>lua require("gitsigns").reset_hunk()<cr>
+   " vnoremap hr <cmd>lua require("gitsigns").reset_hunk({vim.fn.line("."), vim.fn.line("v")})<cr>
+   " nnoremap hp <cmd>lua require("gitsigns").preview_hunk()<cr>
+   " nnoremap hb <cmd>lua require("gitsigns").blame_line(true)<cr> // fugitive?
 ]]
 
 local lsp = [[
@@ -123,30 +112,17 @@ local lsp = [[
     nnoremap <buffer> <leader>o :Telescope lsp_document_symbols<cr>
     nnoremap <buffer> <leader>s :Telescope lsp_dynamic_workspace_symbols<cr>
 
-    " nnoremap <buffer> <C-]>     <cmd>lua vim.lsp.goto_definition()<cr>
-    " nnoremap <buffer> gr        <cmd>lua vim.lsp.buf.references()<cr>
-    " nnoremap <buffer> <leader>a <cmd>lua vim.lsp.buf.code_action()<cr>
-    " xnoremap <buffer> <leader>a :<c-u>lua vim.lsp.buf.range_code_action()<cr>
-    " nnoremap <buffer> g*        <cmd>lua vim.lsp.buf.workspace_symbol(vim.fn.expand('<cword>'))<cr>
-    " nnoremap <buffer> gd        <cmd>lua vim.lsp.buf.declaration()<cr>
+    nnoremap <buffer> <leader>d <cmd>lua vim.lsp.buf.declaration()<cr>
+    nnoremap <buffer> <leader>I <cmd>lua vim.lsp.buf.incoming_calls()<cr>
+    nnoremap <buffer> <leader>O <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
+    nnoremap <buffer> <leader>y <cmd>lua vim.lsp.buf.type_definition()<cr>
 
-    " nnoremap <buffer> gi        <cmd>lua vim.lsp.buf.implementation()<cr>
-    " nnoremap <buffer> gI        <cmd>lua vim.lsp.buf.incoming_calls()<cr>
-    " nnoremap <buffer> go        <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
-    " nnoremap <buffer> gy        <cmd>lua vim.lsp.buf.type_definition()<cr>
-
-    nnoremap <buffer> ==        :Format<cr>
-    nnoremap <buffer> ]e        :DiagnosticNext<cr>
-    nnoremap <buffer> [e        :DiagnosticPrev<cr>
-    nnoremap <buffer> <c-k>     :Hover<cr>
-    nnoremap <buffer> <leader>e :Diagnostics<cr>
-    nnoremap <buffer> gr        :Rename<cr>
-    "nnoremap <buffer> ==        <cmd>lua utils.format()<cr>
-    " nnoremap <buffer> ]e        <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
-    " nnoremap <buffer> [e        <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
-    " nnoremap <buffer> <c-k>     <cmd>lsp vim.lsp.buf.hover()<cr>
-    " nnoremap <buffer> <leader>e <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
-    " nnoremap <buffer> gr        <cmd>lua vim.lsp.buf.rename()<cr>
+    nnoremap <buffer> ==        <cmd>lua utils.format()<cr>
+    nnoremap <buffer> ]e        <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
+    nnoremap <buffer> [e        <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
+    nnoremap <buffer> <c-k>     <cmd>lsp vim.lsp.buf.hover()<cr>
+    nnoremap <buffer> <leader>e <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
+    nnoremap <buffer> gr        <cmd>lua vim.lsp.buf.rename()<cr>
 ]]
 
 

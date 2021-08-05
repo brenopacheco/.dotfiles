@@ -3,7 +3,7 @@ local paq = require('paq')
 paq({
     {'tweekmonster/startuptime.vim'};
     {'editorconfig/editorconfig-vim'};
-    {'andymass/vim-matchup'};
+    -- {'andymass/vim-matchup'};
     {'tpope/vim-surround'};
     {'junegunn/vim-easy-align'}; -- mappings
     {'tpope/vim-commentary'};
