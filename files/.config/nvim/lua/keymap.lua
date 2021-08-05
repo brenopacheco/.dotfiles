@@ -1,16 +1,8 @@
--- File: mappings.lua
--- Description: key maps
 
-table.unpack = function(t, i)
-  i = i or 1
-  if t[i] ~= nil then
-    return t[i], unpack(t, i + 1)
-  end
-end
 
 local function _map(...)
   for _,v in pairs({...}) do
-    vim.api.nvim_set_keymap(table.unpack(v))
+    vim.api.nvim_set_keymap(unpack(v))
   end
 end
 
@@ -44,3 +36,28 @@ what do i want
     2. qf/ll filters
     3. align, surround, comment
  ]]
+
+
+vim.cmd([[
+inoremap <silent><expr> <C-Space> pumvisible() ? compe#close() : compe#complete()
+inoremap <silent><expr> <TAB>     compe#confirm({'keys': '<TAB>', 'select': v:true})
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-b>     compe#scroll({ 'delta': -4 })
+]])
+
+
+
+vim.cmd([[
+smap <Backspace> a<Backspace>
+inoremap <silent> <C-k> <cmd>lua require'luasnip'.jump(1)<Cr>
+inoremap <silent> <C-j> <cmd>lua require'luasnip'.jump(-1)<Cr>
+vnoremap <silent> <C-k> <cmd>lua require('luasnip').jump(1)<Cr>
+vnoremap <silent> <C-j> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+" smap <Backspace> a<Backspace>
+" inoremap <silent> <C-k> <Plug>(vsnip-jump-next)<CR>
+" inoremap <silent> <C-j> <Plug>(vsnip-jump-prev)<CR>
+" vnoremap <silent> <C-k> <Plug>(vsnip-jump-next)<CR>
+" vnoremap <silent> <C-j> <Plug>(vsnip-jump-prev)<CR>
+" xmap s <Plug>(vsnip-cut-text)
+]])

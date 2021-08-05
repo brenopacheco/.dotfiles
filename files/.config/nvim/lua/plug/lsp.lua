@@ -5,8 +5,8 @@ local lspconfig = require('lspconfig')
 
 vim.lsp.set_log_level(4) -- disable logging
 
-lspconfig.diagnosticls.setup(require('lsp.diagnosticls'))
-lspconfig.sumneko_lua.setup(require('lsp.sumneko_lua'))
+lspconfig.diagnosticls.setup(require('plug.lsp/diagnosticls'))
+lspconfig.sumneko_lua.setup(require('plug.lsp/sumneko_lua'))
 
 local servers = {
     "bashls",
@@ -40,20 +40,6 @@ for _, server in pairs(servers) do
         capabilities = capabilities
     }
 end
-
-
-
--- vim.fn.sign_define("LspDiagnosticsSignError",
---     {text = "E", texthl = ""})
--- vim.fn.sign_define("LspDiagnosticsSignWarning",
---     {text = "W", texthl = ""})
--- vim.fn.sign_define("LspDiagnosticsSignInformation",
---     {text = "I", texthl = ""})
--- vim.fn.sign_define("LspDiagnosticsSignHint",
---     {text = "H", texthl = ""})
-
-
-
 
 local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
 

@@ -1,6 +1,3 @@
--- File: after/plugin/defaults.vim
--- Description: default vim configurations
-
 vim.cmd([[
 set encoding=utf-8                        " set default internal encoding
 filetype on                               " enable filetype detection
@@ -64,7 +61,7 @@ set tags          =tags;~                 " search tags file up to $HOME
 set textwidth     =78                     " norm gq width. see formatoptions
 set undolevels     =500                   " keep more undos
 set updatetime    =5000                   " time for writting swap to disk
-set virtualedit   =block,onemore          " put cursor where there is no char
+set virtualedit   =block                  " put cursor where there is no char
 set visualbell                            " ...
 set wildignore   +=.git/**,tags           " ignore pattern using vimgrep
 set wildignore   +=node_modules/**        " ignore pattern using vimgrep
@@ -74,6 +71,7 @@ set grepformat    =%f:%l:%c:%m            " format for grep in quickfix
 let g:vim_indent_cont = &sw               " \ indents shiftwidth
 let c_syntax_for_h = 1                    " recognize .h as c file
 set path=**                               " extend path to glob **
+set termguicolors
 ]])
 
 vim.go.grepprg = "rg --hidden --smart-case"

@@ -5,6 +5,7 @@
 --]]
 local uv = vim.loop
 local print_err = vim.api.nvim_err_writeln
+local configdir = 'plug/'
 
 vim.go.packpath = vim.go.packpath .. "," .. vim.fn.stdpath("cache")
 
@@ -162,20 +163,23 @@ local function remove(packdir)
     end
 end
 
-local function list()
+local function list(echo)
     local installed = vim.tbl_filter(function(name) return packages[name].exists end, vim.tbl_keys(packages))
     local removed = vim.tbl_filter(function(name) return last_ops[name] == "remove" end, vim.tbl_keys(last_ops))
     table.sort(installed)
     table.sort(removed)
     local sym_tbl = {install = "+", update = "*", remove = " "}
-    for header, pkgs in pairs {["Installed packages:"] = installed, ["Recently removed:"] = removed} do
-        if #pkgs ~= 0 then
-            print(header)
-            for _, name in ipairs(pkgs) do
-                print("  ", sym_tbl[last_ops[name]] or " ", name)
-            end
-        end
-    end
+		if echo then
+			for header, pkgs in pairs {["Installed packages:"] = installed, ["Recently removed:"] = removed} do
+					if #pkgs ~= 0 then
+							print(header)
+							for _, name in ipairs(pkgs) do
+										print("  ", sym_tbl[last_ops[name]] or " ", name)
+							end
+					end
+			end
+		end
+		return installed
 end
 
 local function register(args)
@@ -205,20 +209,33 @@ local function register(args)
         exists = vim.fn.isdirectory(dir) ~= 0,
         pin = args.pin,
         run = args.run or args.hook, -- DEPRECATE 1.0
-        url = args.url or "https://github.com/" .. args[1] .. ".git"
+        url = args.url or "https://github.com/" .. args[1] .. ".git",
+        config = args.config
     }
     num_pkgs = num_pkgs + 1
 end
 
+local function configure(tbl)
+  packages = {}
+  num_pkgs = 0
+  vim.tbl_map(register, tbl)
+    for _,pkg in pairs(packages) do
+      if pkg.config then
+        require(configdir .. pkg.config)
+      end
+    end
+  return self
+end
+
 do
     vim.tbl_map(vim.cmd, {
-        "command! PaqInstall  lua require('paq'):install()",
-        "command! PaqUpdate   lua require('paq'):update()",
-        "command! PaqClean    lua require('paq'):clean()",
-        "command! PaqSync     lua require('paq'):sync()",
-        "command! PaqList     lua require('paq').list()",
-        "command! PaqLogOpen  lua require('paq').log_open()",
-        "command! PaqLogClean lua require('paq').log_clean()"
+        "command! PaqInstall   lua require('paq'):install()",
+        "command! PaqUpdate    lua require('paq'):update()",
+        "command! PaqClean     lua require('paq'):clean()",
+        "command! PaqSync      lua require('paq'):sync()",
+        "command! PaqList      lua require('paq').list()",
+        "command! PaqLogOpen   lua require('paq').log_open()",
+        "command! PaqLogClean  lua require('paq').log_clean()"
     })
 end
 
@@ -232,5 +249,5 @@ return setmetatable({
     setup = function(self, args) for k,v in pairs(args) do cfg[k] = v end return self end,
     log_open = function(self) vim.cmd("sp " .. LOGFILE) return self end,
     log_clean = function(self) uv.fs_unlink(LOGFILE) print("Paq log file deleted") return self end,
-}, {__call = function(self, tbl) packages = {} num_pkgs = 0 vim.tbl_map(register, tbl) return self end}
+}, {__call = function(self, tbl) configure(tbl) end}
 )
