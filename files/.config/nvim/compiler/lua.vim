@@ -6,7 +6,7 @@ let current_compiler = 'lua'
 let s:save_cpo = &cpo
 set cpo-=C
 
-setlocal errorformat=%s:\ %f:%l:\ %m
+setlocal efm=lua:\ %f:%l:%m
 
 setlocal makeprg=lua\ %
 

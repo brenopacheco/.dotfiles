@@ -36,8 +36,9 @@ local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
 
 for _, server in pairs(servers) do
     lspconfig[server].setup{
-        root_dir = root,
-        capabilities = capabilities
+        on_attach = require('keymap').register_lsp;
+        root_dir = root;
+        capabilities = capabilities;
     }
 end
 

@@ -11,6 +11,7 @@ local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
 local M = {
     cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
     root_dir = root,
+    on_attach = require('keymap').register_lsp,
     settings = {
         Lua = {
             completion = {

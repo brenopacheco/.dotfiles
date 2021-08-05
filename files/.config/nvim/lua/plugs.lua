@@ -24,6 +24,7 @@ paq({
     {'rafamadriz/friendly-snippets'};
     {'windwp/nvim-autopairs',               config='autopairs'};
     {'onsails/lspkind-nvim'};
+    {'ray-x/lsp_signature.nvim',            config='signature'};
     {'kyazdani42/nvim-tree.lua',            config='tree'};
     {'folke/trouble.nvim',                  config='trouble'}; -- mappings
     {'tpope/vim-fugitive'};

@@ -16,6 +16,11 @@ function M.map(keymaps)
   end
 end
 
+-- TODO: 
+-- function M.bufferize(cmd)
+  -- local result = vim.fn.execute(cmd)
+  -- vim.api.nvim__
+-- end
 
 
 return M
