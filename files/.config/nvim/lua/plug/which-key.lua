@@ -1,18 +1,18 @@
-local setup = {
+  require("which-key").setup({
   plugins = {
     marks = true, -- shows a list of your marks on ' and `
     registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
     presets = {
-      operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion
-      motions = true, -- adds help for motions
-      text_objects = true, -- help for text objects triggered after entering an operator
-      windows = true, -- default bindings on <c-w>
-      nav = true, -- misc bindings to work with windows
-      z = true, -- bindings for folds, spelling and others prefixed with z
-      g = true, -- bindings for prefixed with g
+      operators = false, -- adds help for operators like d, y, ... and registers them for motion / text object completion
+      motions = false, -- adds help for motions
+      text_objects = false, -- help for text objects triggered after entering an operator
+      windows = false, -- default bindings on <c-w>
+      nav = false, -- misc bindings to work with windows
+      z = false, -- bindings for folds, spelling and others prefixed with z
+      g = false, -- bindings for prefixed with g
     },
   },
-  operators = { gc = "Comments" },
+  operators = { gc = "Comments", ga = "Align" },
   key_labels = {
     -- override the label used to display some keys. It doesn't effect WK in any other way.
     -- For example:
@@ -39,7 +39,7 @@ local setup = {
     align = "left", -- align columns left, center or right
   },
   ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
-  hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ "}, -- hide mapping boilerplate
+  hidden = { "<Plug>", "<plug>", "<silent>", "<cmd>", "<Cmd>", "<cr>", "<CR>", "call", "lua", "^:", "^ "}, -- hide mapping boilerplate
   show_help = true, -- show help message on the command line when the popup is visible
   triggers = "auto", -- automatically setup triggers
   -- triggers = {"<leader>"} -- or specify a list manually
@@ -50,6 +50,4 @@ local setup = {
     i = { "j", "k" },
     v = { "j", "k" },
   }
-}
-
-return setup
+})

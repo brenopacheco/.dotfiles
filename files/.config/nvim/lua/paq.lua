@@ -1,8 +1,4 @@
---[[
-	paq-nvim package manager v0.9.2
-	https://github.com/savq/paq-nvim
-	-- changed install dir
---]]
+--[[ paq-nvim package manager v0.9.2 https://github.com/savq/paq-nvim ]]
 local uv = vim.loop
 local print_err = vim.api.nvim_err_writeln
 local configdir = 'plug/'

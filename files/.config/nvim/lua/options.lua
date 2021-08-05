@@ -24,7 +24,7 @@ set history       =500                    " keep more history in q:
 set hlsearch                              " keep search highlighted
 set ignorecase                            " ignore case when searching
 set incsearch                             " search as chars are entered
-set inccommand    =split                  " preview subsittution as you type
+set inccommand    =nosplit                " preview subsittution as you type
 set keywordprg    =:help                  " use help as default for <S-k>
 set laststatus    =2                      " always show statusline
 set lazyredraw                            " do not redraw during macros
@@ -61,7 +61,7 @@ set tags          =tags;~                 " search tags file up to $HOME
 set textwidth     =78                     " norm gq width. see formatoptions
 set undolevels     =500                   " keep more undos
 set updatetime    =5000                   " time for writting swap to disk
-set virtualedit   =block                  " put cursor where there is no char
+set virtualedit   =onemore                " put cursor where there is no char
 set visualbell                            " ...
 set wildignore   +=.git/**,tags           " ignore pattern using vimgrep
 set wildignore   +=node_modules/**        " ignore pattern using vimgrep
