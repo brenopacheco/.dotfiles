@@ -17,6 +17,7 @@ paq({
     {'folke/which-key.nvim',                config='which-key'};
     {'norcalli/nvim-colorizer.lua',         config='colorizer'};
     {'neovim/nvim-lspconfig',               config='lsp'}; -- mappings
+    {'creativenull/diagnosticls-nvim'};
     {'simrat39/symbols-outline.nvim'}; -- mappings
     {'nvim-treesitter/nvim-treesitter',     config='treesitter', run = ':TSUpdate'};
     {'hrsh7th/nvim-compe',                  config='compe'}; -- mappings

@@ -7,9 +7,13 @@ keycode 37 =
 keycode 50 = 
 add Control = Control_L
 
-! sets altgr as insert
+! sets altgr as shift
 clear mod5
 keycode 108 = Shift_L
+
+! windows key as <Del>
+remove mod4 = Super_L
+keycode 133 = Delete
 
 ! other keybindings
 keycode 105 = slash question
@@ -25,3 +29,4 @@ keycode 11 = 2 at
 keycode 21 = dead_acute dead_grave 
 keycode 48 = dead_tilde dead_circumflex 
 keycode 47 = parenright parenleft
+

@@ -1,5 +1,7 @@
 -- 3. verificar which key
 -- 4. apply all mappings but complete and lsp
+-- 4. apply all mappings but complete and lsp
+-- 4. apply all mappings but complete and lsp
 
 local defaults = [[
     nnoremap Y           :norm v$hy<cr>
@@ -64,11 +66,11 @@ local bufwintabs = [[
     nnoremap  <C-w>t  :tabnew<CR>
     nnoremap  <C-w>e  :enew<CR>
     nnoremap  <c-w>m  <c-w>_<c-w>\|
-    nmap      ,       <c-w>
+    nmap      <Del>   <c-w>
 ]]
 
 local toggles = [[
-  nnoremap <leader>´ <cmd>lua utils.lf()<cr>
+"  nnoremap <leader>´ <cmd>lua utils.lf()<cr> screws up which-key
   nnoremap <leader>' <cmd>lua utils.terminal()<cr>
   nnoremap <leader>n <cmd>lua utils.tree()<cr>
   nnoremap <leader>q <cmd>lua utils.copen()<cr>
@@ -78,7 +80,8 @@ local toggles = [[
 ]]
 
 local find = [[
-  nnoremap <leader><leader> :Telescope<cr>
+  nnoremap <leader><leader> :
+  " nnoremap <leader><leader> :Telescope<cr>
   nnoremap <leader>b :Telescope buffers<cr>
   nnoremap <leader>. :Telescope find_files<cr>
   nnoremap <leader>f :Telescope project_files<cr>
@@ -117,12 +120,13 @@ local lsp = [[
     nnoremap <buffer> <leader>O <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
     nnoremap <buffer> <leader>y <cmd>lua vim.lsp.buf.type_definition()<cr>
 
-    nnoremap <buffer> ==        <cmd>lua utils.format()<cr>
     nnoremap <buffer> ]e        <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
     nnoremap <buffer> [e        <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
     nnoremap <buffer> <c-k>     <cmd>lsp vim.lsp.buf.hover()<cr>
     nnoremap <buffer> <leader>e <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
     nnoremap <buffer> gr        <cmd>lua vim.lsp.buf.rename()<cr>
+    nnoremap <buffer> g=        <cmd>lua vim.lsp.buf.formatting()<cr>
+    vnoremap <buffer> =         <cmd>lua vim.lsp.buf.range_formatting()<cr>
 ]]
 
 
@@ -139,6 +143,11 @@ local complete = [[
   " xmap s <Plug>(vsnip-cut-text)
 ]]
 
+local trouble = [[
+
+-- movements
+]]
+
 vim.cmd(defaults)
 vim.cmd(actions)
 vim.cmd(movement)
@@ -152,6 +161,10 @@ local M = {}
 
 function M.register_lsp()
   vim.cmd(lsp)
+end
+
+function M.register_trouble()
+  vim.cmd(trouble)
 end
 
 return M
