@@ -229,7 +229,7 @@ do
         "command! PaqUpdate    lua require('paq'):update()",
         "command! PaqClean     lua require('paq'):clean()",
         "command! PaqSync      lua require('paq'):sync()",
-        "command! PaqList      lua require('paq').list()",
+        "command! PaqList      lua require('paq').list(true)",
         "command! PaqLogOpen   lua require('paq').log_open()",
         "command! PaqLogClean  lua require('paq').log_clean()"
     })

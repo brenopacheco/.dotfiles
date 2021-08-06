@@ -1,3 +1,4 @@
+! settings for lenovo keyboard {{{
 ! sets capslock as ctrl
 ! removes left shift and left ctrl
 clear lock
@@ -29,4 +30,4 @@ keycode 11 = 2 at
 keycode 21 = dead_acute dead_grave 
 keycode 48 = dead_tilde dead_circumflex 
 keycode 47 = parenright parenleft
-
+! }}}

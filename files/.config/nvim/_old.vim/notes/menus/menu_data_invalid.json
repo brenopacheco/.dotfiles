@@ -1,6 +1,0 @@
-{ "name": "menu 1",
-  "items": [
-        { "name": "cmd 1", "cmd":  "...1" },
-        { "name": "submenu",
-          "items": [ { "name": "cmd 2", "cmd":  "...2" },
-                     { "name": "cmd 3" } ] } ] }

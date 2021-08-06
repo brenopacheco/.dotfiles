@@ -17,3 +17,5 @@ require('backup')
 require('plugs')
 require('colors')
 
+-- define our own global functions
+_G.utils = require('utils')
