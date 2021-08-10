@@ -6,3 +6,18 @@ let g:neoformat_enabled_typescriptreact = ['prettiereslint']
 let g:neoformat_enabled_lua = ['luaformat']
 ]])
 
+
+local luaformat = [[
+let g:neoformat_lua_neoformat = {
+        'exe': 'lua-format',
+        'args': [
+          '--column-limit=78',
+          '--indent-width=2',
+          '--tab-width=2',
+          '--no-use-tab',
+          '--double-quote-to-single-quote'
+        ]
+      }
+]]
+
+vim.cmd(string.gsub(luaformat, '\n', ''))
