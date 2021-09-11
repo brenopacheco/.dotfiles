@@ -8,12 +8,9 @@ let s:last_buffer = 0
 
 command! Lf call <SID>open()
 
-function! s:exit(job_id, code, event)
-    if a:code == 0
-        let buffer = bufnr()
-        " silent exec s:last_buffer . 'b'
-        silent exec buffer . 'bw!'
-    endif
+function! s:exit()
+    echo 'exiting'
+    close
     try
       if filereadable(s:selection_path)
         for f in readfile(s:selection_path)
@@ -50,13 +47,13 @@ function! s:open()
             \ norelativenumber
             \ signcolumn=no
       let cmd = 'lf -selection-path='. s:selection_path . ' ""'
-      call termopen(cmd, { 'on_exit': funcref('s:exit') })
-      tunmap <buffer> jk
-      tunmap <buffer> kj
-      tunmap <buffer> <Esc>
-      tunmap <buffer> <C-[>
-      redraw!
-      " startinsert " TODO: maybe callback?
+      exec 'term ' . cmd
+      autocmd TermClose <buffer> call s:exit()
+      silent! tunmap <buffer> jk
+      silent! tunmap <buffer> kj
+      silent! tunmap <buffer> <Esc>
+      silent! tunmap <buffer> <C-[>
+      startinsert
   endtry
 endfun
 

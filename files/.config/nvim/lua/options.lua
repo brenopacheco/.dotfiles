@@ -60,7 +60,7 @@ set tabstop       =4                      " display tab as 4 spaces
 set tags          =tags;~                 " search tags file up to $HOME
 set textwidth     =78                     " norm gq width. see formatoptions
 set undolevels     =500                   " keep more undos
-set updatetime    =5000                   " time for writting swap to disk
+set updatetime    =300                    " time for writting swap to disk
 set virtualedit   =onemore                " put cursor where there is no char
 set visualbell                            " ...
 set wildignore   +=.git/**,tags           " ignore pattern using vimgrep

@@ -83,37 +83,37 @@ function extract() {
     }
 # }}}
 # lf : run lf cding to last dir & reseting marks {{{
-	function lf () {
-		# reset marks
-        test ! -d $HOME/.local/share/lf && mkdir $HOME/.local/share/lf
-		marks=$HOME/.local/share/lf/marks
-		cat<<-EOF > $marks
-			a:/home/breno/Aulas
-			d:/home/breno/Desktop
-			w:/home/breno/Downloads
-			m:/run/media/breno
-			n:/home/breno/.config/nvim
-			o:/home/breno/org
-			h:/home/breno
-			t:/tmp
-			v:/home/breno/Videos
-			w:/home/breno/Downloads
-		EOF
-		[[ -f "$marks" ]] && sed -i 's/[ \t]//g' $marks
-		# run lf and save dir
-		tmp="$(mktemp)"
-		$(which lf) -last-dir-path="$tmp"
-		# when lf closes, cd into it
-		if [ -f "$tmp" ]; then
-			dir="$(cat "$tmp")"
-			rm -f "$tmp"
-			if [ -d "$dir" ]; then
-				if [ "$dir" != "$(pwd)" ]; then
-					cd "$dir"
-				fi
-			fi
-		fi
-	}
+	# function lf () {
+	# 	# reset marks
+        # test ! -d $HOME/.local/share/lf && mkdir $HOME/.local/share/lf
+	# 	marks=$HOME/.local/share/lf/marks
+	# 	cat<<-EOF > $marks
+	# 		a:/home/breno/Aulas
+	# 		d:/home/breno/Desktop
+	# 		w:/home/breno/Downloads
+	# 		m:/run/media/breno
+	# 		n:/home/breno/.config/nvim
+	# 		o:/home/breno/org
+	# 		h:/home/breno
+	# 		t:/tmp
+	# 		v:/home/breno/Videos
+	# 		w:/home/breno/Downloads
+	# 	EOF
+	# 	[[ -f "$marks" ]] && sed -i 's/[ \t]//g' $marks
+	# 	# run lf and save dir
+	# 	tmp="$(mktemp)"
+	# 	$(which lf) -last-dir-path="$tmp"
+	# 	# when lf closes, cd into it
+	# 	if [ -f "$tmp" ]; then
+	# 		dir="$(cat "$tmp")"
+	# 		rm -f "$tmp"
+	# 		if [ -d "$dir" ]; then
+	# 			if [ "$dir" != "$(pwd)" ]; then
+	# 				cd "$dir"
+	# 			fi
+	# 		fi
+	# 	fi
+	# }
 # }}}
 # list-pkgs : list largest pacman packages{{{
 	function list-pkgs() {
