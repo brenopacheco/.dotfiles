@@ -8,7 +8,7 @@ paq({
     {'junegunn/vim-easy-align',             config='easyalign'};
     {'ludovicchabant/vim-gutentags',        config='gutentags'};
     {'tpope/vim-commentary'};
-    {'suy/vim-context-commentstring'};
+    {'JoosepAlviste/nvim-ts-context-commentstring', config='commentstring'};
     {'bluz71/vim-nightfly-guicolors'};
     {'hoob3rt/lualine.nvim',                config='lualine'};
     {'lukas-reineke/indent-blankline.nvim', config='blankline'};
@@ -21,12 +21,12 @@ paq({
     {'creativenull/diagnosticls-nvim'};
     {'simrat39/symbols-outline.nvim'};
     {'nvim-treesitter/nvim-treesitter',     config='treesitter', run = ':TSUpdate'};
+    { 'SmiteshP/nvim-gps',                  config='nvim-gps' };
     {'hrsh7th/nvim-compe',                  config='compe'};
-    {'L3MON4D3/LuaSnip',                    config='luasnip'};
-    {'rafamadriz/friendly-snippets'};
+    {'hrsh7th/vim-vsnip',                   config='vsnip'};
+    {'hrsh7th/vim-vsnip-integ'};
     {'windwp/nvim-autopairs',               config='autopairs'};
     {'onsails/lspkind-nvim'};
-    {'ray-x/lsp_signature.nvim',            config='signature'};
     {'kyazdani42/nvim-tree.lua',            config='tree'};
     {'folke/trouble.nvim',                  config='trouble'};
     {'tpope/vim-fugitive'};
@@ -40,6 +40,20 @@ paq({
       {'nvim-telescope/telescope-fzy-native.nvim',
         hook='git submodule update --init --recursive'};
     {'sbdchd/neoformat',                    config='neoformat'};
+    {'brenopacheco/vim-tree',               config='vim-tree'};
+    {'glepnir/lspsaga.nvim',                config='lsp-saga'};
+    {'NTBBloodbath/rest.nvim'};
+    {'ruifm/gitlinker.nvim', config='git-linker'};
+    {'romgrk/nvim-treesitter-context', config='nvim-treesitter-context'};
+    --[[ todo
+    {'ray-x/lsp_signature.nvim',            config='signature'};
+    {'mhartington/formatter.nvim'};
+    {'vim-test/vim-test'};
+    {'Pocco81/DAPInstall.nvim', config='dap-install'};
+    {'mfussenegger/nvim-dap'};
+    {'rcarriga/nvim-dap-ui', config='nvim-dap-ui'};
+    {'theHamsta/nvim-dap-virtual-text'};
+    --]]
 })
 
 local disabled_built_ins = {

@@ -1,0 +1,35 @@
+{
+  "global-env": { 
+    "prefix": "env", 
+    "body": ["#!/usr/bin/env ${bash}$0"] 
+  },
+  "global-date": {
+    "prefix": "date",
+    "body": ["${VIM:strftime(\"%B %d, %Y\")}"]
+  },
+  "global-todo": {
+    "prefix": "todo",
+    "body": ["${VIM:printf(&commentstring, ' TODO: ')}${0:${TM_SELECTED_TEXT}}"]
+  },
+  "global-lorem": {
+    "prefix": "lorem",
+    "body": [
+      "Llorem ipsum dolor sit amet, consectetur, adipisicing  elit,",
+      "sed do, eiusmod tempor, incididunt ut labore et dolore magna",
+      "aliqua.  Ut,   enim   ad,   minim   veniam,   quis   nostrud",
+      "exercitation,  ullamco  laboris  nisi  ut  aliquip,  ex   ea",
+      "commodo, consequat. Duis aute irure dolor in  reprehenderit,",
+      "in, voluptate velit esse  cillum  dolore  eu  fugiat,  nulla",
+      "pariatur. Excepteur, sint occaecat, cupidatat non  proident,",
+      "sunt in culpa qui officia,  deserunt,  mollit laborum"
+    ]
+  },
+  "global-header": {
+    "prefix": "header",
+    "body": [
+      "${VIM:printf(&commentstring, ' File: ' . ${VIM:expand('%:t')})}",
+      "${VIM:printf(&commentstring, ' Author: Breno Leonhardt Pacheco')}",
+      "${VIM:printf(&commentstring, ' Email: brenoleonhardt@gmail.com')}"
+    ]
+  }
+}

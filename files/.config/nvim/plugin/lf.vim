@@ -29,10 +29,34 @@ function! s:open()
       let s:selection_path = tempname()
       let s:last_buffer = bufnr()
       let currentPath = getcwd()
+      let width = float2nr(&columns * 0.9)
+      let height = float2nr(&lines * 0.9)
+      let opts = {
+          \ 'relative': "editor",
+          \ 'width': float2nr(&columns * 0.9),
+          \ 'height' : float2nr(&lines * 0.9),
+          \ 'row': float2nr((&lines - height) / 2) - 1 ,
+          \ 'col': float2nr((&columns - width)  / 2),
+          \ 'border': 'double'
+          \ }
+      let buf = nvim_create_buf(v:false, v:true)
+      let win = nvim_open_win(buf, v:true, opts)
+      call setwinvar(win, '&winhl', 'Normal:Pmenu')
+      setlocal
+            \ buftype=nofile
+            \ nobuflisted
+            \ bufhidden=hide
+            \ nonumber
+            \ norelativenumber
+            \ signcolumn=no
       let cmd = 'lf -selection-path='. s:selection_path . ' ""'
-      enew | call termopen(cmd, { 'on_exit': funcref('s:exit') })
-      set ft=lf
-      startinsert
+      call termopen(cmd, { 'on_exit': funcref('s:exit') })
+      tunmap <buffer> jk
+      tunmap <buffer> kj
+      tunmap <buffer> <Esc>
+      tunmap <buffer> <C-[>
+      redraw!
+      " startinsert " TODO: maybe callback?
   endtry
 endfun
 

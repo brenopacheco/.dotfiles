@@ -117,8 +117,7 @@ cmd open ${{
 			esac
 		done
 		if [[ -n "$cache" ]]; then
-			echo "nvim $cache" > /tmp/out
-			eval "nvim $cache"
+			eval "st nvim $cache"
 		fi
 	}}
 

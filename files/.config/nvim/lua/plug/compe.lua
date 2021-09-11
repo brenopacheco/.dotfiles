@@ -1,5 +1,14 @@
 vim.o.completeopt = "menuone,noselect"
 
+local pkgs = require('paq').list()
+
+local vsnip_engine = false
+local luasnip_engine = false
+for _, pkg in ipairs(pkgs) do
+  if pkg == "vim-vsnip" then vsnip_engine = true end
+  if pkg == "LuaSnip" then luasnip_engine = true end
+end
+
 require('compe').setup({
   enabled = true,
   autocomplete = true,
@@ -18,11 +27,11 @@ require('compe').setup({
   },
   source = {
     emoji = false,
-    vsnip = false,
     ultisnips = false,
     calc = false,
     path =       { priority = 100, dup = false },
-    luasnip =    { priority = 90,  dup = true },
+    vsnip =      vsnip_engine and { priority = 90,  dup = true } or false,
+    luasnip =    luasnip_engine and { priority = 90,  dup = true } or false,
     treesitter = { priority = 80,  dup = true },
     nvim_lsp =   { priority = 70,  dup = false },
     nvim_lua =   { priority = 70,  dup = false },

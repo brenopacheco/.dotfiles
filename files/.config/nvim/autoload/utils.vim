@@ -16,6 +16,10 @@ fun! utils#files(pat, dir)
 endf
 
 
+fun! utils#root()
+    return utils#git_root()
+endf
+
 ""
 " Returns root of given [optional] directory or current directory
 " used .git as root indicator. if not a git directory, returns current

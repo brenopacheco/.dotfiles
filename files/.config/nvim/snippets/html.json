@@ -1,0 +1,42 @@
+{
+    "hr":     { "prefix": "hr",        "body": [ "<hr/>"                                              ] },
+    "br":     { "prefix": "br",        "body": [ "<br/>"                                              ] },
+    "link":   { "prefix": "link",      "body": [ "<link rel=\"stylesheet\" href=\"${0:style.css}\">" ] },
+    "script": { "prefix": "script",    "body": [ "<script src=\"${0:script.js}\"></script>"          ] },
+    "style":  { "prefix": "style",     "body": [ "<style>\n$0\n</style>"                             ] },
+    "a":      { "prefix": "a",         "body": [ "<a href=\"$0\"></a>"                             ] },
+    "img":    { "prefix": "img",       "body": [ "<img src=\"$0\"/>"                     ] },
+    "button": { "prefix": "button",    "body": [ "<button type=\"submit\">\n$0\n</button>"               ] },
+    "div":    { "prefix": "div",       "body": [ "<div>\n\t$0\n</div>"       ] },
+    "h1":     { "prefix": "h1",        "body": [ "<h1>\n\t$0\n</h1>"                                     ] },
+    "h2":     { "prefix": "h2",        "body": [ "<h2>\n\t$0\n</h2>"                                     ] },
+    "h3":     { "prefix": "h3",        "body": [ "<h3>\n\t$0\n</h3>"                                     ] },
+    "h4":     { "prefix": "h4",        "body": [ "<h4>\n\t$0\n</h4>"                                     ] },
+    "h5":     { "prefix": "h5",        "body": [ "<h5>\n\t$0\n</h5>"                                     ] },
+    "h6":     { "prefix": "h6",        "body": [ "<h6>\n\t$0\n</h6>"                                     ] },
+    "p":      { "prefix": "p",         "body": [ "<p>\n\t$0\n</p>"                                       ] },
+    "span":   { "prefix": "span",      "body": [ "<span>\n\t$0\n</span>"                                 ] },
+    "ul":     { "prefix": "ul",        "body": [ "<ul>\n\t$0\n</ul>"                                 ] },
+    "li":     { "prefix": "li",        "body": [ "<li>\n\t$0\n</li>"                                     ] },
+    "input":  { "prefix": "input",     "body": [ "<input type=\"\" name=\"\" value=\"\"/>"    ] },
+    "label":  { "prefix": "label",     "body": [ "<label for=\"\">$0</label>"                    ] },
+    "html": {
+        "prefix": "html",
+        "body":[
+            "<!DOCTYPE html>",
+            "<html lang=\"$1en\">",
+            "\t<head>",
+            "\t\t<title>$2</title>",
+            "\t\t<meta charset=\"UTF-8\">",
+            "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+            "\t\t<link href=\"$3css/style.css\" rel=\"stylesheet\">",
+            "\t</head>",
+            "\t<body>",
+            "\t${4}",
+            "\t</body>",
+            "</html>"
+        ]
+   }
+}
+
+

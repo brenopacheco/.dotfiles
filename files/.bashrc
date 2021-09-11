@@ -68,10 +68,11 @@ if [ "$SHLVL" = 1 ]; then
     export PATH=$PATH:$HOME/bin
     export PATH=$PATH:$HOME/.go/bin
     export PATH=$PATH:$HOME/.local/bin
-    export PATH="$PATH:$NPM_PACKAGES/bin"
+    export PATH=$PATH:$NPM_PACKAGES/bin
     export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
     export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
-    export PATH=$PATH:$HOME/.lua/bin
+    export PATH=$PATH:$HOME/.luarocks/bin
+    export PATH=$PATH:$HOME/.pkgs/bin
 fi
 
 # JDTLS
@@ -81,6 +82,10 @@ export WORKSPACE=$HOME/.cache/jdtls
 
 export LUA_PATH='/usr/share/lua/5.4/?.lua;/usr/share/lua/5.4/?/init.lua;/usr/lib/lua/5.4/?.lua;/usr/lib/lua/5.4/?/init.lua;./?.lua;./?/init.lua;/home/breno/.luarocks/share/lua/5.4/?.lua;/home/breno/.luarocks/share/lua/5.4/?/init.lua'
 export LUA_CPATH='/usr/lib/lua/5.4/?.so;/usr/lib/lua/5.4/loadall.so;./?.so;/home/breno/.luarocks/lib/lua/5.4/?.so'
-export PATH='/home/breno/.luarocks/bin:/bin:/usr/bin:/usr/local/bin:/home/breno/bin:/home/breno/.go/bin:/home/breno/.local/bin:/home/breno/.npm/bin:/home/breno/.lua/bin'
 
 alias luamake=/tmp/lua-language-server/3rd/luamake/luamake
+
+source /usr/share/nvm/init-nvm.sh
+
+#.bash_profile
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

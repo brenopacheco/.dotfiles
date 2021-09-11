@@ -215,10 +215,13 @@ zeal-docs-fix() {
     popd >/dev/null || exit
 }
 #}}}
+# docker-logs() {{{
 docker-logs() {
     local container=$(docker ps --format "{{.Names}}" | fzf)
     test -z "$container" || docker logs -f "$container"
 }
+# }}}
+# docker-exec() {{{
 docker-exec() {
     local container=$(docker ps --format "{{.Names}}" | fzf)
     if [ ! -z "$container" ]; then
@@ -228,16 +231,31 @@ docker-exec() {
         fi
     fi
 }
+# }}}
+# apps() {{{
 apps() {
-    local root=$(git rev-parse --show-toplevel 2>/dev/null)
-    if [[ ! -z "$root" ]]; then
-        local app=$(fd "package.json" "$root" | xargs -i bash -c 'grep "name" {}' \
-            | sed 's/^.*: "//' | sed 's/".*//' | fzf)
-        if [ ! -z "$app" ]; then
-            cd $(dirname $(rg "\"name\":.*\"$app\"" "$root" -l | egrep "package.json$"))
-        fi
-    else
-        echo "Not a git repository"
+    local app=$(ls -d ~/repos/*/ | sed 's/^.*repos\///' | sed 's/\/\+$//' | fzf -m --layout=reverse --header="Projects:")
+    if [ ! -z "$app" ]; then
+        local dir="$HOME/repos/${app}"
+        cd $dir
     fi
 }
-
+# }}}
+# git-branch() {{{
+git-branch() {
+    local branch=$(git branch -vva | grep remotes | awk '{print $1}' | sed 's/^remotes\/origin\///' | fzf -m --layout=reverse --header="Projects:")
+    if [ ! -z "$branch" ]; then
+        local b="origin/{$branch}"
+        git checkout --track ${b}
+    fi
+}
+# }}}
+# delete-branches {{{
+function delete-branches() {
+  git branch |
+    grep --invert-match '\*' |
+    cut -c 3- |
+    fzf --multi --preview="git log {} --" |
+    xargs --no-run-if-empty git branch --delete --force
+}
+# }}}

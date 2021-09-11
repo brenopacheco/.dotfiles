@@ -1,18 +1,4 @@
--- what do i want?
---
--- 1. find files in project
--- 2. helptags
--- 3. recent files
--- 4. dotfiles
-
-
-
-
-
-
-
-
-
+-- https://github.com/caojoshua/telescope.nvim/pull/1
 
 local telescope = require("telescope")
 local actions = require("telescope.actions")
@@ -55,6 +41,16 @@ defaults.mappings = {
     ["<C-v>"] = actions.select_vertical,
     ["<C-t>"] = actions.select_tab
   }
+}
+
+defaults.vimgrep_arguments = {
+  'rg',
+  '--color=never',
+  '--no-heading',
+  '--with-filename',
+  '--line-number',
+  '--column',
+  '--smart-case'
 }
 
 extensions =  {

@@ -1,0 +1,11 @@
+{
+  "bash":    { "prefix": "bash",    "description": "bash",    "body": ["#!/usr/bin/env bash"] },
+  "if":      { "prefix": "if",      "description": "if",      "body": ["if [[  ]]; then\n\t${0}\nfi"] },
+  "elif":    { "prefix": "elif",    "description": "elif",    "body": ["elif [[  ]]; then\n\t${0}"] },
+  "for":     { "prefix": "fori",    "description": "fori",    "body": ["for needle in $(haystack) ; do\n\t${0}\ndone"] },
+  "while":   { "prefix": "while",   "description": "while",   "body": ["while [[  ]]; do\n\t${0}\ndone"] },
+  "until":   { "prefix": "until",   "description": "until",   "body": ["until [[  ]]; do\n\t${0}\ndone"] },
+  "case":    { "prefix": "case",    "description": "case",    "body": ["case _VAR in\n\t\"val\")\n\t\t${0}\n\t\t;;\nesac"] },
+  "fun":     { "prefix": "fun",     "description": "fun",     "body": ["function function_name() {\n\t${0}\n}"] },
+  "getopts": { "prefix": "getopts", "description": "getopts", "body": [ "while getopts \"h\" opt; do\n\tcase \\${opt} in\n\t\th)\n\t\t\techo \"called with -h\"\n\t\t\t;;\n\t\t\\?)\n\t\t\techo \"Usage: cmd [-h] [-t]\"\n\t\t\t;;\n\tesac\ndone" ] }
+}

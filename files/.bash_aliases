@@ -1,3 +1,4 @@
+alias reps='cd ~/repos'
 alias ns='npm start'
 alias nt='npm test'
 
@@ -19,12 +20,14 @@ alias de='docker-exec'
 # git
 alias gr='git-root'
 alias gs='git status'
+alias gS='git stash'
+alias gC='git clean -fd'
 alias ga='git add -A'
 alias gm='git commit'
-alias gp='git push'
-alias gw='git-watch'
-alias gb='git branch'
 alias gf='git fetch'
+alias gp='git fetch'
+alias gw='git-watch'
+alias gb='git-branch'
 alias g='git'
 gc() {
     git checkout $(git branch -vva | fzf --reverse | sed 's/^[^a-zA-Z]\+//' | awk '{printf $1}')

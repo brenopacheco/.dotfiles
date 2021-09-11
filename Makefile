@@ -1,5 +1,4 @@
 .PHONY: all install pass unstow stow help
-.ONESHELL
 
 
 help:

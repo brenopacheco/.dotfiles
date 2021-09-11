@@ -7,8 +7,8 @@ local lspconfig = require('lspconfig')
 
 vim.lsp.set_log_level(4) -- disable logging
 
--- lspconfig.diagnosticls.setup(require('plug.lsp.diagnosticls'))
 lspconfig.sumneko_lua.setup(require('plug.lsp/sumneko_lua'))
+lspconfig.omnisharp.setup(require('plug.lsp/omnisharp'))
 
 local servers = {
     "bashls",
@@ -20,7 +20,8 @@ local servers = {
     "jsonls",
     "tsserver",
     "vimls",
-    "yamlls"
+    "yamlls",
+    "dockerls"
 }
 
 -- make formatting use diagnosticls
@@ -77,9 +78,14 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 
 local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
 
+function lsp_attach()
+  require('keymap').register_lsp()
+  vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
+end
+
 for _, server in pairs(servers) do
     lspconfig[server].setup{
-        on_attach = require('keymap').register_lsp;
+        on_attach = lsp_attach;
         root_dir = root;
         capabilities = capabilities;
         settings = {documentFormatting = false};
@@ -87,16 +93,16 @@ for _, server in pairs(servers) do
 end
 
 
-local vint = require 'diagnosticls-nvim.linters.vint'
-local eslint = require 'diagnosticls-nvim.linters.eslint'
-local prettier_eslint = require 'diagnosticls-nvim.formatters.prettier_eslint'
-local lua_format = require 'diagnosticls-nvim.formatters.lua_format'
+local vint = require 'diagnosticls-configs.linters.vint'
+local eslint = require 'diagnosticls-configs.linters.eslint'
+local prettier_eslint = require 'diagnosticls-configs.formatters.prettier_eslint'
+local lua_format = require 'diagnosticls-configs.formatters.lua_format'
 
-require 'diagnosticls-nvim'.init {
+require 'diagnosticls-configs'.init {
   on_attach = function(client) print('Attached to ' .. client.name) end;
 }
 
-require 'diagnosticls-nvim'.setup {
+require 'diagnosticls-configs'.setup {
   ['javascript'] = {
     linter = eslint,
     formatter = prettier_eslint

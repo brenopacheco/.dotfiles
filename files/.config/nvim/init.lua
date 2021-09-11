@@ -11,6 +11,8 @@
 
 https://github.com/rockerBOO/awesome-neovim
 --]]
+vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/nvim/snippets'
+require('quickfix')
 require('options')
 require('keymap')
 require('backup')

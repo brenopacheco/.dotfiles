@@ -17,7 +17,7 @@ setlocal suffixesadd=.html,.js,.css
 " setlocal iskeyword+=#
 setlocal matchpairs+=<:>
 
-call tailwind#setup()
+" call tailwind#setup()
 
 let b:undo_ftplugin='setl mp< efm< ep< fdm< fmr< fde< fo< tw< com< cms< sua<'
     \ . ' kp< isk< mps< dict<'
