@@ -3,11 +3,10 @@ exec 1>/tmp/xprofile.log 2>&1
 export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
 
 # background image
-export WALLPAPER=$HOME/Downloads/wolfgang-hasselmann-pVr6wvUneMk-unsplash.jpg
+export WALLPAPER=~/Pictures/wallpapers/wallpaper-13.jpg
 [[ -f "$WALLPAPER" ]] && feh --bg-fill $WALLPAPER
 
 # applications
-# dunst &                                  # notification daemon
 /usr/lib/xfce4/notifyd/xfce4-notifyd &   # notification daemon
 xfce4-power-manager &                    # power manager
 pa-applet &                              # pulseaudio volume applet
@@ -15,5 +14,3 @@ udiskie & disown                         # automount disks
 nm-applet &                              # networkmanager applet
 blueman-applet &                         # bluetooth applet
 info-daemon & disown                     # statusbar
-# sync-pass &                              # remote sync passwords
-sync-datetime

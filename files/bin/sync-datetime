@@ -1,3 +1,4 @@
 #!/bin/bash
 
 sudo ntpd -qg
+sudo hwclock --set --date="$(date +'%Y-%m-%d %H:%M:%S')" --utc
