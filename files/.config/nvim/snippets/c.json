@@ -3,7 +3,7 @@
         "prefix": "main",
         "description": "main",
         "body": [
-        "int main(${1:int argc, char *argv[]})",
+        "int main(int argc, char *argv[])",
         "{",
         "    ${0}",
         "    return 0;",
@@ -14,14 +14,7 @@
         "prefix": "inc",
         "description": "include <library.h>",
         "body": [
-        "#include <${1:stdio}.h>$0"
-        ]
-    },
-    "#inc\"\"": {
-        "prefix": "inch",
-        "description": "include \"header.h\"",
-        "body": [
-        "#include \"$1\"$0"
+        "#include <$0"
         ]
     },
     "ndef": {
@@ -30,7 +23,7 @@
         "body": [
         "#ifndef $1",
         "#define ${1:SYMBOL} ${2:value}",
-        "$0",
+        "$0 just print file name",
         "#endif /* ifndef $1 */"
         ]
     },
@@ -284,11 +277,11 @@
         "} ${2:foo};"
         ]
     },
-    "print": {
-        "prefix": "print",
-        "description": "print",
-        "body": [
-        "printf(\"${0:%s}\\n\"${1:, /* variables */});"
-        ]
-    }
+  "comment": {
+    "prefix": ["comment"],
+    "body": [
+      "/*$0",
+      "*/"
+    ]
+  }
 }

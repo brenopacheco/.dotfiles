@@ -1,8 +1,5 @@
 -- File: lsp.lua
 -- Description: boot up server configurations
-local util = require 'vim.lsp.util'
-
-
 local lspconfig = require('lspconfig')
 
 vim.lsp.set_log_level(4) -- disable logging
@@ -12,8 +9,10 @@ lspconfig.omnisharp.setup(require('plug.lsp/omnisharp'))
 
 local servers = {
     "bashls",
-    "ccls",
+    "clangd",
     "cssls",
+    "dockerls",
+    -- "eslint", -- still has some bugs
     "html",
     "jdtls",
     "jedi_language_server",
@@ -21,49 +20,7 @@ local servers = {
     "tsserver",
     "vimls",
     "yamlls",
-    "dockerls"
 }
-
--- make formatting use diagnosticls
-local function select_client(method)
-  local clients = vim.tbl_values(vim.lsp.buf_get_clients())
-  clients =
-    vim.tbl_filter(
-    function(client)
-      return client.supports_method(method)
-    end,
-    clients
-  )
-
-  for i = 1, #clients do
-    if  clients[i].name == "diagnosticls" then
-      return clients[i]
-    end
-  end
-
-  return nil
-end
-
-local function range_formatting(options, start_pos, end_pos)
-  local client = select_client("textDocument/rangeFormatting")
-  if client == nil then return end
-
-  local params = util.make_given_range_params(start_pos, end_pos)
-  params.options = util.make_formatting_params(options).options
-  return client.request("textDocument/rangeFormatting", params)
-end
-
-local function formatting(options)
-  local client = select_client("textDocument/formatting")
-  if client == nil then return end
-
-  local params = util.make_formatting_params(options)
-  return client.request("textDocument/formatting", params, nil, vim.api.nvim_get_current_buf())
-end
-
-vim.lsp.buf.formatting = formatting
-vim.lsp.buf.range_formatting = range_formatting
-
 
 -- enable snippets. we are interested in function call snippets
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -76,13 +33,14 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
-
+-- on attach add keymaps and omnifunc
 function lsp_attach()
   require('keymap').register_lsp()
   vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
 end
 
+-- setup servers
+local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
 for _, server in pairs(servers) do
     lspconfig[server].setup{
         on_attach = lsp_attach;
@@ -92,47 +50,30 @@ for _, server in pairs(servers) do
     }
 end
 
-
-local vint = require 'diagnosticls-configs.linters.vint'
-local eslint = require 'diagnosticls-configs.linters.eslint'
-local prettier_eslint = require 'diagnosticls-configs.formatters.prettier_eslint'
-local lua_format = require 'diagnosticls-configs.formatters.lua_format'
-
-require 'diagnosticls-configs'.init {
-  on_attach = function(client) print('Attached to ' .. client.name) end;
-}
-
-require 'diagnosticls-configs'.setup {
-  ['javascript'] = {
-    linter = eslint,
-    formatter = prettier_eslint
-  };
-  ['javascriptreact'] = {
-    linter = eslint,
-    formatter = prettier_eslint
-  };
-  ['typescript'] = {
-    linter = eslint,
-    formatter = prettier_eslint
-  };
-  ['typescriptreact'] = {
-    linter = eslint,
-    formatter = prettier_eslint
-  };
-  ['vint'] = {
-    linter = vint
-  },
-  ['lua'] = {
-    formatter = lua_format
-  }
-}
-
-
-
-
+-- custom diagnostic signs / remove underline
 local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
-
 for type, icon in pairs(signs) do
   local hl = "LspDiagnosticsSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
+-- preview definition
+local function preview_location_callback(_, method, result)
+  if result == nil or vim.tbl_isempty(result) then
+    vim.lsp.log.info(method, 'No location found')
+    return nil
+  end
+  print(vim.inspect(result))
+  print(vim.inspect(result[1].range['end'].line))
+  result[1].range['end'].line = result[1].range['end'].line + 20
+  if vim.tbl_islist(result) then
+    vim.lsp.util.preview_location(result[1])
+  else
+    vim.lsp.util.preview_location(result)
+  end
+end
+
+function vim.lsp.buf.peek_definition()
+  local params = vim.lsp.util.make_position_params()
+  return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
 end

@@ -1,6 +1,3 @@
-local gitsigns = require("gitsigns")
-local telescope = require('telescope.builtin')
-
 local M = {}
 
 function M.dump(tbl, header)
@@ -29,9 +26,9 @@ function M.cnext() vim.fn['quickfix#next']() end
 
 function M.cprev() vim.fn['quickfix#prev']() end
 
-function M.hnext() gitsigns.next_hunk() end
+function M.hnext() require("gitsigns").next_hunk() end
 
-function M.hprev() gitsigns.prev_hunk() end
+function M.hprev() require("gitsigns").prev_hunk() end
 
 function M.lnext() vim.fn.lnext() end
 
@@ -70,13 +67,13 @@ function M.diff() vim.cmd([[
   norm! \<c-w>x
 ]]) end
 
-function M.stage_hunk() gitsigns.stage_hunk() end
+function M.stage_hunk() require("gitsigns").stage_hunk() end
 
-function M.undo_stage_hunk() gitsigns.undo_stage_hunk() end
+function M.undo_stage_hunk() require("gitsigns").undo_stage_hunk() end
 
-function M.reset_hunk() gitsigns.reset_hunk() end
+function M.reset_hunk() require("gitsigns").reset_hunk() end
 
-function M.preview_hunk() gitsigns.preview_hunk() end
+function M.preview_hunk() require("gitsigns").preview_hunk() end
 
 function M.blame_line() vim.cmd([[GitBlameToggle]]) end
 function M.blame() vim.cmd([[Gblame]]) end
@@ -95,20 +92,20 @@ function M.root()
 end
 
 function M.home_files()
-  telescope.find_files({
+  require('telescope.builtin').find_files({
     cwd = vim.env.HOME;
     hidden = true;
   })
 end
 
 function M.live_grep()
-  telescope.live_grep({
+  require('telescope.builtin').live_grep({
     cwd = M.root();
   })
 end
 
 function M.grep_string()
-  telescope.grep_string({
+  require('telescope.builtin').grep_string({
     cwd = M.root();
   })
 end

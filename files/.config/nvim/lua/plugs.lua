@@ -10,27 +10,27 @@ paq({
     {'tpope/vim-commentary'};
     {'JoosepAlviste/nvim-ts-context-commentstring', config='commentstring'};
     {'bluz71/vim-nightfly-guicolors'};
-    {'hoob3rt/lualine.nvim',                config='lualine'};
+    {'shadmansaleh/lualine.nvim',                config='lualine'};
+      { 'SmiteshP/nvim-gps',                  config='nvim-gps' };
     {'lukas-reineke/indent-blankline.nvim', config='blankline'};
     {'kyazdani42/nvim-web-devicons',        config='devicons'};
     {'folke/todo-comments.nvim',            config='todo-comments'};
-    {'folke/zen-mode.nvim',                 config='zen-mode'};
     {'folke/which-key.nvim',                config='which-key'};
     {'norcalli/nvim-colorizer.lua',         config='colorizer'};
     {'neovim/nvim-lspconfig',               config='lsp'};
     {'creativenull/diagnosticls-nvim'};
     {'simrat39/symbols-outline.nvim'};
     {'nvim-treesitter/nvim-treesitter',     config='treesitter', run = ':TSUpdate'};
-    { 'SmiteshP/nvim-gps',                  config='nvim-gps' };
     {'hrsh7th/nvim-compe',                  config='compe'};
     {'hrsh7th/vim-vsnip',                   config='vsnip'};
     {'hrsh7th/vim-vsnip-integ'};
     {'windwp/nvim-autopairs',               config='autopairs'};
     {'onsails/lspkind-nvim'};
-    {'kyazdani42/nvim-tree.lua',            config='tree'};
+    -- {'kyazdani42/nvim-tree.lua',            config='tree'};
     {'folke/trouble.nvim',                  config='trouble'};
     {'tpope/vim-fugitive'};
     {'lewis6991/gitsigns.nvim',             config='gitsigns'};
+    {'folke/zen-mode.nvim',                 config='zen-mode'};
     {'f-person/git-blame.nvim',             config='git-blame'};
     {'sodapopcan/vim-twiggy'};
     {'junegunn/gv.vim'};
@@ -41,12 +41,13 @@ paq({
         hook='git submodule update --init --recursive'};
     {'sbdchd/neoformat',                    config='neoformat'};
     {'brenopacheco/vim-tree',               config='vim-tree'};
-    {'glepnir/lspsaga.nvim',                config='lsp-saga'};
+    -- {'tami5/lspsaga.nvim',                config='lsp-saga'};--incompatible
     {'NTBBloodbath/rest.nvim'};
     {'ruifm/gitlinker.nvim', config='git-linker'};
     {'romgrk/nvim-treesitter-context', config='nvim-treesitter-context'};
+    -- {'ray-x/lsp_signature.nvim',            config='signature'};
+    {'ishan9299/nvim-solarized-lua'}
     --[[ todo
-    {'ray-x/lsp_signature.nvim',            config='signature'};
     {'mhartington/formatter.nvim'};
     {'vim-test/vim-test'};
     {'Pocco81/DAPInstall.nvim', config='dap-install'};

@@ -15,28 +15,32 @@ local defaults = [[
 ]]
 
 local actions = [[
-    nnoremap g]        mzo<C-[>0D`z
-    nnoremap g[        mzO<C-[>0D`z
-    xmap     ge        :EasyAlign<cr>
-    nmap     ge        :EasyAlign<cr>
-    xnoremap gs        <cmd>lua u.substitute()<cr>
-    nnoremap gs        <cmd>lua u.substitute()<cr>
-    nnoremap gy        <cmd>lua require('gitlinker').get_buf_range_url('n', {action_callback = require"gitlinker.actions".open_in_browser})<cr>
-    xnoremap gy        :lua require('gitlinker').get_buf_range_url('v', {action_callback = require"gitlinker.actions".open_in_browser})<cr>
-    nnoremap qf        <cmd>lua u.qf_global()<CR>
-    nnoremap qv        <cmd>lua u.qf_vglobal()<CR>
-    nnoremap qp        <cmd>lua u.colder()<CR>
-    nnoremap qn        <cmd>lua u.cnewer()<CR>
-    nnoremap <leader># <cmd>source %<cr>
-    nnoremap <leader>! <cmd>lua u.spawn_terminal()<cr>
-    nnoremap <leader>m <cmd>make<cr>
-    nnoremap <leader>/ <cmd>call quickfix#global_grep()<cr>
-    xnoremap <leader>/ <cmd>call quickfix#global_grep()<cr>
-    nnoremap <leader>* <cmd>call quickfix#global_star()<cr>
-    xnoremap <leader>* <cmd>call quickfix#global_star()<cr>
+    nnoremap g]         mzo<C-[>0D`z
+    nnoremap g[         mzO<C-[>0D`z
+    xmap     ga         :EasyAlign<cr>
+    nmap     ga         :EasyAlign<cr>
+    nnoremap gy         <cmd>lua require('gitlinker').get_buf_range_url('n', {action_callback = require"gitlinker.actions".open_in_browser})<cr>
+    xnoremap gy         :lua require('gitlinker').get_buf_range_url('v', {action_callback = require"gitlinker.actions".open_in_browser})<cr>
+    nnoremap qf         <cmd>lua u.qf_global()<CR>
+    nnoremap qv         <cmd>lua u.qf_vglobal()<CR>
+    nnoremap qp         <cmd>lua u.colder()<CR>
+    nnoremap qn         <cmd>lua u.cnewer()<CR>
+    nnoremap <leader>#  <cmd>source %<cr>
+    nnoremap <leader>!  <cmd>lua u.spawn_terminal()<cr>
+    nnoremap <leader>m  <cmd>make<cr>
+    nnoremap <leader>/  <cmd>call quickfix#global_grep()<cr>
+    xnoremap <leader>/  <cmd>call quickfix#global_grep()<cr>
+    nnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
+    xnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
     xnoremap g=         :Neoformat<cr>
     nnoremap <leader>=  :Neoformat<cr>
-    nnoremap <leader>p  <Plug>RestNvim
+    nnoremap <leader>pi :PaqInstall<cr>
+    nnoremap <leader>pu :PaqUpdate<cr>
+    nnoremap <leader>pc :PaqClean<cr>
+    nnoremap <leader>pl :PaqList<cr>
+    xnoremap <leader>s  <cmd>lua u.substitute()<cr>
+    nnoremap <leader>s  <cmd>lua u.substitute()<cr>
+    "nnoremap <leader>p <Plug>RestNvim
 ]]
 
 local movement = [[
@@ -123,12 +127,10 @@ local lsp = [[
     nnoremap <buffer> <leader>a  <cmd>lua vim.lsp.buf.code_action()<cr>
     xnoremap <buffer> <leader>a  <cmd>lua vim.lsp.buf.range_code_action()<cr>
 
-    nnoremap <buffer> ]e         <cmd>lua require('lspsaga.diagnostic').lsp_jump_diagnostic_next()<cr>
-    nnoremap <buffer> [e         <cmd>lua require('lspsaga.diagnostic').lsp_jump_diagnostic_prev()<cr>
-    nnoremap <buffer> <c-k>      <cmd>lua require('lspsaga.hover').render_hover_doc()<cr>
-    nnoremap <buffer> <c-p>      <cmd>lua require('lspsaga.provider').preview_definition()<cr>
-    nnoremap <silent> <C-f>      <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-    nnoremap <silent> <C-b>      <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+    nnoremap <buffer> ]e         <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
+    nnoremap <buffer> [e         <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
+    nnoremap <buffer> <c-k>      <cmd>lua vim.lsp.buf.hover()<cr>
+    nnoremap <buffer> <c-p>      <cmd>lua vim.lsp.buf.peek_definition()<cr>
 ]]
 
 local complete = [[

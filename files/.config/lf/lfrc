@@ -117,7 +117,7 @@ cmd open ${{
 			esac
 		done
 		if [[ -n "$cache" ]]; then
-			eval "st nvim $cache"
+			eval "st nvim $cache >/dev/null 2>&1 & disown"
 		fi
 	}}
 

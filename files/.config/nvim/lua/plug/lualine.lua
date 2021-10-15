@@ -29,11 +29,24 @@ local function lsp_status()
   end
 end
 
+local function dir()
+  trim = 20
+  local path = vim.fn.getcwd()
+  local len = string.len(path)
+  local diff = len - trim
+  if diff < 0 then
+    return path
+  end
+  -- TODO: trim by dir name e.g: .../home/Desktop
+  return '…' .. string.sub(path, diff, len)
+end
+
 local gps = require("nvim-gps")
 
 local config = {
   options = {
-    theme = 'nightfly',
+    -- theme = 'nightfly',
+    theme = 'palenight',
     section_separators = '',
     component_separators = '',
     icons_enabled = true,
@@ -41,8 +54,8 @@ local config = {
   sections = {
     lualine_a = { 'mode' },
     lualine_b = { 'branch' },
-    lualine_c = { 'filename', { gps.get_location, condition = gps.is_available } },
-    lualine_x = { lsp_progress, { 'diagnostics', sources = { 'nvim_lsp' } } },
+    lualine_c = { 'filename', { gps.get_location, cond = gps.is_available } },
+    lualine_x = { dir, lsp_progress, { 'diagnostics', sources = { 'nvim_lsp' } } },
     lualine_y = { lsp_status, 'filetype'  },
     lualine_z = { 'fileformat', 'encoding' },
   },

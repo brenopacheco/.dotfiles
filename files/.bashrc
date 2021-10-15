@@ -51,9 +51,6 @@ export SVN_EDITOR="$VISUAL"
 ## source fuzzy finder fzf settings
 [ -f $HOME/.bash_fzf ] && source $HOME/.bash_fzf
 
-# Java
-export JAVA_HOME=/usr/lib/jvm/default
-
 ## NPM / NODE config
 NPM_PACKAGES="${HOME}/.npm"
 [[ ! -f $HOME/.npmrc ]] && echo "prefix=${NPM_PACKAGES}" >> $HOME/.npmrc
@@ -71,20 +68,18 @@ if [ "$SHLVL" = 1 ]; then
     export PATH=$PATH:$NPM_PACKAGES/bin
     export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
     export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
-    export PATH=$PATH:$HOME/.luarocks/bin
+    export PATH=$PATH:$HOME/.lua/bin
     export PATH=$PATH:$HOME/.pkgs/bin
 fi
 
-# JDTLS
+# JAVA/JDTLS
+# Java
+export JAVA_HOME=/usr/lib/jvm/default
 export JAR="/usr/share/java/jdtls/plugins/org.eclipse.equinox.launcher_1.6.100.v20201223-0822.jar"
 export JDTLS_CONFIG="/usr/share/java/jdtls/config_linux"
 export WORKSPACE=$HOME/.cache/jdtls
 
-export LUA_PATH='/usr/share/lua/5.4/?.lua;/usr/share/lua/5.4/?/init.lua;/usr/lib/lua/5.4/?.lua;/usr/lib/lua/5.4/?/init.lua;./?.lua;./?/init.lua;/home/breno/.luarocks/share/lua/5.4/?.lua;/home/breno/.luarocks/share/lua/5.4/?/init.lua'
-export LUA_CPATH='/usr/lib/lua/5.4/?.so;/usr/lib/lua/5.4/loadall.so;./?.so;/home/breno/.luarocks/lib/lua/5.4/?.so'
-
-alias luamake=/tmp/lua-language-server/3rd/luamake/luamake
-
+# NVM
 source /usr/share/nvm/init-nvm.sh
 
 #.bash_profile
