@@ -6,13 +6,14 @@ vim.lsp.set_log_level(4) -- disable logging
 
 lspconfig.sumneko_lua.setup(require('plug.lsp/sumneko_lua'))
 lspconfig.omnisharp.setup(require('plug.lsp/omnisharp'))
+-- require('plug.lsp/diagnosticls')
 
 local servers = {
     "bashls",
     "clangd",
     "cssls",
     "dockerls",
-    -- "eslint", -- still has some bugs
+    "eslint", -- still has some bugs
     "html",
     "jdtls",
     "jedi_language_server",
@@ -33,13 +34,6 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
--- on attach add keymaps and omnifunc
-function lsp_attach()
-  require('keymap').register_lsp()
-  vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
-end
-
--- setup servers
 local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
 for _, server in pairs(servers) do
     lspconfig[server].setup{

@@ -84,3 +84,7 @@ source /usr/share/nvm/init-nvm.sh
 
 #.bash_profile
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+# source '/home/breno/.pkgs/azure-cli/az.completion'
+export GOPATH=$HOME/.go
+export AWT_TOOLKIT=MToolkit

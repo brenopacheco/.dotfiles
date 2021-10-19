@@ -18,6 +18,7 @@ local function get_azure_type_url(url_data)
     .. "&lineEndColumn=" .. colEnd
     .. "&lineStyle=plain"
     .. "&_a=contents"
+    vim.fn['setreg']('+', url)
     return url
 end
 

@@ -1,60 +1,58 @@
 local paq = require('paq')
 
 paq({
-    {'tweekmonster/startuptime.vim'};
-    {'editorconfig/editorconfig-vim'};
-    {'mbbill/undotree'};
-    {'tpope/vim-surround'};
-    {'junegunn/vim-easy-align',             config='easyalign'};
-    {'ludovicchabant/vim-gutentags',        config='gutentags'};
-    {'tpope/vim-commentary'};
-    {'JoosepAlviste/nvim-ts-context-commentstring', config='commentstring'};
     {'bluz71/vim-nightfly-guicolors'};
-    {'shadmansaleh/lualine.nvim',                config='lualine'};
-      { 'SmiteshP/nvim-gps',                  config='nvim-gps' };
-    {'lukas-reineke/indent-blankline.nvim', config='blankline'};
-    {'kyazdani42/nvim-web-devicons',        config='devicons'};
-    {'folke/todo-comments.nvim',            config='todo-comments'};
-    {'folke/which-key.nvim',                config='which-key'};
-    {'norcalli/nvim-colorizer.lua',         config='colorizer'};
-    {'neovim/nvim-lspconfig',               config='lsp'};
-    {'creativenull/diagnosticls-nvim'};
-    {'simrat39/symbols-outline.nvim'};
-    {'nvim-treesitter/nvim-treesitter',     config='treesitter', run = ':TSUpdate'};
-    {'hrsh7th/nvim-compe',                  config='compe'};
-    {'hrsh7th/vim-vsnip',                   config='vsnip'};
+    {'brenopacheco/vim-tree',                       config='vim-tree'};
+    {'editorconfig/editorconfig-vim'};
+    {'folke/todo-comments.nvim',                    config='todo-comments'};
+    {'folke/which-key.nvim',                        config='which-key'};
+    {'folke/zen-mode.nvim',                         config='zen-mode'};
+    {'f-person/git-blame.nvim',                     config='git-blame'};
+    {'hoob3rt/lualine.nvim',                        config='lualine'};
+    {'hrsh7th/nvim-compe',                          config='compe'};
+    {'hrsh7th/vim-vsnip',                           config='vsnip'};
     {'hrsh7th/vim-vsnip-integ'};
-    {'windwp/nvim-autopairs',               config='autopairs'};
-    {'onsails/lspkind-nvim'};
-    -- {'kyazdani42/nvim-tree.lua',            config='tree'};
-    {'folke/trouble.nvim',                  config='trouble'};
-    {'tpope/vim-fugitive'};
-    {'lewis6991/gitsigns.nvim',             config='gitsigns'};
-    {'folke/zen-mode.nvim',                 config='zen-mode'};
-    {'f-person/git-blame.nvim',             config='git-blame'};
-    {'sodapopcan/vim-twiggy'};
+    {'JoosepAlviste/nvim-ts-context-commentstring', config='commentstring'};
     {'junegunn/gv.vim'};
-    {'nvim-telescope/telescope.nvim',       config='telescope'};
-      {'nvim-lua/popup.nvim'};
-      {'nvim-lua/plenary.nvim'};
-      {'nvim-telescope/telescope-fzy-native.nvim',
-        hook='git submodule update --init --recursive'};
-    {'sbdchd/neoformat',                    config='neoformat'};
-    {'brenopacheco/vim-tree',               config='vim-tree'};
-    -- {'tami5/lspsaga.nvim',                config='lsp-saga'};--incompatible
+    {'junegunn/vim-easy-align',                     config='easyalign'};
+    {'kosayoda/nvim-lightbulb',                     config='lightbulb'}; -- todo
+    {'kyazdani42/nvim-web-devicons',                config='devicons'};
+    {'lewis6991/gitsigns.nvim',                     config='gitsigns'};
+    {'ludovicchabant/vim-gutentags',                config='gutentags'};
+    {'lukas-reineke/indent-blankline.nvim',         config='blankline'};
+    {'mbbill/undotree'};
+    {'neovim/nvim-lspconfig',                       config='lsp'};
+    {'norcalli/nvim-colorizer.lua',                 config='colorizer'};
     {'NTBBloodbath/rest.nvim'};
-    {'ruifm/gitlinker.nvim', config='git-linker'};
-    {'romgrk/nvim-treesitter-context', config='nvim-treesitter-context'};
-    -- {'ray-x/lsp_signature.nvim',            config='signature'};
-    {'ishan9299/nvim-solarized-lua'}
+    {'nvim-lua/plenary.nvim'};
+    {'nvim-lua/popup.nvim'};
+    {'nvim-telescope/telescope-fzy-native.nvim',    hook='git submodule update --init --recursive'};
+    {'nvim-telescope/telescope.nvim',               config='telescope'};
+    {'nvim-treesitter/nvim-treesitter',             config='treesitter', run = ':TSUpdate'};
+    {'onsails/lspkind-nvim'};
+    {'ruifm/gitlinker.nvim',                        config='git-linker'};
+    {'sbdchd/neoformat',                            config='neoformat'};
+    {'shadmansaleh/lualine.nvim',                   config='lualine'};
+    {'simrat39/symbols-outline.nvim'};
+    { 'SmiteshP/nvim-gps',                          config='nvim-gps' };
+    {'sodapopcan/vim-twiggy'};
+    {'tpope/vim-commentary'};
+    {'tpope/vim-fugitive'};
+    {'tpope/vim-surround'};
+    {'tweekmonster/startuptime.vim'};
+    {'windwp/nvim-autopairs',                       config='autopairs'};
     --[[ todo
     {'mhartington/formatter.nvim'};
     {'vim-test/vim-test'};
-    {'Pocco81/DAPInstall.nvim', config='dap-install'};
+    {'Pocco81/DAPInstall.nvim',                     config='dap-install'};
     {'mfussenegger/nvim-dap'};
-    {'rcarriga/nvim-dap-ui', config='nvim-dap-ui'};
+    {'rcarriga/nvim-dap-ui',                        config='nvim-dap-ui'};
     {'theHamsta/nvim-dap-virtual-text'};
     --]]
+    -- {'ray-x/lsp_signature.nvim',                 config='signature'};
+    -- {'kyazdani42/nvim-tree.lua',                 config='tree'};
+    -- {'romgrk/nvim-treesitter-context',           config='nvim-treesitter-context'};
+    -- {'ishan9299/nvim-solarized-lua'};
 })
 
 local disabled_built_ins = {

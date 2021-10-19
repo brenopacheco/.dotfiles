@@ -11,6 +11,26 @@
     "prefix": "todo",
     "body": ["${VIM:printf(&commentstring, ' TODO: ')}${0:${TM_SELECTED_TEXT}}"]
   },
+  "global-fix": {
+    "prefix": "todo-fix",
+    "body": ["${VIM:printf(&commentstring, ' FIX: ')}${0:${TM_SELECTED_TEXT}}"]
+  },
+  "global-hack": {
+    "prefix": "todo-hack",
+    "body": ["${VIM:printf(&commentstring, ' HACK: ')}${0:${TM_SELECTED_TEXT}}"]
+  },
+  "global-warn": {
+    "prefix": "todo-warn",
+    "body": ["${VIM:printf(&commentstring, ' WARN: ')}${0:${TM_SELECTED_TEXT}}"]
+  },
+  "global-perf": {
+    "prefix": "todo-perf",
+    "body": ["${VIM:printf(&commentstring, ' PERF: ')}${0:${TM_SELECTED_TEXT}}"]
+  },
+  "global-note": {
+    "prefix": "todo-note",
+    "body": ["${VIM:printf(&commentstring, ' NOTE: ')}${0:${TM_SELECTED_TEXT}}"]
+  },
   "global-lorem": {
     "prefix": "lorem",
     "body": [

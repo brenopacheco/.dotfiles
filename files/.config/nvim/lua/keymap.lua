@@ -94,6 +94,7 @@ local find = [[
   nnoremap <leader>fc :Telescope oldfiles<cr>
   nnoremap <leader>ff :Telescope git_files<cr>
   nnoremap <leader>fp <cmd>lua u.projects()<cr>
+  "nnoremap <leader>fs <cmd>lua u.stash()<cr>
   nnoremap <leader>f* <cmd>lua u.grep_string()<cr>
   nnoremap <leader>f~ <cmd>lua u.home_files()<cr>
   nnoremap <leader>f/ <cmd>lua u.live_grep()<cr>

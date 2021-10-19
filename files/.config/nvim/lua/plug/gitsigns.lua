@@ -8,3 +8,8 @@ require("gitsigns").setup({
   },
   keymaps = {}
 })
+
+-- vim.cmd([[
+-- au! gitsigns DirChanged
+-- au DirChanged * silent! lua _G.package.loaded.gitsigns._update_cwd_head()
+-- ]])

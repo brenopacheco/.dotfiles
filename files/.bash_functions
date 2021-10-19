@@ -245,8 +245,20 @@ apps() {
 git-branch() {
     local branch=$(git branch -vva | grep remotes | awk '{print $1}' | sed 's/^remotes\/origin\///' | fzf -m --layout=reverse --header="Projects:")
     if [ ! -z "$branch" ]; then
-        local b="origin/{$branch}"
+        local b="origin/$branch"
         git checkout --track ${b}
+    fi
+}
+# git-checkout() {{{
+git-checkout() {
+    if [ "$#" -eq 0 ]
+    then
+        local branch=$(git branch -vva | grep remotes | awk '{print $1}' | sed 's/^remotes\/origin\///' | fzf -m --layout=reverse --header="Projects:")
+        if [ ! -z "$branch" ]; then
+            git checkout ${branch}
+        fi
+    else
+        git checkout $@
     fi
 }
 # }}}
@@ -259,3 +271,6 @@ function delete-branches() {
     xargs --no-run-if-empty git branch --delete --force
 }
 # }}}
+function gstash() {
+    git stash list | fzf --preview="echo {} | cut -d':' -f1 | xargs git stash show -p"
+}

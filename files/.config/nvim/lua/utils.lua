@@ -79,12 +79,11 @@ function M.blame_line() vim.cmd([[GitBlameToggle]]) end
 function M.blame() vim.cmd([[Gblame]]) end
 
 function M.diagnostics()
-    if not vim.tbl_isempty(vim.lsp.buf_get_clients(0)) then
-      vim.lsp.diagnostic.set_qflist()
-      vim.cmd([[wincmd p]])
-    else
-      print('> No client attached')
-    end
+  opts = opts or {}
+  local diags = vim.lsp.diagnostic.get_all()
+  local items = vim.lsp.util.diagnostics_to_items(diags, false)
+  vim.lsp.util.set_qflist(items)
+  M.quickfix()
 end
 
 function M.root()
@@ -125,5 +124,8 @@ end
 function M.qf_vglobal()
   print('not ready')
 end
+
+M.projects = require('plug.telescope.projects')
+M.stash = require('plug.telescope.stash')
 
 return M
