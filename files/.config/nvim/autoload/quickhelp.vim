@@ -59,15 +59,16 @@ fun! quickhelp#open(...)
         silent call nvim_open_win(buffer, v:true, {
             \   'relative': 'editor',
             \   'width': strdisplaywidth(quickhelp[0]),
-            \   'height': len(quickhelp),
+            \   'height': len(quickhelp) - 1,
             \   'col': &columns - strdisplaywidth(quickhelp[0]),
-            \   'row': &lines - len(quickhelp) - &cmdheight +1,
+            \   'row': &lines - len(quickhelp) - &cmdheight,
             \   'style': 'minimal'
             \ })
         setlocal noswapfile bufhidden=wipe nowrap nobuflisted 
             \ buftype=nofile nolist modifiable scrolloff=999
         call deletebufline(buffer, 1, '$')
         call appendbufline(buffer, 0, quickhelp)
+        call deletebufline(buffer, '$')
         call deletebufline(buffer, '$')
         setlocal nomodifiable
         set ft=quickhelp
