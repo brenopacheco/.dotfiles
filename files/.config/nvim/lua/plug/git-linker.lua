@@ -1,16 +1,24 @@
 local gitlinker = require("gitlinker.hosts")
 
 local function get_azure_type_url(url_data)
+
+  url_data.lend = vim.fn.getpos("'>")[2] -- fix
+
   local colStart = vim.fn.getpos("'<")[3]
   local colEnd = vim.fn.getpos("'>")[3]
 
   if colStart > 999 then colStart = string.len(vim.fn.getline(url_data.lstart)) + 1 end
   if colEnd > 999 then colEnd = string.len(vim.fn.getline(url_data.lend)) + 1 end
 
-  local url = 'https://'
-    .. string.gsub(url_data.host, 'ssh%.', '')
-    .. string.gsub(string.gsub(url_data.repo, "^v%d+", ""),  "(.*)/(.+)$", "%1/_git/%2")
-    .. "?path=%2F" .. string.gsub(url_data.file, "/", "%%2F")
+  local url = ''
+  if string.find(url_data.host, 'ssh%.') then
+    url = 'https://' .. string.gsub(url_data.host, 'ssh%.', '')
+      .. string.gsub(string.gsub(url_data.repo, "^v%d+", ""),  "(.*)/(.+)$", "%1/_git/%2")
+  else
+    url = 'https://' .. url_data.host .. '/' .. url_data.repo
+  end
+  -- print(vim.inspect(url_data))
+  url = url .. "?path=%2F" .. string.gsub(url_data.file, "/", "%%2F")
     .. "&version=GC" .. url_data.rev -- commit
     .. "&line=" .. url_data.lstart
     .. "&lineEnd=" .. (url_data.lend or url_data.lstart)

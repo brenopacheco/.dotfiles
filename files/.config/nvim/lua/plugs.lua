@@ -8,7 +8,6 @@ paq({
     {'folke/which-key.nvim',                        config='which-key'};
     {'folke/zen-mode.nvim',                         config='zen-mode'};
     {'f-person/git-blame.nvim',                     config='git-blame'};
-    {'hoob3rt/lualine.nvim',                        config='lualine'};
     {'hrsh7th/nvim-compe',                          config='compe'};
     {'hrsh7th/vim-vsnip',                           config='vsnip'};
     {'hrsh7th/vim-vsnip-integ'};

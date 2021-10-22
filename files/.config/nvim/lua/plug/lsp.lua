@@ -34,6 +34,11 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
+function lsp_attach()
+  require('keymap').register_lsp()
+  vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
+end
+
 local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
 for _, server in pairs(servers) do
     lspconfig[server].setup{
@@ -51,23 +56,20 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
--- preview definition
-local function preview_location_callback(_, method, result)
-  if result == nil or vim.tbl_isempty(result) then
-    vim.lsp.log.info(method, 'No location found')
-    return nil
-  end
-  print(vim.inspect(result))
-  print(vim.inspect(result[1].range['end'].line))
-  result[1].range['end'].line = result[1].range['end'].line + 20
-  if vim.tbl_islist(result) then
-    vim.lsp.util.preview_location(result[1])
-  else
-    vim.lsp.util.preview_location(result)
-  end
-end
 
 function vim.lsp.buf.peek_definition()
+  local function preview_location_callback(_, result, method)
+    if result == nil or vim.tbl_isempty(result) then
+      vim.lsp.log.info(method, 'No location found')
+      return nil
+    end
+    local location = result
+    if vim.tbl_islist(result) then
+      location = result[1]
+    end
+    location.targetRange['end'].line = location.targetRange['end'].line + 20
+    vim.lsp.util.preview_location(location)
+  end
   local params = vim.lsp.util.make_position_params()
-  return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
+  vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
 end

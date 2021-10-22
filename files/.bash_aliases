@@ -22,10 +22,11 @@ alias dl='docker-logs'
 alias de='docker-exec'
 
 # git
+alias gcm='git commit -m '
 alias gr='git-root'
 alias gs='git status'
 alias gS='git stash'
-alias gC='git clean -fd'
+alias grm='git clean -fd'
 alias ga='git add -A'
 alias gm='git commit'
 alias gf='git fetch'
