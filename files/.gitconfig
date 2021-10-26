@@ -3,7 +3,8 @@
     name = Breno Pacheco
 	signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
 [credential]
-	helper = /usr/share/git/credential/netrc/git-credential-netrc.perl -dv
+	helper = /usr/share/git/credential/netrc/git-credential-netrc.perl
+	; helper = /usr/share/git/credential/netrc/git-credential-netrc.perl -dv
 [mergetool]
     prompt = false
 [merge]
