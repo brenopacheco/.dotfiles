@@ -5,7 +5,7 @@
 local function lsp_progress()
   local messages = vim.lsp.util.get_progress_messages()
   if #messages == 0 then
-    return
+    return ''
   end
   local status = {}
   for _, msg in pairs(messages) do
@@ -18,7 +18,6 @@ local function lsp_progress()
   local ms = vim.loop.hrtime() / 1000000
   local frame = math.floor(ms / 120) % #spinners
   return table.concat(status, " | ") .. " " .. spinners[frame + 1]
-  -- return table.concat(status, " | ")
 end
 
 local function lsp_status()
@@ -30,22 +29,21 @@ local function lsp_status()
 end
 
 local function dir()
-  trim = 20
+  trim = 40
   local path = vim.fn.getcwd()
   local len = string.len(path)
   local diff = len - trim
   if diff < 0 then
     return path
   end
-  -- TODO: trim by dir name e.g: .../home/Desktop
-  return '…' .. string.sub(path, diff, len)
+  local _dir = string.sub(path, diff, len)
+  return string.gsub(_dir, '^[^/]+/', '…/')
 end
 
 local gps = require("nvim-gps")
 
 local config = {
   options = {
-    -- theme = 'nightfly',
     theme = 'palenight',
     section_separators = '',
     component_separators = '',
@@ -55,8 +53,8 @@ local config = {
     lualine_a = { 'mode' },
     lualine_b = { 'branch' },
     lualine_c = { 'filename', { gps.get_location, cond = gps.is_available } },
-    lualine_x = { dir, lsp_progress, { 'diagnostics', sources = { 'nvim_lsp' } } },
-    lualine_y = { lsp_status, 'filetype'  },
+    lualine_x = { dir, { 'diagnostics', sources = { 'nvim_lsp' } } },
+    lualine_y = { lsp_progress, lsp_status, 'filetype'  },
     lualine_z = { 'fileformat', 'encoding' },
   },
   extensions = { 'fugitive', 'nvim-tree' },

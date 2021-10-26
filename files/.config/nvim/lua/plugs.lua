@@ -8,7 +8,6 @@ paq({
     {'folke/which-key.nvim',                        config='which-key'};
     {'folke/zen-mode.nvim',                         config='zen-mode'};
     {'f-person/git-blame.nvim',                     config='git-blame'};
-    {'hoob3rt/lualine.nvim',                        config='lualine'};
     {'hrsh7th/nvim-compe',                          config='compe'};
     {'hrsh7th/vim-vsnip',                           config='vsnip'};
     {'hrsh7th/vim-vsnip-integ'};
@@ -32,7 +31,7 @@ paq({
     {'onsails/lspkind-nvim'};
     {'ruifm/gitlinker.nvim',                        config='git-linker'};
     {'sbdchd/neoformat',                            config='neoformat'};
-    {'shadmansaleh/lualine.nvim',                   config='lualine'};
+    {'nvim-lualine/lualine.nvim',                   config='lualine'};
     {'simrat39/symbols-outline.nvim'};
     { 'SmiteshP/nvim-gps',                          config='nvim-gps' };
     {'sodapopcan/vim-twiggy'};
