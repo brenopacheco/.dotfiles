@@ -31,7 +31,7 @@ paq({
     {'onsails/lspkind-nvim'};
     {'ruifm/gitlinker.nvim',                        config='git-linker'};
     {'sbdchd/neoformat',                            config='neoformat'};
-    {'shadmansaleh/lualine.nvim',                   config='lualine'};
+    {'nvim-lualine/lualine.nvim',                   config='lualine'};
     {'simrat39/symbols-outline.nvim'};
     { 'SmiteshP/nvim-gps',                          config='nvim-gps' };
     {'sodapopcan/vim-twiggy'};
