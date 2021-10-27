@@ -80,8 +80,7 @@ function M.blame() vim.cmd([[Gblame]]) end
 
 function M.diagnostics()
   opts = opts or {}
-  local diags = vim.lsp.diagnostic.get_all()
-  local items = vim.lsp.util.diagnostics_to_items(diags, false)
+  local items = vim.diagnostic.toqflist(vim.diagnostic.get(0))
   vim.lsp.util.set_qflist(items)
   M.quickfix()
 end
