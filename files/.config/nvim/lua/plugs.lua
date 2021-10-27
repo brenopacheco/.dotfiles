@@ -43,15 +43,16 @@ paq({
     --[[ todo
     {'mhartington/formatter.nvim'};
     {'vim-test/vim-test'};
-    {'Pocco81/DAPInstall.nvim',                     config='dap-install'};
-    {'mfussenegger/nvim-dap'};
-    {'rcarriga/nvim-dap-ui',                        config='nvim-dap-ui'};
-    {'theHamsta/nvim-dap-virtual-text'};
     --]]
     -- {'ray-x/lsp_signature.nvim',                 config='signature'};
     -- {'kyazdani42/nvim-tree.lua',                 config='tree'};
     -- {'romgrk/nvim-treesitter-context',           config='nvim-treesitter-context'};
     -- {'ishan9299/nvim-solarized-lua'};
+  --
+    -- {'Pocco81/DAPInstall.nvim',                     config='dap-install'};
+    {'rcarriga/nvim-dap-ui'};
+    {'theHamsta/nvim-dap-virtual-text'};
+    {'mfussenegger/nvim-dap', config='nvim-dap'};
 })
 
 local disabled_built_ins = {
