@@ -1,0 +1,22 @@
+{
+  "minted": {
+    "prefix": ["minted"],
+    "body": [
+      "\\begin{minted}{prolog}",
+      "    ${TM_SELECTED_TEXT}",
+      "\\end{minted}"
+    ]
+  },
+  "italics": {
+    "prefix": ["italics", "emph"],
+    "body": [
+      "\\emph{$0}"
+    ]
+  },
+  "bold": {
+    "prefix": ["bold"],
+    "body": [
+      "\\textbf{$0}"
+    ]
+  }
+}

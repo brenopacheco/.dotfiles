@@ -157,3 +157,10 @@ fun! utils#cmd_exec(name, ...)
     echo execute('echo ' . a:name . '#' . a:1 . '()')
 endf
 
+" Wipe all deleted (unloaded & unlisted) or all unloaded buffers
+function! utils#bclear(listed) abort
+    let l:buffers = filter(getbufinfo(), {_, v -> !v.loaded && (!v.listed || a:listed)})
+    if !empty(l:buffers)
+        execute 'bwipeout' join(map(l:buffers, {_, v -> v.bufnr}))
+    endif
+endfunction

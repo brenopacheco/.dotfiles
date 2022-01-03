@@ -152,7 +152,7 @@ local snippets = require('paq').list()["LuaSnip"] and [[
   smap <expr> <C-k> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)' : ''
   imap <expr> <C-j> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : ''
   smap <expr> <C-j> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : ''
-  " xmap s   <Plug>(vsnip-cut-text)
+  xmap s   <Plug>(vsnip-cut-text)
   " nmap s   v<Plug>(vsnip-cut-text)
 ]]
 

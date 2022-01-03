@@ -63,7 +63,7 @@ alias usage='du -sch .[!.]* * |sort -h'
 alias pstree='ps -aef --forest'
 
 # directories
-alias dot='cd ~/.dotfiles'
+# alias dot='cd ~/.dotfiles'
 alias mnt='cd /var/run/media/breno'
 alias tmp='cd /tmp/'
 alias desk='cd ~/Desktop'

@@ -280,8 +280,9 @@
   "comment": {
     "prefix": ["comment"],
     "body": [
-      "/*$0",
-      "*/"
+      "/*",
+      "${TM_SELECTED_TEXT}",
+      "*/$0"
     ]
   }
 }
