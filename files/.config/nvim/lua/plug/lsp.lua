@@ -1,12 +1,13 @@
 -- File: lsp.lua
 -- Description: boot up server configurations
 local lspconfig = require('lspconfig')
+local utils = require('utils')
 
-vim.lsp.set_log_level(4) -- disable logging
+vim.lsp.set_log_level(vim.log.levels.ERROR) -- disable logging
 
 lspconfig.sumneko_lua.setup(require('plug.lsp/sumneko_lua'))
 lspconfig.omnisharp.setup(require('plug.lsp/omnisharp'))
--- require('plug.lsp/diagnosticls')
+
 
 local servers = {
     "bashls",
@@ -21,6 +22,7 @@ local servers = {
     "tsserver",
     "vimls",
     "yamlls",
+    "gopls",
 }
 
 -- enable snippets. we are interested in function call snippets
@@ -34,15 +36,10 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-function lsp_attach()
-  require('keymap').register_lsp()
-  vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
-end
-
 local root = require('lspconfig/util').root_pattern(".git", vim.fn.getcwd())
 for _, server in pairs(servers) do
     lspconfig[server].setup{
-        on_attach = lsp_attach;
+        on_attach = utils.lsp_attach;
         root_dir = root;
         capabilities = capabilities;
         settings = {documentFormatting = false};
@@ -67,7 +64,11 @@ function vim.lsp.buf.peek_definition()
     if vim.tbl_islist(result) then
       location = result[1]
     end
-    location.targetRange['end'].line = location.targetRange['end'].line + 20
+    if location.range == nil then
+      location.targetRange['end'].line = location.targetRange['end'].line + 20
+    else
+      location.range['end'].line = location.range['end'].line + 20
+    end
     vim.lsp.util.preview_location(location)
   end
   local params = vim.lsp.util.make_position_params()

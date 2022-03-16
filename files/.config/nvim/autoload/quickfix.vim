@@ -23,27 +23,29 @@ fun! quickfix#global_grep2(...)
     else
         let pattern = input('>Grep /')
     endif
-    " let pattern = substitute(pattern, '\(#\|\.\)', '\\\1', 'g')
+    if len(pattern) == 0
+        echomsg "CANCELED"
+        return
+    endif
     let pattern = substitute(pattern, '\(#\)', '\\\1', 'g')
-    " ask for where
     let where = input(">Grep '".pattern."' in <complete>/",'', 'customlist,quickfix#_where')
-    echo 'where' . where
     if len(where) == 0
-        let where = 'git'
+        echomsg "CANCELED"
+        return
     endif
     let buffer = bufnr()
     if where ==# 'buffer'
-        call feedkeys(':vimgrep /'.pattern.'/j %'."\<CR>")
+        call feedkeys(':vimgrep /'.pattern.'/j %')
     elseif where ==# 'git'
-        call feedkeys(":grep! '" . pattern . "' " . utils#git_root() . "\<CR>")
+        call feedkeys(":grep! '" . pattern . "' " . utils#git_root())
     elseif where ==# 'project'
         call feedkeys(":grep! '" . pattern . "' " . utils#npm_root())
     elseif where ==# 'curdir'
         call feedkeys(":grep! '" . pattern . "' " . utils#git_root(getcwd()))
     elseif where ==# 'buflist'
-        call feedkeys(':cexpr [] | bufdo vimgrepadd /'.pattern.'/j % | '.buffer.'b'."\<CR>")
+        call feedkeys(':cexpr [] | bufdo vimgrepadd /'.pattern.'/j % | '.buffer.'b')
     elseif where ==# 'arglist'
-        call feedkeys(':vimgrep /'.pattern.'/j ## | '.buffer.'b'."\<CR>")
+        call feedkeys(':vimgrep /'.pattern.'/j ## | '.buffer.'b')
     endif
     copen | wincmd p
 endf

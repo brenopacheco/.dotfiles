@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+LANG=$1
+
+function help() {
+cat<<EOF
+Usage: sketch LANG [NAME]
+
+Creates a sketch project for a given LANG (go, node, js).
+The directory is created in $HOME/sketch with a random name.
+If NAME is provided, the directory name is prefixed with the argument.
+
+EOF
+}
+
+if test "$#" -lt 1; then
+    help
+    exit 0
+fi
+
+LANG=$1
+NAME=$2
+
+exec 3>&1 >/dev/null 2>&1
+
+mkdir -p ~/sketch
+
+if [[ ! "$LANG" =~ ^(go|node|sh)$ ]]; then
+    help
+    echo "Invalid LANG: use go, sh or node" >&2
+    exit 1
+fi
+
+TMPNAME="$LANG_$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 10)"
+
+if [[ ! -z "$NAME" ]]; then
+    TMPNAME="$NAME-$TMPNAME"
+fi
+
+DIR="$HOME/sketch/$TMPNAME"
+
+cat<<EOF >&3
+Setting up sketch project with $LANG in $DIR
+EOF
+
+mkdir -p $DIR
+cd $DIR
+git init
+
+echo "$GO_TEMPLATE"
+
+case $LANG in
+    "go")
+        go mod init pkg
+        touch main.go
+        echo -e "package main\n\nfunc main() {\n\n\n}" > main.go
+        ;;
+    "node")
+        npm init -y
+        touch main.js
+        tsc --init
+        ;;
+    "sh")
+        touch script.sh
+        chmod +x script.sh
+        echo "#!/usr/bin/env bash"
+        ;;
+esac
+
+st >/dev/null 2>&1 & disown $!
+
+echo "Directory: $DIR" >&3
+
+
+exit 0

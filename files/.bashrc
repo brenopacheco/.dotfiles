@@ -60,23 +60,29 @@ NPM_PACKAGES="${HOME}/.npm"
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
 
+export GOPATH=$HOME/.go
+export GEM_HOME=$HOME/.gems
+export GEM_PATH=$GEM_PATH:/usr/lib/ruby/gems/3.0.0
+
 # PATH
 if [ "$SHLVL" = 1 ]; then
     export PATH=$PATH:$HOME/bin
     export PATH=$PATH:$HOME/.go/bin
+    export PATH=$PATH:$HOME/.cargo/bin
     export PATH=$PATH:$HOME/.local/bin
     export PATH=$PATH:$NPM_PACKAGES/bin
     export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
     export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
     export PATH=$PATH:$HOME/.lua/bin
     export PATH=$PATH:$HOME/.pkgs/bin
+    export PATH=$PATH:$GEM_HOME/bin
 fi
 
 # JAVA/JDTLS
 # Java
 export JAVA_HOME=/usr/lib/jvm/default
-export JAR="/usr/share/java/jdtls/plugins/org.eclipse.equinox.launcher_1.6.100.v20201223-0822.jar"
-export JDTLS_CONFIG="/usr/share/java/jdtls/config_linux"
+export JDTLS_HOME=$HOME/.cache/nvim/lsp/jdtls
+export JDTLS_CONFIG=$JDTLS_HOME/config_linux
 export WORKSPACE=$HOME/.cache/jdtls
 
 # NVM
@@ -86,5 +92,10 @@ source /usr/share/nvm/init-nvm.sh
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # source '/home/breno/.pkgs/azure-cli/az.completion'
-export GOPATH=$HOME/.go
 export AWT_TOOLKIT=MToolkit
+
+
+export PATH="$PATH:/home/breno/.dotnet/tools"
+
+alias luamake=/home/breno/.cache/nvim/lsp/lua-language-server/3rd/luamake/luamake
+

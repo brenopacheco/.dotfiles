@@ -87,27 +87,27 @@ cmd open ${{
 			extension="${f##*.}"
 			case $extension in
 				"pdf")
-					zathura $f  1>/dev/null 2>&1 &
+					zathura $f  1>/dev/null 2>&1 & disown
 					;;
 				"mp4"|"mkv"|"webm")
-					vlc $f 1>/dev/null 2>&1 &
+					vlc $f 1>/dev/null 2>&1 & disown
 					;;
 				"gif")
-					viewnior $f &
+					viewnior $f & disown
 					;;
 				"jpg"|"png"|"jpeg")
                     # sxiv $(dirname $f)/* &
-                    sxiv $f &
+                    sxiv $f & disown
                     break
 					;;
-				"tar"|"xz"|"gz"|"zip"|"rar")
-					file-roller $f &
+				"tar"|"xz"|"gz"|"zip"|"rar"|"tgz")
+					file-roller $f &  disown
 					;;
 				"svg")
-					inkscape $f &
+					inkscape $f & disown
 					;;
                 "stl")
-                    openscad $f &
+                    openscad $f & disown
                     ;;
 				*)
 					# nvim $f

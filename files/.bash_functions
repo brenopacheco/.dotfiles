@@ -148,6 +148,12 @@ function git-root() {
         echo "Not a git repository"
     fi
 }
+# upsearch
+function upsearch () {
+    pushd . >/dev/null
+    test / == "$PWD" && return || test -e "$1" && echo "$PWD" && return || cd .. >/dev/null && upsearch "$1"
+    popd >/dev/null
+}
 # }}}
 # fzf-vim : searches for files and opens in vim {{{
 function fzf-vim() {
@@ -234,9 +240,9 @@ docker-exec() {
 # }}}
 # apps() {{{
 apps() {
-    local app=$(ls -d ~/repos/*/ | sed 's/^.*repos\///' | sed 's/\/\+$//' | fzf -m --layout=reverse --header="Projects:")
+    local app=$(ls -d ~/promote/src/*/ | sed 's/^.*promote\/src\///' | sed 's/\/\+$//' | fzf -m --layout=reverse --header="Projects:")
     if [ ! -z "$app" ]; then
-        local dir="$HOME/repos/${app}"
+        local dir="$HOME/promote/src/${app}"
         cd $dir
     fi
 }
@@ -274,3 +280,8 @@ function delete-branches() {
 function gstash() {
     git stash list | fzf --preview="echo {} | cut -d':' -f1 | xargs git stash show -p"
 }
+
+function clear_yarn() {
+    cat /tmp/new | egrep '^ ' | sed 's/^ .//' | sed "s/'//g" | sed 's/: .*//' | xargs -i yarn config delete {}
+}
+

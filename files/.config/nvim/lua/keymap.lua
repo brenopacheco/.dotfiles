@@ -12,6 +12,11 @@ local defaults = [[
     nnoremap #           :b #<cr>
     inoremap jk          <C-[>l
     inoremap kj          <C-[>l
+    snoremap jk          <ESC>
+    snoremap kj          <ESC>
+    nnoremap q<leader>   q:
+    "nnoremap q<leader>   <cmd>lua u.toggle_cmdline()<cr>
+    nnoremap <leader><leader> :
 ]]
 
 local actions = [[
@@ -28,8 +33,7 @@ local actions = [[
     nnoremap <leader>#  <cmd>source %<cr>
     nnoremap <leader>!  <cmd>lua u.spawn_terminal()<cr>
     nnoremap <leader>m  <cmd>make<cr>
-    nnoremap <leader>/  <cmd>call quickfix#global_grep()<cr>
-    xnoremap <leader>/  <cmd>call quickfix#global_grep()<cr>
+    nnoremap <leader>/  <cmd>call quickfix#global_grep2()<cr>
     nnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
     xnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
     xnoremap g=         :Neoformat<cr>
@@ -40,12 +44,14 @@ local actions = [[
     nnoremap <leader>pl :PaqList<cr>
     xnoremap <leader>s  <cmd>lua u.substitute()<cr>
     nnoremap <leader>s  <cmd>lua u.substitute()<cr>
-    "nnoremap <leader>p <Plug>RestNvim
+    nmap <leader>p      <Plug>RestNvim <Plug>RestNvimPreview
+    nnoremap gx         <cmd>lua u.open_url()<cr>
+    xnoremap gx         <cmd>lua u.open_url()<cr>
 ]]
 
 local movement = [[
-    nnoremap ]t            :tabnext<cr>
-    nnoremap [t            :tabprev<cr>
+    "nnoremap ]t            :tabnext<cr>
+    "nnoremap [t            :tabprev<cr>
     nnoremap ]a            :next<cr>
     nnoremap [a            :previous<cr>
     nnoremap ]b            :bnext<cr>
@@ -78,21 +84,22 @@ local toggles = [[
   nnoremap <leader>' <cmd>lua u.terminal()<cr>
   nnoremap <leader>n <cmd>lua u.ntree()<cr>
   nnoremap <leader>l <cmd>lua u.gtree()<cr>
-  nnoremap <leader>q <cmd>lua u.copen()<cr>
-  nnoremap <leader>e <cmd>lua u.diagnostics()<cr>
+  nnoremap <leader>e <cmd>lua u.diagnostics(0)<cr>
+  nnoremap <leader>E <cmd>lua u.diagnostics()<cr>
   nnoremap <leader>q <cmd>lua u.quickfix()<cr>
   nnoremap <leader>t <cmd>lua u.tagbar()<cr>
   nnoremap <leader>z <cmd>lua u.zen()<cr>
 ]]
 
 local find = [[
-  nnoremap <leader><leader> :Telescope<cr>
+  nnoremap <leader>f? :Telescope<cr>
   nnoremap <leader>fb :Telescope buffers<cr>
   nnoremap <leader>f. :Telescope find_files<cr>
   nnoremap <leader>fh :Telescope help_tags<cr>
   nnoremap <leader>f' :Telescope marks<cr>
   nnoremap <leader>fc :Telescope oldfiles<cr>
-  nnoremap <leader>ff :Telescope git_files<cr>
+  nnoremap <leader>ff <cmd>lua u.files(true)<cr>
+  nnoremap <leader>fg <cmd>lua u.files()<cr>
   nnoremap <leader>fp <cmd>lua u.projects()<cr>
   "nnoremap <leader>fs <cmd>lua u.stash()<cr>
   nnoremap <leader>f* <cmd>lua u.grep_string()<cr>
@@ -110,26 +117,34 @@ local git = [[
    nnoremap <leader>gp <cmd>lua u.preview_hunk()<cr>
    nnoremap <leader>gb <cmd>lua u.blame_line()<cr>
    nnoremap <leader>gB <cmd>lua u.blame()<cr>
+   nnoremap <leader>g2 :diffget //2<CR>
+   nnoremap <leader>g3 :diffget //3<CR>
 ]]
 
 local lsp = [[
+    " GOTOS <AWORD>
     nnoremap <buffer> <C-]> <cmd>lua vim.lsp.buf.definition()<cr>
     nnoremap <buffer> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
     nnoremap <buffer> gr    <cmd>lua vim.lsp.buf.references()<cr>
     nnoremap <buffer> gi    <cmd>lua vim.lsp.buf.implementation()<cr>
     nnoremap <buffer> gy    <cmd>lua vim.lsp.buf.type_definition()<cr>
+    nnoremap <buffer> gI    <cmd>lua vim.lsp.buf.incoming_calls()<cr>
+    nnoremap <buffer> gO    <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
 
-    nnoremap <buffer> <leader>fs :Telescope lsp_document_symbols<cr>
-    nnoremap <buffer> <leader>fw :Telescope lsp_dynamic_workspace_symbols<cr>
-    nnoremap <buffer> <leader>fi <cmd>lua vim.lsp.buf.incoming_calls()<cr>
-    nnoremap <buffer> <leader>fo <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
+    " FINDS
+    nnoremap <buffer> <leader>fo :Telescope lsp_document_symbols<cr>
+    nnoremap <buffer> <leader>fs :Telescope lsp_dynamic_workspace_symbols<cr>
 
+    " ACTIONS
     nnoremap <buffer> <leader>r  <cmd>lua vim.lsp.buf.rename()<cr>
     nnoremap <buffer> <leader>a  <cmd>lua vim.lsp.buf.code_action()<cr>
     xnoremap <buffer> <leader>a  <cmd>lua vim.lsp.buf.range_code_action()<cr>
 
-    nnoremap <buffer> ]e         <cmd>lua vim.lsp.diagnostic.goto_next()<cr>
-    nnoremap <buffer> [e         <cmd>lua vim.lsp.diagnostic.goto_prev()<cr>
+    " JUMPS
+    nnoremap <buffer> ]e         <cmd>lua vim.diagnostic.goto_next()<cr>
+    nnoremap <buffer> [e         <cmd>lua vim.diagnostic.goto_prev()<cr>
+
+    " INFO
     nnoremap <buffer> <c-k>      <cmd>lua vim.lsp.buf.hover()<cr>
     nnoremap <buffer> <c-p>      <cmd>lua vim.lsp.buf.peek_definition()<cr>
 ]]
@@ -156,9 +171,11 @@ local snippets = require('paq').list()["LuaSnip"] and [[
   " nmap s   v<Plug>(vsnip-cut-text)
 ]]
 
-local trouble = [[
-
--- movements
+local args = [[
+  " fix wrapping issue
+  nnoremap ++        <cmd>lua u.argadd()<cr>
+  nnoremap --        <cmd>lua u.argdelete()<cr>
+  nnoremap <leader>+ <cmd>lua u.args()<cr>
 ]]
 
 vim.cmd(defaults)
@@ -170,13 +187,10 @@ vim.cmd(toggles)
 vim.cmd(git)
 vim.cmd(complete)
 vim.cmd(snippets)
+vim.cmd(args)
 
 local M = {}
 
 function M.register_lsp() vim.cmd(lsp) end
-
-function M.register_trouble() vim.cmd(trouble) end
-
--- vim.api.nvim_set_keymap('n','<leader><tab>', [[<cmd>lua u.hello()<cr>]],  { noremap = true, silent = true })
 
 return M

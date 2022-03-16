@@ -7,7 +7,7 @@
   "fun": {
     "prefix": "fun",
     "description": "fun",
-    "body": ["function _fun()\n\t${0}", "end"]
+    "body": ["function ${1:fun}()\n\t${0}", "end"]
   },
   "forp": {
     "prefix": "forp",
