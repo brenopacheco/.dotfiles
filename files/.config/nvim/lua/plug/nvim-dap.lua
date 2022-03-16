@@ -9,6 +9,23 @@ dap.adapters.lldb = {
   name = "lldb"
 }
 
+dap.adapters.netcoredbg = {
+  type = 'executable',
+  command = '/usr/bin/netcoredbg',
+  args = {'--interpreter=vscode'}
+}
+
+dap.configurations.cs = {
+  {
+    type = "netcoredbg",
+    name = "launch - netcoredbg",
+    request = "launch",
+    program = function()
+        return vim.fn.input('Path to dll', vim.fn.getcwd() .. 'src/*/bin/Debug/', 'file')
+    end,
+  },
+}
+
 dap.configurations.cpp = {
   {
     name = "Launch",
@@ -33,19 +50,19 @@ vim.fn.sign_define('DapBreakpoint', {
 })
 
 vim.cmd([[
-nnoremap <leader>d  <cmd>call quickhelp#toggle("debug")<CR>
-nnoremap <F1>       <cmd>lua  require"dap".step_out()<CR>
-nnoremap <F2>       <cmd>lua  require"dap".step_into()<CR>
-nnoremap <F3>       <cmd>lua  require"dap".step_over()<CR>
-nnoremap <F4>       <cmd>call dap#play_pause()<CR>
-nnoremap <F5>       <cmd>call dap#start_restart()<CR>
-nnoremap <F6>       <cmd>lua  require"dap".toggle_breakpoint()<CR>
-nnoremap <F7>       <cmd>lua  require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>
-nnoremap <F8>       <cmd>lua  require'dap'.list_breakpoints()<CR>:copen<CR>
-nnoremap <F9>       <cmd>lua  require"dap.ui.variables".scopes()<CR>
-nnoremap <F10>      <cmd>lua  require"dap.ui.variables".visual_hover()<CR>
-nnoremap <F10>      <cmd>lua  require"dap".repl.open()<CR>
-nnoremap <F12>      <cmd>lua  require("dapui").toggle()<CR>
+"nnoremap <leader>d  <cmd>call quickhelp#toggle("debug")<CR>
+"nnoremap <F1>       <cmd>lua  require"dap".step_out()<CR>
+"nnoremap <F2>       <cmd>lua  require"dap".step_into()<CR>
+"nnoremap <F3>       <cmd>lua  require"dap".step_over()<CR>
+"nnoremap <F4>       <cmd>call dap#play_pause()<CR>
+"nnoremap <F5>       <cmd>call dap#start_restart()<CR>
+"nnoremap <F6>       <cmd>lua  require"dap".toggle_breakpoint()<CR>
+"nnoremap <F7>       <cmd>lua  require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>
+"nnoremap <F8>       <cmd>lua  require'dap'.list_breakpoints()<CR>:copen<CR>
+"nnoremap <F9>       <cmd>lua  require"dap.ui.variables".scopes()<CR>
+"nnoremap <F10>      <cmd>lua  require"dap.ui.variables".visual_hover()<CR>
+"nnoremap <F11>      <cmd>lua  require"dap".repl.open()<CR>
+"nnoremap <F12>      <cmd>lua  require("dapui").toggle()<CR>
 ]])
 
 require("dapui").setup({

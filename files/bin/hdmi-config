@@ -1,0 +1,17 @@
+#!/bin/sh
+# https://frdmtoplay.com/i3-udev-xrandr-hotplugging-output-switching/
+# $ cat /etc/udev/rules.d/98-monitor-hotplug.rules 
+# KERNEL=="card0", SUBSYSTEM=="drm", ACTION=="change", ENV{DISPLAY}=":0", RUN+="/home/breno/bin/hdmi-config"
+
+set -e
+
+egrep "^connected$" /sys/class/drm/*HDMI*/status
+HDMI_STATUS=$?
+
+if [[ $HDMI_STATUS -eq 0 ]]; then
+    notify-send -t 5000 "HDMI CONNECTED"
+    ~/.screenlayout/dual.sh
+else
+    notify-send -t 5000 "HDMI OFF"
+    ~/.screenlayout/single.sh
+fi

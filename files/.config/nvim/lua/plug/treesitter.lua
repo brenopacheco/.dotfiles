@@ -4,22 +4,24 @@
 local supported = {
   "bash",
   "c",
-  "c_sharp",
   "cmake",
   "commonlisp",
   "cpp",
+  "c_sharp",
   "css",
   "dockerfile",
   "fennel",
   "go",
   "graphql",
   "html",
+  "http",
   "java",
   "javascript",
   "jsdoc",
   "json",
   "latex",
   "lua",
+  "markdown",
   "php",
   "python",
   "ql",
@@ -29,12 +31,13 @@ local supported = {
   "scss",
   "tsx",
   "typescript",
+  "vim",
   "yaml"
 }
 
 require'nvim-treesitter.configs'.setup {
     ensure_installed      = supported,
-    indent                = { enable = true },
+    indent                = { enable = false },
     highlight             = { enable = true },
     incremental_selection = { enable = false },
     textobjects = {
@@ -48,10 +51,28 @@ require'nvim-treesitter.configs'.setup {
            ['ic'] = '@class.inner',
          }
        }
+    },
+    playground = {
+        enable = true,
+        disable = {},
+        updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+        persist_queries = false, -- Whether the query persists across vim sessions
+        keybindings = {
+            toggle_query_editor = 'o',
+            toggle_hl_groups = 'i',
+            toggle_injected_languages = 't',
+            toggle_anonymous_nodes = 'a',
+            toggle_language_display = 'I',
+            focus_language = 'f',
+            unfocus_language = 'F',
+            update = 'R',
+            goto_node = '<cr>',
+            show_help = '?'
+        }
     }
 }
 
-vim.cmd([[
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-]])
+-- vim.cmd([[
+-- set foldmethod=expr
+-- set foldexpr=nvim_treesitter#foldexpr()
+-- ]])

@@ -1,0 +1,87 @@
+{
+  "main": { "prefix": ["main"], "body": ["func main() {", "\t$0", "}"] },
+  "fun": {
+    "prefix": ["fun", "fu", "fn", "f"],
+    "body": ["func ${1:foo}() {", "\t${0}", "}"]
+  },
+  "imp": { "prefix": ["imp"], "body": ["import (", "\t\"${0}\"", ")"] },
+  "err": { "prefix": ["err"], "body": ["_, err := ${0}"] },
+  "var": {
+    "prefix": ["var"],
+    "body": ["${1:i, j} := ${0}"]
+  },
+  "const": {
+    "prefix": ["const"],
+    "body": ["const ${1:i, j} = ${0}"]
+  },
+  "for": {
+    "prefix": ["for"],
+    "body": ["for $1 {", "\t${0}", "}"]
+  },
+  "forr": {
+    "prefix": ["forr"],
+    "body": [
+      "for ${1:foo} := range ${2:bar} {",
+      "\t${0}",
+      "}"
+    ]
+  },
+  "fori": {
+    "prefix": ["fori"],
+    "body": [
+      "for ${1:i} := 0; ${1:i} < 1; ${1:i}++ {",
+      "\t${0}",
+      "}"
+    ]
+  },
+  "if": {
+    "prefix": ["if"],
+    "body": ["if $1 {", "\t${0}", "}"]
+  },
+  "ife": {
+    "prefix": ["ife"],
+    "body": ["if err != nil {", "\t${0}", "}"]
+  },
+  "typedef": {
+    "prefix": ["typedef", "td"],
+    "body": ["type ${1:foo} struct {", "\t$0", "}"]
+  },
+  "method": {
+    "prefix": ["m", "met", "method"],
+    "body": [
+    "func (${1:f *foo}) ${2:bar}(${3:q qux}) (${4:b baz}) {",
+      "\t$0",
+      "}"
+    ]
+  },
+  "switch": {
+    "prefix": ["switch"],
+    "body": ["switch $1 {", "\t$0", "}"]
+  },
+  "case": {
+    "prefix": ["case"],
+    "body": ["case ${1:foo}:", "\t$0"]
+  },
+  "default": {
+    "prefix": ["default"],
+    "body": ["default:", "\t$0"]
+  },
+  "interface": {
+    "prefix": ["interface"],
+    "body": ["type ${1:foo} interface {", "\t$0", "}"]
+  },
+  "range": {
+    "prefix": ["range"],
+    "body": [
+      "${1:foo} := range ${0:bar}"
+    ]
+  },
+  "st": {
+    "prefix": ["st", "struct"],
+    "body": [
+      "struct {",
+      "\t$0",
+      "}"
+    ]
+  }
+}

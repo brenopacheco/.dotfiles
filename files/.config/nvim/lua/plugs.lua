@@ -14,7 +14,6 @@ paq({
     {'JoosepAlviste/nvim-ts-context-commentstring', config='commentstring'};
     {'junegunn/gv.vim'};
     {'junegunn/vim-easy-align',                     config='easyalign'};
-    {'kosayoda/nvim-lightbulb',                     config='lightbulb'}; -- todo
     {'kyazdani42/nvim-web-devicons',                config='devicons'};
     {'lewis6991/gitsigns.nvim',                     config='gitsigns'};
     {'ludovicchabant/vim-gutentags',                config='gutentags'};
@@ -28,40 +27,38 @@ paq({
     {'nvim-telescope/telescope-fzy-native.nvim',    hook='git submodule update --init --recursive'};
     {'nvim-telescope/telescope.nvim',               config='telescope'};
     {'nvim-treesitter/nvim-treesitter',             config='treesitter', run = ':TSUpdate'};
+    {'nvim-treesitter/nvim-treesitter-textobjects'};
+    {'nvim-treesitter/playground'};
     {'onsails/lspkind-nvim'};
     {'ruifm/gitlinker.nvim',                        config='git-linker'};
     {'sbdchd/neoformat',                            config='neoformat'};
     {'nvim-lualine/lualine.nvim',                   config='lualine'};
-    {'simrat39/symbols-outline.nvim'};
-    { 'SmiteshP/nvim-gps',                          config='nvim-gps' };
+    {'simrat39/symbols-outline.nvim',               config='symbols-outline'};
+    {'SmiteshP/nvim-gps',                           config='nvim-gps' };
     {'sodapopcan/vim-twiggy'};
     {'tpope/vim-commentary'};
     {'tpope/vim-fugitive'};
     {'tpope/vim-surround'};
     {'tweekmonster/startuptime.vim'};
     {'windwp/nvim-autopairs',                       config='autopairs'};
-    --[[ todo
-    {'mhartington/formatter.nvim'};
-    {'vim-test/vim-test'};
-    --]]
-    -- {'ray-x/lsp_signature.nvim',                 config='signature'};
-    -- {'kyazdani42/nvim-tree.lua',                 config='tree'};
-    -- {'romgrk/nvim-treesitter-context',           config='nvim-treesitter-context'};
-    -- {'ishan9299/nvim-solarized-lua'};
-  --
-    -- {'Pocco81/DAPInstall.nvim',                     config='dap-install'};
+    {'Hoffs/omnisharp-extended-lsp.nvim'};
+    {'ray-x/lsp_signature.nvim',                    config='signature'};
     {'rcarriga/nvim-dap-ui'};
     {'theHamsta/nvim-dap-virtual-text'};
-    {'mfussenegger/nvim-dap', config='nvim-dap'};
+    {'mfussenegger/nvim-dap',                       config='nvim-dap'};
+    {'junegunn/fzf.vim'};
+    {'mfussenegger/nvim-jdtls'};
+    {'KabbAmine/zeavim.vim',                        config='zeavim'};
+    {'projekt0n/github-nvim-theme'}
 })
 
-local disabled_built_ins = {
-    "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers", "gzip", "zip",
-    "zipPlugin", "tar", "tarPlugin", "getscript", "getscriptPlugin", "vimball",
-    "vimballPlugin", "2html_plugin", "logipat", "rrhelper", "spellfile_plugin",
-    "matchit"
-}
+-- local disabled_built_ins = {
+--     "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers", "gzip", "zip",
+--     "zipPlugin", "tar", "tarPlugin", "getscript", "getscriptPlugin", "vimball",
+--     "vimballPlugin", "2html_plugin", "logipat", "rrhelper", "spellfile_plugin",
+--     "matchit"
+-- }
 
-for _, plugin in pairs(disabled_built_ins) do
-    vim.g["loaded_" .. plugin] = 1
-end
+-- for _, plugin in pairs(disabled_built_ins) do
+--     vim.g["loaded_" .. plugin] = 1
+-- end

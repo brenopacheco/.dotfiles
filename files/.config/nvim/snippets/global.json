@@ -51,5 +51,11 @@
       "${VIM:printf(&commentstring, ' Author: Breno Leonhardt Pacheco')}",
       "${VIM:printf(&commentstring, ' Email: brenoleonhardt@gmail.com')}"
     ]
+  },
+  "global-filetype": {
+    "prefix": ["ft"],
+    "body": [
+      "${VIM:printf(&commentstring, 'vim: ft=')}$0"
+    ]
   }
 }

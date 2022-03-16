@@ -4,8 +4,10 @@ endif
 
 setlocal formatoptions+=tcqln formatoptions-=r formatoptions-=o
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^[-*+]\\s\\+\\\|^\\[^\\ze[^\\]]\\+\\]:
-setlocal foldexpr=MarkdownLevel()
+" setlocal foldexpr=MarkdownLevel()
+" setlocal foldmethod=expr
 setlocal foldmethod=expr
+setlocal foldexpr=nvim_treesitter#foldexpr()
 
 let b:undo_ftplugin='setl fo< flp< fde< fm<'
 

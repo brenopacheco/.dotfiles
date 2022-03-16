@@ -4,6 +4,7 @@ let g:neoformat_enabled_javascriptreact = ['prettiereslint']
 let g:neoformat_enabled_typescript = ['prettiereslint']
 let g:neoformat_enabled_typescriptreact = ['prettiereslint']
 let g:neoformat_enabled_lua = ['luaformat']
+let g:neoformat_enabled_python = ['yapf']
 ]])
 
 local luaformat = [[
