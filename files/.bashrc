@@ -86,7 +86,7 @@ export JDTLS_CONFIG=$JDTLS_HOME/config_linux
 export WORKSPACE=$HOME/.cache/jdtls
 
 # NVM
-source /usr/share/nvm/init-nvm.sh
+# source /usr/share/nvm/init-nvm.sh
 
 #.bash_profile
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

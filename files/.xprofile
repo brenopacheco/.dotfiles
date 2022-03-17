@@ -3,11 +3,11 @@ exec 1>/tmp/xprofile.log 2>&1
 export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
 
 # background image
-export WALLPAPER=~/Desktop/Pictures/wallpaper.jpg
+export WALLPAPER=~/Pictures/wallpaper.jpg
 [[ -f "$WALLPAPER" ]] && feh --bg-fill $WALLPAPER
 
 # monitor
-~/bin/hdmi-config &
+# ~/bin/hdmi-config &
 
 # applications
 /usr/lib/xfce4/notifyd/xfce4-notifyd &   # notification daemon
