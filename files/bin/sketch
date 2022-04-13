@@ -4,9 +4,9 @@ LANG=$1
 
 function help() {
 cat<<EOF
-Usage: sketch LANG [NAME]
+Usage: sketch [go|node|js|c] [NAME]
 
-Creates a sketch project for a given LANG (go, node, js).
+Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
 If NAME is provided, the directory name is prefixed with the argument.
 
@@ -21,15 +21,15 @@ fi
 LANG=$1
 NAME=$2
 
-exec 3>&1 >/dev/null 2>&1
-
-mkdir -p ~/sketch
-
-if [[ ! "$LANG" =~ ^(go|node|sh)$ ]]; then
+if [[ ! "$LANG" =~ ^(go|node|sh|c)$ ]]; then
     help
     echo "Invalid LANG: use go, sh or node" >&2
     exit 1
 fi
+
+exec 3>&1 >/dev/null 2>&1
+
+mkdir -p ~/sketch
 
 TMPNAME="$LANG_$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 10)"
 
@@ -54,16 +54,23 @@ case $LANG in
         go mod init pkg
         touch main.go
         echo -e "package main\n\nfunc main() {\n\n\n}" > main.go
+        echo -e 'all:\n\tgo run main.go' > Makefile
+        ;;
+    "c")
+        echo -e "#include <stdio.h>\n\nint main() {\n\n  return 0;\n}" > main.c
+        echo -e 'all:\n\tgcc main.c -o main\n\t./main' > Makefile
         ;;
     "node")
         npm init -y
         touch main.js
+        echo -e 'all:\n\tnode main.js' > Makefile
         tsc --init
         ;;
     "sh")
         touch script.sh
         chmod +x script.sh
         echo "#!/usr/bin/env bash"
+        echo -e 'all:\n\t./script.sh' > Makefile
         ;;
 esac
 
@@ -71,5 +78,6 @@ st >/dev/null 2>&1 & disown $!
 
 echo "Directory: $DIR" >&3
 
+bash & disown
 
 exit 0

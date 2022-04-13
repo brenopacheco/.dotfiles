@@ -22,7 +22,7 @@
 -- easier map for cmd mode (e.g. spc-spc)
 -- fix vim-tree WEIRD behavior
 --]]
-require('quickfix')
+-- require('quickfix')
 require('options')
 require('keymap')
 require('backup')

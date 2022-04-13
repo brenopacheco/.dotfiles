@@ -1,0 +1,454 @@
+[global]
+# Specifies on which monitor the notifications should be displayed in, count
+# starts at 0. See the follow setting.
+monitor = 0
+
+
+# Defines where the notifications should be placed in a multi-monitor setup.
+#
+# All values except none override the monitor setting. On Wayland there is no
+# difference between mouse and keyboard focus. When either of the is used, the
+# compositor will choose an output. This will generally be the output last
+# interacted with.
+#
+# none
+#   The notifications will be placed on the monitor specified by the monitor
+#   setting.
+# mouse
+#   The notifications will be placed on the monitor that the mouse is
+#   currently in.
+# keyboard
+#   The notifications will be placed on the monitor that contains the window
+#   with keyboard focus.
+follow = mouse
+
+
+# When set to true (recommended), you can use POSIX regular expressions for
+# filtering rules. It uses the POSIX Extended Regular Expression syntax:
+# https://en.m.wikibooks.org/wiki/Regular_Expressions/POSIX-Extended_Regular_Expressions.
+#
+# If this is set to false (not recommended), dunst will us fnmatch(3) for
+# matching strings. Dunst doesn't pass any flags to fnmatch, so you cannot
+# make use of extended patterns. The POSIX syntax is more powerful and will
+# eventually become the default. 
+#
+# The main differences between POSIX and fnmatch(3) is that POSIX uses ".*"
+# for wildcards instead of "*" and POSIX allows for partial matches without
+# needing wildcards. This means that the pattern "abc" will match all strings
+# that contain "abc", like "abcdef".
+enable_posix_regex = true
+
+
+# The width of the notification window in pixels. This can be a single number
+# to specify a constant width or two numbers for the minimum and maximum
+# width. The notification will expand from the minimum width as neccesary.
+#
+# Examples: width = 300 # constant width of 300 width = (0, 300) # width
+# between 0 and 300
+#
+# When setting a width bigger than the screen, dunst will clamp the width to
+# the screen width. So if you want the notifcation to stretch the entire
+# screen dynamically, you may set the width to a high enough number, which
+# none of your screens exceed (e.g. 10000). 
+width = (0, 300)
+
+
+# The maximum height of a single notification.
+height = 300
+
+
+# The number of notifications that can appear at one time. When this limit is
+# reached any additional notifications will be queued and displayed when the
+# currently displayed ones either time out or are manually dismissed. The
+# value 0 means no limit. If indicate_hidden is true, then the specified limit
+# is reduced by 1 and the last notification is a message informing how many
+# hidden notifications are waiting to be displayed. See the indicate_hidden
+# entry for more information.
+notification_limit = 10
+
+
+# The origin of the notification window on the screen. It can then be moved
+# with offset. Origin can be one of: top-left top-center top-right bottom-left
+# bottom-center bottom-right left-center center right-center
+origin = top-right
+
+
+# Respectively the horizontal and vertical offset in pixels from the corner of
+# the screen specified by origin. A negative offset will lead to the
+# notification being off screen.
+#
+# Examples: origin = top-right offset = 10x300 # a margin of 10 pixels from
+# the right and 300 pixels from the top
+offset = 30x50
+
+
+# Specifies a scale factor for dimensions to adapt notifications to HiDPI
+# screens. This scales the notification geometry and it's contents. It is not
+# recommended to use a fractional scaling factor, as this may result in things
+# being one pixel off. Try to use a whole number scaling factor and adjust the
+# font size and other sizes as needed. If 0 is specified, the scale factor is
+# auto-detected.
+scale = 0
+
+
+# When an integer value is passed to dunst as a hint (see NOTIFY-SEND), a
+# progress bar will be drawn at the bottom of the notification. This behavior
+# can be turned off by setting this setting to false.
+progress_bar = true
+
+
+# Horizontal alignment of the progress bar. The progress bar will always keep
+# a distance of horizontal_padding from the edge of the notification.
+progress_bar_horizontal_alignment = center
+
+
+# The height of the progress bar in pixel. This includes the frame. Make sure
+# this value is bigger than twice the frame width.
+progress_bar_height = 10
+
+
+# The minimum width of the progress bar in pixels. The notification is
+# rescaled to fit the bar.
+progress_bar_min_width = 150
+
+
+# The maximum width of the progress bar in pixels. The notification is resized
+# to fit the progress bar.
+progress_bar_max_width = 300
+
+
+# The frame width of the progress bar in pixels. This value should be smaller
+# than half of the progress bar height.
+progress_bar_frame_width = 1
+
+
+# If this is set to true, a notification indicating how many notifications are
+# not being displayed due to the notification limit (see notification_limit)
+# will be shown in place of the last notification slot.
+#
+# Meaning that if this is enabled the number of visible notifications will be
+# 1 less than what is specified by notification_limit, the last slot will be
+# taken by the hidden count.
+indicate_hidden = true
+
+
+# A 0-100 range on how transparent the notification window should be, with 0
+# being fully opaque and 100 invisible.
+#
+# To make windows transparent on wayland, set the transparency part of a
+# color, see COLORS.
+#
+# This setting will only work if a compositor is running.
+transparency = 0
+
+
+# The height in pixels of the separator between notifications, if set to 0
+# there will be no separating line between notifications.
+separator_height = 30
+
+
+# The distance in pixels from the content to the separator/border of the
+# window in the vertical axis
+padding = 10
+
+
+# The distance in pixels from the content to the border of the window in the
+# horizontal axis
+horizontal_padding = 16
+
+
+# The distance in pixels from the text to the icon (or vice versa) in the
+# horizontal axis.
+# Setting this to a non-zero value overwrites any padding that
+# horizontal_padding was adding between the notification text and icon.
+#
+# So for example setting:
+#   > text_icon_padding=10
+#   > horizontal_padding=10
+#
+# is equivalent to
+#   > text_icon_padding=0
+#   > horizontal_padding=10
+text_icon_padding = 0
+
+
+# Defines width in pixels of frame around the notification window. Set to 0 to
+# disable.
+frame_width = 0
+
+
+# Sets the color of the separator line between two notifications.
+#
+# auto
+#   Dunst tries to find a color that fits the rest of the notification color
+#   scheme automatically.
+# foreground
+#   The color will be set to the same as the foreground color of the topmost
+#   notification that's being separated.
+# frame
+#   The color will be set to the frame color of the notification with the
+#   highest urgency between the 2 notifications that are being separated.
+# anything else
+#   Any other value is interpreted as a color, see COLORS
+separator_color = foreground
+ 
+
+
+# If set to true, display notifications with higher urgency above the others.
+sort = true
+
+
+# Don't timeout notifications if user is idle longer than this time. See TIME
+# FORMAT for valid times.
+#
+# Set to 0 to disable.
+#
+# A client can mark a notification as transient to bypass this setting and
+# timeout anyway. Use a rule with 'set_transient = no' to disable this
+# behavior.
+#
+# Note: this doesn't work on xwayland.
+idle_threshold = 0
+
+
+# Place dunst notifications on the selected layer. Using overlay will cause
+# notifications to be displayed above fullscreen windows, though this may also
+# occur at top depending on your compositor.
+#
+# One of bottom, top or overlay.
+#
+# The bottom layer is below all windows and above the background.
+layer = overlay
+
+
+# Force the use of X11 output, even on a wayland compositor. This setting has
+# no effect when not using a Wayland compositor.
+# force_xwayland = false
+
+
+# Defines the font or font set used. Optionally set the size as a decimal
+# number after the font name and space. Multiple font options can be separated
+# with commas.
+#
+# This options is parsed as a Pango font description.
+font = "FiraCode Nerd Font 11"
+
+
+# The amount of extra spacing between text lines in pixels. Set to 0 to
+# disable.
+line_height = 0
+
+
+# Specifies how the various attributes of the notification should be formatted
+# on the notification window.
+#
+# Regardless of the status of the markup setting, any markup tags that are
+# present in the format will be parsed. Note that because of that, if a
+# literal ampersand (&) is needed it needs to be escaped as '&amp;'
+# If '\n' is present anywhere in the format, it will be replaced with a
+# literal newline.
+#
+# If any of the following strings are present, they will be replaced with the
+# equivalent notification attribute.
+#   > %a appname
+#   > %s summary
+#   > %b body
+#   > %i iconname (including its path)
+#   > %I iconname (without its path)
+#   > %p progress value ([ 0%] to [100%])
+#   > %n progress value without any extra characters
+#   > %% Literal %
+#
+# If any of these exists in the format but hasn't been specified in the
+# notification (e.g. no icon has been set), the placeholders will simply be
+# removed from the format.
+format = "<b>%s</b>\n%b"
+# format = "%a\n %s\n %b\n %p\n %n\n %%\n"
+
+
+# Defines how the text and icon should be aligned vertically within the
+# notification. If icons are disabled, this option has no effect.
+vertical_alignment = center
+
+
+# Show age of message if message is older than this time. See TIME FORMAT for
+# valid times.
+# Set to -1 to disable.
+show_age_threshold = 60
+
+
+
+
+# If set to true, replace newline characters in notifications with whitespace.
+ignore_newline = false
+
+
+# If set to true, duplicate notifications will be stacked together instead of
+# being displayed separately.
+#
+# Two notifications are considered duplicate if the name of the program that
+# sent it, summary, body, icon and urgency are all identical.
+stack_duplicates = true
+
+
+# Hide the count of stacked duplicate notifications.
+hide_duplicate_count = false
+
+
+# Show an indicator if a notification contains actions and/or open-able URLs.
+# See ACTIONS below for further details.
+show_indicators = true
+
+
+# Defines the minimum size in pixels for the icons. If the icon is larger than
+# or equal to the specified value it won't be affected. If it's smaller then
+# it will be scaled up so that the smaller axis is equivalent to the specified
+# size.
+#
+# Set to 0 to disable icon upscaling. (default)
+# If icon_position is set to off, this setting is ignored.
+min_icon_size = 0
+
+
+# Defines the maximum size in pixels for the icons. If the icon is smaller
+# than or equal to the specified value it won't be affected. If it's larger
+# then it will be scaled down so that the larger axis is equivalent to the
+# specified size.
+#
+# Set to 0 to disable icon downscaling.
+# If both min_icon_size and max_icon_size are enabled, the latter gets the
+# last say.
+#
+# If icon_position is set to off, this setting is ignored.
+max_icon_size = 32
+
+
+# Can be set to a colon-separated list of paths to search for icons to use
+# with notifications.
+# 
+# Dunst doens't search outside of these direcories. For a recursive icon
+# lookup system, see enable_recursive_icon_lookup. This new system will
+# eventually replace this and will need new settings.
+# 
+# (default: "/usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/")
+icon_path = /usr/share/icons/Adwaita/32x32/status:/usr/share/icons/Adwaita/32x32/devices
+
+
+# Comma-separated of names of the the themes to use for looking up icons. This
+# has to be the name of the directory in which the theme is located, not the
+# human-friendly name of the theme. So for example, the theme Breeze Dark is
+# located in /usr/share/icons/breeze-dark. In this case you have to set the
+# theme to breeze-dark.
+#
+# The first theme in the list is the most important. Only if the icon cannot
+# be found in that theme, the next theme will be tried.
+#
+# Dunst will look for the themes in XDG_DATA_HOME/icons and
+# $XDG_DATA_DIRS/icons as specified in the icon theme specification:
+# https://specifications.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html.
+#
+# If the theme inherits from other themes, they will be used as a backup.
+# This setting is experimental and not enabled by default. See
+# enable_recursive_icon_lookup for how to enable it.
+#
+icon_theme = Adwaita
+
+
+# This setting enables the new icon lookup method. This new system will
+# eventually be the old icon lookup.
+#
+# Currently icons are looked up in the icon_path and scaled according to
+# min_icon_size and max_icon_size. Since the icon_path wasn't recursive, one
+# had to add a ton of paths to this list. This has been drastically simplified
+# by the new lookup method. Now you only have to set icon_theme to the name of
+# the theme and icon_size to the icon size you want. To enable this new
+# behaviour, set enable_recursive_icon_lookup to true in the [experimental]
+# section. See the respective settings for more details.
+enable_recursive_icon_lookup = false
+
+
+# If set to true, notifications that have been recalled from history will not
+# time out automatically.
+sticky_history = true
+
+
+# Maximum number of notifications that will be kept in history. After that
+# limit is reached, older notifications will be deleted once a new one
+# arrives. See HISTORY.
+history_length = 20
+
+
+# The command that will be run when opening the context menu. Should be either
+# a dmenu command or a dmenu-compatible menu.
+dmenu = /usr/bin/dmenu -p dunst
+
+
+# The command that will be run when opening a URL. The URL to be opened will
+# be appended to the end of the value of this setting.
+browser = /usr/bin/xdg-open
+
+
+# Always run rule-defined scripts, even if the notification is suppressed with
+# format = "". See SCRIPTING.
+always_run_script = true
+
+
+# Defines the title of notification windows spawned by dunst. (_NET_WM_NAME
+# property). There should be no need to modify this setting for regular use.
+title = Dunst
+
+
+# Defines the class of notification windows spawned by dunst. (First part of
+# WM_CLASS). There should be no need to modify this setting for regular use.
+class = Dunst
+
+
+# Use the Xinerama extension instead of RandR for multi-monitor support. This
+# setting is provided for compatibility with older nVidia drivers that do not
+# support RandR and using it on systems that support RandR is highly
+# discouraged.
+# 
+# By enabling this setting dunst will not be able to detect when a monitor is
+# connected or disconnected which might break follow mode if the screen layout
+# changes.
+force_xinerama = false
+
+
+# Define the corner radius in pixels. A corner radius of 0 will result in
+# rectangular shaped notifications.
+# 
+# By enabling this setting the outer border and the frame will be shaped. If
+# you have multiple notifications, the whole window is shaped, not every
+# single notification.
+# 
+# To avoid the corners clipping the icon or text the corner radius will be
+# automatically lowered to half of the notification height if it exceeds it.
+corner_radius = 4
+
+
+# Defines action of mouse click. A touch input in Wayland acts as a mouse left
+# click.
+#
+# none
+#   Don't do anything.
+# do_action (default for mouse_middle_click)
+#   Invoke the action determined by the action_name rule. If there is no such action, open the context menu.
+# open_url
+#   If the notification has exactly one url, open it. If there are multiple ones, open the context menu.
+# close_current (default for mouse_left_click)
+#   Close current notification.
+# close_all (default for mouse_right_click)
+#   Close all notifications.
+# context
+#   Open context menu for the notification.
+# context_all
+#   Open context menu for all notifications.
+mouse_middle_click = do_action
+mouse_left_click = close_current
+mouse_right_click = close_all
+
+
+# Ignore the dbus closeNotification message. This is useful to enforce the
+# timeout set by dunst configuration. Without this parameter, an application
+# may close the notification sent before the user defined timeout.
+ignore_dbusclose = false

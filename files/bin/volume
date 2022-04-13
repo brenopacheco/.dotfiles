@@ -30,3 +30,6 @@ case $ARG in
         usage
         ;;
 esac
+
+# amixer set Master 655+
+# bluez_sink.74_45_CE_FC_BC_8C.a2dp_sink toggle

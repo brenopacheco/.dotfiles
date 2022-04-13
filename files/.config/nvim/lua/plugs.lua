@@ -4,7 +4,7 @@ paq({
     {'bluz71/vim-nightfly-guicolors'};
     {'brenopacheco/vim-tree',                       config='vim-tree'};
     {'editorconfig/editorconfig-vim'};
-    {'folke/todo-comments.nvim',                    config='todo-comments'};
+    -- {'folke/todo-comments.nvim',                    config='todo-comments'};
     {'folke/which-key.nvim',                        config='which-key'};
     {'folke/zen-mode.nvim',                         config='zen-mode'};
     {'f-person/git-blame.nvim',                     config='git-blame'};
@@ -23,18 +23,21 @@ paq({
     {'norcalli/nvim-colorizer.lua',                 config='colorizer'};
     {'NTBBloodbath/rest.nvim'};
     {'nvim-lua/plenary.nvim'};
+
     {'nvim-lua/popup.nvim'};
     {'nvim-telescope/telescope-fzy-native.nvim',    hook='git submodule update --init --recursive'};
     {'nvim-telescope/telescope.nvim',               config='telescope'};
     {'nvim-treesitter/nvim-treesitter',             config='treesitter', run = ':TSUpdate'};
     {'nvim-treesitter/nvim-treesitter-textobjects'};
     {'nvim-treesitter/playground'};
+
     {'onsails/lspkind-nvim'};
     {'ruifm/gitlinker.nvim',                        config='git-linker'};
     {'sbdchd/neoformat',                            config='neoformat'};
     {'nvim-lualine/lualine.nvim',                   config='lualine'};
     {'simrat39/symbols-outline.nvim',               config='symbols-outline'};
     {'SmiteshP/nvim-gps',                           config='nvim-gps' };
+
     {'sodapopcan/vim-twiggy'};
     {'tpope/vim-commentary'};
     {'tpope/vim-fugitive'};
@@ -46,10 +49,13 @@ paq({
     {'rcarriga/nvim-dap-ui'};
     {'theHamsta/nvim-dap-virtual-text'};
     {'mfussenegger/nvim-dap',                       config='nvim-dap'};
-    {'junegunn/fzf.vim'};
     {'mfussenegger/nvim-jdtls'};
     {'KabbAmine/zeavim.vim',                        config='zeavim'};
-    {'projekt0n/github-nvim-theme'}
+    {'projekt0n/github-nvim-theme'};
+
+
+    {'petertriho/nvim-scrollbar',                   config='scrollbar'};
+    -- {'jubnzv/virtual-types.nvim'} requires codeLens
 })
 
 -- local disabled_built_ins = {

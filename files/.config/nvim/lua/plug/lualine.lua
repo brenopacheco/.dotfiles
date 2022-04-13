@@ -48,6 +48,7 @@ local config = {
     section_separators = '',
     component_separators = '',
     icons_enabled = true,
+    globalstatus = true,
   },
   sections = {
     lualine_a = { 'mode' },
@@ -57,7 +58,7 @@ local config = {
     lualine_y = { lsp_progress, lsp_status, 'filetype'  },
     lualine_z = { 'fileformat', 'encoding' },
   },
-  extensions = { 'fugitive', 'nvim-tree' },
+  extensions = { 'fugitive', 'nvim-tree' }
 }
 
 require('lualine').setup(config)

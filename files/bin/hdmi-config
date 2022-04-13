@@ -10,8 +10,13 @@ HDMI_STATUS=$?
 
 if [[ $HDMI_STATUS -eq 0 ]]; then
     notify-send -t 5000 "HDMI CONNECTED"
-    ~/.screenlayout/dual.sh
+    xrandr \
+        --output DP-1 --off \
+        --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal \
+        --output HDMI-1 --off --output HDMI-1-2 --primary --mode 1920x1080 --pos 1920x0 --rotate normal
 else
     notify-send -t 5000 "HDMI OFF"
-    ~/.screenlayout/single.sh
+    xrandr \
+        --output DP-1 --off --output HDMI-1 --off --output HDMI-1-2 --off \
+        --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal
 fi

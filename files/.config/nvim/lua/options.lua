@@ -26,7 +26,7 @@ set ignorecase                            " ignore case when searching
 set incsearch                             " search as chars are entered
 set inccommand    =nosplit                " preview subsittution as you type
 set keywordprg    =:help                  " use help as default for <S-k>
-set laststatus    =2                      " always show statusline
+set laststatus    =3                      " show a single statusline
 set lazyredraw                            " do not redraw during macros
 set linebreak                             " don't break word when wrapping
 set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp
@@ -46,7 +46,9 @@ set pumheight     =12                     " max num of items in popup menu
 set pumwidth      =15                     " min popup menu width
 set relativenumber                        " set relative numbers
 set report=0                              " always report on :substitute
-set scrolloff     =999                    " keep cursor centered
+" set scrolloff     =999                    " keep cursor centered
+set scrolloff     =0                      " keep cursor centered also on EOF
+autocmd CursorMoved,CursorMovedI * norm! zz
 set shiftwidth    =4                      " number of spaces used by = op.
 set shortmess    +=cs                     " remove annoying messages
 set showbreak     =↪\                     " symbol for wrapped lines

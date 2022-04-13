@@ -86,16 +86,17 @@ export JDTLS_CONFIG=$JDTLS_HOME/config_linux
 export WORKSPACE=$HOME/.cache/jdtls
 
 # NVM
-# source /usr/share/nvm/init-nvm.sh
+test -e /usr/share/nvm/init-nvm.sh && source /usr/share/nvm/init-nvm.sh
 
 #.bash_profile
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
-# source '/home/breno/.pkgs/azure-cli/az.completion'
 export AWT_TOOLKIT=MToolkit
 
 
 export PATH="$PATH:/home/breno/.dotnet/tools"
+
+test -e .npmtoken && source .npmtoken
 
 alias luamake=/home/breno/.cache/nvim/lsp/lua-language-server/3rd/luamake/luamake
 

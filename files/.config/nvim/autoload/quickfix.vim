@@ -30,8 +30,7 @@ fun! quickfix#global_grep2(...)
     let pattern = substitute(pattern, '\(#\)', '\\\1', 'g')
     let where = input(">Grep '".pattern."' in <complete>/",'', 'customlist,quickfix#_where')
     if len(where) == 0
-        echomsg "CANCELED"
-        return
+        let where = 'git'
     endif
     let buffer = bufnr()
     if where ==# 'buffer'

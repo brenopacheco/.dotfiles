@@ -1,4 +1,10 @@
 alias aliases='v ~/.bash_aliases'
+alias pp='pushd .'
+alias po='popd'
+
+alias packettracer='/opt/pt/packettracer'
+alias fcd='cd $(fd -t d | fzf)'
+alias fv='v $(fd -t f | fzf)'
 
 # yarn/npm
 alias ys='yarn start'
@@ -76,3 +82,4 @@ alias bin='cd ~/.dotfiles/bins/bin'
 alias vv='cd ~/.config/nvim'
 alias reps='cd ~/promote'
 alias deps='cd ~/promote/dependencies/operate'
+alias skt='cd ~/sketch'

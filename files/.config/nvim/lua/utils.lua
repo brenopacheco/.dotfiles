@@ -115,7 +115,6 @@ end
 
 function M.lsp_attach(client, bufnr)
     require('keymap').register_lsp()
-    require("aerial").on_attach(client, bufnr)
     vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
 end
 

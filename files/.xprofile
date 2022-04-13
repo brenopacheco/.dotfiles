@@ -3,14 +3,15 @@ exec 1>/tmp/xprofile.log 2>&1
 export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
 
 # background image
-export WALLPAPER=~/Pictures/wallpaper.jpg
+export WALLPAPER=~/Desktop/Pictures/wallpaper.jpg
 [[ -f "$WALLPAPER" ]] && feh --bg-fill $WALLPAPER
 
 # monitor
-# ~/bin/hdmi-config &
+~/bin/hdmi-config &
 
 # applications
-/usr/lib/xfce4/notifyd/xfce4-notifyd &   # notification daemon
+# /usr/lib/xfce4/notifyd/xfce4-notifyd &   # notification daemon
+dunst &                                  # notification daemon
 xfce4-power-manager &                    # power manager
 pa-applet &                              # pulseaudio volume applet
 udiskie & disown                         # automount disks

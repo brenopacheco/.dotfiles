@@ -2,86 +2,79 @@
   "main": { "prefix": ["main"], "body": ["func main() {", "\t$0", "}"] },
   "fun": {
     "prefix": ["fun", "fu", "fn", "f"],
-    "body": ["func ${1:foo}() {", "\t${0}", "}"]
+    "body": ["func ${1:foo}(${2:b bar}) (${3:q qux})  {", "\t${0}", "}"]
+  },
+  "afun": {
+    "prefix": ["afun", "af"],
+    "body": ["func(${1:foo Foo}) (${2:bar Bar}) {", "\t${0}", "}"]
   },
   "imp": { "prefix": ["imp"], "body": ["import (", "\t\"${0}\"", ")"] },
-  "err": { "prefix": ["err"], "body": ["_, err := ${0}"] },
-  "var": {
-    "prefix": ["var"],
-    "body": ["${1:i, j} := ${0}"]
-  },
-  "const": {
-    "prefix": ["const"],
-    "body": ["const ${1:i, j} = ${0}"]
-  },
   "for": {
     "prefix": ["for"],
     "body": ["for $1 {", "\t${0}", "}"]
   },
   "forr": {
     "prefix": ["forr"],
-    "body": [
-      "for ${1:foo} := range ${2:bar} {",
-      "\t${0}",
-      "}"
-    ]
+    "body": ["for ${1:foo} := range ${2:bar} {", "\t${0}", "}"]
   },
   "fori": {
     "prefix": ["fori"],
-    "body": [
-      "for ${1:i} := 0; ${1:i} < 1; ${1:i}++ {",
-      "\t${0}",
-      "}"
-    ]
+    "body": ["for ${1:i} := 0; ${1:i} < 1; ${1:i}++ {", "\t${0}", "}"]
   },
   "if": {
     "prefix": ["if"],
-    "body": ["if $1 {", "\t${0}", "}"]
+    "body": ["if ${1:true} {", "\t${0}", "}"]
   },
   "ife": {
     "prefix": ["ife"],
     "body": ["if err != nil {", "\t${0}", "}"]
   },
   "typedef": {
-    "prefix": ["typedef", "td"],
+    "prefix": ["type", "td"],
+    "body": [
+      "type ${1:Foo} ${2:Bar}"
+    ]
+  },
+  "typedef-struct": {
+    "prefix": ["types", "tds", "ts"],
     "body": ["type ${1:foo} struct {", "\t$0", "}"]
   },
   "method": {
     "prefix": ["m", "met", "method"],
     "body": [
-    "func (${1:f *foo}) ${2:bar}(${3:q qux}) (${4:b baz}) {",
+      "func (${1:f *foo}) ${2:bar}(${3:q qux}) (${4:b baz}) {",
       "\t$0",
       "}"
     ]
   },
   "switch": {
-    "prefix": ["switch"],
+    "prefix": ["switch", "sw"],
     "body": ["switch $1 {", "\t$0", "}"]
   },
   "case": {
-    "prefix": ["case"],
+    "prefix": ["case", "cs"],
     "body": ["case ${1:foo}:", "\t$0"]
   },
   "default": {
-    "prefix": ["default"],
+    "prefix": ["default", "def"],
     "body": ["default:", "\t$0"]
   },
   "interface": {
-    "prefix": ["interface"],
+    "prefix": ["interface", "intf"],
     "body": ["type ${1:foo} interface {", "\t$0", "}"]
   },
-  "range": {
-    "prefix": ["range"],
+  "anonymous-interface": {
+    "prefix": ["an", "ai", "aint"],
     "body": [
-      "${1:foo} := range ${0:bar}"
+      "interface{}"
     ]
   },
-  "st": {
-    "prefix": ["st", "struct"],
-    "body": [
-      "struct {",
-      "\t$0",
-      "}"
-    ]
+  "range": {
+    "prefix": ["range", "r"],
+    "body": ["${1:foo} := range ${0:bar}"]
+  },
+  "struct": {
+    "prefix": ["struct", "st"],
+    "body": ["struct {", "\t$0", "}"]
   }
 }
