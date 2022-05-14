@@ -22,7 +22,7 @@ local supported = {
   "latex",
   "lua",
   "markdown",
-  "org",
+  -- "org",
   "php",
   "python",
   "ql",
@@ -38,7 +38,6 @@ local supported = {
 
 require'nvim-treesitter.configs'.setup {
     ensure_installed      = supported,
-    -- indent                = { enable = false },
     indent                = { enable = true },
     highlight             = { enable = true, additional_vim_regex_highlighting = {'org'}, disable = {'org'} },
     incremental_selection = { enable = false },
@@ -73,8 +72,3 @@ require'nvim-treesitter.configs'.setup {
         }
     }
 }
-
--- vim.cmd([[
--- set foldmethod=expr
--- set foldexpr=nvim_treesitter#foldexpr()
--- ]])
