@@ -1,0 +1,625 @@
+#+TITLE: Emacs Literate Configuration
+#+AUTHOR: Breno Pacheco
+#+PROPERTY: header-args :tangle yes
+#+STARTUP: overview
+
+* Organization
+  
+This file is =tangled= into an *init.el* file The =#+PROPERTY: header-args
+tangle yes= tells emacs to automatically tangle (include) all code blocks in
+this file when generating the code for the config, unless the code block
+explicitly includes =:tangle no= as the above code block does.
+
+To run the tangle command use =org-babel-tangle=
+
+Auto tangle on save:
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun org-babel-tangle-on-save ()
+	(when (string-equal (buffer-file-name)
+						(expand-file-name "~/.emacs.d/init.org"))
+	  (let ((org-config-babel-evaluate nil))
+		(org-babel-tangle))))
+
+  (add-hook 'org-mode-hook
+			(lambda ()
+			  (add-hook 'after-save-hook #'org-babel-tangle-on-save)))
+#+END_SRC
+
+* Packages
+** Use-package
+
+Emacs has a built-in feature for managing packages called package.el.
+We first 'require' this feature, meaning we load it on initialization.
+reading the init.el file.
+
+We then tell package.el that we don't want emacs to initialize
+packages by itself, but let us do it with =package-initialize=. We
+need to run it now because the list of installed packages must be
+updated for the next step (installing use-package).
+
+In this package we set the archives we will be getting our packages
+from. Emacs keeps a list of packages available from the archives, but
+we do not need to update it at this point.
+
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (require 'package)
+  (setq package-archives 
+        '(("melpa" . "https://melpa.org/packages/") 
+          ("org" . "https://orgmode.org/elpa/") 
+          ("elpa" . "https://elpa.gnu.org/packages/")))
+  (setq package-enable-at-startup nil)
+  (package-initialize)
+  (unless package-archive-contents
+    (package-refresh-contents t))
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+#+END_SRC
+
+** Evil
+ https://evil.readthedocs.io/en/latest/keymaps.html       
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+  (use-package evil
+    :init
+    (setq evil-want-integration t) 
+    (setq evil-want-keybinding nil)
+    :config
+    (evil-mode 1))
+#+END_SRC
+
+*** Evil-collection
+
+The collections package brings evil-mode keybindings to
+many of Emacs's built-in major modes like *packages-menu*,
+*dired* and *buffer-menu*, as well as popular package
+major modes such as *flycheck* and *helm*. We can check
+the available modes this package applies to and their
+configurations by calling evil-collection-open-config-file.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package evil-collection
+    :config
+    (evil-collection-init)
+    (evil-define-key 'normal org-mode-map (kbd "TAB") #'org-cycle)
+    (evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle))
+#+END_SRC
+
+*** Evil-magit
+
+Magit vim key bindings are in a separate package, not
+contained within the evil-collections project.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package evil-magit)
+#+END_SRC
+
+*** DONE Evil-escape
+        
+We can have a keybinding for escaping to normal mode or
+quitting the minibuffer and many more operations (like
+magit, ex commands, neotree, etc...) by using the
+evil-escape package. I will set 'jk' as this keybinding
+and tell evil-escape to allow me to press 'kj' instead if
+I want to. Besides that, the default delay for pressing
+two keys in sequence is pretty low (0.1s) so I will also
+set it a bit higher.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package evil-escape
+    :config
+    (setq-default
+     evil-escape-key-sequence "jk"
+     evil-escape-key-sequence "kj"
+     evil-escape-unordered-key-sequence "true"
+     evil-escape-delay 0.5)
+    (evil-escape-mode 1)
+    (push 'visual evil-escape-excluded-states))
+#+END_SRC
+
+*** DONE Evil-commentary
+
+Evil-commentary brings tpope's vim-commentary plugin to
+Emacs. You can comment/uncomment out a line using gcc or
+apply a motion (like gap - comment around paragraph) or a
+visual selection (using gc after selecting).
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package evil-commentary
+    :config
+    (evil-commentary-mode))
+#+END_SRC
+
+*** DONE Evil-surround
+        
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package evil-surround
+    :config
+    (global-evil-surround-mode 1))
+#+END_SRC
+
+*** Evil-search-highlight-persist
+	
+By default when performing a search with / (isearch) the matches
+do not keep highlighted. This plugin solves that.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package evil-search-highlight-persist
+    :config
+    (define-key evil-normal-state-map (kbd "C-/") 'evil-search-highlight-persist-remove-all)
+    (define-key evil-normal-state-map (kbd "C-_") 'evil-search-highlight-persist-remove-all)
+    (global-evil-search-highlight-persist 1))
+#+end_src 
+
+** Other
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package ivy
+    :config (ivy-mode))
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  (electric-pair-mode 1)
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+#+end_src 
+        
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package which-key
+    :config
+    (which-key-setup-minibuffer)
+    (setq which-key-idle-delay 0.4)
+    (which-key-mode 1))
+#+END_SRC
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package helpful
+    :config
+    (global-set-key (kbd "C-h f") #'helpful-callable)
+    (global-set-key (kbd "C-h v") #'helpful-variable)
+    (global-set-key (kbd "C-h k") #'helpful-key)
+    (global-set-key (kbd "C-h C") #'helpful-command)
+    (global-set-key (kbd "C-h F") #'helpful-function)
+    (setq counsel-describe-function-function #'helpful-callable)
+    (setq counsel-describe-variable-function #'helpful-variable))
+#+end_src
+
+** Ivy
+
+#+begin_src emacs-lisp :tangle yes
+  ;; (use-package helm)
+  (use-package ivy
+    :config
+    (ivy-mode))
+#+end_src
+
+** Org
+
+[[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][Beautifying Org Mode in Emacs]]
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package org
+    :hook
+    (org-mode . org-indent-mode)
+    :config
+    (setq org-startup-indented t
+          org-pretty-entities t
+          org-hide-emphasis-markers t
+          org-startup-with-inline-images t
+          org-image-actual-width '(300)
+          org-directory (expand-file-name "~/org")
+          org-default-notes-file (concat org-directory "/notes.org"))
+    (set-face-attribute 'org-level-1 nil :height 1.3))
+
+  ;; Show hidden emphasis markers on cursor hover
+  (use-package org-appear
+    :hook (org-mode . org-appear-mode))
+
+  (use-package org-superstar
+      :config
+      (setq org-superstar-special-todo-items t)
+      (add-hook 'org-mode-hook (lambda ()
+                                 (org-superstar-mode 1))))
+
+  ;; Increase size of LaTeX fragment previews
+  ;; (plist-put org-format-latex-options :scale 2)
+    ;; Increase line spacing
+  ;; (setq-default line-spacing 6)
+#+END_SRC
+https://lucidmanager.org/productivity/ricing-org-mode/
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+#+END_SRC
+
+* Settings 
+** Behavior
+*** DONE Personal Information
+
+Let's set some variables with basic user information for automatic filling of
+information in forms such as org files.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq user-full-name "Breno Leonhardt Pacheco"
+        user-mail-address "brenoleonhardt@gmail.com")
+#+END_SRC
+
+*** DONE Encoding
+
+Use UTF-8 as default encoding for files.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (set-language-environment "UTF-8")
+#+END_SRC
+
+*** DONE Server
+        
+If no server is running, start daemon.
+
+#+begin_src emacs-lisp :tangle no
+  (require 'server)
+  (if (not (server-running-p)) (server-start))
+#+END_SRC
+
+*** DONE Yank-kill
+        
+When in terminal mode (emacs -nw) we do not have access to X11 libraries and
+therefore need to use auxiliary tools. I use xclip for handling copy paste,
+which is super easy to set up in emacs:
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package xclip
+    :demand t
+    :config
+    (xclip-mode 1))
+#+end_src 
+
+*** DONE Paragraphs
+
+Sentences SHOULD end with only a point.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq sentence-end-double-space nil)                   
+#+end_src
+
+*** DONE Yes-no-prompts
+
+Shorten Yes and No prompts.
+
+#+begin_src emacs-lisp :tangle yes
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+*** DONE Sessions
+
+Saves last place we were in buffer between sessions. Equivalent behavior to
+vim-lastplace.
+
+#+begin_src emacs-lisp :tangle yes
+  (save-place-mode 1)                                    
+#+end_src
+
+Automatically reload a file When it gets changed outside emacs.
+
+#+begin_src emacs-lisp :tangle yes
+  (global-auto-revert-mode t)                            
+#+end_src
+
+*** DONE Indentation
+
+Tabs are 4 spaces unless otherwise specified.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq-default tab-width 4)
+#+end_src
+
+Indentation inserts Tabs instead of Spaces.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq-default indent-tabs-mode 1)                                
+#+end_src
+
+We can force indentation to always with the following package.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package aggressive-indent
+    :init
+    (global-aggressive-indent-mode 1))
+#+end_src
+        
+We can also show indentation with the package indent-guide
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package highlight-indent-guides
+    :custom
+    (highlight-indent-guides-method 'character)
+    (highlight-indent-guides-character ?\|)
+    ;; (highlight-indent-guides-method 'fill)
+    (highlight-indent-guides-delay 0)
+    :hook (prog-mode . highlight-indent-guides-mode))
+#+end_src
+
+*** DONE Links
+
+Set Firefox as default browser
+
+#+begin_src emacs-lisp :tangle yes
+  (setq browse-url-browser-function 'browse-url-firefox) 
+#+end_src
+
+Make links open in a new tab in Firefox
+
+#+begin_src emacs-lisp :tangle yes
+  (setq browse-url-firefox-new-window-is-tab 1)
+#+end_src
+
+Don't ask for confirmation when opening symlinked file.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq vc-follow-symlinks t )                           
+#+end_src
+
+*** DONE Backup
+
+Stop Emacs from creating those #auto-save# files
+
+#+begin_src emacs-lisp :tangle yes
+  (setq auto-save-default nil)	
+#+end_src 
+
+Before setting up backup configurations, lets talk about how emacs
+backups up our files.
+
+We can choose between /renaming/ and /copying/ when creating
+backups. When /renaming/, the original file is renamed into a backup
+and the buffer is rewritten as a new original file. It means that if
+we had a symlink to this file (say a shortcut) and made a backup, out
+symlink would now link to the backup, and not to the original file we
+were editing. In case we set it to /copying/, the buffer keeps being
+saved to the original file, but after saving the file is copied to
+another location.
+        
+I like the /copying/ method better, so now we tell emacs to make
+backups for us and do it in this manner. The =make-backup-files=
+variable is optional, as it is true by default.
+        
+#+begin_src emacs-lisp :tangle yes
+  (setq make-backup-files t
+        backup-by-copying t)
+#+end_src 
+        
+Emacs makes a new backup every time we visit a new buffer and save
+it for the first time. By default, if it sees the file has a
+backup already, it will keep rewritting it. We can have it make
+numbered versions instead, creating an init.el~1~, init.el~2~ and
+so on every time we enter a buffer and save it the first time.
+        
+#+begin_src emacs-lisp :tangle yes
+  (setq version-control t)
+#+end_src
+
+Now say we have backups from ~1~ to ~20~, we can tell emacs to
+store only the newest 6 (from init.el~14~ to init.el~20~) and the
+2 oldests (from init.el~1~ to init.el~2~), and delete the old
+versions in between.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq kept-new-versions 6
+        kept-old-versions 2
+        delete-old-versions t)
+#+end_src
+
+Now, by default emacs won't keep backups for files you have under
+version control (say using git or svn). I don't really commit on
+every save, so I'd like to keep backups for these files too.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq vc-make-backup-files t)
+#+end_src
+        
+We can also define where our backups are going to be stored.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
+#+end_src
+
+As previously discussed, Emacs also do not backup a file on every
+save. It makes a backup when you first save the file, and makes
+new backups when you close the buffer and revisits the file. This
+sort of a /per-session/ behavior and can be frustrating when you
+keep emacs running from a long time and it doesn't keep fresh backups.
+
+To address this problem, we can have a sort of /per-save/ behavior
+by forcing Emacs to have a different behavior for backups only
+when we hit "save file". We define a function for this:
+
+#+begin_src emacs-lisp :tangle yes
+  (defun force-backup-of-buffer ()
+    ;; Make a special "per session" backup at the first save of each
+    ;; emacs session.
+    (when (not buffer-backed-up)
+      ;; Override the default parameters for per-session backups.
+      (let ((backup-directory-alist '(("" . "~/.emacs.d/backup/per-session")))
+            (kept-new-versions 50))
+        (backup-buffer)))
+    ;; Make a "per save" backup on each save.  The first save results in
+    ;; both a per-session and a per-save backup, to keep the numbering
+    ;; of per-save backups consistent.
+    (let ((buffer-backed-up nil))
+      (backup-buffer)))
+
+  (add-hook 'before-save-hook  'force-backup-of-buffer)
+#+end_src
+
+*** TODO Tabs
+        
+#+begin_src emacs-lisp :tangle no
+  (setq tab-bar-tab-hints 1)
+  (tab-bar-mode 1)
+#+end_src 
+
+*** TODO Mimes
+
+The mimes set in your computer define which application emacs will
+use when you ask it to open in an external application. Now, ...
+
+#+begin_src emacs-lisp :tangle no
+  (use-package openwith
+    :config
+    (setq openwith-associations '(("\\.pdf\\'" "zathura" (file))))
+    (openwith-mode t))
+#+end_src
+
+** Display / GUI
+*** DONE Override defaults
+
+Remove startup screen, tool bar, menu bar and scroll-bar
+
+#+begin_src emacs-lisp :tangle yes
+  (setq inhibit-startup-screen t )		
+  (tool-bar-mode 0) 
+  (menu-bar-mode 0) 
+  (scroll-bar-mode 0) 
+#+end_src 
+
+Do not thorow audio warning when making a mistake
+
+#+begin_src emacs-lisp :tangle yes
+  (setq ring-bell-function 'ignore )		
+#+end_src 
+
+When in floating window, set default dimensions
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'default-frame-alist '(width . 110)) 
+#+end_src 
+
+*** DONE Line Wrapping
+
+Toggle wrapping text at the Nth character. This information is used by the
+auto-fill-mode to break lines automatically. This mode needs to be manually set
+or a hook must be added for the modes you wish to have lines breaking
+automatically.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq-default fill-column 80)			
+#+end_src 
+
+When wrapping lines, remove the line-wrap symbol from both sides of the screen.
+
+#+begin_src emacs-lisp :tangle yes
+  (fringe-mode '(0 . 0)) 
+#+end_src
+         
+... visual line mode
+#+begin_src emacs-lisp :tangle yes
+  (setq-default word-wrap t)
+  (global-visual-line-mode t)
+#+end_src 
+
+*** DONE Line numbers
+
+Emacs provides a minor mode for displaying line numbers which is way
+faster than the package alternative (nlinum).  We set a variable to
+make it display relative numbers and allow the minor mode globally
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq display-line-numbers-type 'relative
+        display-line-numbers-current-absolute t)
+  (global-display-line-numbers-mode 1)
+#+END_SRC
+
+*** DONE Scratch buffers
+
+Change ~scratch~ buffer message
+
+#+begin_src emacs-lisp :tangle yes
+  (setq initial-scratch-message "~Scratch~")
+#+end_src
+        
+*** DONE Fonts
+
+Setting text font. The function =set-frame-font= could be
+used but if launching Emacs daemon and attaching to it the
+display goes wack.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (add-to-list 'default-frame-alist '(font . "FiraCode Nerd Font 13"))
+#+END_SRC
+
+*** DONE Cursor 
+   
+I now would like to keep our cursor center on the middle of the
+screen, so that the page shifts but the cursor line keeps static.
+For this, we use a package called centered-cursor-mode and enable
+the new minor mode globally.
+#+begin_src emacs-lisp :tangle yes
+  (use-package centered-cursor-mode
+    :config
+    (global-centered-cursor-mode))
+#+end_src
+
+The cursor blinking is quite annoying and will be removed too
+by disabling it's minor mode.
+
+#+begin_src emacs-lisp :tangle yes
+  (blink-cursor-mode 0)
+#+end_src  
+
+Another usefull feature related to the cursor is highlighting
+the line in which it is positioned:
+
+#+begin_src emacs-lisp :tangle yes
+  (global-hl-line-mode 1)
+#+end_src
+
+*** DONE Theme
+
+We first download some themes
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package doom-themes)
+#+END_SRC
+
+To allow enabling themes without being prompted yes-or-no we tell
+Emacs to trust all themes.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq custom-safe-themes t) 
+#+end_src
+
+Then we can choose which theme to load. 
+
+#+begin_src emacs-lisp :tangle yes
+  (load-theme 'doom-outrun-electric t)
+#+end_src
+
+We need to get the tab-bar to be displayed alright with the theme
+
+*** DONE Modeline
+        
+#+begin_src emacs-lisp :tangle no
+  (use-package doom-modeline
+    :hook (after-init . doom-modeline-mode)
+    :custom
+    (inhibit-compacting-font-caches t)
+    (doom-modeline-buffer-file-name-style 'relative-from-project)
+    (doom-modeline-bar-width 1)
+    (doom-modeline-modal-icon nil)
+    (doom-modeline-height 15)
+    :config
+    (when (member "Menlo" (font-family-list))
+      (set-face-attribute 'mode-line nil :height 110 :font "Menlo")
+      (set-face-attribute 'mode-line-inactive nil :height 110 :font "Menlo")))
+#+end_src 
+
