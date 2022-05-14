@@ -1,0 +1,44 @@
+{
+  "#+BEGIN_...#+END_": {
+    "prefix": ["block"],
+    "body": [
+      "#+BEGIN_$1 $2",
+      "  $0",
+      "#+END_$1"
+    ]
+  },
+  "#+BEGIN_EXAMPLE...#+END_EXAMPLE": {
+    "prefix": ["example"],
+    "body": [
+      "#+BEGIN_EXAMPLE",
+      "$0",
+      "#+END_EXAMPLE"
+    ]
+  },
+  ":PROPERTIES:...:END:": {
+    "prefix": ["drawer", "properties"],
+    "body": [
+      " :${1:PROPERTIES}:",
+      " :${2:PROPERTY}:${value}:",
+      " - Some note",
+      " :END:"
+    ]
+  },
+  "#+BEGIN_SRC...#+END_SRC": {
+    "prefix": ["src", "source"],
+    "body": [
+      "#+BEGIN_SRC ${1:language}",
+      "  $2",
+      "#+END_SRC"
+    ]
+  },
+  "header": {
+    "prefix": ["header"],
+    "body": [
+      "#+TITLE: $0",
+      "#+AUTHOR: Breno Leonhardt Pacheco",
+      "#+EMAIL: brenoleonhardt@gmail.com",
+      "#+STARTUP: overview indent hidestars"
+    ]
+  }
+}
