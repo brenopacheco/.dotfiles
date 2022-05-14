@@ -4,7 +4,7 @@ LANG=$1
 
 function help() {
 cat<<EOF
-Usage: sketch [go|node|js|c] [NAME]
+Usage: sketch [go|node|sh|c] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.

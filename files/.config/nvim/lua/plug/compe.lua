@@ -35,7 +35,8 @@ require('compe').setup({
     treesitter = { priority = 80,  dup = true },
     nvim_lsp =   { priority = 70,  dup = false },
     nvim_lua =   { priority = 70,  dup = false },
-    buffer =     { priority = 50,  dup = false }
+    buffer =     { priority = 50,  dup = false },
+    orgmode = true
   }
 })
 

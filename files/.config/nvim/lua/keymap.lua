@@ -17,6 +17,12 @@ local defaults = [[
     nnoremap q<leader>   q:
     "nnoremap q<leader>   <cmd>lua u.toggle_cmdline()<cr>
     nnoremap <leader><leader> :
+    "nnoremap <Tab>      <cmd>lua u.org_tab()<cr>
+    "nnoremap <S-Tab>    <cmd>lua u.org_untab()<cr>
+    vnoremap <C-p>       dkP1v
+    vnoremap <C-n>       dp1v
+    nnoremap <C-p>       ddkP
+    nnoremap <C-n>       ddp
 ]]
 
 local actions = [[
@@ -50,10 +56,10 @@ local actions = [[
 ]]
 
 local movement = [[
-    "nnoremap ]t            :tabnext<cr>
-    "nnoremap [t            :tabprev<cr>
-    nnoremap ]a            :next<cr>
-    nnoremap [a            :previous<cr>
+    "nnoremap ]t           :tabnext<cr>
+    "nnoremap [t           :tabprev<cr>
+    nnoremap ]a            <cmd>lua u.next()<cr>
+    nnoremap [a            <cmd>lua u.prev()<cr>
     nnoremap ]b            :bnext<cr>
     nnoremap [b            :bprevious<cr>
     nnoremap ]f            <cmd>lua u.fnext()<cr>
@@ -82,6 +88,7 @@ local bufwintabs = [[
 local toggles = [[
   nnoremap ´         <cmd>lua u.lf()<cr>
   nnoremap <leader>' <cmd>lua u.terminal()<cr>
+  nnoremap <leader>" <cmd>lua u.terminal()<cr>
   nnoremap <leader>n <cmd>lua u.ntree()<cr>
   nnoremap <leader>l <cmd>lua u.gtree()<cr>
   nnoremap <leader>e <cmd>lua u.diagnostics(0)<cr>
@@ -115,7 +122,7 @@ local git = [[
    nnoremap <leader>gu <cmd>lua u.undo_stage_hunk()<cr>
    nnoremap <leader>gr <cmd>lua u.reset_hunk()<cr>
    nnoremap <leader>gp <cmd>lua u.preview_hunk()<cr>
-   nnoremap <leader>gb <cmd>lua u.blame_line()<cr>
+   nnoremap <leader>gb <cmd>Telescope git_branches<cr>
    nnoremap <leader>gB <cmd>lua u.blame()<cr>
    nnoremap <leader>g2 :diffget //2<CR>
    nnoremap <leader>g3 :diffget //3<CR>

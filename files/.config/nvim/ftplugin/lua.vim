@@ -7,7 +7,9 @@ compiler lua
 setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
-setlocal foldmarker=[[,]]
+" setlocal foldmarker=[[,]]
+setlocal foldmethod=expr
+setlocal foldexpr=nvim_treesitter#foldexpr()
 setlocal formatoptions=croqlj
 setlocal textwidth=78
 setlocal comments=s:--[[,m:\ ,e:]],:--
@@ -17,4 +19,4 @@ setlocal keywordprg=:help
 setlocal iskeyword-=.
 setlocal isfname+=.,/
 
-let b:undo_ftplugin='setl mp< sw< ts< efm< ep< fdm< fo< tw< com< cms< sua< kp< isf<'
+let b:undo_ftplugin='setl mp< sw< ts< efm< ep< fdm< fde< fo< tw< com< cms< sua< kp< isf<'

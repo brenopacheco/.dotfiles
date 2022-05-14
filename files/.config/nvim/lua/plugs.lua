@@ -4,7 +4,12 @@ paq({
     {'bluz71/vim-nightfly-guicolors'};
     {'brenopacheco/vim-tree',                       config='vim-tree'};
     {'editorconfig/editorconfig-vim'};
-    -- {'folke/todo-comments.nvim',                    config='todo-comments'};
+    {'folke/todo-comments.nvim',                    config='todo-comments'};
+
+    {'kana/vim-textobj-user'};
+    {'kana/vim-textobj-fold'};
+    {'kana/vim-textobj-indent'};
+
     {'folke/which-key.nvim',                        config='which-key'};
     {'folke/zen-mode.nvim',                         config='zen-mode'};
     {'f-person/git-blame.nvim',                     config='git-blame'};
@@ -55,16 +60,17 @@ paq({
 
 
     {'petertriho/nvim-scrollbar',                   config='scrollbar'};
-    -- {'jubnzv/virtual-types.nvim'} requires codeLens
+
+    {'nvim-orgmode/orgmode',                        config='org'}
 })
 
--- local disabled_built_ins = {
---     "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers", "gzip", "zip",
---     "zipPlugin", "tar", "tarPlugin", "getscript", "getscriptPlugin", "vimball",
---     "vimballPlugin", "2html_plugin", "logipat", "rrhelper", "spellfile_plugin",
---     "matchit"
--- }
+local disabled_built_ins = {
+    "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers", "gzip", "zip",
+    "zipPlugin", "tar", "tarPlugin", "getscript", "getscriptPlugin", "vimball",
+    "vimballPlugin", "2html_plugin", "logipat", "rrhelper", "spellfile_plugin",
+    "matchit"
+}
 
--- for _, plugin in pairs(disabled_built_ins) do
---     vim.g["loaded_" .. plugin] = 1
--- end
+for _, plugin in pairs(disabled_built_ins) do
+    vim.g["loaded_" .. plugin] = 1
+end

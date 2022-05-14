@@ -62,7 +62,8 @@ export GPG_TTY=$(tty)
 
 export GOPATH=$HOME/.go
 export GEM_HOME=$HOME/.gems
-export GEM_PATH=$GEM_PATH:/usr/lib/ruby/gems/3.0.0
+export GEM_PATH=$GEM_PATH
+
 
 # PATH
 if [ "$SHLVL" = 1 ]; then

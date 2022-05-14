@@ -16,8 +16,12 @@ set cursorline                            " highlights current line
 set expandtab                             " expands tabs as spaces
 set fileencoding  =utf-8                  " default buffer file encoding
 set fillchars     =fold:\                 " make v:folddashes whitespace
-set foldlevel     =99                     " make folds open initially
+set foldlevelstart=99                     " make folds open initially
 set foldmethod    =marker                 " default fold method using {{{}}}
+set foldcolumn=auto:9                     " show fold level in gutter
+set foldopen=insert,quickfix,mark,search,tag,undo  " movements to open closed folds
+set foldminlines=0
+set foldnestmax=6
 set formatoptions =j,n,q                  " defaults for formatting text
 set hidden                                " hide files don't prompt for save
 set history       =500                    " keep more history in q:
@@ -46,9 +50,9 @@ set pumheight     =12                     " max num of items in popup menu
 set pumwidth      =15                     " min popup menu width
 set relativenumber                        " set relative numbers
 set report=0                              " always report on :substitute
-" set scrolloff     =999                    " keep cursor centered
-set scrolloff     =0                      " keep cursor centered also on EOF
-autocmd CursorMoved,CursorMovedI * norm! zz
+set scrolloff     =999                    " keep cursor centered
+" set scrolloff     =0                      " keep cursor centered also on EOF
+" autocmd CursorMoved,CursorMovedI * norm! zz
 set shiftwidth    =4                      " number of spaces used by = op.
 set shortmess    +=cs                     " remove annoying messages
 set showbreak     =↪\                     " symbol for wrapped lines
