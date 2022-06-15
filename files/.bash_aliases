@@ -1,3 +1,6 @@
+alias bal='ballerina'
+alias ec="emacsclient --create-frame & disown"
+
 alias aliases='v ~/.bash_aliases'
 alias pp='pushd .'
 alias po='popd'
@@ -33,7 +36,7 @@ alias de='docker-exec'
 alias gpu='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
 alias gcm='git commit -m '
 alias gr='git-root'
-alias gR='upsearch package.json'
+alias gR='cd $(upsearch package.json)'
 alias gs='git status'
 alias gS='git stash'
 alias grm='git clean -fd'

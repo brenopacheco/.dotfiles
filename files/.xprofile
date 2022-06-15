@@ -18,3 +18,4 @@ udiskie & disown                         # automount disks
 nm-applet &                              # networkmanager applet
 blueman-applet &                         # bluetooth applet
 info-daemon & disown                     # statusbar
+emacs --daemon &

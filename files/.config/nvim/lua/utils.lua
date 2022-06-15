@@ -153,4 +153,10 @@ function M.org_untab()
   if vim.o.foldlevel == curlevel then vim.cmd([[norm! zR]]) end
 end
 
+function M.toggle_scrolloff()
+  local scrolloff = vim.api.nvim_get_option('scrolloff') > 0 and 0 or 999
+  vim.api.nvim_set_option('scrolloff', scrolloff)
+  print("scrolloff: " .. scrolloff)
+end
+
 return M

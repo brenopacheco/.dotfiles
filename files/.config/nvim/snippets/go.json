@@ -2,7 +2,7 @@
   "main": { "prefix": ["main"], "body": ["func main() {", "\t$0", "}"] },
   "fun": {
     "prefix": ["fun", "fu", "fn", "f"],
-    "body": ["func ${1:foo}(${2:b bar}) (${3:q qux})  {", "\t${0}", "}"]
+    "body": ["func ${1:foo}(${2:b bar}) ${3:(${4:q qux})}  {", "\t${0}", "}"]
   },
   "afun": {
     "prefix": ["afun", "af"],

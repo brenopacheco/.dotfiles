@@ -144,7 +144,7 @@ transparency = 0
 
 # The height in pixels of the separator between notifications, if set to 0
 # there will be no separating line between notifications.
-separator_height = 30
+separator_height = 1
 
 
 # The distance in pixels from the content to the separator/border of the

@@ -56,8 +56,6 @@ local actions = [[
 ]]
 
 local movement = [[
-    "nnoremap ]t           :tabnext<cr>
-    "nnoremap [t           :tabprev<cr>
     nnoremap ]a            <cmd>lua u.next()<cr>
     nnoremap [a            <cmd>lua u.prev()<cr>
     nnoremap ]b            :bnext<cr>
@@ -70,6 +68,8 @@ local movement = [[
     nnoremap [q            <cmd>lua u.cprev()<cr>
     nnoremap ]l            <cmd>lua u.lnext()<cr>
     nnoremap [l            <cmd>lua u.lprev()<cr>
+    nnoremap ]'            :FloatermNext<cr>
+    nnoremap ['            :FloatermPrev<cr>
 ]]
 
 vim.cmd([[
@@ -77,8 +77,6 @@ vim.cmd([[
 ]])
 
 local bufwintabs = [[
-    "nnoremap <tab>   :tabnext<cr>
-    "nnoremap <s-tab> :tabprevious<cr>
     nnoremap  <C-w>t  :tabnew<CR>
     nnoremap  <C-w>e  :enew<CR>
     nnoremap  <c-w>m  <cmd>lua u.maximize()<cr>
@@ -87,8 +85,8 @@ local bufwintabs = [[
 
 local toggles = [[
   nnoremap ´         <cmd>lua u.lf()<cr>
-  nnoremap <leader>' <cmd>lua u.terminal()<cr>
-  nnoremap <leader>" <cmd>lua u.terminal()<cr>
+  nnoremap <leader>' <cmd>FloatermToggle<cr>
+  nnoremap <leader>" <cmd>FloatermNew<cr>
   nnoremap <leader>n <cmd>lua u.ntree()<cr>
   nnoremap <leader>l <cmd>lua u.gtree()<cr>
   nnoremap <leader>e <cmd>lua u.diagnostics(0)<cr>
@@ -96,6 +94,7 @@ local toggles = [[
   nnoremap <leader>q <cmd>lua u.quickfix()<cr>
   nnoremap <leader>t <cmd>lua u.tagbar()<cr>
   nnoremap <leader>z <cmd>lua u.zen()<cr>
+  nnoremap <leader><tab> <cmd> lua u.toggle_scrolloff()<cr>
 ]]
 
 local find = [[

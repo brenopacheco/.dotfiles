@@ -4,7 +4,7 @@ paq({
     {'bluz71/vim-nightfly-guicolors'};
     {'brenopacheco/vim-tree',                       config='vim-tree'};
     {'editorconfig/editorconfig-vim'};
-    {'folke/todo-comments.nvim',                    config='todo-comments'};
+    -- {'folke/todo-comments.nvim',                    config='todo-comments'};
 
     {'kana/vim-textobj-user'};
     {'kana/vim-textobj-fold'};
@@ -61,7 +61,9 @@ paq({
 
     {'petertriho/nvim-scrollbar',                   config='scrollbar'};
 
-    {'nvim-orgmode/orgmode',                        config='org'}
+    {'nvim-orgmode/orgmode',                        config='org'};
+
+    {'voldikss/vim-floaterm',                       config='floaterm'};
 })
 
 local disabled_built_ins = {

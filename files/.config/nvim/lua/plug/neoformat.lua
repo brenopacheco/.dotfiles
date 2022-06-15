@@ -31,9 +31,25 @@ let g:neoformat_c_clangformat = {
       }
 ]]
 
+local csclangformat = [[
+let g:neoformat_cs_clangformat = {
+        'exe': 'clang-format',
+        'args': [
+          '-assume-filename=lorem.cs',
+          '-style="{BasedOnStyle: Microsoft}"'
+        ],
+        'stdin': 1
+      }
+]]
+
 local lua = string.gsub(luaformat, '\n', '')
 local clang = string.gsub(clangformat, '\n', '')
+local csclang = string.gsub(csclangformat, '\n', '')
 
 vim.cmd(lua)
 vim.cmd(clang)
+vim.cmd(csclang)
+vim.cmd([[let g:neoformat_enabled_cs = ['clangformat'] ]])
+
+
 -- vim.cmd([[let g:neoformat_verbose = 1]])

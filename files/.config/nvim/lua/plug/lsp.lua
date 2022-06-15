@@ -23,6 +23,7 @@ local servers = {
     "vimls",
     "yamlls",
     "gopls",
+    "rust_analyzer",
 }
 
 -- enable snippets. we are interested in function call snippets

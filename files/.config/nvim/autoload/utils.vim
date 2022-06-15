@@ -41,7 +41,7 @@ fun! utils#npm_root()
     let dir = getcwd()
     while dir !=# '/'
         let files = systemlist('ls ' . dir)
-        if index(files, 'package.json') > -1
+        if index(files, 'package.json') > -1 || index(files, 'README.md') > -1
             return dir
         endif
         let dir = substitute(dir, '[^\/]\+\(\/\)\?$', '', '')

@@ -23,5 +23,5 @@
    },
    org_hide_leading_stars = false,
    org_hide_emphasis_markers = '',
-   mappings = {disable_all = false}
+   mappings = {disable_all = true}
  })

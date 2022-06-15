@@ -78,6 +78,7 @@ let g:vim_indent_cont = &sw               " \ indents shiftwidth
 let c_syntax_for_h = 1                    " recognize .h as c file
 set path=**                               " extend path to glob **
 set termguicolors
+set nobomb " remove <feff>
 ]])
 
 vim.go.grepprg = "rg --hidden --smart-case"
