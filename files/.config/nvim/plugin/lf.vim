@@ -8,13 +8,13 @@ let s:last_buffer = 0
 
 command! Lf call <SID>open()
 
-function! s:exit()
-    echo 'exiting'
-    close
+function! s:fopen()
     try
       if filereadable(s:selection_path)
         for f in readfile(s:selection_path)
-          silent exec 'edit ' . f
+          call feedkeys(":edit " .. f .. "\<CR>")
+          " exec 'edit ' .. f
+          " let &ft = expand('%:e')
         endfor
         silent call delete(s:selection_path)
       endif
@@ -42,13 +42,15 @@ function! s:open()
       setlocal
             \ buftype=nofile
             \ nobuflisted
-            \ bufhidden=hide
+            \ bufhidden=wipe
             \ nonumber
             \ norelativenumber
             \ signcolumn=no
+            \ noswapfile
       let cmd = 'lf -selection-path='. s:selection_path . ' ""'
       exec 'term ' . cmd
-      autocmd TermClose <buffer> call s:exit()
+      autocmd BufWipeout <buffer> call s:fopen()
+      autocmd TermClose <buffer> call feedkeys("\<CR>")
       silent! tunmap <buffer> jk
       silent! tunmap <buffer> kj
       silent! tunmap <buffer> <Esc>

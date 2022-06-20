@@ -44,14 +44,15 @@
     "description": "while",
     "body": ["while true do\n\t${0}", "end"]
   },
-  "print": {
-    "prefix": "print",
-    "description": "print",
-    "body": ["print(${0})"]
-  },
   "import": {
     "prefix": "import",
     "description": "import",
     "body": ["import \"${0}\""]
+  },
+  "print": {
+    "prefix": ["print"],
+    "body": [
+      "print(vim.inspect(${0:${TM_SELECTED_TEXT}}))"
+    ]
   }
 }

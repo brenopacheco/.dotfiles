@@ -36,6 +36,8 @@ paq({
     {'nvim-treesitter/nvim-treesitter-textobjects'};
     {'nvim-treesitter/playground'};
 
+    {'brenoleonhardt-poatek/neogen',                config='neogen'};
+
     {'onsails/lspkind-nvim'};
     {'ruifm/gitlinker.nvim',                        config='git-linker'};
     {'sbdchd/neoformat',                            config='neoformat'};
@@ -54,7 +56,8 @@ paq({
     {'rcarriga/nvim-dap-ui'};
     {'theHamsta/nvim-dap-virtual-text'};
     {'mfussenegger/nvim-dap',                       config='nvim-dap'};
-    {'mfussenegger/nvim-jdtls'};
+    {'leoluz/nvim-dap-go'};
+    -- {'mfussenegger/nvim-jdtls'};
     {'KabbAmine/zeavim.vim',                        config='zeavim'};
     {'projekt0n/github-nvim-theme'};
 
@@ -64,6 +67,8 @@ paq({
     {'nvim-orgmode/orgmode',                        config='org'};
 
     {'voldikss/vim-floaterm',                       config='floaterm'};
+
+    {'nanotee/luv-vimdocs'};
 })
 
 local disabled_built_ins = {

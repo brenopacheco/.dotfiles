@@ -103,7 +103,7 @@ function M.get_url()
 end
 function M.open_url() vim.cmd('!chromium ' .. M.get_url()) end
 function M.preview_hunk() require('gitsigns').preview_hunk() end
-function M.projects() require('plug.telescope.projects')() end
+function M.projects() require('utils.picker').projects() end
 function M.qf_global() vim.fn['quickfix#filter'](vim.fn.input('> /')) end
 function M.qf_vglobal() print('not ready') end
 function M.quickfix() vim.fn['utils#toggle']('qf', 'copen | wincmd p') end
@@ -157,6 +157,31 @@ function M.toggle_scrolloff()
   local scrolloff = vim.api.nvim_get_option('scrolloff') > 0 and 0 or 999
   vim.api.nvim_set_option('scrolloff', scrolloff)
   print("scrolloff: " .. scrolloff)
+end
+
+-- Recursively find a file or directory up in the fs and return the directory
+-- where it is found, given the Lua regex for the file or directory.
+-- Return nil if not found.
+function M.find_root(regex)
+  function scandir(dir)
+    local req = vim.loop.fs_scandir(dir)
+    local function iter() return vim.loop.fs_scandir_next(req) end
+    for name, _ in iter do
+      if string.match(name, regex) then return name end
+    end
+    return false
+  end
+  local dir = vim.fn.getcwd()
+  while dir ~= '' do
+    match = scandir(dir)
+    if match then return dir, match end
+    dir = dir.gsub(dir, '/[^/]+$', '')
+  end
+  return nil, nil
+end
+
+function M.p(arg)
+  vim.pretty_print(arg)
 end
 
 return M

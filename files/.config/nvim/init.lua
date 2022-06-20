@@ -7,7 +7,7 @@
 ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝
                               Breno Leonhardt Pacheco
                              brenoleonhardt@gmail.com
-
+-- version: 5b04e46d2
 -- TODO:
 -- context aware grep/star (monorepo/npm project)
 -- make jumplist not keep {}][ jumps
@@ -22,6 +22,8 @@
 -- easier map for cmd mode (e.g. spc-spc)
 -- fix vim-tree WEIRD behavior
 --]]
+
+-- vim.go.packpath = vim.go.packpath .. "," .. vim.fn.stdpath("cache") .. '/paq'
 -- require('quickfix')
 require('options')
 require('keymap')
@@ -29,6 +31,8 @@ require('backup')
 require('plugs')
 require('colors')
 require('commands')
+require('globals')
 
--- define our own global functions
 _G.u = require('utils')
+
+require('reloader').config()

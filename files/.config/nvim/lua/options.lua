@@ -10,6 +10,7 @@ set autochdir                             " use file path as vim's dir
 set autoindent                            " new lines inherits indentation
 set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
 set cmdheight     =1                      " only 1 row for cmdline
+" set cmdheight     =0                      " available in neovim 0.8.0-dev
 set colorcolumn   =78                     " draw column at position
 set conceallevel  =0                      " shows |hyperlinks|
 set cursorline                            " highlights current line

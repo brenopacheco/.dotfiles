@@ -53,6 +53,7 @@ local actions = [[
     nmap <leader>p      <Plug>RestNvim <Plug>RestNvimPreview
     nnoremap gx         <cmd>lua u.open_url()<cr>
     xnoremap gx         <cmd>lua u.open_url()<cr>
+    nnoremap <leader>i  <cmd>Neogen<cr>
 ]]
 
 local movement = [[
@@ -107,6 +108,7 @@ local find = [[
   nnoremap <leader>ff <cmd>lua u.files(true)<cr>
   nnoremap <leader>fg <cmd>lua u.files()<cr>
   nnoremap <leader>fp <cmd>lua u.projects()<cr>
+  nnoremap <leader>fl <cmd>lua require('utils.picker').lua()<cr>
   "nnoremap <leader>fs <cmd>lua u.stash()<cr>
   nnoremap <leader>f* <cmd>lua u.grep_string()<cr>
   nnoremap <leader>f~ <cmd>lua u.home_files()<cr>
@@ -138,8 +140,8 @@ local lsp = [[
     nnoremap <buffer> gO    <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
 
     " FINDS
-    nnoremap <buffer> <leader>fo :Telescope lsp_document_symbols<cr>
-    nnoremap <buffer> <leader>fs :Telescope lsp_dynamic_workspace_symbols<cr>
+    nnoremap <buffer> <leader>fo <cmd>Telescope lsp_document_symbols<cr>
+    nnoremap <buffer> <leader>fs <cmd>Telescope lsp_dynamic_workspace_symbols<cr>
 
     " ACTIONS
     nnoremap <buffer> <leader>r  <cmd>lua vim.lsp.buf.rename()<cr>
@@ -163,18 +165,19 @@ local complete = [[
   smap <Backspace> a<Backspace>
 ]]
 
-local snippets = require('paq').list()["LuaSnip"] and [[
-  inoremap <silent> <C-k> <cmd>lua require'luasnip'.jump(1)<Cr>
-  inoremap <silent> <C-j> <cmd>lua require'luasnip'.jump(-1)<Cr>
-  vnoremap <silent> <C-k> <cmd>lua require('luasnip').jump(1)<Cr>
-  vnoremap <silent> <C-j> <cmd>lua require('luasnip').jump(-1)<Cr>
-]] or [[
+
+-- luasnip
+-- inoremap <silent> <C-k> <cmd>lua require'luasnip'.jump(1)<Cr>
+-- inoremap <silent> <C-j> <cmd>lua require'luasnip'.jump(-1)<Cr>
+-- vnoremap <silent> <C-k> <cmd>lua require('luasnip').jump(1)<Cr>
+-- vnoremap <silent> <C-j> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+local snippets = [[
   imap <expr> <C-k> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)' : ''
   smap <expr> <C-k> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)' : ''
   imap <expr> <C-j> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : ''
   smap <expr> <C-j> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : ''
   xmap s   <Plug>(vsnip-cut-text)
-  " nmap s   v<Plug>(vsnip-cut-text)
 ]]
 
 local args = [[
@@ -183,6 +186,24 @@ local args = [[
   nnoremap --        <cmd>lua u.argdelete()<cr>
   nnoremap <leader>+ <cmd>lua u.args()<cr>
 ]]
+
+
+local dap = [[
+  nnoremap <leader>d  <cmd>call quickhelp#toggle("debug")<CR>
+  nnoremap <F1>       <cmd>lua  require"dap".step_out()<CR>
+  nnoremap <F2>       <cmd>lua  require"dap".step_into()<CR>
+  nnoremap <F3>       <cmd>lua  require"dap".step_over()<CR>
+  nnoremap <F4>       <cmd>lua  require"dap".continue()<CR>
+  nnoremap <F5>       <cmd>lua  require"dap".run_last()<CR>
+  nnoremap <F6>       <cmd>lua  require"dap".toggle_breakpoint()<CR>
+  nnoremap <F7>       <cmd>lua  require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>
+  nnoremap <F8>       <cmd>lua  require'dap'.list_breakpoints()<CR>:copen<CR>
+  nnoremap <F9>       <cmd>lua  require"dap.ui.variables".scopes()<CR>
+  nnoremap <F10>      <cmd>lua  require"dap.ui.variables".visual_hover()<CR>
+  nnoremap <F11>      <cmd>lua  require"dap".repl.open()<CR>
+  nnoremap <F12>      <cmd>lua  require("dapui").toggle()<CR>
+]]
+
 
 vim.cmd(defaults)
 vim.cmd(actions)
@@ -194,6 +215,7 @@ vim.cmd(git)
 vim.cmd(complete)
 vim.cmd(snippets)
 vim.cmd(args)
+vim.cmd(dap)
 
 local M = {}
 

@@ -4,7 +4,7 @@ LANG=$1
 
 function help() {
 cat<<EOF
-Usage: sketch [go|node|sh|c] [NAME]
+Usage: sketch [go|node|sh|c|lua] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
@@ -21,9 +21,9 @@ fi
 LANG=$1
 NAME=$2
 
-if [[ ! "$LANG" =~ ^(go|node|sh|c)$ ]]; then
+if [[ ! "$LANG" =~ ^(go|node|sh|c|lua)$ ]]; then
     help
-    echo "Invalid LANG: use go, sh or node" >&2
+    echo "Invalid LANG: use go, sh, node or lua" >&2
     exit 1
 fi
 
@@ -71,6 +71,9 @@ case $LANG in
         chmod +x script.sh
         echo "#!/usr/bin/env bash"
         echo -e 'all:\n\t./script.sh' > Makefile
+        ;;
+    "lua")
+        touch main.lua
         ;;
 esac
 
