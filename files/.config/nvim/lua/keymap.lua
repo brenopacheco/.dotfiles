@@ -192,8 +192,8 @@ local args = [[
 ]]
 
 local dap = [[
-  nnoremap <leader>d; <cmd>lua require('dap').continue()<cr>
-  nnoremap <leader>d, <cmd>lua require('dap').reverse_continue()<cr>
+  nnoremap <leader>d> <cmd>lua require('dap').continue()<cr>
+  nnoremap <leader>d< <cmd>lua require('dap').reverse_continue()<cr>
   nnoremap <leader>d. <cmd>lua require('dap').run_to_cursor()<cr>
 
   nnoremap <leader>dr <cmd>lua require('dap').run_last()<cr>

@@ -3,7 +3,7 @@ Language     Adapter      Repository
 ------------------------------------
 c,cpp        lldb         official
 dotnet       netcoredbg   community
-javascript   ?
+javascript   -            -
 golang       delve        official
 lua          ?
 
@@ -16,9 +16,7 @@ Use cases for debugging
 
 adapter can be a function. they take a callback and run dap.run()
 
---]] 
-
-local dap = require('dap')
+--]] local dap = require('dap')
 -- local utils = require('dap.utils')
 
 -- GENERAL
@@ -37,13 +35,29 @@ dap.adapters = {
     type = 'executable',
     command = '/usr/bin/netcoredbg',
     args = {'--interpreter=vscode'}
-  }
-  -- test = function(callback, config)
-  --   print('blocking')
-  --   vim.loop.sleep(3000)
-  --   print('lorem')
-  --   -- callback(config) -- this needs to be called async
-  -- end
+  },
+  netcoredbg = function(callback, config)
+    assert(config.mode == 'attach' or config.mode == 'launch' or config.mode == 'task',
+           'Invalid configuration mode for connecting to the adapter.')
+    local conf = {
+      type = 'executable',
+      command = '/usr/bin/netcoredbg',
+      args = {'--interpreter=vscode'}
+    }
+    if (config.mode == 'task') then
+      return config.task(callback, config)
+    end
+    if (config.mode == 'attach') then
+      local cmd = [[ss -lpn | grep netcore | awk '{print $5}']]
+      local address = vim.fn.system(cmd)
+      assert(string.len(address) > 0, 'Adapter is not running.')
+      local parts = vim.fn.split(string.gsub(address, '\n', ''), ':')
+      local host = parts[1]
+      local port = parts[2]
+      conf = {type = 'server', port = port, host = host}
+    end
+    callback(conf)
+  end
 }
 
 -- CONFIGURATIONS
@@ -63,24 +77,57 @@ dap.configurations = {
       args = {}
     }
   },
-  lua = {
-    {
-      name = 'Test',
-      type = 'test',
-      requrest = 'launch',
-      program = '${file}',
-      cwd = '${workspaceFolder}',
-      stopOnEntry = true,
-      args = {}
-    }
-  },
   cs = {
     {
-      type = 'coreclr',
-      name = 'attach - netcoredbg',
+      type = 'netcoredbg',
+      name = 'Attach to adapter and attach to PID',
       request = 'attach',
-      processId = function()
-        return vim.fn.input("Attach to PID: ")
+      processId = function() return vim.fn.input('Attach to PID: ') end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = true,
+      mode = 'attach'
+    }, {
+      type = 'netcoredbg',
+      name = 'Attach to adapter and lauch dll',
+      request = 'launch',
+      program = function()
+        return vim.fn.input('Path for the dll: ', '', 'file')
+      end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = true,
+      mode = 'attach'
+    }, {
+      type = 'netcoredbg',
+      name = 'Launch adapter and attach to PID',
+      request = 'attach',
+      processId = function() return vim.fn.input('Attach to PID: ') end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = true,
+      mode = 'launch'
+    }, {
+      type = 'netcoredbg',
+      name = 'Launch adapter and lauch dll',
+      request = 'launch',
+      program = function()
+        return vim.fn.input('Path for the dll: ', '', 'file')
+      end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = true,
+      mode = 'launch'
+    },
+    {
+      type = 'netcoredbg',
+      name = 'Launch adapter and lauch dll',
+      request = 'launch',
+      program = function()
+        return vim.fn.input('Path for the dll: ', '', 'file')
+      end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = true,
+      mode = 'task',
+      task = function(callback, config)
+        print("experimental. runs tasks and then calls the callback")
+        callback(config)
       end
     }
   }
