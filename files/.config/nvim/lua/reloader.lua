@@ -22,14 +22,12 @@ function M.config()
       end)
     end
   })
-  print('reloader configured')
 end
 
 function M.reload(key)
   key = key or ''
   dkey = string.gsub(key, '/', '.')
   skey = string.gsub(key, '%.', '/')
-  print(vim.inspect({dkey = dkey, skey = skey}))
   if (not package.loaded[dkey]) and (not package.loaded[skey]) then
     print('Package \'' .. key .. '\' loaded.')
     return require(key)

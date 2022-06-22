@@ -17,19 +17,11 @@ Use cases for debugging
 adapter can be a function. they take a callback and run dap.run()
 
 --]]
-
 local dap = require('dap')
-local dapui = require("dapui")
 
 -- GENERAL
-require('nvim-dap-virtual-text').setup()
-require('dap-go').setup()
-require('dapui').setup()
 dap.set_log_level('TRACE')
 vim.fn.sign_define('DapBreakpoint', {text = '●', texthl = '', linehl = '', numhl = ''})
-dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
 -- ADAPTERS
 dap.adapters = {
@@ -80,6 +72,3 @@ dap.configurations = {
     }
   }
 }
-
--- UI
-

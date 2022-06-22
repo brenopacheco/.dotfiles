@@ -1,6 +1,20 @@
 -- File: plugin/lualine.vim
 -- Description: statusline with lsp/git integration
---
+
+local dap = require('dap')
+
+local function dap_status()
+  local status = require('dap').status()
+  if string.len(status) == 0 then
+    return ''
+  end
+  return ' [' .. status .. ']'
+end
+
+dap_status()
+
+
+
 -- TODO: fix this function
 local function lsp_progress()
   local messages = vim.lsp.util.get_progress_messages()
@@ -52,7 +66,7 @@ local config = {
   },
   sections = {
     lualine_a = {'mode'},
-    lualine_b = {'branch'},
+    lualine_b = {'branch', dap_status},
     lualine_c = {
       foldlevel, 'filename', {gps.get_location, cond = gps.is_available}
     },

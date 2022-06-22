@@ -23,6 +23,7 @@ local defaults = [[
     vnoremap <C-n>       dp1v
     nnoremap <C-p>       ddkP
     nnoremap <C-n>       ddp
+    nnoremap <leader>Q   :qa<cr>
 ]]
 
 local actions = [[
@@ -38,7 +39,8 @@ local actions = [[
     nnoremap qn         <cmd>lua u.cnewer()<CR>
     nnoremap <leader>#  <cmd>source %<cr>
     nnoremap <leader>!  <cmd>lua u.spawn_terminal()<cr>
-    nnoremap <leader>m  <cmd>make<cr>
+    "nnoremap <leader>m  <cmd>make<cr>
+    nnoremap <leader>m   <cmd>lua require('utils.picker').yarn_run()<cr>
     nnoremap <leader>/  <cmd>call quickfix#global_grep2()<cr>
     nnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
     xnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
@@ -166,11 +168,13 @@ local complete = [[
 ]]
 
 
--- luasnip
--- inoremap <silent> <C-k> <cmd>lua require'luasnip'.jump(1)<Cr>
--- inoremap <silent> <C-j> <cmd>lua require'luasnip'.jump(-1)<Cr>
--- vnoremap <silent> <C-k> <cmd>lua require('luasnip').jump(1)<Cr>
--- vnoremap <silent> <C-j> <cmd>lua require('luasnip').jump(-1)<Cr>
+local luasnip = [[
+  inoremap <silent> <C-k> <cmd>lua require'luasnip'.jump(1)<Cr>
+  inoremap <silent> <C-j> <cmd>lua require'luasnip'.jump(-1)<Cr>
+  vnoremap <silent> <C-k> <cmd>lua require('luasnip').jump(1)<Cr>
+  vnoremap <silent> <C-j> <cmd>lua require('luasnip').jump(-1)<Cr>
+]]
+
 
 local snippets = [[
   imap <expr> <C-k> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)' : ''
@@ -187,23 +191,27 @@ local args = [[
   nnoremap <leader>+ <cmd>lua u.args()<cr>
 ]]
 
-
 local dap = [[
-  nnoremap <leader>d  <cmd>call quickhelp#toggle("debug")<CR>
-  nnoremap <F1>       <cmd>lua  require"dap".step_out()<CR>
-  nnoremap <F2>       <cmd>lua  require"dap".step_into()<CR>
-  nnoremap <F3>       <cmd>lua  require"dap".step_over()<CR>
-  nnoremap <F4>       <cmd>lua  require"dap".continue()<CR>
-  nnoremap <F5>       <cmd>lua  require"dap".run_last()<CR>
-  nnoremap <F6>       <cmd>lua  require"dap".toggle_breakpoint()<CR>
-  nnoremap <F7>       <cmd>lua  require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>
-  nnoremap <F8>       <cmd>lua  require'dap'.list_breakpoints()<CR>:copen<CR>
-  nnoremap <F9>       <cmd>lua  require"dap.ui.variables".scopes()<CR>
-  nnoremap <F10>      <cmd>lua  require"dap.ui.variables".visual_hover()<CR>
-  nnoremap <F11>      <cmd>lua  require"dap".repl.open()<CR>
-  nnoremap <F12>      <cmd>lua  require("dapui").toggle()<CR>
+  nnoremap <leader>d> <cmd>lua require('dap').continue()<cr>
+  nnoremap <leader>d< <cmd>lua require('dap').reverse_continue()<cr>
+  nnoremap <leader>dr <cmd>lua require('dap').run_last()<cr>
+  nnoremap <leader>dd <cmd>lua require('utils/dap').toggle_debug()<cr>
+  nnoremap <leader>di <cmd>lua require('dap').set_breakpoint(vim.fn.input("Breakpoint condition: "))<cr>
+  nnoremap <leader>db <cmd>lua require('dap').toggle_breakpoint()<cr>
+  nnoremap <leader>dq <cmd>lua require('dap').list_breakpoints()<cr>
+  nnoremap <leader>dc <cmd>lua require('dap').clear_breakpoints()<cr>
+  nnoremap <leader>dl <cmd>lua require('dap').step_over()<cr>
+  nnoremap <leader>dj <cmd>lua require('dap').step_into()<cr>
+  nnoremap <leader>dk <cmd>lua require('dap').step_out()<cr>
+  nnoremap <leader>dh <cmd>lua require('dap').step_back()<cr>
+  nnoremap <leader>ds <cmd>lua require('dap').pause(vim.fn.input("Thread id: "))<cr>
+  nnoremap <leader>dp <cmd>lua require('dap').up()<cr>
+  nnoremap <leader>dn <cmd>lua require('dap').down()<cr>
+  nnoremap <leader>d. <cmd>lua require('dap').run_to_cursor()<cr>
+  nnoremap <leader>dt <cmd>lua require('dap').repl.toggle()<cr>
+  nnoremap <leader>d? <cmd>lua require('dap.ui.widgets').hover()<CR>
+  nnoremap <leader>du <cmd>lua require('dapui').toggle()<cr>
 ]]
-
 
 vim.cmd(defaults)
 vim.cmd(actions)

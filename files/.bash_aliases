@@ -33,6 +33,7 @@ alias dl='docker-logs'
 alias de='docker-exec'
 
 # git
+alias gamend='git commit --amend --no-edit'
 alias gpu='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
 alias gcm='git commit -m '
 alias gr='git-root'

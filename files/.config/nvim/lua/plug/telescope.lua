@@ -49,14 +49,3 @@ extensions = {
 telescope.setup({defaults = defaults, extensions = extensions});
 
 require('telescope').load_extension('fzy_native')
-
-local M = {}
-
-M.dotfiles = function()
-  require('telescope.builtin').find_files({
-    prompt_title = '< vimrc >',
-    cwd = '~/.config/nvim'
-  })
-end
-
-return M;

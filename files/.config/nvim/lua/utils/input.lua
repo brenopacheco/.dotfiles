@@ -1,4 +1,5 @@
 local selector = require('utils.picker').selector
+local str = require('utils.string')
 
 local M = {}
 
@@ -79,24 +80,11 @@ function make_entry(entry, max_len)
   local padding = 6
   local max_fname_len = math.floor((max_len - padding) / 2)
   local max_dir_len = max_len - max_fname_len
-  local format = '%-' .. tostring(math.min(max_fname_len + padding, 99)) ..
-                     's [%s]'
-  local dir = string_truncate(entry.reldir, max_dir_len, true)
-  local file = string_truncate(entry.fname, max_fname_len, false)
-  local str = string.format(format, file, dir)
-  return str
+  local len = math.min(max_fname_len + padding, 99)
+  local format = '%-' .. tostring(len) .. 's [%s]'
+  local dir = str.string_truncate(entry.reldir, max_dir_len, true)
+  local file = str.string_truncate(entry.fname, max_fname_len, false)
+  return string.format(format, file, dir)
 end
-
-function string_truncate(str, max_len, start)
-  if string.len(str) > max_len then
-    if start then
-      return '…' .. string.sub(str, string.len(str) - max_len + 2)
-    else
-      return string.sub(str, 1, max_len) .. '…'
-    end
-  end
-  return str
-end
-
 
 return M

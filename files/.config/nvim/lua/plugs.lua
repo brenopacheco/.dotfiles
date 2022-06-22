@@ -53,14 +53,15 @@ paq({
     {'windwp/nvim-autopairs',                       config='autopairs'};
     {'Hoffs/omnisharp-extended-lsp.nvim'};
     {'ray-x/lsp_signature.nvim',                    config='signature'};
-    {'rcarriga/nvim-dap-ui'};
-    {'theHamsta/nvim-dap-virtual-text'};
+
     {'mfussenegger/nvim-dap',                       config='nvim-dap'};
-    {'leoluz/nvim-dap-go'};
-    -- {'mfussenegger/nvim-jdtls'};
+    {'rcarriga/nvim-dap-ui',                        config='nvim-dap-ui'};
+    {'theHamsta/nvim-dap-virtual-text',             config='nvim-dap-virtual-text'};
+    {'nvim-telescope/telescope-dap.nvim',           config='telescope-dap'};
+    {'leoluz/nvim-dap-go',                          config='nvim-dap-go'};
+
     {'KabbAmine/zeavim.vim',                        config='zeavim'};
     {'projekt0n/github-nvim-theme'};
-
 
     {'petertriho/nvim-scrollbar',                   config='scrollbar'};
 
@@ -69,6 +70,8 @@ paq({
     {'voldikss/vim-floaterm',                       config='floaterm'};
 
     {'nanotee/luv-vimdocs'};
+
+    {'fatih/vim-go',                                run=':GoUpdateBinaries'};
 })
 
 local disabled_built_ins = {

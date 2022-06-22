@@ -42,10 +42,16 @@ whichkey.setup({
     },
     ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
     hidden = {
-        "Telescope ", "utils%.", "vim%..*%.", "require", "utils%.", "%(.*%)",
-        "<Plug>", "<plug>", "<silent>", "<cmd>", "<Cmd>", "<cr>", "<CR>",
-        "call", "lua", "^:", "^ "
+      -- "%(.-%)<CR>$", "<Cmd>lua require%(.-%)%."
+      -- "%(%S-%)<CR>$"
+      -- "<Cmd>lua require%('dap'%)%.", "%(.*%)<CR>$"
+      "<cmd>", "<Plug>", "<plug>", "<Cmd>", "<silent>",  "<cr>", "<CR>", "call", "lua", "^:", "vim%.lsp%.buf%.", "require%('.*'%)%.", "%(.*%)", "^%s+u%.", "Telescope", "^%s+"
     },
+    -- hidden = {
+    --     "Telescope ", "utils%.", "vim%..*%.", "require", "utils%.", "%(.*%)",
+    --     "<Plug>", "<plug>", "<silent>", "<cmd>", "<Cmd>", "<cr>", "<CR>",
+    --     "call", "lua", "^:", "^ "
+    -- },
     -- hide mapping boilerplate
     show_help = true, -- show help message on the command line when the popup is visible
     triggers = "auto", -- automatically setup triggers
@@ -59,10 +65,11 @@ whichkey.setup({
     }
 })
 
-fol = {}
-
 whichkey.register({
     f = {
         name = "file" -- optional group name
+    },
+    d = {
+        name = "debug"
     }
 })

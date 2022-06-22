@@ -76,5 +76,41 @@
   "struct": {
     "prefix": ["struct", "st"],
     "body": ["struct {", "\t$0", "}"]
+  },
+  "test-single": {
+    "prefix": ["test-single"],
+    "body": [
+      "func Test${1:Foo}(t *testing.T) {",
+      "\twant := \"\"",
+      "\tgot := ${1}()",
+      "\tif want != got {",
+      "\t\tt.Fatalf(`${1}: want %q, got %q`, want, got)",
+      "\t}",
+      "}"
+    ]
+  },
+  "test-table": {
+    "prefix": ["test-table"],
+    "body": [
+      "func Test${1:Foo}(t *testing.T) {",
+      "\tvar tests = []struct {",
+      "\t\tname string",
+      "\t\twant int",
+      "\t\targs []int",
+      "\t}{",
+      "\t\t{\"foo\", 3, []int{1, 2}},",
+      "\t\t{\"bar\", 3, []int{2, 1}},",
+      "\t}",
+      "",
+      "\tfor _, tt := range tests {",
+      "\t\tt.Run(tt.name, func(t *testing.T) {",
+      "\t\t\tgot := ${1}(tt.args[0], tt.args[1])",
+      "\t\t\tif got != tt.want {",
+      "\t\t\t\tt.Errorf(\"got %d, want %d\", got, tt.want)",
+      "\t\t\t}",
+      "\t\t})",
+      "\t}",
+      "}"
+    ]
   }
 }
