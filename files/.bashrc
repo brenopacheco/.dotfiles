@@ -44,8 +44,8 @@ source $HOME/.bash_functions
 source $HOME/.bash_keybindings
 
 # Set vim as default editor
-export EDITOR=nvim
-export VISUAL=nvim
+export EDITOR=vim
+export VISUAL=vim
 export SVN_EDITOR="$VISUAL"
 
 ## source fuzzy finder fzf settings

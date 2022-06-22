@@ -192,25 +192,31 @@ local args = [[
 ]]
 
 local dap = [[
-  nnoremap <leader>d> <cmd>lua require('dap').continue()<cr>
-  nnoremap <leader>d< <cmd>lua require('dap').reverse_continue()<cr>
+  nnoremap <leader>d; <cmd>lua require('dap').continue()<cr>
+  nnoremap <leader>d, <cmd>lua require('dap').reverse_continue()<cr>
+  nnoremap <leader>d. <cmd>lua require('dap').run_to_cursor()<cr>
+
   nnoremap <leader>dr <cmd>lua require('dap').run_last()<cr>
   nnoremap <leader>dd <cmd>lua require('utils/dap').toggle_debug()<cr>
+
   nnoremap <leader>di <cmd>lua require('dap').set_breakpoint(vim.fn.input("Breakpoint condition: "))<cr>
   nnoremap <leader>db <cmd>lua require('dap').toggle_breakpoint()<cr>
   nnoremap <leader>dq <cmd>lua require('dap').list_breakpoints()<cr>
   nnoremap <leader>dc <cmd>lua require('dap').clear_breakpoints()<cr>
+  nnoremap <leader>ds <cmd>lua require('dap').pause(vim.fn.input("Thread id: "))<cr>
+
   nnoremap <leader>dl <cmd>lua require('dap').step_over()<cr>
   nnoremap <leader>dj <cmd>lua require('dap').step_into()<cr>
   nnoremap <leader>dk <cmd>lua require('dap').step_out()<cr>
   nnoremap <leader>dh <cmd>lua require('dap').step_back()<cr>
-  nnoremap <leader>ds <cmd>lua require('dap').pause(vim.fn.input("Thread id: "))<cr>
   nnoremap <leader>dp <cmd>lua require('dap').up()<cr>
   nnoremap <leader>dn <cmd>lua require('dap').down()<cr>
-  nnoremap <leader>d. <cmd>lua require('dap').run_to_cursor()<cr>
+
   nnoremap <leader>dt <cmd>lua require('dap').repl.toggle()<cr>
-  nnoremap <leader>d? <cmd>lua require('dap.ui.widgets').hover()<CR>
+  nnoremap <leader>dK <cmd>lua require('dapui').eval()<CR>
   nnoremap <leader>du <cmd>lua require('dapui').toggle()<cr>
+  nnoremap <leader>da <cmd>lua require('utils/dap').attach()<cr>
+  nnoremap <leader>dL <cmd>lua require('utils/dap').open_log()<cr>
 ]]
 
 vim.cmd(defaults)

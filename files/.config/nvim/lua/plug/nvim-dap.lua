@@ -16,12 +16,15 @@ Use cases for debugging
 
 adapter can be a function. they take a callback and run dap.run()
 
---]]
+--]] 
+
 local dap = require('dap')
+-- local utils = require('dap.utils')
 
 -- GENERAL
 dap.set_log_level('TRACE')
-vim.fn.sign_define('DapBreakpoint', {text = '●', texthl = '', linehl = '', numhl = ''})
+vim.fn.sign_define('DapBreakpoint',
+                   {text = '●', texthl = '', linehl = '', numhl = ''})
 
 -- ADAPTERS
 dap.adapters = {
@@ -30,11 +33,11 @@ dap.adapters = {
     command = '/usr/bin/lldb-vscode',
     name = 'lldb'
   },
-  netcoredbg = {
+  coreclr = {
     type = 'executable',
     command = '/usr/bin/netcoredbg',
     args = {'--interpreter=vscode'}
-  },
+  }
   -- test = function(callback, config)
   --   print('blocking')
   --   vim.loop.sleep(3000)
@@ -69,6 +72,16 @@ dap.configurations = {
       cwd = '${workspaceFolder}',
       stopOnEntry = true,
       args = {}
+    }
+  },
+  cs = {
+    {
+      type = 'coreclr',
+      name = 'attach - netcoredbg',
+      request = 'attach',
+      processId = function()
+        return vim.fn.input("Attach to PID: ")
+      end
     }
   }
 }

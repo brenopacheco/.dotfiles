@@ -1,5 +1,13 @@
 -- File: lsp.lua
 -- Description: boot up server configurations
+--[[
+  npm i -g vscode-langservers-extracted
+    vscode-html-language-server
+    vscode-css-language-server
+    vscode-json-language-server
+    vscode-eslint-language-server
+  npm install -g dockerfile-language-server-nodejs
+--]]
 local lspconfig = require('lspconfig')
 local utils = require('utils')
 
