@@ -242,7 +242,6 @@ do not keep highlighted. This plugin solves that.
     (global-company-mode))
 #+end_src
 
-
 ** Org
 
 [[https://zzamboni.org/post/beautifying-org-mode-in-emacs/][Beautifying Org Mode in Emacs]]
@@ -695,3 +694,23 @@ We need to get the tab-bar to be displayed alright with the theme
       (set-face-attribute 'mode-line-inactive nil :height 110 :font "Menlo")))
 #+end_src 
 
+
+* Functions
+
+#+BEGIN_SRC emacs-lisp
+(defun signal-restart-server ()
+  "Handler for SIGUSR1 signal, to (re)start an emacs server.
+
+Can be tested from within emacs with:
+  (signal-process (emacs-pid) 'sigusr1)
+
+or from the command line with:
+$ kill -USR1 <emacs-pid>
+$ emacsclient -c
+"
+  (interactive)
+  (server-force-delete)
+  (server-start)
+  )
+(define-key special-event-map [sigusr1] 'signal-restart-server)
+#+END_SRC

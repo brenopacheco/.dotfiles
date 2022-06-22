@@ -8,6 +8,8 @@
                               Breno Leonhardt Pacheco
                              brenoleonhardt@gmail.com
 -- version: 5b04e46d2
+-- v0.8.0-dev+169-ge50b1fe60
+-- make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr"
 -- TODO:
 -- context aware grep/star (monorepo/npm project)
 -- make jumplist not keep {}][ jumps
