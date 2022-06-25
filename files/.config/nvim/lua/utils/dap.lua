@@ -7,10 +7,6 @@ M.toggle_debug = function()
   require('dap').terminate()
 end
 
-M.attach = function()
-  print("To implement")
-end
-
 M.open_log = function()
   local path = vim.fn.stdpath('cache') .. '/dap.log'
   vim.cmd('vsp ' .. path)

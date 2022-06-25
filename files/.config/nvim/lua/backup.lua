@@ -41,7 +41,7 @@ function Backup()
 endfunction
 
 if !filereadable(g:fdignore) || !filereadable(g:rgignore)
-    silent call writefile(['**/.git/', '**/node_modules/', 'tags'], g:fdignore)
+    silent call writefile(['**/node_modules/', 'tags'], g:fdignore)
     silent call writefile(['**/.git/', '**/node_modules/', 'tags'], g:rgignore)
 endif
 ]])

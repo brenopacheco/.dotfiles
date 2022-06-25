@@ -24,7 +24,7 @@ paq({
     {'ludovicchabant/vim-gutentags',                config='gutentags'};
     {'lukas-reineke/indent-blankline.nvim',         config='blankline'};
     {'mbbill/undotree'};
-    {'neovim/nvim-lspconfig',                       config='lsp'};
+    -- {'neovim/nvim-lspconfig',                       config='lsp'};
     {'norcalli/nvim-colorizer.lua',                 config='colorizer'};
     {'NTBBloodbath/rest.nvim'};
     {'nvim-lua/plenary.nvim'};
@@ -32,16 +32,16 @@ paq({
     {'nvim-lua/popup.nvim'};
     {'nvim-telescope/telescope-fzy-native.nvim',    hook='git submodule update --init --recursive'};
     {'nvim-telescope/telescope.nvim',               config='telescope'};
-    {'nvim-treesitter/nvim-treesitter',             config='treesitter', run = ':TSUpdate'};
-    {'nvim-treesitter/nvim-treesitter-textobjects'};
-    {'nvim-treesitter/playground'};
+    -- {'nvim-treesitter/nvim-treesitter',             config='treesitter', run = ':TSUpdate'};
+    -- {'nvim-treesitter/nvim-treesitter-textobjects'};
+    -- {'nvim-treesitter/playground'};
 
     {'brenoleonhardt-poatek/neogen',                config='neogen'};
 
-    {'onsails/lspkind-nvim'};
+    -- {'onsails/lspkind-nvim'};
     {'ruifm/gitlinker.nvim',                        config='git-linker'};
     {'sbdchd/neoformat',                            config='neoformat'};
-    {'nvim-lualine/lualine.nvim',                   config='lualine'};
+    -- {'nvim-lualine/lualine.nvim',                   config='lualine'};
     {'simrat39/symbols-outline.nvim',               config='symbols-outline'};
     {'SmiteshP/nvim-gps',                           config='nvim-gps' };
 
@@ -51,13 +51,12 @@ paq({
     {'tpope/vim-surround'};
     {'tweekmonster/startuptime.vim'};
     {'windwp/nvim-autopairs',                       config='autopairs'};
-    {'Hoffs/omnisharp-extended-lsp.nvim'};
-    {'ray-x/lsp_signature.nvim',                    config='signature'};
+    -- {'Hoffs/omnisharp-extended-lsp.nvim'};
+    -- {'ray-x/lsp_signature.nvim',                    config='signature'};
 
     {'mfussenegger/nvim-dap',                       config='nvim-dap'};
     {'rcarriga/nvim-dap-ui',                        config='nvim-dap-ui'};
     {'theHamsta/nvim-dap-virtual-text',             config='nvim-dap-virtual-text'};
-    {'nvim-telescope/telescope-dap.nvim',           config='telescope-dap'};
     {'leoluz/nvim-dap-go',                          config='nvim-dap-go'};
 
     {'KabbAmine/zeavim.vim',                        config='zeavim'};

@@ -9,3 +9,5 @@ end
 _G.M = function()
   vim.cmd([[Bufferize lua require('reloader').modules()]])
 end
+
+vim.ui.select = require('utils.picker').select

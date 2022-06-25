@@ -7,10 +7,6 @@
 ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝
                               Breno Leonhardt Pacheco
                              brenoleonhardt@gmail.com
--- version: 5b04e46d2
--- v0.8.0-dev+169-ge50b1fe60
--- make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr"
--- TODO:
 -- context aware grep/star (monorepo/npm project)
 -- make jumplist not keep {}][ jumps
 -- add harpoon like behavior (maybe use arglist)
@@ -38,3 +34,9 @@ require('globals')
 _G.u = require('utils')
 
 require('reloader').config()
+
+--[[
+#!/usr/bin/env bash
+make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=/usr CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr"
+sudo make install CMAKE_INSTALL_PREFIX=/usr CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr"
+]]

@@ -40,7 +40,7 @@ local actions = [[
     nnoremap <leader>#  <cmd>source %<cr>
     nnoremap <leader>!  <cmd>lua u.spawn_terminal()<cr>
     "nnoremap <leader>m  <cmd>make<cr>
-    nnoremap <leader>m   <cmd>lua require('utils.picker').yarn_run()<cr>
+    nnoremap <leader>m   <cmd>lua require('utils.picker').npm()<cr>
     nnoremap <leader>/  <cmd>call quickfix#global_grep2()<cr>
     nnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
     xnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
