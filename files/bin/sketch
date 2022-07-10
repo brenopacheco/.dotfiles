@@ -27,8 +27,6 @@ if [[ ! "$LANG" =~ ^(go|node|sh|c|lua)$ ]]; then
     exit 1
 fi
 
-exec 3>&1 >/dev/null 2>&1
-
 mkdir -p ~/sketch
 
 TMPNAME="$LANG_$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 10)"
@@ -39,7 +37,7 @@ fi
 
 DIR="$HOME/sketch/$TMPNAME"
 
-cat<<EOF >&3
+cat<<EOF
 Setting up sketch project with $LANG in $DIR
 EOF
 
@@ -69,7 +67,7 @@ case $LANG in
     "sh")
         touch script.sh
         chmod +x script.sh
-        echo "#!/usr/bin/env bash"
+        echo -e "#!/usr/bin/env bash\n" > script.sh
         echo -e 'all:\n\t./script.sh' > Makefile
         ;;
     "lua")
@@ -77,10 +75,15 @@ case $LANG in
         ;;
 esac
 
-st >/dev/null 2>&1 & disown $!
+echo "Directory: $DIR"
 
-echo "Directory: $DIR" >&3
+function git_branch {     # get git branch of pwd
+    local branch="$(git branch 2>/dev/null | grep "\*" | colrm 1 2)"
+    if [ -n "$branch" ]; then
+        echo " ($branch)"
+    fi
+}
 
-bash & disown
+bash --rcfile <(cat ~/.bashrc; echo "PS1='\[\033[38;5;20m\]\[\033[48;5;11m\]sketch\[$(tput sgr0)\]\[\e[34m\] \w\[$(tput sgr0)\]\$ '") -i
 
 exit 0

@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+#HOOK="$1"
+#CLIENT_NAME
+#CLIENT_PID
+#CLIENT_SESSION
+#HOOK_SESSION
+#HOOK_SESSION_NAME
+#HOST
+#PID
+#SESSION_GROUP
+#SESSION_ID
+#SESSION_NAME
+#SOCKET_PATH
+
+
+     client_tty                      Pseudo terminal of client
+     client_pid                      PID of client process
+     client_session                  Name of the client's session
+     client_uid                      UID of client process
+     hook                            Name of running hook, if any
+     hook_client                     Name of client where hook was run, if any
+     hook_session                    ID of session where hook was run, if any
+     hook_session_name               Name of session where hook was run, if any
+     hook_window                     ID of window where hook was run, if any
+     hook_window_name                Name of window where hook was run, if any
+     pid                             Server PID
+     session_attached                Number of clients session is attached to
+     session_attached_list           List of clients session is attached to
+     session_group                   Name of session group
+     session_group_attached          Number of clients sessions in group are attached to
+     session_group_attached_list     List of clients sessions in group are attached to
+     session_group_list              List of sessions in group
+     session_group_many_attached     1 if multiple clients attached to sessions in group
+     session_group_size              Size of session group
+     session_grouped                 1 if session in a group
+     session_id                      Unique session ID
+     session_last_attached           Time session last attached
+     session_many_attached           1 if multiple clients attached
+     session_marked                  1 if this session contains the marked pane
+     session_name           #S       Name of session
+     session_path                    Working directory of session
+     session_stack                   Window indexes in most recent order
+     session_windows                 Number of windows in session
+     socket_path                     Server socket path
+     start_time                      Server start time
+     uid                             Server UID
+     user                            Server user
+     version                         Server version
+     window_active                   1 if window active
+     window_active_clients           Number of clients viewing this window
+     window_active_clients_list      List of clients viewing this window
+     window_active_sessions          Number of sessions on which this window is active
+     window_active_sessions_list     List of sessions on which this window is active
+     window_activity                 Time of window last activity
+     window_activity_flag            1 if window has activity
+     window_bell_flag                1 if window has bell
+     window_bigger                   1 if window is larger than client
+     window_cell_height              Height of each cell in pixels
+     window_cell_width               Width of each cell in pixels
+     window_end_flag                 1 if window has the highest index
+     window_flags           #F       Window flags with # escaped as ##
+     window_format                   1 if format is for a window
+     window_height                   Height of window
+     window_id                       Unique window ID
+     window_index           #I       Index of window
+     window_last_flag                1 if window is the last used
+     window_layout                   Window layout description, ignoring zoomed window panes
+     window_linked                   1 if window is linked across sessions
+     window_linked_sessions          Number of sessions this window is linked to
+     window_linked_sessions_list     List of sessions this window is linked to
+     window_marked_flag              1 if window contains the marked pane
+     window_name            #W       Name of window
+     window_offset_x                 X offset into window if larger than client
+     window_offset_y                 Y offset into window if larger than client
+     window_panes                    Number of panes in window
+     window_raw_flags                Window flags with nothing escaped
+     window_silence_flag             1 if window has silence alert
+     window_stack_index              Index in session most recent stack
+     window_start_flag               1 if window has the lowest index
+     window_visible_layout           Window layout description, respecting zoomed window panes
+     window_width                    Width of window
+     window_zoomed_flag              1 if window is zoomed
+     wrap_flag                       Pane wrap flag
+
+
+# vim:tw=78:ts=8:noet:ft=sh:norl:

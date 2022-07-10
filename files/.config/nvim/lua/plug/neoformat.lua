@@ -1,8 +1,8 @@
 vim.cmd([[
-let g:neoformat_enabled_javascript = ['prettiereslint']
-let g:neoformat_enabled_javascriptreact = ['prettiereslint']
-let g:neoformat_enabled_typescript = ['prettiereslint']
-let g:neoformat_enabled_typescriptreact = ['prettiereslint']
+let g:neoformat_enabled_javascript = ['prettier']
+let g:neoformat_enabled_javascriptreact = ['prettier']
+let g:neoformat_enabled_typescript = ['prettier']
+let g:neoformat_enabled_typescriptreact = ['prettier']
 let g:neoformat_enabled_lua = ['luaformat']
 let g:neoformat_enabled_python = ['yapf']
 let g:neoformat_enabled_c = ['clangformat']

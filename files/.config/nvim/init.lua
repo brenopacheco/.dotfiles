@@ -7,21 +7,33 @@
 ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝
                               Breno Leonhardt Pacheco
                              brenoleonhardt@gmail.com
--- context aware grep/star (monorepo/npm project)
--- make jumplist not keep {}][ jumps
--- add harpoon like behavior (maybe use arglist)
--- add fzf support as alternative to telescope
--- swap nvim-compe for nvim-cmp
--- fix source/run/make behavior (e.g: source %, lua %, make <target>)
--- add a test running plugin (run test under cursor, suite, etc)
--- fix terminal management (allow multiple, spawn new from cur dir, ]t/[t)
--- fix whichkey help
--- configure nvim-dap for node, go, lua, c#
--- easier map for cmd mode (e.g. spc-spc)
--- fix vim-tree WEIRD behavior
+
+
+1. debugger setup
+2. tmux configuration
+3. quick oversal fixes
+  a. context aware grep/star fix/better behavior
+  b. make jumplist not keep {}][ jumps
+  c. add harpoon like behavior (maybe use arglist) or marks
+  d. swap nvim-compe for nvim-cmp
+  e. terminal management (termfloat behavior)
+  f. fix quickix.lua
+4. tasks and tests runners
+  a. context-aware source/run/make (source %, lua %, make <target>, npm)
+  b. constex-aware run tests - single, suite
+  c. context-aware run debugger
+  c. general task runner (e.g: prompt, create terminal and pipe result)
+5. tree file nav: choose and configure (netwr, vim-tree, neotree)
+6. re-do keymaps based on usage
+7. plugin cleanup, selection and configuration
+8. write own window manager
+9. ansible configuration for system setup
+
+Compile and install neovim from source: (are all flags necessary?)
+make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=/usr CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr"
+sudo make install CMAKE_INSTALL_PREFIX=/usr CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr"
 --]]
 
--- vim.go.packpath = vim.go.packpath .. "," .. vim.fn.stdpath("cache") .. '/paq'
 -- require('quickfix')
 require('options')
 require('keymap')
@@ -30,13 +42,5 @@ require('plugs')
 require('colors')
 require('commands')
 require('globals')
-
+require('reloader')
 _G.u = require('utils')
-
-require('reloader').config()
-
---[[
-#!/usr/bin/env bash
-make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=/usr CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr"
-sudo make install CMAKE_INSTALL_PREFIX=/usr CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr"
-]]

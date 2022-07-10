@@ -246,6 +246,14 @@ apps() {
         cd $dir
     fi
 }
+apps2() {
+    local app=$(ls -d ~/promote/src/*/ | sed 's/^.*promote\/src\///' | sed 's/\/\+$//' | fzf -m --layout=reverse --header="Projects:")
+    if [ ! -z "$app" ]; then
+        local dir="$HOME/promote/src/${app}"
+        tmux new-session -A -s "$app"
+        # cd $dir
+    fi
+}
 # }}}
 # git-branch() {{{
 git-branch() {
@@ -285,3 +293,7 @@ function clear_yarn() {
     cat /tmp/new | egrep '^ ' | sed 's/^ .//' | sed "s/'//g" | sed 's/: .*//' | xargs -i yarn config delete {}
 }
 
+# remove local branches that do not exist on remote
+function git_clean_branches() {
+  git fetch -p ; git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -d
+}

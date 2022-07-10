@@ -42,11 +42,20 @@ function M.projects()
 end
 
 function M.lua()
-  local items = vim.fn.systemlist([[ fd '\.lua$' ~/.config/nvim/lua ]])
+  local items = vim.fn.systemlist([[ fd '\.lua$' ~/.config/nvim ]])
   local on_choice = function(selection) vim.cmd('e ' .. selection.value) end
-  local pwd_len = string.len(vim.fn.expand('~/.config/nvim/lua')) + 2
+  local pwd_len = string.len(vim.fn.expand('~/.config/nvim')) + 2
   local format = function(item) return string.sub(item, pwd_len) end
   local opts = {prompt = 'Lua configurations:', format_item = format}
+  return M.select(items, opts, on_choice)
+end
+
+function M.dotfiles()
+  local items = vim.fn.systemlist([[ fd . ~/.dotfiles ]])
+  local on_choice = function(selection) vim.cmd('e ' .. selection.value) end
+  local pwd_len = string.len(vim.fn.expand('~/.dotfiles')) + 2
+  local format = function(item) return string.sub(item, pwd_len) end
+  local opts = {prompt = 'Dotfiles:', format_item = format}
   return M.select(items, opts, on_choice)
 end
 
@@ -65,8 +74,8 @@ function M.npm()
     local on_choice = function(selection)
       vim.cmd([[let g:floaterm_autoclose = 0]])
       local cmd = 'npm run ' .. selection.value.name
-      vim.cmd('bo 10sp | terminal cd ' .. dir .. '; ' .. cmd)
-      -- vim.cmd('FloatermNew --cwd=' .. dir .. ' ' .. cmd)
+      -- vim.cmd('bo 10sp | terminal cd ' .. dir .. '; ' .. cmd)
+      vim.cmd('FloatermNew --cwd=' .. dir .. ' ' .. cmd)
     end
     local opts = {
       prompt = 'Npm run',

@@ -1,49 +1,210 @@
 {
-    "js-import":      { "prefix": "import",           "body": [ "import * from '${0:${TM_SELECTED_TEXT}}';"]},
-    "js-export":      { "prefix": "export",           "body": [ "export default ${0:${TM_SELECTED_TEXT}};"]},
-    "js-module":      { "prefix": "module",           "body": [ "module.exports = ${0:${TM_SELECTED_TEXT}};"]},
-    "js-require":     { "prefix": "require",          "body": [ "require('${0:${TM_SELECTED_TEXT}}');"]},
-    "js-const":       { "prefix": "const",            "body": [ "const ${1:var} = ${0:${TM_SELECTED_TEXT}};"]},
-    "js-let":         { "prefix": "let",              "body": [ "let _var = ${0:${TM_SELECTED_TEXT}};"]},
-    "js-class":       { "prefix": "class",            "body": [ "class ${0:${TM_SELECTED_TEXT}} {\n\t\n}"]},
-    "js-ctor":        { "prefix": "ctor",             "body": [ "constructor(${0:${TM_SELECTED_TEXT}}) {\n\tsuper(props);\n\t\n}"]},
-    "js-fun":         { "prefix": "fun",              "body": [ "function ${1:name}(${2:args}) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
-    "js-afun":        { "prefix": "afun",             "body": [ "() => {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
-    "js-cfun":        { "prefix": "cfun",             "body": [ "const _var = () => {\n\t${0:${TM_SELECTED_TEXT}}\n}:"]},
-    "js-if":          { "prefix": "if",               "body": [ "if (true) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
-    "js-elif":        { "prefix": "elif",             "body": [ "else if (true) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
-    "js-else":        { "prefix": "else",             "body": [ "else {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
-    "js-switch":      { "prefix": "switch",           "body": [ "switch (true) {\n\tcase '':\n\t\t${0:${TM_SELECTED_TEXT}}\n\t\tbreak;\n\tdefault:\n}"]},
-    "js-case":        { "prefix": "case",             "body": [ "case '':\n\t${0:${TM_SELECTED_TEXT}}\n\tbreak;"]},
-    "js-default":     { "prefix": "default",          "body": [ "default:\n\t${0:${TM_SELECTED_TEXT}}\n\t"]},
-    "js-try":         { "prefix": "try",              "body": [ "try {\n\t${0:${TM_SELECTED_TEXT}}\n} catch (err) {\n\t\n}"]},
-    "js-tryf":        { "prefix": "tryf",             "body": [ "try {\n\t${0:${TM_SELECTED_TEXT}}\n} catch (err) {\n\t\n} finally {\n\t\n}"]},
-    "js-throw":       { "prefix": "throw",            "body": [ "throw new Error('${0:${TM_SELECTED_TEXT}}');"]},
-    "js-ret":         { "prefix": "ret",              "body": [ "return ${0:${TM_SELECTED_TEXT}};"]},
-    "js-for":         { "prefix": "for",              "body": [ "for ($1) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
-    "js-for...in":    { "prefix": "fork",             "body": [ "for (let ${1:key} in ${2:object}) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
-    "js-for...of":    { "prefix": "forv",             "body": [ "for (let value of array) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
-    "js-while":       { "prefix": "while",            "body": [ "while (true) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]},
-    "js-dowhile":     { "prefix": "do",               "body": [ "do {\n\t${0:${TM_SELECTED_TEXT}}\n} while (true);"]},
-    "js-symbol":      { "prefix": "symbol",           "body": [ "Symbol('${0:${TM_SELECTED_TEXT}}');"]},
-    "js-doc":         { "prefix": "doc",              "body": [ "/**\n * Description\n * ${0:${TM_SELECTED_TEXT}}\n * @param param - description\n * @returns description\n */" ] },
-    "js-docc":        { "prefix": "docc",             "body": [ "/**\n * Parses a JSON file.\n * \n * @param path - Full path to the file.\n * @returns An object containing the JSON data.\n * \n * @example Parsing a basic JSON file\n * \n * # Contents of `file.json`\n * ```json\n * {\n *   \"exampleItem\": \"text\"\n * }\n * ```\n * \n * # Usage\n * ```ts\n * const result = parseFile(\"file.json\");\n * ```\n * \n * # Result\n * ```ts\n * {\n *   exampleItem: 'text',\n * }\n * ```\n */ ${0:${TM_SELECTED_TEXT}}" ] },
-    "js-promise":     { "prefix": "promise",          "body": [ "new Promise((resolve, reject) => {\n\t${0:${TM_SELECTED_TEXT}}\n})"]},
-    "js-log":         { "prefix": ["log", "col"],      "body": [ "console.log(${0:${TM_SELECTED_TEXT}});"]},
-    "js-express":     { "prefix": "express.app",      "body": [ "const express = require('express');", "const path = require('path');", "", "const app = express();", "", "app.use(express.json());", "", "app.get('/', (req,res) => {", "    res.status(200).json({});", "});", "", "app.post('/', (req,res) => {", "    const field = res.body.field;", "});", "", "app.listen(3000, () => {", "  console.log('App listening on port 3000!');", "});"]},
-    "js-eslint":      { "prefix": "eslint-disable",   "body": [ "// eslint-disable-next-line"] },
-    "js-react-fragment":     { "prefix": "fragment",     "body": [ "<>\n\t${0:${TM_SELECTED_TEXT}}\n</>"]},
-    "js-react-classname":    { "prefix": "classname",    "body": [ "className=\"${0}\""]},
-    "js-react-component":    { "prefix": "component",    "body": [ "import React from 'react'; \n\ninterface I${0:Component}Props {\n\n};\n\nfunction ${0:Component}({\n\n}: I${0:Component}Props) {\n\treturn (\n\t\t<React.Fragment>\n\t\t\t\n\t\t</React.Fragment>\n\t)\n};\n\nexport default ${0:Component};"]},
-    "js-react-use-state":    { "prefix": "use-state",    "body": [ "const [ ${0}, ] = useState();"   ]},
-    "js-react-use-effect":   { "prefix": "use-effect",   "body": [ "useEffect(() => {\n\t${0}\n}, []);"                ]},
-    "js-react-use-ref":      { "prefix": "use-ref",      "body": [ "const ${0} = useRef(null);"                      ]},
-    "js-react-use-callback": { "prefix": "use-callback", "body": [ "useCallback(", "\t() => {", "\t\t${0}", "\t},", "\t[],", ");"]},
-    "js-react-use-memo":     { "prefix": "use-memo",     "body": [ "useMemo(() => {\n\t${0:${TM_SELECTED_TEXT}}\n}, []);"] },
-    "data-cy": {
-      "prefix": ["data-cy"],
-      "body": [
-        "cy.get('[data-cy=${0:${TM_SELECTED_TEXT}}]')"
-      ]
-    }
+  "js-import": {
+    "prefix": "import",
+    "body": ["import * from '${0:${TM_SELECTED_TEXT}}';"]
+  },
+  "js-export": {
+    "prefix": "export",
+    "body": ["export default ${0:${TM_SELECTED_TEXT}};"]
+  },
+  "js-module": {
+    "prefix": "module",
+    "body": ["module.exports = ${0:${TM_SELECTED_TEXT}};"]
+  },
+  "js-require": {
+    "prefix": "require",
+    "body": ["require('${0:${TM_SELECTED_TEXT}}');"]
+  },
+  "js-const": {
+    "prefix": "const",
+    "body": ["const ${1:var} = ${0:${TM_SELECTED_TEXT}};"]
+  },
+  "js-let": {
+    "prefix": "let",
+    "body": ["let _var = ${0:${TM_SELECTED_TEXT}};"]
+  },
+  "js-class": {
+    "prefix": "class",
+    "body": ["class ${0:${TM_SELECTED_TEXT}} {\n\t\n}"]
+  },
+  "js-ctor": {
+    "prefix": "ctor",
+    "body": ["constructor(${0:${TM_SELECTED_TEXT}}) {\n\tsuper(props);\n\t\n}"]
+  },
+  "js-fun": {
+    "prefix": "fun",
+    "body": ["function ${1:name}(${2:args}) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]
+  },
+  "js-afun": {
+    "prefix": "afun",
+    "body": ["() => {\n\t${0:${TM_SELECTED_TEXT}}\n}"]
+  },
+  "js-cfun": {
+    "prefix": "cfun",
+    "body": ["const ${1:fun} = () => {\n\t${0:${TM_SELECTED_TEXT}}\n}:"]
+  },
+  "js-if": {
+    "prefix": "if",
+    "body": ["if (true) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]
+  },
+  "js-elif": {
+    "prefix": "elif",
+    "body": ["else if (true) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]
+  },
+  "js-else": {
+    "prefix": "else",
+    "body": ["else {\n\t${0:${TM_SELECTED_TEXT}}\n}"]
+  },
+  "js-switch": {
+    "prefix": "switch",
+    "body": [
+      "switch (true) {\n\tcase '':\n\t\t${0:${TM_SELECTED_TEXT}}\n\t\tbreak;\n\tdefault:\n}"
+    ]
+  },
+  "js-case": {
+    "prefix": "case",
+    "body": ["case '':\n\t${0:${TM_SELECTED_TEXT}}\n\tbreak;"]
+  },
+  "js-default": {
+    "prefix": "default",
+    "body": ["default:\n\t${0:${TM_SELECTED_TEXT}}\n\t"]
+  },
+  "js-try": {
+    "prefix": "try",
+    "body": ["try {\n\t${0:${TM_SELECTED_TEXT}}\n} catch (err) {\n\t\n}"]
+  },
+  "js-tryf": {
+    "prefix": "tryf",
+    "body": [
+      "try {\n\t${0:${TM_SELECTED_TEXT}}\n} catch (err) {\n\t\n} finally {\n\t\n}"
+    ]
+  },
+  "js-throw": {
+    "prefix": "throw",
+    "body": ["throw new Error('${0:${TM_SELECTED_TEXT}}');"]
+  },
+  "js-ret": { "prefix": "ret", "body": ["return ${0:${TM_SELECTED_TEXT}};"] },
+  "js-for": {
+    "prefix": "for",
+    "body": ["for ($1) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]
+  },
+  "js-for...in": {
+    "prefix": "fork",
+    "body": [
+      "for (let ${1:key} in ${2:object}) {\n\t${0:${TM_SELECTED_TEXT}}\n}"
+    ]
+  },
+  "js-for...of": {
+    "prefix": "forv",
+    "body": ["for (let value of array) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]
+  },
+  "js-while": {
+    "prefix": "while",
+    "body": ["while (true) {\n\t${0:${TM_SELECTED_TEXT}}\n}"]
+  },
+  "js-dowhile": {
+    "prefix": "do",
+    "body": ["do {\n\t${0:${TM_SELECTED_TEXT}}\n} while (true);"]
+  },
+  "js-symbol": {
+    "prefix": "symbol",
+    "body": ["Symbol('${0:${TM_SELECTED_TEXT}}');"]
+  },
+  "js-doc": {
+    "prefix": "doc",
+    "body": [
+      "/**\n * Description\n * ${0:${TM_SELECTED_TEXT}}\n * @param param - description\n * @returns description\n */"
+    ]
+  },
+  "js-docc": {
+    "prefix": "docc",
+    "body": [
+      "/**\n * Parses a JSON file.\n * \n * @param path - Full path to the file.\n * @returns An object containing the JSON data.\n * \n * @example Parsing a basic JSON file\n * \n * # Contents of `file.json`\n * ```json\n * {\n *   \"exampleItem\": \"text\"\n * }\n * ```\n * \n * # Usage\n * ```ts\n * const result = parseFile(\"file.json\");\n * ```\n * \n * # Result\n * ```ts\n * {\n *   exampleItem: 'text',\n * }\n * ```\n */ ${0:${TM_SELECTED_TEXT}}"
+    ]
+  },
+  "js-promise": {
+    "prefix": "promise",
+    "body": [
+      "new Promise((resolve, reject) => {\n\t${0:${TM_SELECTED_TEXT}}\n})"
+    ]
+  },
+  "js-log": {
+    "prefix": ["log", "col"],
+    "body": ["console.log(${0:${TM_SELECTED_TEXT}});"]
+  },
+  "js-express": {
+    "prefix": "express.app",
+    "body": [
+      "const express = require('express');",
+      "const path = require('path');",
+      "",
+      "const app = express();",
+      "",
+      "app.use(express.json());",
+      "",
+      "app.get('/', (req,res) => {",
+      "    res.status(200).json({});",
+      "});",
+      "",
+      "app.post('/', (req,res) => {",
+      "    const field = res.body.field;",
+      "});",
+      "",
+      "app.listen(3000, () => {",
+      "  console.log('App listening on port 3000!');",
+      "});"
+    ]
+  },
+  "js-eslint": {
+    "prefix": "eslint-disable",
+    "body": ["// eslint-disable-next-line"]
+  },
+  "js-react-fragment": {
+    "prefix": "fragment",
+    "body": ["<>\n\t${0:${TM_SELECTED_TEXT}}\n</>"]
+  },
+  "js-react-classname": {
+    "prefix": "classname",
+    "body": ["className=\"${0}\""]
+  },
+  "js-react-component": {
+    "prefix": "component",
+    "body": [
+      "import React from 'react'; \n\ninterface I${0:Component}Props {\n\n};\n\nfunction ${0:Component}({\n\n}: I${0:Component}Props) {\n\treturn (\n\t\t<React.Fragment>\n\t\t\t\n\t\t</React.Fragment>\n\t)\n};\n\nexport default ${0:Component};"
+    ]
+  },
+  "js-react-use-state": {
+    "prefix": "use-state",
+    "body": ["const [ ${0}, ] = useState();"]
+  },
+  "js-react-use-effect": {
+    "prefix": "use-effect",
+    "body": ["useEffect(() => {\n\t${0}\n}, []);"]
+  },
+  "js-react-use-ref": {
+    "prefix": "use-ref",
+    "body": ["const ${0} = useRef(null);"]
+  },
+  "js-react-use-callback": {
+    "prefix": "use-callback",
+    "body": ["useCallback(", "\t() => {", "\t\t${0}", "\t},", "\t[],", ");"]
+  },
+  "js-react-use-memo": {
+    "prefix": "use-memo",
+    "body": ["useMemo(() => {\n\t${0:${TM_SELECTED_TEXT}}\n}, []);"]
+  },
+  "data-cy": {
+    "prefix": ["data-cy"],
+    "body": ["cy.get('[data-cy=${0:${TM_SELECTED_TEXT}}]')"]
+  },
+  "js-react-fc": {
+    "prefix": ["fc", "component"],
+    "body": [
+      "const ${1:component}: FC<${2}> = (props) => {",
+      "  return (",
+      "    ${0:${TM_SELECTED_TEXT}}",
+      "  );",
+      "};"
+    ]
+  }
 }

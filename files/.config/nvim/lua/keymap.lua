@@ -16,13 +16,13 @@ local defaults = [[
     snoremap kj          <ESC>
     nnoremap q<leader>   q:
     "nnoremap q<leader>   <cmd>lua u.toggle_cmdline()<cr>
-    nnoremap <leader><leader> :
+    nnoremap <leader><leader> :Telescope<cr>
     "nnoremap <Tab>      <cmd>lua u.org_tab()<cr>
     "nnoremap <S-Tab>    <cmd>lua u.org_untab()<cr>
-    vnoremap <C-p>       dkP1v
-    vnoremap <C-n>       dp1v
-    nnoremap <C-p>       ddkP
-    nnoremap <C-n>       ddp
+    "vnoremap <C-p>       dkP1v
+    "vnoremap <C-n>       dp1v
+    "nnoremap <C-p>       ddkP
+    "nnoremap <C-n>       ddp
     nnoremap <leader>Q   :qa<cr>
 ]]
 
@@ -95,15 +95,15 @@ local toggles = [[
   nnoremap <leader>e <cmd>lua u.diagnostics(0)<cr>
   nnoremap <leader>E <cmd>lua u.diagnostics()<cr>
   nnoremap <leader>q <cmd>lua u.quickfix()<cr>
-  nnoremap <leader>t <cmd>lua u.tagbar()<cr>
+  nnoremap <leader><tab> <cmd>lua u.tagbar()<cr>
   nnoremap <leader>z <cmd>lua u.zen()<cr>
-  nnoremap <leader><tab> <cmd> lua u.toggle_scrolloff()<cr>
+  nnoremap <leader>t <cmd> lua u.toggle_scrolloff()<cr>
 ]]
 
 local find = [[
   nnoremap <leader>f? :Telescope<cr>
   nnoremap <leader>fb :Telescope buffers<cr>
-  nnoremap <leader>f. :Telescope find_files<cr>
+  nnoremap <leader>f. <cmd>lua require('telescope.builtin').find_files({cwd = vim.fn.getcwd(), hidden = true})<cr>
   nnoremap <leader>fh :Telescope help_tags<cr>
   nnoremap <leader>f' :Telescope marks<cr>
   nnoremap <leader>fc :Telescope oldfiles<cr>
@@ -111,6 +111,7 @@ local find = [[
   nnoremap <leader>fg <cmd>lua u.files()<cr>
   nnoremap <leader>fp <cmd>lua u.projects()<cr>
   nnoremap <leader>fl <cmd>lua require('utils.picker').lua()<cr>
+  nnoremap <leader>fd <cmd>lua require('utils.picker').dotfiles()<cr>
   "nnoremap <leader>fs <cmd>lua u.stash()<cr>
   nnoremap <leader>f* <cmd>lua u.grep_string()<cr>
   nnoremap <leader>f~ <cmd>lua u.home_files()<cr>
@@ -167,15 +168,6 @@ local complete = [[
   smap <Backspace> a<Backspace>
 ]]
 
-
-local luasnip = [[
-  inoremap <silent> <C-k> <cmd>lua require'luasnip'.jump(1)<Cr>
-  inoremap <silent> <C-j> <cmd>lua require'luasnip'.jump(-1)<Cr>
-  vnoremap <silent> <C-k> <cmd>lua require('luasnip').jump(1)<Cr>
-  vnoremap <silent> <C-j> <cmd>lua require('luasnip').jump(-1)<Cr>
-]]
-
-
 local snippets = [[
   imap <expr> <C-k> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)' : ''
   smap <expr> <C-k> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)' : ''
@@ -219,6 +211,12 @@ local dap = [[
   nnoremap <leader>dL <cmd>lua require('utils/dap').open_log()<cr>
 ]]
 
+local term = [[
+  nnoremap <buffer> <C-n> :FloatermNext<cr>
+  nnoremap <buffer> <C-p> :FloatermPrev<cr>
+]]
+
+
 vim.cmd(defaults)
 vim.cmd(actions)
 vim.cmd(movement)
@@ -234,5 +232,13 @@ vim.cmd(dap)
 local M = {}
 
 function M.register_lsp() vim.cmd(lsp) end
+function M.register_term() vim.cmd(term) end
+
+vim.cmd([[
+  augroup FloatermKeys
+  au!
+  au FileType floaterm lua require('keymap').register_term()
+  augroup END
+]])
 
 return M

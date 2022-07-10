@@ -68,6 +68,7 @@ export GEM_PATH=$GEM_PATH
 # PATH
 if [ "$SHLVL" = 1 ]; then
     export PATH=$PATH:$HOME/bin
+    export PATH=$PATH:$HOME/bin/tmux
     export PATH=$PATH:$HOME/.go/bin
     export PATH=$PATH:$HOME/.cargo/bin
     export PATH=$PATH:$HOME/.local/bin
@@ -101,3 +102,7 @@ test -e .npmtoken && source .npmtoken
 
 alias luamake=/home/breno/.cache/nvim/lsp/lua-language-server/3rd/luamake/luamake
 
+# tmux
+# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#   tmux new -s sketch-$RANDOM -t sketch \; set-option destroy-unattached
+# fi

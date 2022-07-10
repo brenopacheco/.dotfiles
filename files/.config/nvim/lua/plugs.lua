@@ -2,9 +2,7 @@ local paq = require('paq')
 
 paq({
     {'bluz71/vim-nightfly-guicolors'};
-    {'brenopacheco/vim-tree',                       config='vim-tree'};
     {'editorconfig/editorconfig-vim'};
-    -- {'folke/todo-comments.nvim',                    config='todo-comments'};
 
     {'kana/vim-textobj-user'};
     {'kana/vim-textobj-fold'};
@@ -12,7 +10,6 @@ paq({
 
     {'folke/which-key.nvim',                        config='which-key'};
     {'folke/zen-mode.nvim',                         config='zen-mode'};
-    {'f-person/git-blame.nvim',                     config='git-blame'};
     {'hrsh7th/nvim-compe',                          config='compe'};
     {'hrsh7th/vim-vsnip',                           config='vsnip'};
     {'hrsh7th/vim-vsnip-integ'};
@@ -21,10 +18,8 @@ paq({
     {'junegunn/vim-easy-align',                     config='easyalign'};
     {'kyazdani42/nvim-web-devicons',                config='devicons'};
     {'lewis6991/gitsigns.nvim',                     config='gitsigns'};
-    {'ludovicchabant/vim-gutentags',                config='gutentags'};
     {'lukas-reineke/indent-blankline.nvim',         config='blankline'};
-    {'mbbill/undotree'};
-    -- {'neovim/nvim-lspconfig',                       config='lsp'};
+    {'neovim/nvim-lspconfig',                       config='lsp'};
     {'norcalli/nvim-colorizer.lua',                 config='colorizer'};
     {'NTBBloodbath/rest.nvim'};
     {'nvim-lua/plenary.nvim'};
@@ -32,46 +27,53 @@ paq({
     {'nvim-lua/popup.nvim'};
     {'nvim-telescope/telescope-fzy-native.nvim',    hook='git submodule update --init --recursive'};
     {'nvim-telescope/telescope.nvim',               config='telescope'};
-    -- {'nvim-treesitter/nvim-treesitter',             config='treesitter', run = ':TSUpdate'};
-    -- {'nvim-treesitter/nvim-treesitter-textobjects'};
-    -- {'nvim-treesitter/playground'};
+    {'nvim-treesitter/nvim-treesitter',             config='treesitter', run = ':TSUpdate'};
+    {'nvim-treesitter/nvim-treesitter-textobjects'};
+    {'nvim-treesitter/playground'};
 
     {'brenoleonhardt-poatek/neogen',                config='neogen'};
 
-    -- {'onsails/lspkind-nvim'};
+    {'onsails/lspkind-nvim',                        config='lspkind'};
     {'ruifm/gitlinker.nvim',                        config='git-linker'};
     {'sbdchd/neoformat',                            config='neoformat'};
-    -- {'nvim-lualine/lualine.nvim',                   config='lualine'};
+    {'nvim-lualine/lualine.nvim',                   config='lualine'};
     {'simrat39/symbols-outline.nvim',               config='symbols-outline'};
     {'SmiteshP/nvim-gps',                           config='nvim-gps' };
 
-    {'sodapopcan/vim-twiggy'};
     {'tpope/vim-commentary'};
     {'tpope/vim-fugitive'};
     {'tpope/vim-surround'};
     {'tweekmonster/startuptime.vim'};
     {'windwp/nvim-autopairs',                       config='autopairs'};
-    -- {'Hoffs/omnisharp-extended-lsp.nvim'};
-    -- {'ray-x/lsp_signature.nvim',                    config='signature'};
+    {'Hoffs/omnisharp-extended-lsp.nvim'};
+    {'ray-x/lsp_signature.nvim',                    config='signature'};
 
     {'mfussenegger/nvim-dap',                       config='nvim-dap'};
     {'rcarriga/nvim-dap-ui',                        config='nvim-dap-ui'};
     {'theHamsta/nvim-dap-virtual-text',             config='nvim-dap-virtual-text'};
     {'leoluz/nvim-dap-go',                          config='nvim-dap-go'};
 
-    {'KabbAmine/zeavim.vim',                        config='zeavim'};
-    {'projekt0n/github-nvim-theme'};
-
-    {'petertriho/nvim-scrollbar',                   config='scrollbar'};
-
-    {'nvim-orgmode/orgmode',                        config='org'};
 
     {'voldikss/vim-floaterm',                       config='floaterm'};
 
     {'nanotee/luv-vimdocs'};
 
-    {'fatih/vim-go',                                run=':GoUpdateBinaries'};
+    -- {'fatih/vim-go',                                run=':GoUpdateBinaries'};
+    -- {'KabbAmine/zeavim.vim',                        config='zeavim'};
+    -- {'projekt0n/github-nvim-theme'};
+    -- {'petertriho/nvim-scrollbar',                   config='scrollbar'};
+    {'nvim-orgmode/orgmode',                        config='org'};
+
+
+    -- {'folke/todo-comments.nvim',                    config='todo-comments'};
+    -- {'f-person/git-blame.nvim',                     config='git-blame'};
+    -- {'ludovicchabant/vim-gutentags',                config='gutentags'};
+    -- {'mbbill/undotree'};
+    -- {'sodapopcan/vim-twiggy'};
+    {'brenopacheco/vim-tree',                       config='vim-tree'};
 })
+
+local disable_builtins = true
 
 local disabled_built_ins = {
     "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers", "gzip", "zip",
@@ -80,6 +82,8 @@ local disabled_built_ins = {
     "matchit"
 }
 
-for _, plugin in pairs(disabled_built_ins) do
-    vim.g["loaded_" .. plugin] = 1
+if disable_builtins then
+  for _, plugin in pairs(disabled_built_ins) do
+      vim.g["loaded_" .. plugin] = 1
+  end
 end

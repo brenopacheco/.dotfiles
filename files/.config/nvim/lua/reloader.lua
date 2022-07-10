@@ -49,4 +49,6 @@ function M.is_loaded(module)
             (package.loaded[module] and '' or 'NOT ') .. 'loaded.')
 end
 
+M.config()
+
 return M
