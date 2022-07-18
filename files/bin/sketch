@@ -77,13 +77,19 @@ esac
 
 echo "Directory: $DIR"
 
+cp ~/.bashrc $DIR/.bashrc
+
+cat<<EOF >> $DIR/.bashrc
 function git_branch {     # get git branch of pwd
-    local branch="$(git branch 2>/dev/null | grep "\*" | colrm 1 2)"
-    if [ -n "$branch" ]; then
-        echo " ($branch)"
+    local branch="\$(git branch 2>/dev/null | grep "\*" | colrm 1 2)"
+    if [ -n "\$branch" ]; then
+        echo " (\$branch)"
     fi
 }
+EOF
 
-bash --rcfile <(cat ~/.bashrc; echo "PS1='\[\033[38;5;20m\]\[\033[48;5;11m\]sketch\[$(tput sgr0)\]\[\e[34m\] \w\[$(tput sgr0)\]\$ '") -i
+echo "PS1='\[\033[38;5;20m\]\[\033[48;5;11m\]sketch\[$(tput sgr0)\]\[\e[34m\] \w\[$(tput sgr0)\]\$ '" >> $DIR/.bashrc
+
+tmux new -s $TMPNAME "bash --rcfile $DIR/.bashrc -i"
 
 exit 0

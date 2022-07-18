@@ -262,7 +262,13 @@ do not keep highlighted. This plugin solves that.
           org-default-notes-file (concat org-directory "/notes.org")
           org-confirm-babel-evaluate nil)
     (org-babel-do-load-languages
-     'org-babel-load-languages '((C . t) (shell . t) (dot . t) (go . t)))
+     'org-babel-load-languages '(
+                                 (C . t)
+                                 (shell . t)
+                                 (dot . t)
+                                 (go . t)
+                                 (lua . t)
+                                 ))
     (set-face-attribute 'org-level-1 nil :height 1.1))
 
   ;; Show hidden emphasis markers on cursor hover
@@ -288,6 +294,9 @@ do not keep highlighted. This plugin solves that.
   ;; (plist-put org-format-latex-options :scale 2)
   ;; Increase line spacing
   ;; (setq-default line-spacing 6)
+
+  (use-package lua-mode)
+  (use-package go-mode)
 #+END_SRC
 https://lucidmanager.org/productivity/ricing-org-mode/
 

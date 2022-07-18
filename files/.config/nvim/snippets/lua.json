@@ -52,7 +52,7 @@
   "print": {
     "prefix": ["print"],
     "body": [
-      "print(vim.inspect(${0:${TM_SELECTED_TEXT}}))"
+      "print(${0:${TM_SELECTED_TEXT}})"
     ]
   }
 }

@@ -1,7 +1,10 @@
+alias ts='read -p "Session name: "; tmux new -s $REPLY'
+#alias ts='tmux new -s '
+alias ta="tmux attach -t \$(tmux ls | rofi -dmenu | awk '{print $2}')"
 alias tl='tmux list-sessions -F "#{session_id}: #{session_name} (group: #{session_group}) - #{?session_attached,attached,detached}"'
-alias ta='tmux new -A -t scratch'
+# alias ta='tmux new -A -t scratch'
 alias tk='tmux kill-server'
-alias ts='tmux new -t scratch \; neww'
+# alias ts='tmux new -t scratch \; neww'
 alias t='tmux'
 alias notes="cd ~/git/notes"
 alias ec="emacsclient --create-frame & disown"

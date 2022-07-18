@@ -2,6 +2,7 @@
 # Lists available executables in dmenu 
 # and executes chosen binary
 
-lsexec | dmenu_color "$@" -p "Launch:" | ${SHELL:-"/bin/bash"} &
+fd . -t x $(echo $PATH | tr ':' ' ') --color=never | sed 's|.*/||' \
+    | dmenu_color "$@" -p "Launch:" | ${SHELL:-"/bin/bash"} &
 [[ $? -eq 0 ]] || exit 1
 exit 0

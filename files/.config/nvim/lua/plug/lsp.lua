@@ -23,6 +23,7 @@ local servers = {
     "cssls",
     "dockerls",
     "eslint", -- still has some bugs
+    "tailwindcss",
     "html",
     "jdtls",
     "jedi_language_server",
@@ -61,6 +62,15 @@ for type, icon in pairs(signs) do
   local hl = "LspDiagnosticsSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
+
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = true,
+  severity_sort = true,
+})
+
 
 
 function vim.lsp.buf.peek_definition()

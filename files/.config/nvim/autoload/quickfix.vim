@@ -40,7 +40,7 @@ fun! quickfix#global_grep2(...)
     elseif where ==# 'project'
         call feedkeys(":grep! '" . pattern . "' " . utils#npm_root())
     elseif where ==# 'curdir'
-        call feedkeys(":grep! '" . pattern . "' " . utils#git_root(getcwd()))
+        call feedkeys(":grep! '" . pattern . "' " . getcwd())
     elseif where ==# 'buflist'
         call feedkeys(':cexpr [] | bufdo vimgrepadd /'.pattern.'/j % | '.buffer.'b')
     elseif where ==# 'arglist'
