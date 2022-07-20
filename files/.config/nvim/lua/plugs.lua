@@ -58,6 +58,8 @@ paq({
 
     {'nanotee/luv-vimdocs'};
 
+    {'b0o/schemastore.nvim'};
+
     -- {'fatih/vim-go',                                run=':GoUpdateBinaries'};
     -- {'KabbAmine/zeavim.vim',                        config='zeavim'};
     -- {'projekt0n/github-nvim-theme'};

@@ -2,7 +2,7 @@ local uv = vim.loop
 
 local M = {}
 
-M.readFile = function(path, callback)
+M.readFileAsync = function(path, callback)
   return uv.fs_open(path, 'r', 438, function(open_err, fd)
     assert(not open_err, open_err)
     return uv.fs_fstat(fd, function(fstat_err, stat)
@@ -17,6 +17,13 @@ M.readFile = function(path, callback)
       end)
     end)
   end)
+end
+
+M.readFileSync = function(path)
+  local fd = assert(uv.fs_open(path, 'r', 438))
+  local stat = assert(uv.fs_fstat(fd))
+  local data = assert(uv.fs_read(fd, stat.size, 0))
+  return data
 end
 
 return M

@@ -21,4 +21,23 @@ function M.root(regex)
   return nil, nil
 end
 
+function M.roots()
+  local patterns = {
+    'package%.json',
+    '%.gitignore',
+    '.*%.sln',
+    'go%.mod',
+    '.*%.rockspec'
+  }
+  local roots = {}
+  for _, pat in ipairs(patterns) do
+    dir, file = M.root(pat)
+    if dir and file then
+      local path = dir .. '/' .. file
+      table.insert(roots, path)
+    end
+  end
+  return vim.fn.systemlist('echo -e "' .. table.concat(roots, '\n') .. '" | sort | uniq')
+end
+
 return M

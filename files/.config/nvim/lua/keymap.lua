@@ -15,15 +15,16 @@ local defaults = [[
     snoremap jk          <ESC>
     snoremap kj          <ESC>
     nnoremap q<leader>   q:
-    "nnoremap q<leader>   <cmd>lua u.toggle_cmdline()<cr>
     nnoremap <leader><leader> :Telescope<cr>
+    nnoremap <leader>Q   :qa<cr>
+    "nnoremap q<leader>   <cmd>lua u.toggle_cmdline()<cr>
     "nnoremap <Tab>      <cmd>lua u.org_tab()<cr>
     "nnoremap <S-Tab>    <cmd>lua u.org_untab()<cr>
     "vnoremap <C-p>       dkP1v
     "vnoremap <C-n>       dp1v
     "nnoremap <C-p>       ddkP
     "nnoremap <C-n>       ddp
-    nnoremap <leader>Q   :qa<cr>
+    nnoremap <C-h> :exe printf('match lCursor /\V\%%(\<\k\*\%%#\k\*\>\)\@!\&\<%s\>/', escape(expand('<cword>'), '/\'))<cr>
 ]]
 
 local actions = [[
@@ -231,7 +232,14 @@ vim.cmd(dap)
 
 local M = {}
 
-function M.register_lsp() vim.cmd(lsp) end
+function M.register_lsp(client, bufnr)
+  vim.cmd(lsp)
+  if client.name == 'eslint' then
+    vim.cmd([[
+      nnoremap <leader>=  :EslintFixAll<cr>
+    ]])
+  end
+end
 function M.register_term() vim.cmd(term) end
 
 vim.cmd([[

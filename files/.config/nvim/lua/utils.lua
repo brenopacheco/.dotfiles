@@ -137,7 +137,7 @@ function M.cmake_build()
 end
 
 function M.lsp_attach(client, bufnr)
-  require('keymap').register_lsp()
+  require('keymap').register_lsp(client, bufnr)
   vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
 end
 

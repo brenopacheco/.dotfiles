@@ -64,7 +64,7 @@ function M.npm()
   local dir, match = fs.root('^package%.json$')
   assert(dir ~= nil, 'Directory is not an npm project')
   local path = dir .. '/' .. match
-  io.readFile(path, function(data)
+  io.readFileAsync(path, function(data)
     local scripts = vim.json.decode(data).scripts
     local items = {}
     local max_len = 0
@@ -127,6 +127,42 @@ function M.run()
         end
         return items, max_len, max_len
       end
+    },
+    dotnet = {
+      cmd = 'dotnet',
+      file = '.+%.sln',
+      parse = function(data)
+        P(data)
+        local items = {}
+        local max_len = 0
+        for s in string.gmatch(data, '[^\r\n]+') do
+          local f = string.gsub(s, '\\', '/')
+          local proj, path =
+              string.match(f, '"([%a.]+)".*"([%a/.]+%.csproj)"')
+          if proj ~= nil and path ~= nil then
+            if string.match(proj, 'Test') then
+              table.insert(items, {
+                description = 'Run ' .. proj,
+                target = 'run --project ' .. path
+              })
+            else
+              --  TODO: add env opt
+              --  modify [name] [desc] - do not show [target]
+              -- VSTEST_HOST_DEBUG=1 dotnet test --filter 'Category=Integration'
+              table.insert(items, {
+                description = 'Unit test',
+                target = 'test --filter \'Category=Unit\''
+              })
+              table.insert(items, {
+                description = 'Integration test',
+                target = 'test --filter \'Category=Integration\''
+              })
+            end
+            max_len = string.len(items[#items].target) > max_len and string.len(items[#items].target) or max_len
+          end
+        end
+        return items, max_len, max_len
+      end
     }
   }
   local targets = {}
@@ -165,7 +201,7 @@ function M.run()
   local opts = {
     prompt = 'Run',
     format_item = function(item)
-      local format = '✔ %-7s %-'.. tostring(max_target_len) + 4 .. 's %s'
+      local format = '✔ %-8s %-' .. tostring(max_target_len) + 4 .. 's %s'
       return string.format(format, '[' .. item.sysname .. ']', item.target,
                            item.description)
     end
