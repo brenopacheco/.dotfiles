@@ -103,7 +103,7 @@ function M.get_url()
 end
 function M.open_url() vim.cmd('!chromium ' .. M.get_url()) end
 function M.preview_hunk() require('gitsigns').preview_hunk() end
-function M.projects() require('utils.picker').projects() end
+function M.projects() require('util.picker').projects() end
 function M.qf_global() vim.fn['quickfix#filter'](vim.fn.input('> /')) end
 function M.qf_vglobal() print('not ready') end
 function M.quickfix() vim.fn['utils#toggle']('qf', 'copen | wincmd p') end

@@ -3,8 +3,8 @@ local utils = require('utils')
 
 vim.lsp.set_log_level(vim.log.levels.ERROR) -- disable logging
 
-lspconfig.sumneko_lua.setup(require('plug.lsp/sumneko_lua'))
-lspconfig.omnisharp.setup(require('plug.lsp/omnisharp'))
+lspconfig.sumneko_lua.setup(require('paq.lsp.sumneko_lua'))
+lspconfig.omnisharp.setup(require('paq.lsp.omnisharp'))
 
 local servers = {
   'bashls', -- bash-language-server

@@ -2,6 +2,10 @@ local uv = vim.loop
 
 local M = {}
 
+--- Read file asynchronously, executing callback with file contents.
+---@param path string
+---@param callback fun(data: string): nil
+---@return userdata
 M.readFileAsync = function(path, callback)
   return uv.fs_open(path, 'r', 438, function(open_err, fd)
     assert(not open_err, open_err)
@@ -19,6 +23,9 @@ M.readFileAsync = function(path, callback)
   end)
 end
 
+--- Read file synchronously and return data.
+---@param path string
+---@return string
 M.readFileSync = function(path)
   local fd = assert(uv.fs_open(path, 'r', 438))
   local stat = assert(uv.fs_fstat(fd))

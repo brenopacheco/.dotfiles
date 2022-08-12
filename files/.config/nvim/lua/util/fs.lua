@@ -21,6 +21,8 @@ function M.root(regex)
   return nil, nil
 end
 
+-- Find all project roots of the current directory.
+-- Returns a list of file paths, ordered by size.
 function M.roots()
   local patterns = {
     'package%.json',

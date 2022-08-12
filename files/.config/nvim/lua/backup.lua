@@ -1,3 +1,4 @@
+-- TODO: revisit this, backups are not correctly setup
 local home = vim.env.HOME .. '/'
 vim.g.backupdir     = home .. '.cache/nvim/backup/'
 vim.g.plugdir       = home .. '.cache/nvim/plug/'

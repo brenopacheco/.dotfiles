@@ -1,5 +1,6 @@
 _G.P = function(v)
   vim.pretty_print(v)
+  vim.cmd([[Messages]])
 end
 
 _G.R = function(...)

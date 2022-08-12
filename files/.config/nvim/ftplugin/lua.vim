@@ -7,16 +7,17 @@ compiler lua
 setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
-" setlocal foldmarker=[[,]]
-setlocal foldmethod=expr
-setlocal foldexpr=nvim_treesitter#foldexpr()
+setlocal foldmarker=[[,]]
+setlocal foldexpr=marker
+" setlocal foldmethod=expr
+" setlocal foldexpr=nvim_treesitter#foldexpr()
 setlocal formatoptions=croqlj
 setlocal textwidth=78
 setlocal comments=s:--[[,m:\ ,e:]],:--
 setlocal commentstring=--%s
 setlocal suffixesadd=.lua
 setlocal keywordprg=:help
-setlocal iskeyword-=.
+setlocal iskeyword+=.
 setlocal isfname+=.,/
 
 iab <buffer> af  function() <CR><CR>end<ESC>ki<TAB>

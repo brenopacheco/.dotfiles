@@ -1,5 +1,5 @@
-local selector = require('utils.picker').selector
-local str = require('utils.string')
+local selector = require('util.picker').selector
+local str = require('util.string')
 
 local M = {}
 

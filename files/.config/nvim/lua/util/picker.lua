@@ -4,8 +4,8 @@ local conf = require('telescope.config').values
 local themes = require('telescope.themes')
 local actions = require 'telescope.actions'
 local action_state = require 'telescope.actions.state'
-local io = require 'utils.io'
-local fs = require 'utils.fs'
+local io = require 'util.io'
+local fs = require 'util.fs'
 local uv = vim.loop
 
 local M = {}
@@ -60,37 +60,6 @@ function M.dotfiles()
   return M.select(items, opts, on_choice)
 end
 
-function M.npm()
-  local dir, match = fs.root('^package%.json$')
-  assert(dir ~= nil, 'Directory is not an npm project')
-  local path = dir .. '/' .. match
-  io.readFileAsync(path, function(data)
-    local scripts = vim.json.decode(data).scripts
-    local items = {}
-    local max_len = 0
-    for name, cmd in pairs(scripts) do
-      max_len = string.len(name) > max_len and string.len(name) or max_len
-      table.insert(items, {name = name, cmd = cmd})
-    end
-    local on_choice = function(selection)
-      vim.cmd([[let g:floaterm_autoclose = 0]])
-      local cmd = 'npm run ' .. selection.value.name
-      -- vim.cmd('bo 10sp | terminal cd ' .. dir .. '; ' .. cmd)
-      vim.cmd('FloatermNew --cwd=' .. dir .. ' ' .. cmd)
-    end
-    local opts = {
-      prompt = 'Npm run',
-      format_item = function(item)
-        local format = '✔ %-s %-' ..
-                           tostring(max_len - string.len(item.name)) ..
-                           's   %s'
-        return string.format(format, item.name, '', item.cmd)
-      end
-    }
-    M.select(items, opts, on_choice)
-  end)
-end
-
 function M.run()
   local systems = {
     node = {
@@ -99,8 +68,13 @@ function M.run()
       parse = function(data)
         local scripts = vim.json.decode(data).scripts
         local items = {}
-        local max_target_len = 0
-        local max_description_len = 0
+        table.insert(items, {
+          target = "reinstall",
+          description = "remove and yarn install dependencies",
+          cmd = "rm -rf ./node_modules && yarn install"
+        })
+        local max_target_len = string.len(items[1].target)
+        local max_description_len = string.len(items[1].description)
         for k, v in pairs(scripts) do
           max_target_len = string.len(k) > max_target_len and string.len(k) or
                                max_target_len
@@ -185,7 +159,7 @@ function M.run()
           target = item.target,
           description = item.description,
           dir = dir,
-          cmd = system.cmd .. ' ' .. item.target,
+          cmd = item.cmd or system.cmd .. ' ' .. item.target,
           sysname = key
         })
       end

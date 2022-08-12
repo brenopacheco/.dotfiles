@@ -10,11 +10,10 @@ set autochdir                             " use file path as vim's dir
 set autoindent                            " new lines inherits indentation
 set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
 set cmdheight     =1                      " only 1 row for cmdline
-" set cmdheight     =0                      " available in neovim 0.8.0-dev
 set colorcolumn   =78                     " draw column at position
 set conceallevel  =0                      " shows |hyperlinks|
 set cursorline                            " highlights current line
-set expandtab                             " expands tabs as spaces
+set noexpandtab                           " don't expands tabs as spaces
 set fileencoding  =utf-8                  " default buffer file encoding
 set fillchars     =fold:\                 " make v:folddashes whitespace
 set foldlevelstart=99                     " make folds open initially
@@ -34,9 +33,10 @@ set keywordprg    =:help                  " use help as default for <S-k>
 set laststatus    =3                      " show a single statusline
 set lazyredraw                            " do not redraw during macros
 set linebreak                             " don't break word when wrapping
+set list                                  " actually use listchars
 set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp
 set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
-set list                                  " actually use listchars
+" set listchars    +=eol:↵
 set more                                  " show --more-- to scroll messages
 set nojoinspaces                          " always insert 1 spc on join J
 set noshowmode                            " don't show --INSERT-- message

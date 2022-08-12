@@ -15,7 +15,7 @@ local defaults = [[
     snoremap jk          <ESC>
     snoremap kj          <ESC>
     nnoremap q<leader>   q:
-    nnoremap <leader><leader> :Telescope<cr>
+    nnoremap <leader><leader> :
     nnoremap <leader>Q   :qa<cr>
     "nnoremap q<leader>   <cmd>lua u.toggle_cmdline()<cr>
     "nnoremap <Tab>      <cmd>lua u.org_tab()<cr>
@@ -40,8 +40,8 @@ local actions = [[
     nnoremap qn         <cmd>lua u.cnewer()<CR>
     nnoremap <leader>#  <cmd>source %<cr>
     nnoremap <leader>!  <cmd>lua u.spawn_terminal()<cr>
-    "nnoremap <leader>m  <cmd>make<cr>
-    nnoremap <leader>m   <cmd>lua require('utils.picker').run()<cr>
+    nnoremap <leader>m  <cmd>lua require('util.picker').run()<cr>
+		nnoremap <leader>M  <cmd>lua require('util.doodle').go_run()<cr>
     nnoremap <leader>/  <cmd>call quickfix#global_grep2()<cr>
     nnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
     xnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
@@ -111,8 +111,8 @@ local find = [[
   nnoremap <leader>ff <cmd>lua u.files(true)<cr>
   nnoremap <leader>fg <cmd>lua u.files()<cr>
   nnoremap <leader>fp <cmd>lua u.projects()<cr>
-  nnoremap <leader>fl <cmd>lua require('utils.picker').lua()<cr>
-  nnoremap <leader>fd <cmd>lua require('utils.picker').dotfiles()<cr>
+  nnoremap <leader>fl <cmd>lua require('util.picker').lua()<cr>
+  nnoremap <leader>fd <cmd>lua require('util.picker').dotfiles()<cr>
   "nnoremap <leader>fs <cmd>lua u.stash()<cr>
   nnoremap <leader>f* <cmd>lua u.grep_string()<cr>
   nnoremap <leader>f~ <cmd>lua u.home_files()<cr>
@@ -122,6 +122,7 @@ local find = [[
 local git = [[
    nnoremap <leader>gg <cmd>lua u.fugitive()<cr>
    nnoremap <leader>gv <cmd>lua u.gv()<cr>
+   nnoremap <leader>gl <cmd>Git log<cr>
    nnoremap <leader>gd <cmd>lua u.diff()<cr>
    nnoremap <leader>gs <cmd>lua u.stage_hunk()<cr>
    nnoremap <leader>gu <cmd>lua u.undo_stage_hunk()<cr>
@@ -190,7 +191,7 @@ local dap = [[
   nnoremap <leader>d. <cmd>lua require('dap').run_to_cursor()<cr>
 
   nnoremap <leader>dr <cmd>lua require('dap').run_last()<cr>
-  nnoremap <leader>dd <cmd>lua require('utils/dap').toggle_debug()<cr>
+  nnoremap <leader>dd <cmd>lua require('util.dap').toggle_debug()<cr>
 
   nnoremap <leader>di <cmd>lua require('dap').set_breakpoint(vim.fn.input("Breakpoint condition: "))<cr>
   nnoremap <leader>db <cmd>lua require('dap').toggle_breakpoint()<cr>
@@ -208,8 +209,8 @@ local dap = [[
   nnoremap <leader>dt <cmd>lua require('dap').repl.toggle()<cr>
   nnoremap <leader>dK <cmd>lua require('dapui').eval()<CR>
   nnoremap <leader>du <cmd>lua require('dapui').toggle()<cr>
-  nnoremap <leader>da <cmd>lua require('utils/dap').attach()<cr>
-  nnoremap <leader>dL <cmd>lua require('utils/dap').open_log()<cr>
+  nnoremap <leader>da <cmd>lua require('util.dap').attach()<cr>
+  nnoremap <leader>dL <cmd>lua require('util.dap').open_log()<cr>
 ]]
 
 local term = [[

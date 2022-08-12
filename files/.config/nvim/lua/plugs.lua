@@ -18,6 +18,7 @@ paq({
     {'junegunn/vim-easy-align',                     config='easyalign'};
     {'kyazdani42/nvim-web-devicons',                config='devicons'};
     {'lewis6991/gitsigns.nvim',                     config='gitsigns'};
+		-- NOTE: tab characters are not shown anymore
     {'lukas-reineke/indent-blankline.nvim',         config='blankline'};
     {'neovim/nvim-lspconfig',                       config='lsp'};
     {'norcalli/nvim-colorizer.lua',                 config='colorizer'};
@@ -49,30 +50,27 @@ paq({
     {'ray-x/lsp_signature.nvim',                    config='signature'};
 
     {'mfussenegger/nvim-dap',                       config='nvim-dap'};
-    {'rcarriga/nvim-dap-ui',                        config='nvim-dap-ui'};
-    {'theHamsta/nvim-dap-virtual-text',             config='nvim-dap-virtual-text'};
-    {'leoluz/nvim-dap-go',                          config='nvim-dap-go'};
+      {'rcarriga/nvim-dap-ui'};
+      {'theHamsta/nvim-dap-virtual-text'};
 
-
+		-- check
     {'voldikss/vim-floaterm',                       config='floaterm'};
-
     {'nanotee/luv-vimdocs'};
-
     {'b0o/schemastore.nvim'};
+    {'rcarriga/nvim-notify'};
+    {'nvim-orgmode/orgmode',                        config='org'};
+    {'brenopacheco/vim-tree',                       config='vim-tree'};
 
-    -- {'fatih/vim-go',                                run=':GoUpdateBinaries'};
+		-- disabled for now
+    {'fatih/vim-go',                                run=':GoUpdateBinaries'};
     -- {'KabbAmine/zeavim.vim',                        config='zeavim'};
     -- {'projekt0n/github-nvim-theme'};
     -- {'petertriho/nvim-scrollbar',                   config='scrollbar'};
-    {'nvim-orgmode/orgmode',                        config='org'};
-
-
     -- {'folke/todo-comments.nvim',                    config='todo-comments'};
     -- {'f-person/git-blame.nvim',                     config='git-blame'};
     -- {'ludovicchabant/vim-gutentags',                config='gutentags'};
     -- {'mbbill/undotree'};
     -- {'sodapopcan/vim-twiggy'};
-    {'brenopacheco/vim-tree',                       config='vim-tree'};
 })
 
 local disable_builtins = true

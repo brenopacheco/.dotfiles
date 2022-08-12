@@ -1,15 +1,10 @@
 local M = {}
 
-M.loaded = nil
-
 --- Configure reloader.
 --  Setup autocmd on BufWrite to reload the module if it is a config file.
 function M.config()
-  if M.loaded then
-    print('reloader already setup')
-    return
-  end
-  M.loaded = vim.api.nvim_create_autocmd('BufWritePost', {
+  vim.api.nvim_create_autocmd('BufWritePost', {
+    group = vim.api.nvim_create_augroup('Reloader', {clear = true}),
     pattern = '*.lua',
     desc = 'Reload lua modules if file is in .config/nvim/lua',
     callback = function(context)
