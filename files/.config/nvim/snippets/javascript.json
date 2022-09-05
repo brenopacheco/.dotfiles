@@ -41,7 +41,7 @@
   },
   "js-cfun": {
     "prefix": "cfun",
-    "body": ["const ${1:fun} = () => {\n\t${0:${TM_SELECTED_TEXT}}\n}:"]
+    "body": ["const ${1:fun} = () => ${0:${TM_SELECTED_TEXT}}"]
   },
   "js-if": {
     "prefix": "if",

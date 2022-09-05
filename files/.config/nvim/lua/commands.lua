@@ -3,4 +3,5 @@ vim.cmd([[
   command! W w
   command! Q q
   command! Messages Bufferize messages
+	command! Bclean bdo bd
 ]])

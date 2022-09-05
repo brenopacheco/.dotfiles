@@ -22,27 +22,31 @@ function M.autocmd(event, group_name, desc, callback)
 end
 
 function M.go_run()
-  vim.cmd([[vsp | enew]])
-  bufnr = vim.fn.bufnr()
+  path = vim.fn.expand('%:p')
+  ft = vim.o.ft
+  cmds = {go = {'go', 'run', path}, lua = {'lua', path}, javascript = {'node', path}}
+	cmd = cmds[ft]
+	assert(cmd ~= nil, "Filetype not supported.")
   local callback = function()
-    vim.fn.jobstart({'go', 'run', '.'}, {
-      stdout_buffered = true, -- output 1 line at a time
+    vim.fn.jobstart(cmd, {
+      stdout_buffered = true,
+      stderr_buffered = true,
       on_stdout = function(_, data)
-        vim.api
-            .nvim_buf_set_lines(bufnr, 0, -1, false, {'output of: main.go'})
-        vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, data)
-        notify(data, vim.log.levels.INFO, {title = 'Output of: main.go'})
+        notify(data, vim.log.levels.INFO, {title = 'Output of: ' .. path})
+      end,
+      on_stderr = function(_, data)
+				if data == nil or string.len(data[1]) == 0 then return end
+        notify(data, vim.log.levels.ERROR, {title = 'Error of: ' .. path})
       end
     })
   end
   vim.api.nvim_create_autocmd('BufWritePost', {
     group = vim.api.nvim_create_augroup('Utils', {clear = true}),
-    desc = 'Go run on main.go',
-    pattern = '*.go',
+    desc = 'Run buffer interpreter',
+		buffer = vim.fn.bufnr(),
     callback = callback
   })
-  vim.cmd([[wincmd p]])
-	callback()
+  callback()
 end
 
 function M.tabbuffers()

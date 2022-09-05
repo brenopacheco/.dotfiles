@@ -1,17 +1,33 @@
 #!/usr/bin/env bash
 
 
-RESULT=$(tmux list-sessions -F '#{session_name}: #{window_name} (#{window_index}) - #{window_id}' |\
-    fzf --reverse --header "Switch session" \
-    --preview 'tmux capture-pane -pt $(echo {} | sed "s/^\(\S\+\):.*/\1/"):$(echo {} | sed "s/.*(\([0-9]\+\))/\1/")')
+function preview() {
+    ID=$(echo $1)
+    # tmux capture-pane -pt $WINDOWID
+    echo $ID
+}
+
+export -f preview
+
+RESULT=$(tmux list-sessions -F '#{session_name}(#{window_id}): #{window_name}' |\
+    column -t | fzf --reverse --header "Switch session" --preview 'preview {}')
+
+
 
 if [[ -z "$RESULT" ]]; then 
     exit 0
 fi
 
+
 SESSION=$(echo "$RESULT" | sed "s/^\(\S\+\):.*/\1/")
-WINDOW=$(echo "$RESULT" | sed "s/.*(\([0-9]\+\))/\1/")
+WINDOWID=$(echo "$RESULT" | sed "s/.*(\([0-9]\+\))/\1/")
 ID=$RANDOM
+
+echo "$SESSION"
+echo "$WINDOW"
+echo "$ID"
+
+exit 1
 
 tmux new -d -s tmp-$ID -t $SESSION \; select-window -t $WINDOW
 

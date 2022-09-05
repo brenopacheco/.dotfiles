@@ -31,6 +31,10 @@ paq({
     {'nvim-treesitter/nvim-treesitter',             config='treesitter', run = ':TSUpdate'};
     {'nvim-treesitter/nvim-treesitter-textobjects'};
     {'nvim-treesitter/playground'};
+		{'nvim-treesitter/nvim-treesitter-context'};
+
+		{'glepnir/lspsaga.nvim'};
+
 
     {'brenoleonhardt-poatek/neogen',                config='neogen'};
 
@@ -60,6 +64,7 @@ paq({
     {'rcarriga/nvim-notify'};
     {'nvim-orgmode/orgmode',                        config='org'};
     {'brenopacheco/vim-tree',                       config='vim-tree'};
+		{'folke/twilight.nvim'};
 
 		-- disabled for now
     {'fatih/vim-go',                                run=':GoUpdateBinaries'};

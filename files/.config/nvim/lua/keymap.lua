@@ -17,6 +17,7 @@ local defaults = [[
     nnoremap q<leader>   q:
     nnoremap <leader><leader> :
     nnoremap <leader>Q   :qa<cr>
+    nnoremap <leader>bd  :bd<cr>
     "nnoremap q<leader>   <cmd>lua u.toggle_cmdline()<cr>
     "nnoremap <Tab>      <cmd>lua u.org_tab()<cr>
     "nnoremap <S-Tab>    <cmd>lua u.org_untab()<cr>
@@ -51,6 +52,7 @@ local actions = [[
     nnoremap <leader>pu :PaqUpdate<cr>
     nnoremap <leader>pc :PaqClean<cr>
     nnoremap <leader>pl :PaqList<cr>
+    nnoremap <leader>po :PaqLogOpen<cr>
     xnoremap <leader>s  <cmd>lua u.substitute()<cr>
     nnoremap <leader>s  <cmd>lua u.substitute()<cr>
     nmap <leader>p      <Plug>RestNvim <Plug>RestNvimPreview
@@ -237,7 +239,7 @@ function M.register_lsp(client, bufnr)
   vim.cmd(lsp)
   if client.name == 'eslint' then
     vim.cmd([[
-      nnoremap <leader>=  :EslintFixAll<cr>
+      nnoremap <buffer> <leader>=  :EslintFixAll<cr>
     ]])
   end
 end
