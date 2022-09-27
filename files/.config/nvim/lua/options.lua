@@ -80,6 +80,7 @@ let c_syntax_for_h = 1                    " recognize .h as c file
 set path=**                               " extend path to glob **
 set termguicolors
 set nobomb " remove <feff>
+let g:filetype_pl="prolog"
 ]])
 
 vim.go.grepprg = "rg --hidden --smart-case"
