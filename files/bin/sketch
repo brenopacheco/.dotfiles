@@ -4,7 +4,7 @@ LANG=$1
 
 function help() {
 cat<<EOF
-Usage: sketch [go|node|sh|c|lua] [NAME]
+Usage: sketch [go|js|ts|sh|c|lua] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
@@ -21,9 +21,9 @@ fi
 LANG=$1
 NAME=$2
 
-if [[ ! "$LANG" =~ ^(go|node|sh|c|lua)$ ]]; then
+if [[ ! "$LANG" =~ ^(go|js|ts|sh|c|lua)$ ]]; then
     help
-    echo "Invalid LANG: use go, sh, node or lua" >&2
+    echo "Invalid LANG: use go, sh, js, ts or lua" >&2
     exit 1
 fi
 
@@ -58,17 +58,25 @@ case $LANG in
         echo -e "#include <stdio.h>\n\nint main() {\n\n  return 0;\n}" > main.c
         echo -e 'all:\n\tgcc main.c -o main\n\t./main' > Makefile
         ;;
-    "node")
+    "js")
         npm init -y
         touch main.js
         echo -e 'all:\n\tnode main.js' > Makefile
         tsc --init
         ;;
+    "ts")
+        npm init -y
+        touch main.ts
+        echo -e 'all:\n\tts-node main.ts' > Makefile
+		~/bin/eslint-scaffold
+        tsc --init
+        ;;
     "sh")
-        touch script.sh
-        chmod +x script.sh
-        echo -e "#!/usr/bin/env bash\n" > script.sh
-        echo -e 'all:\n\t./script.sh' > Makefile
+        FILE="main.sh"
+        touch $FILE
+        chmod +x $FILE
+        echo -e "#!/usr/bin/env bash\n" > $FILE
+        echo -e "all:\n\t./$FILE" > Makefile
         ;;
     "lua")
         touch main.lua

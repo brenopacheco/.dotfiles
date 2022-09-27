@@ -9,7 +9,7 @@ local defaults = [[
     nnoremap <           <<
     xnoremap *           "zy/\V<C-r>=escape(@z, '\/')<cr><cr>
     nnoremap           :nohlsearch<cr>
-    nnoremap #           :b #<cr>
+    "nnoremap #           :b #<cr>
     inoremap jk          <C-[>l
     inoremap kj          <C-[>l
     snoremap jk          <ESC>
@@ -26,7 +26,10 @@ local defaults = [[
     "nnoremap <C-p>       ddkP
     "nnoremap <C-n>       ddp
     nnoremap <C-h> :exe printf('match lCursor /\V\%%(\<\k\*\%%#\k\*\>\)\@!\&\<%s\>/', escape(expand('<cword>'), '/\'))<cr>
+		nnoremap <leader>D :diffthis<cr>
 ]]
+
+-- TODO: diff toggle in leader D
 
 local actions = [[
     nnoremap g]         mzo<C-[>0D`z
@@ -93,7 +96,7 @@ local toggles = [[
   nnoremap ´         <cmd>lua u.lf()<cr>
   nnoremap <leader>' <cmd>FloatermToggle<cr>
   nnoremap <leader>" <cmd>FloatermNew<cr>
-  nnoremap <leader>n <cmd>lua u.ntree()<cr>
+  nnoremap <leader>n <cmd>NvimTreeToggle<cr>
   nnoremap <leader>l <cmd>lua u.gtree()<cr>
   nnoremap <leader>e <cmd>lua u.diagnostics(0)<cr>
   nnoremap <leader>E <cmd>lua u.diagnostics()<cr>
@@ -125,6 +128,7 @@ local git = [[
    nnoremap <leader>gg <cmd>lua u.fugitive()<cr>
    nnoremap <leader>gv <cmd>lua u.gv()<cr>
    nnoremap <leader>gl <cmd>Git log<cr>
+   nnoremap <leader>gt <cmd>Telescope git_branches<cr>
    nnoremap <leader>gd <cmd>lua u.diff()<cr>
    nnoremap <leader>gs <cmd>lua u.stage_hunk()<cr>
    nnoremap <leader>gu <cmd>lua u.undo_stage_hunk()<cr>

@@ -9,10 +9,10 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-set nobuflisted
+" set nobuflisted
 
-augroup quickfix_close
-  au!
-  au WinEnter * if winnr('$') == 1
-      \ && &buftype == "quickfix" | q |endif
-augroup END
+" augroup quickfix_close
+"   au!
+"   au WinEnter * if winnr('$') == 1
+"       \ && &buftype == "quickfix" | q |endif
+" augroup END

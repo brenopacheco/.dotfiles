@@ -24,9 +24,14 @@ end
 function M.go_run()
   path = vim.fn.expand('%:p')
   ft = vim.o.ft
-  cmds = {go = {'go', 'run', path}, lua = {'lua', path}, javascript = {'node', path}}
-	cmd = cmds[ft]
-	assert(cmd ~= nil, "Filetype not supported.")
+  cmds = {
+    go = {'go', 'run', path},
+    lua = {'lua', path},
+    javascript = {'node', path},
+    sh = {'bash', path}
+  }
+  cmd = cmds[ft]
+  assert(cmd ~= nil, 'Filetype not supported.')
   local callback = function()
     vim.fn.jobstart(cmd, {
       stdout_buffered = true,
@@ -35,7 +40,7 @@ function M.go_run()
         notify(data, vim.log.levels.INFO, {title = 'Output of: ' .. path})
       end,
       on_stderr = function(_, data)
-				if data == nil or string.len(data[1]) == 0 then return end
+        if data == nil or string.len(data[1]) == 0 then return end
         notify(data, vim.log.levels.ERROR, {title = 'Error of: ' .. path})
       end
     })
@@ -43,7 +48,7 @@ function M.go_run()
   vim.api.nvim_create_autocmd('BufWritePost', {
     group = vim.api.nvim_create_augroup('Utils', {clear = true}),
     desc = 'Run buffer interpreter',
-		buffer = vim.fn.bufnr(),
+    buffer = vim.fn.bufnr(),
     callback = callback
   })
   callback()

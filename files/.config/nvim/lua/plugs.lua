@@ -61,9 +61,11 @@ paq({
     {'voldikss/vim-floaterm',                       config='floaterm'};
     {'nanotee/luv-vimdocs'};
     {'b0o/schemastore.nvim'};
-    {'rcarriga/nvim-notify'};
+    {'rcarriga/nvim-notify',                        config='notify'};
     {'nvim-orgmode/orgmode',                        config='org'};
     {'brenopacheco/vim-tree',                       config='vim-tree'};
+
+		{'kyazdani42/nvim-tree.lua',                    config='nvim-tree'};
 		{'folke/twilight.nvim'};
 
 		-- disabled for now

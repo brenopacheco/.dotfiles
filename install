@@ -67,7 +67,7 @@ yay -S gotop-bin htop-vim-git lf-bin neovim-nightly-bin
 echo "setting up udev rules for logitech keyboard"
 sudo echo 'ACTION=="bind", SUBSYSTEM=="hid", RUN+="/opt/bin/k380.sh %p"' > /etc/udev/rules.d/50-k380.rules
 sudo mkdir -p /opt/bin
-sudo cat<<EOF > /opt/bin/k380.sh
+cat<<EOF | sudo tee /opt/bin/k380.sh
 #!/bin/sh
 exec >>/tmp/k380-udev.log 2>&1
 if [[ \$HID_NAME == 'Keyboard K380' ]]; then
@@ -78,3 +78,14 @@ if [[ \$HID_NAME == 'Keyboard K380' ]]; then
 fi
 EOF
 sudo chmod +x /opt/bin/k380.sh /etc/udev/rules.d/50-k380.rules
+
+# echo "create tun0 interface for openvpn" # https://bbs.archlinux.org/viewtopic.php?id=251883
+# cat<<EOF | sudo tee /etc/systemd/network/90-tun0.netdev 
+# [NetDev]
+# Name=tun0
+# Kind=tun
+
+# [Tun]
+# Group=nm-openvpn
+# User=nm-openvpn
+# EOF

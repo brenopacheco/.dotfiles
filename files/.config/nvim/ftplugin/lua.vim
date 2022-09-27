@@ -9,6 +9,7 @@ setlocal shiftwidth=2
 setlocal tabstop=2
 setlocal foldmarker=[[,]]
 setlocal foldexpr=marker
+setlocal expandtab
 " setlocal foldmethod=expr
 " setlocal foldexpr=nvim_treesitter#foldexpr()
 setlocal formatoptions=croqlj

@@ -106,3 +106,7 @@ alias luamake=/home/breno/.cache/nvim/lsp/lua-language-server/3rd/luamake/luamak
 # if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 #   tmux new -s sketch-$RANDOM -t sketch \; set-option destroy-unattached
 # fi
+
+# run dotnet-trust-cert script
+export ASPNETCORE_Kestrel__Certificates__Default__Password="foobar"
+export ASPNETCORE_Kestrel__Certificates__Default__Path="/home/breno/.aspnet/localhost.pfx"
