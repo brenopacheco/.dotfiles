@@ -24,3 +24,5 @@
     ls    = !git ls-tree --name-only -r $(git branch --show-current)
 [commit]
 	gpgsign = true
+[push]
+	autoSetupRemote = true

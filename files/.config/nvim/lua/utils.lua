@@ -74,7 +74,7 @@ function M.hprev() require('gitsigns').prev_hunk() end
 function M.insert_line_above() vim.cmd([[norm mzO<C-[>0D`z]]) end
 function M.insert_line_below() vim.cmd([[norm mzo<C-[>0D`z]]) end
 function M.lf() vim.cmd('Lf') end
-function M.live_grep() require('telescope.builtin').live_grep({cwd = M.root()}) end
+function M.live_grep() require('telescope.builtin').live_grep({cwd = M.root(), hidden = true}) end
 function M.lnext() vim.fn.lnext() end
 function M.loclist() vim.fn['utils#toggle']('qf', 'lopen | wincmd p') end
 function M.lprev() vim.fn.lprev() end
@@ -104,6 +104,7 @@ end
 function M.open_url() vim.cmd('!chromium ' .. M.get_url()) end
 function M.preview_hunk() require('gitsigns').preview_hunk() end
 function M.projects() require('util.picker').projects() end
+function M.git_dirs() require('util.picker').git_dirs() end
 function M.qf_global() vim.fn['quickfix#filter'](vim.fn.input('> /')) end
 function M.qf_vglobal() print('not ready') end
 function M.quickfix() vim.fn['utils#toggle']('qf', 'copen | wincmd p') end

@@ -61,7 +61,7 @@ git clone https://github.com/brenopacheco/st && cd st && \
 
 echo 'installing yay packages'
 # yay gotop-bin htop-vim-git lf-bin neovim-nightly-bin rtl8821ce-dkms-git
-yay -S gotop-bin htop-vim-git lf-bin neovim-nightly-bin
+yay -S gotop-bin htop-vim-git lf-bin
 
 
 echo "setting up udev rules for logitech keyboard"
@@ -70,22 +70,26 @@ sudo mkdir -p /opt/bin
 cat<<EOF | sudo tee /opt/bin/k380.sh
 #!/bin/sh
 exec >>/tmp/k380-udev.log 2>&1
-if [[ \$HID_NAME == 'Keyboard K380' ]]; then
-  echo "RUN: at `date` by `whoami` act \$ACTION - HID_NAME: \$HID_NAME - Loading Xmodmap"
+if [ "\$HID_NAME" = 'Keyboard K380' ]; then
+  echo "RUN: at \$(date) by \$(whoami) act \$ACTION - HID_NAME: \$HID_NAME - Loading Xmodmap"
   export DISPLAY=:0
   export HOME=/home/breno
   xmodmap ~/.Xmodmap
 fi
+if [ "\$HID_NAME" = 'Adv360 Pro' ]; then
+  echo "RUN: at \$(date) by \$(whoami) act \$ACTION - HID_NAME: \$HID_NAME - Loading Xmodmap-adv360"
+  export DISPLAY=:0
+  export HOME=/home/breno
+  xmodmap ~/.Xmodmap-adv360
+fi
 EOF
 sudo chmod +x /opt/bin/k380.sh /etc/udev/rules.d/50-k380.rules
 
-# echo "create tun0 interface for openvpn" # https://bbs.archlinux.org/viewtopic.php?id=251883
-# cat<<EOF | sudo tee /etc/systemd/network/90-tun0.netdev 
-# [NetDev]
-# Name=tun0
-# Kind=tun
-
-# [Tun]
-# Group=nm-openvpn
-# User=nm-openvpn
-# EOF
+cat<<EOF | sudo tee /etc/X11/xorg.conf.d/00-keyboard.conf
+Section "InputClass"
+        Identifier "system-keyboard"
+        MatchIsKeyboard "on"
+        Option "XkbLayout" "us"
+        Option "XkbModel" "pc104"
+EndSection
+EOF

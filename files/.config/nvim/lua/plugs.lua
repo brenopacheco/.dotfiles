@@ -10,6 +10,7 @@ paq({
 
     {'folke/which-key.nvim',                        config='which-key'};
     {'folke/zen-mode.nvim',                         config='zen-mode'};
+		{'folke/twilight.nvim'};
     {'hrsh7th/nvim-compe',                          config='compe'};
     {'hrsh7th/vim-vsnip',                           config='vsnip'};
     {'hrsh7th/vim-vsnip-integ'};
@@ -36,7 +37,7 @@ paq({
 		{'glepnir/lspsaga.nvim'};
 
 
-    {'brenoleonhardt-poatek/neogen',                config='neogen'};
+    {'danymat/neogen',                              config='neogen'};
 
     {'onsails/lspkind-nvim',                        config='lspkind'};
     {'ruifm/gitlinker.nvim',                        config='git-linker'};
@@ -61,15 +62,14 @@ paq({
     {'voldikss/vim-floaterm',                       config='floaterm'};
     {'nanotee/luv-vimdocs'};
     {'b0o/schemastore.nvim'};
-    {'rcarriga/nvim-notify',                        config='notify'};
+    -- {'rcarriga/nvim-notify',                        config='notify'};
     {'nvim-orgmode/orgmode',                        config='org'};
     {'brenopacheco/vim-tree',                       config='vim-tree'};
 
 		{'kyazdani42/nvim-tree.lua',                    config='nvim-tree'};
-		{'folke/twilight.nvim'};
 
 		-- disabled for now
-    {'fatih/vim-go',                                run=':GoUpdateBinaries'};
+    -- {'fatih/vim-go',                                run=':GoUpdateBinaries'};
     -- {'KabbAmine/zeavim.vim',                        config='zeavim'};
     -- {'projekt0n/github-nvim-theme'};
     -- {'petertriho/nvim-scrollbar',                   config='scrollbar'};

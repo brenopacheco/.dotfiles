@@ -4,18 +4,18 @@ export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
 
 # background image
 export WALLPAPER=~/Desktop/Pictures/wallpaper.jpg
-[[ -f "$WALLPAPER" ]] && feh --bg-fill $WALLPAPER
+test -f  "$WALLPAPER" && feh --bg-fill $WALLPAPER
 
 # monitor
 ~/bin/hdmi-config &
 
 # applications
-# /usr/lib/xfce4/notifyd/xfce4-notifyd &   # notification daemon
 dunst &                                  # notification daemon
 xfce4-power-manager &                    # power manager
 pa-applet &                              # pulseaudio volume applet
-udiskie & disown                         # automount disks
+udiskie &                                # automount disks
 nm-applet &                              # networkmanager applet
 blueman-applet &                         # bluetooth applet
-info-daemon & disown                     # statusbar
-emacs --daemon &
+info-daemon &                            # statusbar
+xmodmap -pke > /tmp/xmodmap.orig
+# emacs --daemon &

@@ -29,11 +29,15 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {'documentation', 'detail', 'additionalTextEdits'}
 }
 
-local root = require('lspconfig/util').root_pattern('.git', vim.fn.getcwd())
 for _, server in pairs(servers) do
+  local patterns = { '.git' }
+  if server == 'eslint' then
+    table.insert(patterns, '.eslintrc.json')
+    table.insert(patterns, '.eslintrc.js')
+  end
   lspconfig[server].setup {
     on_attach = utils.lsp_attach,
-    root_dir = root,
+    root_dir = require('lspconfig/util').root_pattern(patterns, vim.fn.getcwd()),
     capabilities = capabilities,
     settings = {
       documentFormatting = false,

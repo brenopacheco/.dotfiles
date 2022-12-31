@@ -1,18 +1,16 @@
 ! settings for lenovo keyboard {{{
-! sets capslock as ctrl
-! removes left shift and left ctrl
+loadkeys uk
+setxkbmap -model pc105 -layout gb
+
 clear lock
 clear control
 keycode 66 = Control_L
-keycode 37 = 
-! keycode 50 = 
+keycode 37 =
 add Control = Control_L
 
-! sets altgr as shift
 clear mod5
 keycode 108 = Shift_L
 
-! windows key as <Del>
 remove mod4 = Super_L
 keycode 133 = Delete
 
@@ -32,7 +30,6 @@ keycode 48 = dead_tilde dead_circumflex
 keycode 47 = parenright parenleft
 keycode 34 = plus asterisk
 keycode 19 = 0 equal
-! keycode 11 = 2 at 2 at NoSymbol NoSymbol
 keycode 11 = 2 at 2 at at at at at
 keycode 12 = 3 numbersign 3 numbersign
 ! }}}

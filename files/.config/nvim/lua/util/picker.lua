@@ -42,6 +42,20 @@ function M.projects()
   return M.select(list, {prompt = 'Projects'}, on_choice)
 end
 
+function M.git_dirs()
+  local list = vim.fn.systemlist([[ 
+    fd "^\.git$" -t d -HI ~ \
+    | sed 's/\/\.git\///' \
+    | sed 's/^\/home\/breno\///' \
+    | awk '{ print length, $0 }' \
+    | sort -n -s | cut -d" " -f2- 
+  ]])
+  local on_choice = function(choice)
+    vim.cmd('e ~/' .. choice.value)
+  end
+  return M.select(list, {prompt = 'Git dirs'}, on_choice)
+end
+
 function M.lua()
   local items = vim.fn.systemlist([[ fd '\.lua$' ~/.config/nvim ]])
   local on_choice = function(selection) vim.cmd('e ' .. selection.value) end

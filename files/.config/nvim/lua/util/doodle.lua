@@ -28,6 +28,7 @@ function M.go_run()
     go = {'go', 'run', path},
     lua = {'lua', path},
     javascript = {'node', path},
+    typescript = {'ts-node', path},
     sh = {'bash', path}
   }
   cmd = cmds[ft]

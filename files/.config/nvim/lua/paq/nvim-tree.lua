@@ -10,21 +10,18 @@ require('nvim-tree').setup({
   -- open_on_tab = false,
   -- focus_empty_on_setup = false,
   -- sort_by = 'name',
-  -- hijack_unnamed_buffer_when_opening = false,
+  hijack_unnamed_buffer_when_opening = false,
   -- hijack_cursor = true,
   -- root_dirs = {},
   -- prefer_startup_root = false,
-  -- sync_root_with_cwd = true,
+  sync_root_with_cwd = false,
   -- reload_on_bufenter = false,
   -- respect_buf_cwd = false,
-  -- hijack_directories = {enable = false, auto_open = false},
-  update_focused_file = {
-    enable = true,
-    update_root = false
-  },
+  hijack_directories = {enable = false, auto_open = false},
+  update_focused_file = {enable = true, update_root = false},
   -- system_open = {},
   -- diagnostics = {enable = true, debounce_delay = 300, show_on_dirs = true},
-  -- git = {enable = true, ignore = true, show_on_dirs = true},
+  git = {enable = true, ignore = true, show_on_dirs = true},
   -- filesystem_watchers = {enable = true, debounce_delay = 300},
   -- on_attach = function() print('attached') end,
   -- select_prompts = true,
@@ -41,13 +38,15 @@ require('nvim-tree').setup({
   --   float = {enable = false}
   -- }
 
+  actions = {
+    use_system_clipboard = true,
+    change_dir = {enable = false, global = true, restrict_above_cwd = false}
+  },
+
   view = {
     mappings = {
       list = {
-        {
-          key = {'<CR>', 'e'},
-          action = 'edit'
-        }
+        {key = {'<CR>', 'e'}, action = 'edit'}
         --     {key = '<C-e>', action = 'edit_in_place'},
         --     {key = 'O', action = 'edit_no_picker'},
         --     {key = {'<C-]>', '<2-RightMouse>'}, action = 'cd'},
