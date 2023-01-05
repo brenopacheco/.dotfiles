@@ -1,6 +1,6 @@
 ! settings for lenovo keyboard {{{
-loadkeys uk
-setxkbmap -model pc105 -layout gb
+! loadkeys uk
+! setxkbmap -model pc105 -layout gb
 
 clear lock
 clear control

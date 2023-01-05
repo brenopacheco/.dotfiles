@@ -70,7 +70,7 @@ paq({
 
 		-- disabled for now
     -- {'fatih/vim-go',                                run=':GoUpdateBinaries'};
-    -- {'KabbAmine/zeavim.vim',                        config='zeavim'};
+    {'KabbAmine/zeavim.vim',                        config='zeavim'};
     -- {'projekt0n/github-nvim-theme'};
     -- {'petertriho/nvim-scrollbar',                   config='scrollbar'};
     -- {'folke/todo-comments.nvim',                    config='todo-comments'};
