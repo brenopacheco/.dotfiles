@@ -4,13 +4,14 @@
 -- we can disable it via settings. right now we keep function call snippets
 local utils = require('utils')
 
-local sumneko_root_path = '/home/breno/.cache/nvim/lsp/lua-language-server'
-local sumneko_binary = sumneko_root_path .. '/bin/lua-language-server'
+-- local sumneko_root_path = '/home/breno/.cache/nvim/lsp/lua-language-server'
+-- local sumneko_binary = sumneko_root_path .. '/bin/lua-language-server'
 
 local root = require('lspconfig/util').root_pattern('.git', vim.fn.getcwd())
 
 local M = {
-  cmd = {sumneko_binary, '-E', sumneko_root_path .. '/main.lua'},
+  -- cmd = {sumneko_binary, '-E', sumneko_root_path .. '/main.lua'},
+  cmd = {'lua-language-server'},
   root_dir = root,
   on_attach = utils.lsp_attach,
   settings = {

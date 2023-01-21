@@ -22,7 +22,7 @@ local supported = {
   "latex",
   "lua",
   "markdown",
-  "org",
+    -- "org",
   "php",
   "python",
   "ql",
@@ -34,7 +34,8 @@ local supported = {
   "typescript",
   "vim",
   "yaml",
-  "elixir"
+  "elixir",
+  "svelte"
 }
 
 require'nvim-treesitter.configs'.setup {

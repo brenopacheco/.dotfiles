@@ -38,7 +38,6 @@ while true; do
 	mem_data=$( free -m | awk 'NR==2{printf "%.0f%%", $3*100/$2 }' )
 	disk_data=$( df -h 2>/dev/null | awk '$NF=="/"{printf "%.0f%%", $5}' )
 	cpu_data=$(tail -1 /tmp/cpu.log 2>/dev/null)
-	bat_data=$(echo "$(cat /sys/class/power_supply/${BAT}/capacity)%")
 
 	#volume
     active_sink=$(pacmd list-sinks | awk '/* index:/{print $3}')
@@ -47,7 +46,25 @@ while true; do
 	if [[ $is_mute == "yes" ]]; then
 		volume="---"
 	fi
-	message=" $volume%  $disk_data  $cpu_data  $mem_data  $bat_data  $date_data "
+
+	# bluetooth
+	bluetooth_active=$(systemctl is-active bluetooth.service)
+	# bluetoothctl devices | cut -f2 -d' ' | while read uuid; do bluetoothctl info $uuid; done|grep -e "Device\|Connected\|Name"
+    if [ "$bluetooth_active" == "active" ]; then
+      bluetooth_status=""
+    else
+      bluetooth_status=""
+    fi
+
+	# cpu
+	cpu_temp="$(sensors | grep Tctl | awk 'NR==1{gsub("+", " "); gsub("\\..", " "); print $2}')"
+	if [ "$cpu_temp" -ge 80 ]; then
+		cpu_status=" ${cpu_temp}°C"
+	else
+		cpu_status=" ${cpu_temp}°C"
+	fi
+
+	message=" $volume%  $disk_data  $cpu_data  $mem_data $cpu_status   $date_data $bluetooth_status "
     xsetroot -name "$message"
     sleep 3s
     echo $message

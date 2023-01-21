@@ -29,7 +29,8 @@ function M.go_run()
     lua = {'lua', path},
     javascript = {'node', path},
     typescript = {'ts-node', path},
-    sh = {'bash', path}
+    sh = {'bash', path},
+    elixir = {'elixir', path}
   }
   cmd = cmds[ft]
   assert(cmd ~= nil, 'Filetype not supported.')

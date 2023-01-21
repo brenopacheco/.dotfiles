@@ -29,26 +29,17 @@ sudo  mv /tmp/30-touchpad.conf /etc/X11/xorg.conf.d/30-touchpad.conf
 
 echo 'installing packages'
 sudo pacman -S  \
-    arandr autoconf automake base-devel bash-completion clang conky \
-    ctags dmenu dunst fd feh file-roller fzf gnome-calculator \
-    inotify-tools inotify-tools lua51 luajit lxappearance-gtk3 m4 make \
-    matcha-gtk-theme ncdu nodejs npm pa-applet \
-    papirus-maia-icon-theme pass patch pavucontrol perl-rename pkgconf \
-    ripgrep rofi st stow sxiv thunar tmux trayer tree udiskie vim vlc \
-    xclip xcursor-breeze xdotool xorg-xbacklight xorg-xev xorg-xmodmap \
-    xorg-xkill xorg-xsetroot yay zathura zathura-pdf-mupdf \
-    moreutils renameutils python-pip ninja ccls cmake
+	arandr base-devel cmake conky ctags dmenu dunst fd feh fzf inotify-tools \
+	lua51 luajit moreutils nemo ncdu ninja pa-applet pass pavucontrol \
+	perl-rename renameutils ripgrep rofi stow sxiv tmux trayer tree udiskie \
+	vim vlc xclip xcursor-breeze xdotool xorg-xev xorg-xkill xorg-xmodmap \
+	xorg-xsetroot yay zathura zathura-pdf-mupdf docker network-manager-applet
 
-echo 'installing language servers / linters / formatters'
-sudo pacman -S shellcheck tidy 
-pip install yamllint pylint cpplint jedi-language-server
-pip install --pre vim-vint  # version 4.3
-npm i -g bash-language-server typescript tsc \
-    typescript-language-server vim-language-server yaml-language-server \
-    diagnostic-languageserver http-server livereload eslint tsc csslint \
-    markdownlint stylelint standard prettier vscode-langservers-extracted
-./files/bin/sumneko_setup
+yay -S lazydocker
 
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
+sudo usermod -aG docker $USER
 
 
 echo "installing dwm and st"
@@ -59,38 +50,63 @@ git clone https://github.com/brenopacheco/dwm && cd dwm && \
 git clone https://github.com/brenopacheco/st && cd st && \
     sudo make clean install && cd ../
 
-echo 'installing yay packages'
-# yay gotop-bin htop-vim-git lf-bin neovim-nightly-bin rtl8821ce-dkms-git
-yay -S gotop-bin htop-vim-git lf-bin
-
-
 echo "setting up udev rules for logitech keyboard"
 echo 'ACTION=="bind", SUBSYSTEM=="hid", RUN+="/opt/bin/k380.sh %p"' | sudo tee /etc/udev/rules.d/50-k380.rules
 sudo mkdir -p /opt/bin
 cat<<EOF | sudo tee /opt/bin/k380.sh
 #!/bin/sh
-exec >>/tmp/k380-udev.log 2>&1
-if [ "\$HID_NAME" = 'Keyboard K380' ]; then
-  echo "RUN: at \$(date) by \$(whoami) act \$ACTION - HID_NAME: \$HID_NAME - Loading Xmodmap"
-  export DISPLAY=:0
-  export HOME=/home/breno
-  xmodmap ~/.Xmodmap
-  setxkbmap -model pc105 -layout gb
-fi
-if [ "\$HID_NAME" = 'Adv360 Pro' ]; then
-  echo "RUN: at \$(date) by \$(whoami) act \$ACTION - HID_NAME: \$HID_NAME - Loading Xmodmap-adv360"
-  export DISPLAY=:0
-  export HOME=/home/breno
-  setxkbmap -model pc104 -layout us
-fi
+sudo -E -u breno /home/breno/bin/keyboard_xmodmap
 EOF
 sudo chmod +x /opt/bin/k380.sh /etc/udev/rules.d/50-k380.rules
 
-cat<<EOF | sudo tee /etc/X11/xorg.conf.d/00-keyboard.conf
-Section "InputClass"
-        Identifier "system-keyboard"
-        MatchIsKeyboard "on"
-        Option "XkbLayout" "us"
-        Option "XkbModel" "pc104"
-EndSection
-EOF
+# install neovim
+mkdir -p ~/tmp/neovim
+git clone https://github.com/neovim/neovim ~/tmp/neovim
+bash -c 'cd ~/tmp/neovim; sudo make install CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=/usr CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr"'
+
+# install node, erlang and elixir
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.1
+. ~/.asdf/asdf.sh
+asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
+asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
+asdf plugin-add python https://github.com/asdf-community/asdf-python.git
+asdf plugin-add rust https://github.com/asdf-community/asdf-rust.git
+asdf plugin-add lua https://github.com/Stratus3D/asdf-lua.git
+asdf plugin-add golang https://github.com/kennyp/asdf-golang.git
+asdf plugin-add dotnet-core https://github.com/emersonsoares/asdf-dotnet-core.git
+asdf plugin-add java https://github.com/halcyon/asdf-java.git
+
+asdf install nodejs latest:14
+asdf install nodejs latest:16
+asdf install nodejs latest:18
+asdf install nodejs latest:19
+KERL_BUILD_DOCS="yes" asdf install erlang 25.2.1
+KERL_BUILD_DOCS="yes" asdf install elixir 1.14.3-otp-25
+asdf global nodejs latest
+asdf global erlang 25.2.1
+asdf global elixir 1.14.3-otp-25
+
+# language servers
+pacman -S lua-language-server
+
+wget https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip -O /tmp/elixir-ls.zip
+mkdir -p ~/.cache/nvim/lsp/elixir-ls
+unzip /tmp/elixir-ls.zip -d ~/.cache/nvim/lsp/elixir-ls
+
+wget https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.39.3/omnisharp-linux-x64-net6.0.zip -O /tmp/omnisharp.zip
+mkdir -p ~/.cache/nvim/lsp/omnisharp
+unzip /tmp/omnisharp.zip -d ~/.cache/nvim/lsp/omnisharp
+chmod +x ~/.cache/nvim/lsp/omnisharp/OmniSharp
+
+npm i -g \
+  eslint prettier prettier-eslint-cli \
+  bash-language-server \
+  tailwindcss-language-server \
+  dockerfile-language-server-nodejs \
+  vscode-langservers-extracted \
+  typescript typescript-language-server \
+  vim-language-server \
+  vscode-langservers-extracted \
+  yaml-language-server

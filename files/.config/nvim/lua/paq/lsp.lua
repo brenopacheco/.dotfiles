@@ -7,20 +7,49 @@ lspconfig.sumneko_lua.setup(require('paq.lsp.sumneko_lua'))
 lspconfig.elixirls.setup(require('paq.lsp.elixirls'))
 lspconfig.omnisharp.setup(require('paq.lsp.omnisharp'))
 
+--[[
+pacman -S lua-language-server
+
+elixir-ls
+wget https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip -O /tmp/elixir-ls.zip
+mkdir -p ~/.cache/nvim/lsp/elixir-ls
+unzip /tmp/elixir-ls.zip -d ~/.cache/nvim/lsp/elixir-ls
+
+rosalyn omnisharp
+wget https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.39.3/omnisharp-linux-x64-net6.0.zip -O /tmp/omnisharp.zip
+mkdir -p ~/.cache/nvim/lsp/omnisharp
+unzip /tmp/omnisharp.zip -d ~/.cache/nvim/lsp/omnisharp
+chmod +x ~/.cache/nvim/lsp/omnisharp/OmniSharp
+
+npm i -g \
+  eslint prettier prettier-eslint-cli \
+  bash-language-server \
+  tailwindcss-language-server \
+  dockerfile-language-server-nodejs \
+  vscode-langservers-extracted \
+  typescript typescript-language-server \
+  vim-language-server \
+  vscode-langservers-extracted \
+  yaml-language-server
+]]
+
+
 local servers = {
-  'bashls', -- bash-language-server
+  'bashls',
   'clangd', -- clang, bear -> "bear -- make build"
-  'cssls', -- vscode-langservers-extracted
-  'dockerls', -- dockerfile-language-server-nodejs
-  'eslint', -- eslint, vscode-langservers-extracted
-  'tailwindcss', -- @tailwindcss/language-server
-  'html', -- vscode-langservers-extracted
-  'jsonls', -- vscode-langservers-extracted
-  'tsserver', -- typescript typescript-language-server
-  'vimls', -- vim-language-server
-  'yamlls', -- yaml-language-server
+  'cssls',
+  'dartls',
+  'dockerls',
+  'eslint',
   'gopls', -- go, gopls
-  'rust_analyzer' -- rust, rust-analyzer
+  'html',
+  'jsonls',
+  'rust_analyzer', -- rust, rust-analyzer
+  'svelte', -- svelte-language-server
+  'tailwindcss',
+  'tsserver',
+  'vimls',
+  'yamlls'
 }
 
 -- enable snippets. we are interested in function call snippets

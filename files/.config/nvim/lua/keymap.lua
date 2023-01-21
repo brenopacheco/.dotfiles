@@ -249,6 +249,15 @@ function M.register_lsp(client, bufnr)
       nnoremap <buffer> <leader>=  :EslintFixAll<cr>
     ]])
   end
+  if client.name == 'elixirls' then
+    vim.cmd([[
+      nnoremap <buffer> <leader>=  :lua vim.lsp.buf.format()<cr>
+      vnoremap <buffer> <leader>=  <cmd>lua vim.lsp.buf.range_formatting()<cr>
+      " au TextChanged <buffer> lua vim.lsp.buf.format({async = true})
+      " au CursorHold <buffer> lua vim.lsp.buf.format({async = true})
+      au BufWritePre <buffer> lua vim.lsp.buf.format({async = false})
+    ]])
+  end
 end
 function M.register_term() vim.cmd(term) end
 

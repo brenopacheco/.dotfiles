@@ -40,6 +40,17 @@ function M.dump(tbl, header)
   header = header and '> ' .. header .. ' = ' or '> '
   print(header .. vim.inspect(tbl))
 end
+function M.files2()
+  roots = require('util.fs').roots()
+  root = "."
+  for _, v in ipairs(roots) do
+    dir = vim.fs.dirname(v)
+    if string.len(dir) > string.len(root) then
+      root = dir
+    end
+  end
+  require('telescope.builtin').find_files({cwd = root, hidden = true})
+end
 function M.files(monorepo)
   local is_dotgit = vim.fn.fnamemodify(vim.fn.getcwd(), ':t') == '.git'
   local is_git = vim.fn['utils#is_git']()

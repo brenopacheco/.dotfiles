@@ -107,3 +107,12 @@ alias luamake=/home/breno/.cache/nvim/lsp/lua-language-server/3rd/luamake/luamak
 # run dotnet-trust-cert script
 export ASPNETCORE_Kestrel__Certificates__Default__Password="foobar"
 export ASPNETCORE_Kestrel__Certificates__Default__Path="/home/breno/.aspnet/localhost.pfx"
+
+export ANDROID_HOME=/opt/android-sdk
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+export TUNNEL=$(curl -s http://localhost:4040/api/tunnels | jq '.tunnels | .[] | select(.config.addr=="http://localhost:4000") | .public_url' | sed 's/"//g')
+
+. $HOME/.asdf/asdf.sh

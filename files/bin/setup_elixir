@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.2
+
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+
+env KERL_BUILD_DOCS=yes KERL_INSTALL_MANPAGES=yes KERL_INSTALL_HTMLDOCS=yes asdf install erlang 25.2
+env KERL_BUILD_DOCS=yes KERL_INSTALL_MANPAGES=yes KERL_INSTALL_HTMLDOCS=yes asdf install elixir 1.14.2-otp-25
+
+asdf global erlang 25.2
+asdf global elixir 1.14.2-otp-25

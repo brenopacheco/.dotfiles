@@ -3,7 +3,7 @@ exec 1>/tmp/xprofile.log 2>&1
 export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
 
 # background image
-export WALLPAPER=~/Desktop/Pictures/wallpaper.jpg
+export WALLPAPER=~/.wallpapers/abstract-d.png
 test -f  "$WALLPAPER" && feh --bg-fill $WALLPAPER
 
 # monitor
@@ -11,11 +11,12 @@ test -f  "$WALLPAPER" && feh --bg-fill $WALLPAPER
 
 # applications
 dunst &                                  # notification daemon
-xfce4-power-manager &                    # power manager
-pa-applet &                              # pulseaudio volume applet
-udiskie &                                # automount disks
-nm-applet &                              # networkmanager applet
-blueman-applet &                         # bluetooth applet
 info-daemon &                            # statusbar
-xmodmap -pke > /tmp/xmodmap.orig
-# emacs --daemon &
+udiskie &                                # automount disks
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
+
+# TODO
+# xfce4-power-manager &                    # power manager
+# pa-applet &                              # pulseaudio volume applet
+# nm-applet &                              # networkmanager applet
+# blueman-applet &                         # bluetooth applet

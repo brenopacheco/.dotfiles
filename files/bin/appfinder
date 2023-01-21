@@ -8,4 +8,5 @@
 # gtk-launch $app
 
 # xfce4
-xfce4-appfinder
+# xfce4-appfinder
+rofi -show run
