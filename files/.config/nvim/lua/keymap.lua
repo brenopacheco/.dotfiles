@@ -132,6 +132,7 @@ local git = [[
    nnoremap <leader>gv <cmd>lua u.gv()<cr>
    nnoremap <leader>gl <cmd>Git log<cr>
    nnoremap <leader>gt <cmd>Telescope git_branches<cr>
+   nnoremap <leader>gT <cmd>Twiggy<cr>
    nnoremap <leader>gd <cmd>lua u.diff()<cr>
    nnoremap <leader>gs <cmd>lua u.stage_hunk()<cr>
    nnoremap <leader>gu <cmd>lua u.undo_stage_hunk()<cr>
@@ -237,7 +238,7 @@ vim.cmd(toggles)
 vim.cmd(git)
 vim.cmd(complete)
 vim.cmd(snippets)
-vim.cmd(args)
+-- vim.cmd(args)
 vim.cmd(dap)
 
 local M = {}

@@ -3,7 +3,7 @@ local utils = require('utils')
 
 vim.lsp.set_log_level(vim.log.levels.ERROR) -- disable logging
 
-lspconfig.sumneko_lua.setup(require('paq.lsp.sumneko_lua'))
+lspconfig.lua_ls.setup(require('paq.lsp.sumneko_lua'))
 lspconfig.elixirls.setup(require('paq.lsp.elixirls'))
 lspconfig.omnisharp.setup(require('paq.lsp.omnisharp'))
 

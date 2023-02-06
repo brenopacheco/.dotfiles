@@ -1,33 +1,32 @@
 #!/usr/bin/env bash
-# Initialize backend and frontend - farmerconnect
 
-BACKEND=~/backend
-FRONTEND=~/frontend
+FC_BACKEND=~/fc/backend
+FC_FRONTEND=~/fc/frontend
 
-# open editor session
-tmux new-session -d -s editor -n nvim -c $FRONTEND
-tmux send-keys -t editor:nvim 'nvim' C-m
-echo "> editor session started"
+function init_fc() {
+	# fc-backend/docker
+	tmux new-session -d -s fc-backend  -n docker     -c $FC_BACKEND
+	tmux send-keys -t fc-backend:docker 'docker-compose up' C-m
 
-# start hub client
-tmux new-session -d -s hub -n client -c $FRONTEND
-tmux send-keys -t hub:client 'yarn start:hub' C-m
-echo "> hub session started"
+	# fc-backend/migrations
+	tmux new-window  -t    fc-backend  -n migrations     -c $FC_BACKEND
+	tmux send-keys -t fc-backend:migrations 'sleep 20' C-m
+	tmux send-keys -t fc-backend:migrations './updateAllDatabases.sh' C-m
 
-# start api
-tmux new-session -d -s backend -n api -c $BACKEND/src/FarmerConnect.Api
-tmux send-keys -t backend:api 'dotnet watch run .' C-m
-echo "> api session started"
+	# fc-backend/server
+	tmux new-window  -t    fc-backend  -n server     -c $FC_BACKEND
+	tmux send-keys -t fc-backend:server 'sleep 60' C-m
+	tmux send-keys -t fc-backend:server 'dotnet watch run --project ./src/FarmerConnect.Api' C-m
 
-# start database services
-tmux new-window -t backend -n compose -c $BACKEND
-tmux send-keys -t backend:compose 'docker-compose up' C-m
-echo "> database services window created in api session"
+	# fc-frontend/hub
+	tmux new-session -d -s fc-frontend  -n hub        -c $FC_FRONTEND
+	tmux send-keys -t fc-frontend:hub  'yarn start:hub'    C-m
 
-# wait until database services are up to run migration scripts
-tmux new-window -t backend -n migrations -c $BACKEND
-sleep 40
-tmux send-keys -t backend:migrations './updateAllDatabases.sh' C-m
-echo "> migrations started in api session"
+	# fc-editor/editor
+	tmux new-session -d -s fc-editor    -n nvim       -c $FC_FRONTEND
+	tmux send-keys -t fc-editor:nvim  'nvim' C-m Space n
+}
 
+init_fc
 
+echo "Done"

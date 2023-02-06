@@ -4,16 +4,11 @@ alias ta="tmux a -t \$(tmux ls | rofi -dmenu | awk '{print \$1}' | sed 's/:\$//'
 alias tl='tmux list-sessions -F "#{session_id}: #{session_name} (group: #{session_group}) - #{?session_attached,attached,detached}"'
 # alias ta='tmux new -A -t scratch'
 alias tk='tmux kill-server'
-# alias ts='tmux new -t scratch \; neww'
-alias t='tmux'
-alias notes="cd ~/git/notes"
-alias ec="emacsclient --create-frame & disown"
+# alias ec="emacsclient --create-frame & disown"
 
-alias aliases='v ~/.bash_aliases'
 alias pp='pushd .'
 alias po='popd'
 
-alias packettracer='/opt/pt/packettracer'
 alias fcd='cd $(fd -t d | fzf)'
 alias fv='v $(fd -t f | fzf)'
 

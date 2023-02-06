@@ -62,7 +62,7 @@ paq({
     {'voldikss/vim-floaterm',                       config='floaterm'};
     {'nanotee/luv-vimdocs'};
     {'b0o/schemastore.nvim'};
-    -- {'rcarriga/nvim-notify',                        config='notify'};
+    {'rcarriga/nvim-notify',                        config='notify'};
     {'nvim-orgmode/orgmode',                        config='org'};
     {'brenopacheco/vim-tree',                       config='vim-tree'};
 
@@ -77,7 +77,7 @@ paq({
     -- {'f-person/git-blame.nvim',                     config='git-blame'};
     -- {'ludovicchabant/vim-gutentags',                config='gutentags'};
     -- {'mbbill/undotree'};
-    -- {'sodapopcan/vim-twiggy'};
+    {'sodapopcan/vim-twiggy'};
 })
 
 local disable_builtins = true

@@ -132,13 +132,18 @@
     "body": ["const ${1:memo} = useMemo(() => {\n\t${0}\n}, []);"]
   },
   "js-react-fc": {
-    "prefix": ["fc", "component"],
+    "prefix": ["component"],
     "body": [
-      "const ${1:component}: FC<${2}> = (props) => {",
-      "  return (",
-      "    ${0:${TM_SELECTED_TEXT}}",
-      "  );",
-      "};"
+      "interface ${1:Component}Props {",
+      "",
+      "}",
+      "",
+      "export default function ${1:Component}(props: ${1:Component}Props) {",
+		  "$0",
+      "\treturn (",
+      "",
+      "\t)",
+      "}"
     ]
   }
 }
