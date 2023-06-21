@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [[ $1 != *.mp4 ]]
+then
+  echo "Invalid file. Needs to be an .mp4" >&2
+  exit 1
+fi
+
+ffmpeg -i ./$1 -vn -acodec libmp3lame -q:a 4 ./${1/%.mp4/}.mp3
+
+# vim:tw=78:ts=8:noet:ft=sh:norl:

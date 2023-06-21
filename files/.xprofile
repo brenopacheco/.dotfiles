@@ -10,13 +10,16 @@ test -f  "$WALLPAPER" && feh --bg-fill $WALLPAPER
 ~/bin/hdmi-config &
 
 # applications
-dunst &                                  # notification daemon
+dunst -print >> /tmp/dunst.log &         # notification daemon
 info-daemon &                            # statusbar
 udiskie &                                # automount disks
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
+syncthing --no-browser & disown
 
 # TODO
 # xfce4-power-manager &                    # power manager
-# pa-applet &                              # pulseaudio volume applet
-# nm-applet &                              # networkmanager applet
-# blueman-applet &                         # bluetooth applet
+pa-applet &                              # pulseaudio volume applet
+nm-applet &                              # networkmanager applet
+blueman-applet &                         # bluetooth applet
+
+redshift -l redshift -l 41.157944:-8.629105 &

@@ -1,7 +1,9 @@
+local util = require 'lspconfig.util'
 local lspconfig = require('lspconfig')
 local utils = require('utils')
 
-vim.lsp.set_log_level(vim.log.levels.ERROR) -- disable logging
+vim.lsp.set_log_level(vim.log.levels.DEBUG) -- disable logging
+-- vim.lsp.set_log_level(vim.log.levels.ERROR) -- disable logging
 
 lspconfig.lua_ls.setup(require('paq.lsp.sumneko_lua'))
 lspconfig.elixirls.setup(require('paq.lsp.elixirls'))
@@ -35,6 +37,7 @@ npm i -g \
 
 
 local servers = {
+  'ansiblels',
   'bashls',
   'clangd', -- clang, bear -> "bear -- make build"
   'cssls',
@@ -49,7 +52,8 @@ local servers = {
   'tailwindcss',
   'tsserver',
   'vimls',
-  'yamlls'
+  'yamlls',
+  'prismals'
 }
 
 -- enable snippets. we are interested in function call snippets
@@ -60,14 +64,16 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 }
 
 for _, server in pairs(servers) do
-  local patterns = { '.git' }
-  if server == 'eslint' then
-    table.insert(patterns, '.eslintrc.json')
-    table.insert(patterns, '.eslintrc.js')
-  end
+  -- local root_dir = lspconfig[server].document_config.default_config.root_dir
+
+  -- if server == 'eslint' then
+  --   local patterns = { '.git', '.eslintrc.json', '.eslintrc.js' }
+  --   root_dir = util.root_pattern(patterns, vim.fn.getcwd())
+  -- end
+
   lspconfig[server].setup {
     on_attach = utils.lsp_attach,
-    root_dir = require('lspconfig/util').root_pattern(patterns, vim.fn.getcwd()),
+    -- root_dir = root_dir,
     capabilities = capabilities,
     settings = {
       documentFormatting = false,

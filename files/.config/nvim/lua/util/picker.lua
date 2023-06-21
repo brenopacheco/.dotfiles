@@ -106,7 +106,7 @@ function M.run()
         local items = {}
         local max_len = 0
         for s in string.gmatch(data, '[^\r\n]+') do
-          local match = string.match(s, '^(%a+):')
+          local match = string.match(s, '^([a-zA-Z_%-]+):')
           if match ~= nil then
             max_len = string.len(match) > max_len and string.len(match) or
                           max_len
@@ -182,7 +182,7 @@ function M.run()
 
   local on_choice = function(selection)
     vim.cmd([[let g:floaterm_autoclose = 0]])
-    vim.cmd('FloatermNew --cwd=' .. selection.value.dir .. ' ' ..
+    vim.cmd('FloatermNew cd ' .. selection.value.dir .. '; ' ..
                 selection.value.cmd)
   end
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 npm i -D eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin
+# yarn add -D eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin
 
 cat<<EOF > .editorconfig
 root = true

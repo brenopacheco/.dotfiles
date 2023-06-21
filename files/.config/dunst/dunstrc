@@ -452,3 +452,6 @@ mouse_right_click = close_all
 # timeout set by dunst configuration. Without this parameter, an application
 # may close the notification sent before the user defined timeout.
 ignore_dbusclose = false
+
+[global]
+    timeout = 20

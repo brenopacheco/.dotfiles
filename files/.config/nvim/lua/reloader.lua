@@ -1,8 +1,6 @@
-local M = {}
-
 --- Configure reloader.
 --  Setup autocmd on BufWrite to reload the module if it is a config file.
-function M.config()
+function config()
   vim.api.nvim_create_autocmd('BufWritePost', {
     group = vim.api.nvim_create_augroup('Reloader', {clear = true}),
     pattern = '*.lua',
@@ -12,14 +10,14 @@ function M.config()
         if string.match(context.match, '%.config/nvim/lua/') then
           local module = string.gsub(context.match,
                                      '^.*%.config/nvim/lua/(.*)%.lua', '%1')
-          M.reload(module)
+          reload(module)
         end
       end)
     end
   })
 end
 
-function M.reload(key)
+function reload(key)
   key = key or ''
   dkey = string.gsub(key, '/', '.')
   skey = string.gsub(key, '%.', '/')
@@ -33,17 +31,15 @@ function M.reload(key)
   return require(dkey)
 end
 
-function M.modules()
-  local m = {}
-  for k, _ in pairs(package.loaded) do table.insert(m, k) end
-  vim.pretty_print(m)
-end
+-- function modules()
+--   local m = {}
+--   for k, _ in pairs(package.loaded) do table.insert(m, k) end
+--   vim.pretty_print(m)
+-- end
 
-function M.is_loaded(module)
-  print('Package \'' .. module .. '\' is ' ..
-            (package.loaded[module] and '' or 'NOT ') .. 'loaded.')
-end
+-- function is_loaded(module)
+--   print('Package \'' .. module .. '\' is ' ..
+--             (package.loaded[module] and '' or 'NOT ') .. 'loaded.')
+-- end
 
-M.config()
-
-return M
+config()

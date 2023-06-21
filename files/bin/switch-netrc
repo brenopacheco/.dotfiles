@@ -4,11 +4,11 @@ CURRENT=$(file ~/.netrc.gpg | grep symbolic | sed 's/^.*-//')
 
 case $CURRENT in
   poatek)
-    echo "Switching to -> .netrc-horizon.gpg"
+    echo "Switching to -> .netrc-breno.gpg"
     rm ~/.netrc.gpg
-    ln -sn ~/.netrc.gpg-horizon ~/.netrc.gpg
+    ln -sn ~/.netrc.gpg-breno ~/.netrc.gpg
     ;;
-  horizon)
+  breno)
     echo "Switching to -> .netrc-poatek.gpg"
     rm ~/.netrc.gpg
     ln -sn ~/.netrc.gpg-poatek ~/.netrc.gpg

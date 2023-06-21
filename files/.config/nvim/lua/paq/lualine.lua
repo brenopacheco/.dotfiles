@@ -17,7 +17,7 @@ dap_status()
 
 -- TODO: fix this function
 local function lsp_progress()
-  local messages = vim.lsp.util.get_progress_messages()
+  local messages = vim.lsp.status()
   if #messages == 0 then return '' end
   local status = {}
   for _, msg in pairs(messages) do

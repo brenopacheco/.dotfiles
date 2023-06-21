@@ -35,7 +35,8 @@ local supported = {
   "vim",
   "yaml",
   "elixir",
-  "svelte"
+  "svelte",
+  "prisma"
 }
 
 require'nvim-treesitter.configs'.setup {

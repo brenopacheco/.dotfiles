@@ -145,5 +145,11 @@
       "\t)",
       "}"
     ]
-  }
+  },
+	"js-sleep": {
+    "prefix": ["sleep"],
+    "body": [
+			"await new Promise((resolve) => setTimeout(resolve, ${0}));"
+		]
+	}
 }

@@ -11,8 +11,8 @@ add Control = Control_L
 clear mod5
 keycode 108 = Shift_L
 
-remove mod4 = Super_L
-keycode 133 = Delete
+! remove mod4 = Super_L
+! keycode 133 = Delete
 
 ! other keybindings
 keycode 105 = slash question

@@ -18,7 +18,7 @@ setlocal comments=s:--[[,m:\ ,e:]],:--
 setlocal commentstring=--%s
 setlocal suffixesadd=.lua
 setlocal keywordprg=:help
-setlocal iskeyword+=.
+" setlocal iskeyword+=.
 setlocal isfname+=.,/
 
 iab <buffer> af  function() <CR><CR>end<ESC>ki<TAB>

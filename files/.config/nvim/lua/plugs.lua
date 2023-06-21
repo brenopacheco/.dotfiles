@@ -78,6 +78,9 @@ paq({
     -- {'ludovicchabant/vim-gutentags',                config='gutentags'};
     -- {'mbbill/undotree'};
     {'sodapopcan/vim-twiggy'};
+
+    -- {'zbirenbaum/copilot.lua'}
+    -- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/guides/setup-copilot-lua-plus-nvim-cmp.md
 })
 
 local disable_builtins = true

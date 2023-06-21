@@ -1,4 +1,4 @@
-# If not running interactively, don't do anything
+# If not running interactively, do nothing
 case $- in
     *i*) ;;
       *) return;;
@@ -37,7 +37,6 @@ set completion-ignore-case On
 shopt -s checkwinsize
 shopt -s globstar
 
-
 # Source aliases and functions and keybindings
 source $HOME/.bash_aliases
 source $HOME/.bash_functions
@@ -46,73 +45,24 @@ source $HOME/.bash_keybindings
 # Set vim as default editor
 export EDITOR=vim
 export VISUAL=vim
-export SVN_EDITOR="$VISUAL"
 
 ## source fuzzy finder fzf settings
 [ -f $HOME/.bash_fzf ] && source $HOME/.bash_fzf
 
-## NPM / NODE config
-NPM_PACKAGES="${HOME}/.npm"
-[[ ! -f $HOME/.npmrc ]] && echo "prefix=${NPM_PACKAGES}" >> $HOME/.npmrc
-[[ ! -d ${NPM_PACKAGES} ]] && mkdir ${NPM_PACKAGES}
+## source sdk manager
+[ -d $HOME/.asdf ] \
+	&& source $HOME/.asdf/asdf.sh \
+	&& source $HOME/.asdf/completions/asdf.bash
 
 # Misc settings
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
-
-export GOPATH=$HOME/.go
-export GEM_HOME=$HOME/.gems
-export GEM_PATH=$GEM_PATH
-
+export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
 
 # PATH
 if [ "$SHLVL" = 1 ]; then
     export PATH=$PATH:$HOME/bin
-    export PATH=$PATH:$HOME/bin/tmux
-    export PATH=$PATH:$HOME/.go/bin
-    export PATH=$PATH:$HOME/.cargo/bin
-    export PATH=$PATH:$HOME/.local/bin
-    export PATH=$PATH:$NPM_PACKAGES/bin
-    export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
-    export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
-    export PATH=$PATH:$HOME/.lua/bin
-    export PATH=$PATH:$HOME/.pkgs/bin
-    export PATH=$PATH:$GEM_HOME/bin
+    export PATH=$PATH:$HOME/.local/bin  # python 
 fi
 
-# JAVA/JDTLS
-# Java
-export JAVA_HOME=/usr/lib/jvm/default
-export JDTLS_HOME=$HOME/.cache/nvim/lsp/jdtls
-export JDTLS_CONFIG=$JDTLS_HOME/config_linux
-export WORKSPACE=$HOME/.cache/jdtls
-
-# NVM
-# test -e /usr/share/nvm/init-nvm.sh && source /usr/share/nvm/init-nvm.sh
-# ASDF
-test -e $HOME/.asdf/asdf.sh && source $HOME/.asdf/asdf.sh
-
-#.bash_profile
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-
-export AWT_TOOLKIT=MToolkit
-
-
-export PATH="$PATH:/home/breno/.dotnet/tools"
-
 test -e .npmtoken && source .npmtoken
-
-alias luamake=/home/breno/.cache/nvim/lsp/lua-language-server/3rd/luamake/luamake
-
-# run dotnet-trust-cert script
-export ASPNETCORE_Kestrel__Certificates__Default__Password="foobar"
-export ASPNETCORE_Kestrel__Certificates__Default__Path="/home/breno/.aspnet/localhost.pfx"
-
-export ANDROID_HOME=/opt/android-sdk
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-
-export TUNNEL=$(curl -s http://localhost:4040/api/tunnels | jq '.tunnels | .[] | select(.config.addr=="http://localhost:4000") | .public_url' | sed 's/"//g')
-
-. $HOME/.asdf/asdf.sh
