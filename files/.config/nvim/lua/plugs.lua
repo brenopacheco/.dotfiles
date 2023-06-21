@@ -1,86 +1,55 @@
 local paq = require('paq')
 
 paq({
-    {'bluz71/vim-nightfly-guicolors'};
     {'editorconfig/editorconfig-vim'};
-
-    {'kana/vim-textobj-user'};
-    {'kana/vim-textobj-fold'};
-    {'kana/vim-textobj-indent'};
-
-    {'folke/which-key.nvim',                        config='which-key'};
-    {'folke/zen-mode.nvim',                         config='zen-mode'};
-		{'folke/twilight.nvim'};
-    {'hrsh7th/nvim-compe',                          config='compe'};
-    {'hrsh7th/vim-vsnip',                           config='vsnip'};
-    {'hrsh7th/vim-vsnip-integ'};
-    {'JoosepAlviste/nvim-ts-context-commentstring', config='commentstring'};
-    {'junegunn/gv.vim'};
-    {'junegunn/vim-easy-align',                     config='easyalign'};
-    {'kyazdani42/nvim-web-devicons',                config='devicons'};
-    {'lewis6991/gitsigns.nvim',                     config='gitsigns'};
-		-- NOTE: tab characters are not shown anymore
-    {'lukas-reineke/indent-blankline.nvim',         config='blankline'};
-    {'neovim/nvim-lspconfig',                       config='lsp'};
-    {'norcalli/nvim-colorizer.lua',                 config='colorizer'};
-    {'NTBBloodbath/rest.nvim'};
-    {'nvim-lua/plenary.nvim'};
-
-    {'nvim-lua/popup.nvim'};
-    {'nvim-telescope/telescope-fzy-native.nvim',    hook='git submodule update --init --recursive'};
-    {'nvim-telescope/telescope.nvim',               config='telescope'};
-    {'nvim-treesitter/nvim-treesitter',             config='treesitter', run = ':TSUpdate'};
-    {'nvim-treesitter/nvim-treesitter-textobjects'};
-    {'nvim-treesitter/playground'};
-		{'nvim-treesitter/nvim-treesitter-context'};
-
-		{'glepnir/lspsaga.nvim'};
-
-
-    {'danymat/neogen',                              config='neogen'};
-
-    {'onsails/lspkind-nvim',                        config='lspkind'};
-    {'ruifm/gitlinker.nvim',                        config='git-linker'};
-    {'sbdchd/neoformat',                            config='neoformat'};
-    {'nvim-lualine/lualine.nvim',                   config='lualine'};
-    {'simrat39/symbols-outline.nvim',               config='symbols-outline'};
-    {'SmiteshP/nvim-gps',                           config='nvim-gps' };
-
     {'tpope/vim-commentary'};
     {'tpope/vim-fugitive'};
     {'tpope/vim-surround'};
-    {'tweekmonster/startuptime.vim'};
-    {'windwp/nvim-autopairs',                       config='autopairs'};
-    {'Hoffs/omnisharp-extended-lsp.nvim'};
-    {'ray-x/lsp_signature.nvim',                    config='signature'};
+    {'junegunn/vim-easy-align',                       config='easyalign'};
+    {'windwp/nvim-autopairs',                         config='autopairs'};
+    {'lewis6991/gitsigns.nvim'};
+    {'bluz71/vim-nightfly-guicolors'};
+    {'lukas-reineke/indent-blankline.nvim',           config='blankline'};
+    {'kyazdani42/nvim-web-devicons',                  config='devicons'};
+		{'kyazdani42/nvim-tree.lua',                      config='nvim-tree'};
+    {'norcalli/nvim-colorizer.lua',                   config='colorizer'};
+    {'folke/which-key.nvim',                          config='which-key'};
+    {'folke/todo-comments.nvim',                      config='todo-comments'};
 
-    {'mfussenegger/nvim-dap',                       config='nvim-dap'};
+    {'sbdchd/neoformat',                              config='neoformat'};
+    {'voldikss/vim-floaterm',                         config='floaterm'};
+    {'danymat/neogen',                                config='neogen'};
+    {'ruifm/gitlinker.nvim',                          config='git-linker'};
+    {'nvim-lua/plenary.nvim'};
+      {'nvim-telescope/telescope.nvim',               config='telescope'};
+      {'nvim-telescope/telescope-fzy-native.nvim',    hook='git submodule update --init --recursive'};
+
+    {'folke/zen-mode.nvim'};
+		  {'folke/twilight.nvim'};
+
+    {'nvim-treesitter/nvim-treesitter',               config='treesitter', run = ':TSUpdate'};
+      {'nvim-treesitter/nvim-treesitter-textobjects'};
+		  {'nvim-treesitter/nvim-treesitter-context'};
+
+    {'neovim/nvim-lspconfig',                         config='lsp'};
+      {'onsails/lspkind-nvim',                        config='lspkind'};
+      {'JoosepAlviste/nvim-ts-context-commentstring', config='commentstring'};
+		  {'glepnir/lspsaga.nvim'};
+      {'simrat39/symbols-outline.nvim',               config='symbols-outline'};
+      {'Hoffs/omnisharp-extended-lsp.nvim'};
+      {'ray-x/lsp_signature.nvim',                    config='signature'};
+      {'b0o/schemastore.nvim'};
+
+    {'hrsh7th/nvim-compe',                            config='compe'};
+      {'hrsh7th/vim-vsnip',                           config='vsnip'};
+      {'hrsh7th/vim-vsnip-integ'};
+
+    {'nvim-lualine/lualine.nvim',                     config='lualine'};
+      {'SmiteshP/nvim-navic'};
+
+    {'mfussenegger/nvim-dap',                         config='nvim-dap'};
       {'rcarriga/nvim-dap-ui'};
       {'theHamsta/nvim-dap-virtual-text'};
-
-		-- check
-    {'voldikss/vim-floaterm',                       config='floaterm'};
-    {'nanotee/luv-vimdocs'};
-    {'b0o/schemastore.nvim'};
-    {'rcarriga/nvim-notify',                        config='notify'};
-    {'nvim-orgmode/orgmode',                        config='org'};
-    {'brenopacheco/vim-tree',                       config='vim-tree'};
-
-		{'kyazdani42/nvim-tree.lua',                    config='nvim-tree'};
-
-		-- disabled for now
-    -- {'fatih/vim-go',                                run=':GoUpdateBinaries'};
-    {'KabbAmine/zeavim.vim',                        config='zeavim'};
-    -- {'projekt0n/github-nvim-theme'};
-    -- {'petertriho/nvim-scrollbar',                   config='scrollbar'};
-    -- {'folke/todo-comments.nvim',                    config='todo-comments'};
-    -- {'f-person/git-blame.nvim',                     config='git-blame'};
-    -- {'ludovicchabant/vim-gutentags',                config='gutentags'};
-    -- {'mbbill/undotree'};
-    {'sodapopcan/vim-twiggy'};
-
-    -- {'zbirenbaum/copilot.lua'}
-    -- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/guides/setup-copilot-lua-plus-nvim-cmp.md
 })
 
 local disable_builtins = true

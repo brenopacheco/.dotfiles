@@ -1,7 +1,5 @@
 -- File: plugin/lualine.vim
--- Description: statusline with lsp/git integration
-
-local dap = require('dap')
+-- Description: statusline with lsp/dap/git integration
 
 local function dap_status()
   local status = require('dap').status()
@@ -29,7 +27,7 @@ local function lsp_progress()
   local spinners = {
     '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'
   }
-  local ms = vim.loop.hrtime() / 1000000
+  local ms = vim.uv.hrtime() / 1000000
   local frame = math.floor(ms / 120) % #spinners
   return table.concat(status, ' | ') .. ' ' .. spinners[frame + 1]
 end
@@ -54,8 +52,6 @@ end
 
 local function foldlevel() return '[Z' .. vim.o.foldlevel .. ']' end
 
-local gps = require('nvim-gps')
-
 local config = {
   options = {
     theme = 'palenight',
@@ -68,7 +64,7 @@ local config = {
     lualine_a = {'mode'},
     lualine_b = {'branch', dap_status},
     lualine_c = {
-      foldlevel, 'filename', {gps.get_location, cond = gps.is_available}
+      foldlevel, 'filename', 'navic'
     },
     lualine_x = {dir, {'diagnostics', sources = {'nvim_diagnostic'}}},
     lualine_y = {lsp_progress, lsp_status, 'filetype'},

@@ -1,39 +1,12 @@
-local util = require 'lspconfig.util'
 local lspconfig = require('lspconfig')
 local utils = require('utils')
 
-vim.lsp.set_log_level(vim.log.levels.DEBUG) -- disable logging
--- vim.lsp.set_log_level(vim.log.levels.ERROR) -- disable logging
+vim.lsp.set_log_level(vim.log.levels.OFF)
+-- vim.lsp.set_log_level(vim.log.levels.ERROR)
 
 lspconfig.lua_ls.setup(require('paq.lsp.sumneko_lua'))
 lspconfig.elixirls.setup(require('paq.lsp.elixirls'))
 lspconfig.omnisharp.setup(require('paq.lsp.omnisharp'))
-
---[[
-pacman -S lua-language-server
-
-elixir-ls
-wget https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip -O /tmp/elixir-ls.zip
-mkdir -p ~/.cache/nvim/lsp/elixir-ls
-unzip /tmp/elixir-ls.zip -d ~/.cache/nvim/lsp/elixir-ls
-
-rosalyn omnisharp
-wget https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.39.3/omnisharp-linux-x64-net6.0.zip -O /tmp/omnisharp.zip
-mkdir -p ~/.cache/nvim/lsp/omnisharp
-unzip /tmp/omnisharp.zip -d ~/.cache/nvim/lsp/omnisharp
-chmod +x ~/.cache/nvim/lsp/omnisharp/OmniSharp
-
-npm i -g \
-  eslint prettier prettier-eslint-cli \
-  bash-language-server \
-  tailwindcss-language-server \
-  dockerfile-language-server-nodejs \
-  vscode-langservers-extracted \
-  typescript typescript-language-server \
-  vim-language-server \
-  vscode-langservers-extracted \
-  yaml-language-server
-]]
 
 
 local servers = {
@@ -64,16 +37,8 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 }
 
 for _, server in pairs(servers) do
-  -- local root_dir = lspconfig[server].document_config.default_config.root_dir
-
-  -- if server == 'eslint' then
-  --   local patterns = { '.git', '.eslintrc.json', '.eslintrc.js' }
-  --   root_dir = util.root_pattern(patterns, vim.fn.getcwd())
-  -- end
-
   lspconfig[server].setup {
     on_attach = utils.lsp_attach,
-    -- root_dir = root_dir,
     capabilities = capabilities,
     settings = {
       documentFormatting = false,
@@ -111,7 +76,7 @@ vim.diagnostic.config({
 function vim.lsp.buf.peek_definition()
   local function preview_location_callback(_, result, method)
     if result == nil or vim.tbl_isempty(result) then
-      vim.lsp.log.info(method, 'No location found')
+      vim.print('No location found')
       return nil
     end
     local location = result
@@ -127,12 +92,6 @@ function vim.lsp.buf.peek_definition()
   vim.lsp.buf_request(0, 'textDocument/definition', params,
                       preview_location_callback)
 end
-
--- NOTE: check that it works
--- vim.cmd([[
---   autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
---   autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js,*.json Neoformat
--- ]])
 
 -- Fix behavior of <C-]>
 vim.lsp.handlers['textDocument/definition'] =
