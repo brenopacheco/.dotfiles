@@ -1,27 +1,12 @@
-.PHONY: all install pass unstow stow help
+.PHONY: all install
 
 
 help:
-	@echo "stow    :: stow files"
-	@echo "unstow  :: remove symlinks"
-	@echo "pass    :: restore passwords"
-	@echo "install :: install packages"
-	@echo "all     :: install, pass, stow"
+	@echo "all     :: run all install tasks"
+	@echo "task    :: run tasks interactiverly"
 
-stow:
-	@echo "adding symlinks"
-	stow files
-
-unstow:
-	@echo "removing symlinks"
-	stow --delete files
-
-pass:
-	@echo "restoring passwords"
-	./passwords
-
-install:
-	@echo "installing packages"
+all:
 	./install
 
-all: install pass stow
+task:
+	./install -i

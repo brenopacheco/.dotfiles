@@ -1,0 +1,25 @@
+#!/bin/sh
+exec 1>/tmp/xprofile.log 2>&1
+export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
+
+# background image
+export WALLPAPER=~/.wallpapers/abstract-d.png
+test -f  "$WALLPAPER" && feh --bg-fill $WALLPAPER
+
+# monitor
+~/bin/hdmi-config &
+
+# applications
+dunst -print >> /tmp/dunst.log &         # notification daemon
+info-daemon &                            # statusbar
+udiskie &                                # automount disks
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
+syncthing --no-browser & disown
+
+# TODO
+# xfce4-power-manager &                    # power manager
+pa-applet &                              # pulseaudio volume applet
+nm-applet &                              # networkmanager applet
+blueman-applet &                         # bluetooth applet
+
+redshift -l 41.157944:-8.629105 &
