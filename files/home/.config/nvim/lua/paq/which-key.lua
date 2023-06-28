@@ -67,7 +67,7 @@ whichkey.setup({
 
 whichkey.register({
     f = {
-        name = "file" -- optional group name
+        name = "file", -- optional group name
     },
     d = {
         name = "debug"

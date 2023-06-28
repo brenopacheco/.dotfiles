@@ -40,4 +40,7 @@ require('compe').setup({
   }
 })
 
-vim.cmd([[autocmd User CompeConfirmDone silent! lua vim.lsp.buf.signature_help()]])
+vim.cmd([[
+autocmd User CompeConfirmDone silent! lua vim.lsp.buf.signature_help()
+inoremap <expr> <C-x> pumvisible() ? '<C-e>' : '<C-x>'
+]])

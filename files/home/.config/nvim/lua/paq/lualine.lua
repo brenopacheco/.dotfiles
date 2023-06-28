@@ -1,70 +1,108 @@
 local function dap_status()
-  local status = require('dap').status()
-  if string.len(status) == 0 then
-    return ''
-  end
-  return ' [' .. status .. ']'
+	local status = require("dap").status()
+	if string.len(status) == 0 then
+		return ""
+	end
+	return " [" .. status .. "]"
 end
 
 dap_status()
 
-local function lsp_progress()
-  local messages = vim.lsp.status()
-  if #messages == 0 then return '' end
-  local status = {}
-  for _, msg in pairs(messages) do
-    if msg.title ~= 'empty title' then
-      table.insert(status, (msg.percentage or 0) .. '%% ' .. (msg.title or ''))
-    end
-  end
-  if #status == 0 then return end
-  local spinners = {
-    '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'
-  }
-  local ms = vim.uv.hrtime() / 1000000
-  local frame = math.floor(ms / 120) % #spinners
-  return table.concat(status, ' | ') .. ' ' .. spinners[frame + 1]
-end
-
 local function lsp_status()
-  if not vim.tbl_isempty(vim.lsp.buf_get_clients(0)) then
-    return ''
-  else
-    return vim.bo.filetype == '' and '  noft' or ''
-  end
+	if not vim.tbl_isempty(vim.lsp.buf_get_clients(0)) then
+		return ""
+	else
+		return vim.bo.filetype == "" and "  noft" or ""
+	end
 end
 
 local function dir()
-  trim = 40
-  local path = vim.fn.getcwd()
-  local len = string.len(path)
-  local diff = len - trim
-  if diff < 0 then return path end
-  local _dir = string.sub(path, diff, len)
-  return string.gsub(_dir, '^[^/]+/', '…/')
+	trim = 40
+	local path = vim.fn.getcwd()
+	local len = string.len(path)
+	local diff = len - trim
+	if diff < 0 then
+		return path
+	end
+	local _dir = string.sub(path, diff, len)
+	return string.gsub(_dir, "^[^/]+/", "…/")
 end
 
-local function foldlevel() return '[Z' .. vim.o.foldlevel .. ']' end
+local function foldlevel()
+	return "[Z" .. vim.o.foldlevel .. "]"
+end
+
+local function protocol()
+	local path = vim.fn.expand("%")
+	local start_index = string.find(path, "://") -- Find the index where "://" starts
+
+	if start_index ~= nil then
+		return " [" .. string.sub(path, 1, start_index - 1) .. "://]"
+	end
+	return ""
+end
 
 local config = {
-  options = {
-    theme = 'palenight',
-    section_separators = '',
-    component_separators = '',
-    icons_enabled = true,
-    globalstatus = true
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', dap_status},
-    lualine_c = {
-      foldlevel, 'filename', 'navic'
-    },
-    lualine_x = {dir, {'diagnostics', sources = {'nvim_diagnostic'}}},
-    lualine_y = {lsp_progress, lsp_status, 'filetype'},
-    lualine_z = {'fileformat', 'encoding'}
-  },
-  extensions = {'fugitive', 'nvim-tree'}
+	options = {
+		theme = "palenight",
+		section_separators = "",
+		component_separators = "",
+		icons_enabled = true,
+		globalstatus = true,
+	},
+	sections = {
+		lualine_a = {
+			"mode",
+			-- icons_enabled = true,
+		},
+		lualine_b = {
+			{
+				"branch",
+				icon = { "" },
+			},
+			{
+				"diff",
+				always_visible = true,
+			},
+			dap_status,
+		},
+		lualine_c = {
+			protocol,
+			{
+				"filename",
+				path = 0,
+				file_status = true,
+				newfile_status = true,
+			},
+			"navic",
+		},
+		lualine_x = {
+			dir,
+			{
+				"diagnostics",
+				always_visible = true,
+			},
+			foldlevel,
+		},
+		lualine_y = {
+			lsp_status,
+			{
+				"filetype",
+				colored = true,
+				icon = {
+					align = "right",
+				},
+			},
+		},
+		lualine_z = {
+			"fileformat",
+			"encoding",
+		},
+	},
+	extensions = {
+		"fugitive",
+		"nvim-tree",
+	},
 }
 
-require('lualine').setup(config)
+require("lualine").setup(config)

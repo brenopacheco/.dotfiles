@@ -2,8 +2,9 @@ local paq = require('paq')
 
 paq({
     {'editorconfig/editorconfig-vim'};
-    {'tpope/vim-commentary'};
-    {'tpope/vim-fugitive'};
+    {'numToStr/Comment.nvim',                         config='comment'};
+    {'tpope/vim-fugitive',                            config='fugitive'};
+    {'junegunn/gv.vim'};
     {'tpope/vim-surround'};
     {'junegunn/vim-easy-align',                       config='easyalign'};
     {'windwp/nvim-autopairs',                         config='autopairs'};
@@ -28,7 +29,7 @@ paq({
 		  {'folke/twilight.nvim'};
 
     {'nvim-treesitter/nvim-treesitter',               config='treesitter', run = ':TSUpdate'};
-      {'nvim-treesitter/nvim-treesitter-textobjects'};
+      -- {'nvim-treesitter/nvim-treesitter-textobjects'};
 		  {'nvim-treesitter/nvim-treesitter-context'};
 
     {'neovim/nvim-lspconfig',                         config='lsp'};
@@ -50,6 +51,12 @@ paq({
     {'mfussenegger/nvim-dap',                         config='nvim-dap'};
       {'rcarriga/nvim-dap-ui'};
       {'theHamsta/nvim-dap-virtual-text'};
+
+    {'gelguy/wilder.nvim',                            config='wilder'};
+    -- {'TimUntersberger/neogit'};
+    -- {'karb94/neoscroll.nvim'};
+    -- {'petertriho/nvim-scrollbar'};
+    -- {'declancm/cinnamon.nvim'};
 })
 
 local disable_builtins = true

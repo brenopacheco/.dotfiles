@@ -14,32 +14,21 @@ local defaults = [[
     inoremap kj          <C-[>l
     snoremap jk          <ESC>
     snoremap kj          <ESC>
-    nnoremap q<leader>   q:
-    nnoremap <leader><leader> :
-    nnoremap <leader>Q   :qa<cr>
-    nnoremap <leader>bd  :bd<cr>
-    "nnoremap q<leader>   <cmd>lua u.toggle_cmdline()<cr>
-    "nnoremap <Tab>      <cmd>lua u.org_tab()<cr>
-    "nnoremap <S-Tab>    <cmd>lua u.org_untab()<cr>
-    "vnoremap <C-p>       dkP1v
-    "vnoremap <C-n>       dp1v
-    "nnoremap <C-p>       ddkP
-    "nnoremap <C-n>       ddp
     nnoremap <C-h> :exe printf('match lCursor /\V\%%(\<\k\*\%%#\k\*\>\)\@!\&\<%s\>/', escape(expand('<cword>'), '/\'))<cr>
 		nnoremap <leader>D :diffthis<cr>
+    "nnoremap } :<C-u>execute "keepjumps norm! " . v:count1 . "}"<CR>
+    "nnoremap { :<C-u>execute "keepjumps norm! " . v:count1 . "{"<CR>
+    nnoremap <leader><leader> :
 ]]
 
 -- TODO: diff toggle in leader D
 
 local actions = [[
-    nnoremap g]         mzo<C-[>0D`z
-    nnoremap g[         mzO<C-[>0D`z
     xmap     ga         :EasyAlign<cr>
     nmap     ga         :EasyAlign<cr>
     nnoremap gy         <cmd>lua require('gitlinker').get_buf_range_url('n', {action_callback = require"gitlinker.actions".open_in_browser})<cr>
     xnoremap gy         :lua require('gitlinker').get_buf_range_url('v', {action_callback = require"gitlinker.actions".open_in_browser})<cr>
     nnoremap qf         <cmd>lua u.qf_global()<CR>
-    nnoremap qv         <cmd>lua u.qf_vglobal()<CR>
     nnoremap qp         <cmd>lua u.colder()<CR>
     nnoremap qn         <cmd>lua u.cnewer()<CR>
     nnoremap <leader>#  <cmd>source %<cr>
@@ -58,15 +47,12 @@ local actions = [[
     nnoremap <leader>po :PaqLogOpen<cr>
     xnoremap <leader>s  <cmd>lua u.substitute()<cr>
     nnoremap <leader>s  <cmd>lua u.substitute()<cr>
-    nmap <leader>p      <Plug>RestNvim <Plug>RestNvimPreview
     nnoremap gx         <cmd>lua u.open_url()<cr>
     xnoremap gx         <cmd>lua u.open_url()<cr>
     nnoremap <leader>i  <cmd>Neogen<cr>
 ]]
 
 local movement = [[
-    nnoremap ]a            <cmd>lua u.next()<cr>
-    nnoremap [a            <cmd>lua u.prev()<cr>
     nnoremap ]b            :bnext<cr>
     nnoremap [b            :bprevious<cr>
     nnoremap ]f            <cmd>lua u.fnext()<cr>
@@ -75,6 +61,8 @@ local movement = [[
     nnoremap [c            <cmd>lua u.hprev()<cr>
     nnoremap ]q            <cmd>lua u.cnext()<cr>
     nnoremap [q            <cmd>lua u.cprev()<cr>
+    nnoremap ]Q            :clast<cr>
+    nnoremap [Q            :cfirst<cr>
     nnoremap ]l            <cmd>lua u.lnext()<cr>
     nnoremap [l            <cmd>lua u.lprev()<cr>
     nnoremap ]'            :FloatermNext<cr>
@@ -152,7 +140,7 @@ local lsp = [[
     nnoremap <buffer> gi    <cmd>lua vim.lsp.buf.implementation()<cr>
     nnoremap <buffer> gy    <cmd>lua vim.lsp.buf.type_definition()<cr>
     nnoremap <buffer> gI    <cmd>lua vim.lsp.buf.incoming_calls()<cr>
-    nnoremap <buffer> gO    <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
+    "nnoremap <buffer> gO    <cmd>lua vim.lsp.buf.outgoing_calls()<cr>
 
     " FINDS
     nnoremap <buffer> <leader>fo <cmd>Telescope lsp_document_symbols<cr>
