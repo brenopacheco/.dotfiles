@@ -6,20 +6,13 @@ export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
 export WALLPAPER=~/.wallpapers/abstract-d.png
 test -f  "$WALLPAPER" && feh --bg-fill $WALLPAPER
 
-# monitor
-~/bin/hdmi-config &
-
 # applications
 dunst -print >> /tmp/dunst.log &         # notification daemon
 info-daemon &                            # statusbar
 udiskie &                                # automount disks
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
-syncthing --no-browser & disown
-
-# TODO
-# xfce4-power-manager &                    # power manager
 pa-applet &                              # pulseaudio volume applet
 nm-applet &                              # networkmanager applet
 blueman-applet &                         # bluetooth applet
+redshift -l 41.157944:-8.629105 &        # change screen brightness
 
-redshift -l 41.157944:-8.629105 &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown

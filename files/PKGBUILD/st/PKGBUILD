@@ -4,7 +4,7 @@ pkgrel=1
 pkgdesc='A simple virtual terminal emulator for X (patched fork)'
 arch=('x86_64')
 license=('MIT')
-depends=(libxft)
+depends=(libxft ttf-firacode-nerd)
 conflicts=(st)
 url="https://github.com/brenopacheco/st"
 source=("git+https://github.com/brenopacheco/st.git#commit=HEAD")
@@ -19,5 +19,5 @@ package() {
   cd st
   make PREFIX=/usr DESTDIR="$pkgdir" install
   install -m644 -D LICENSE "$pkgdir/usr/share/licenses/st/LICENSE"
-  install -m644 -D st.info "$pkgdir/usr/share/st"
+  install -m644 -D st.info "$pkgdir/usr/share/st/st.info"
 }

@@ -57,7 +57,7 @@ function M.files(monorepo)
   if is_git then
     if monorepo then
       require('telescope.builtin').find_files({
-        cwd = M.rootnpm(),
+        cwd = vim.fn['utils#npm_root'](),
         hidden = true
       })
     else
@@ -117,7 +117,6 @@ function M.preview_hunk() require('gitsigns').preview_hunk() end
 function M.projects() require('util.picker').projects() end
 function M.git_dirs() require('util.picker').git_dirs() end
 function M.qf_global() vim.fn['quickfix#filter'](vim.fn.input('> /')) end
-function M.qf_vglobal() print('not ready') end
 function M.quickfix() vim.fn['utils#toggle']('qf', 'copen | wincmd p') end
 function M.reload(module)
   for k, _ in pairs(package.loaded) do
@@ -127,26 +126,17 @@ function M.reload(module)
 end
 function M.reset_hunk() require('gitsigns').reset_hunk() end
 function M.root() return vim.fn['utils#root']() end
-function M.rootnpm() return vim.fn['utils#npm_root']() end
 function M.spawn_terminal() vim.fn.system('st >/dev/null 2>&1 & disown $!') end
 function M.stage_hunk() require('gitsigns').stage_hunk() end
-function M.stash() require('plug.telescope.stash') end
-function M.substitute() vim.fn['tools#buffer_substitute']() end
+-- function M.stash() require('plug.telescope.stash') end
+function M.substitute() vim.fn['substitute#buffer_substitute']() end
 function M.tagbar() vim.cmd('SymbolsOutline') end
-function M.terminal() vim.fn['utils#toggle']('term', 'call term#open()') end
-function M.nterminal() vim.cmd([[ terminal ]]) end
+-- function M.terminal() vim.fn['utils#toggle']('term', 'call term#open()') end
+-- function M.nterminal() vim.cmd([[ terminal ]]) end
 function M.trim() vim.cmd([[silent! %s/\s\+$//]]) end
-function M.t(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
+-- function M.t(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
 function M.undo_stage_hunk() require('gitsigns').undo_stage_hunk() end
 function M.zen() vim.cmd('ZenMode') end
-
-function M.cmake_build()
-  local root = vim.fn['utils#root']()
-  local old_dir = vim.fn.getcwd()
-  vim.fn.chdir(root .. '/build')
-  vim.fn.make()
-  vim.fn.chdir(old_dir)
-end
 
 function M.lsp_attach(client, bufnr)
   require('keymap').register_lsp(client, bufnr)
@@ -154,18 +144,6 @@ function M.lsp_attach(client, bufnr)
   vim.g.navic_silence = true
   vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
   client.server_capabilities.semanticTokensProvider = nil
-end
-
-function M.org_tab()
-  local curlevel = vim.o.foldlevel
-  vim.cmd([[norm! zr]])
-  if vim.o.foldlevel == curlevel then vim.cmd([[norm! zM]]) end
-end
-
-function M.org_untab()
-  local curlevel = vim.o.foldlevel
-  vim.cmd([[norm! zm]])
-  if vim.o.foldlevel == curlevel then vim.cmd([[norm! zR]]) end
 end
 
 function M.toggle_scrolloff()

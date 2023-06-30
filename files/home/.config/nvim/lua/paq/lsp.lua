@@ -1,8 +1,8 @@
 local lspconfig = require("lspconfig")
 local utils = require("utils")
 
-vim.lsp.set_log_level(vim.log.levels.OFF)
--- vim.lsp.set_log_level(vim.log.levels.ERROR)
+-- vim.lsp.set_log_level(vim.log.levels.OFF)
+vim.lsp.set_log_level(vim.log.levels.ERROR)
 
 lspconfig.omnisharp.setup(require("paq.lsp.omnisharp"))
 

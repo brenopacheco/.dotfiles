@@ -1,3 +1,27 @@
+# Structure
+
+```
+init.lua
+lua/
+    paq.lua -- paq package manager
+    paq/    -- plugin configurations
+    lsp.lua -- lsp configurations
+    lsp/    -- language servers + handlers
+    dap.lua -- dap configurations
+    dap/    -- language specific defs + utils
+    util/   -- 
+    plugins.lua -- calls setup() on local plugins
+    /plugin -- local plugins
+    treesitter.lua
+    options.lua
+    global.lua -- lua and commands
+```
+
+
+
+
+
+
 # Standard plugins
 
 ## GIT (ok)

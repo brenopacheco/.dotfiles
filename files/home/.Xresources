@@ -1,4 +1,3 @@
-! dwm and dmenu colors {{{
 dwm.selbordercolor:  #ff0017
 dwm.normbordercolor: #000C16
 dwm.selbgcolor:      #0E111D
@@ -10,4 +9,4 @@ dmenu.selforeground: #ff0017
 dmenu.background:    #000C16
 dmenu.foreground:    #fffaf3
 dmenu.font: FiraCode Nerd Font:size=11
-/* ! }}} */
+Xcursor.theme: xcursor-breeze

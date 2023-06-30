@@ -1,10 +1,10 @@
 [user]
-	email = brenoleonhardt@gmail.com
+    email = brenoleonhardt@gmail.com
     name = Breno Pacheco
-	signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
+    signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
 [credential]
-	helper = /usr/share/git/credential/netrc/git-credential-netrc.perl
-	; helper = /usr/share/git/credential/netrc/git-credential-netrc.perl -dv
+    helper = /usr/share/git/credential/netrc/git-credential-netrc.perl
+    ; helper = /usr/share/git/credential/netrc/git-credential-netrc.perl -dv
 [mergetool]
     prompt = false
 [merge]
@@ -23,6 +23,6 @@
     graph = !git log \"$@\" --oneline --graph --branches --remotes --date=short
     ls    = !git ls-tree --name-only -r $(git branch --show-current)
 [commit]
-	gpgsign = true
+    gpgsign = true
 [push]
-	autoSetupRemote = true
+    autoSetupRemote = true

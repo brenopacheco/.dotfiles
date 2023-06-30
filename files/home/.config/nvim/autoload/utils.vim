@@ -1,10 +1,3 @@
-" File: autoload#utils.vim
-" Author: Breno Leonhardt Pacheco
-" Email: brenoleonhardt@gmail.com
-" Last Modified: February 22, 2021
-" Description:
-
-
 ""
 " Return a list of files from the fd command run at the root of a git project
 " {pattern} the pattern to search for. if any, use v:false
@@ -50,12 +43,6 @@ fun! utils#npm_root()
 endf
 
 ""
-" return file path relative to root
-fun! utils#path()
-    return substitute(expand('%:p'), utils#git_root(), '', '')
-endf
-
-""
 " Tells wether current directory is a fit repo or not.
 fun! utils#is_git()
     let root = system('git status')
@@ -92,6 +79,7 @@ function! utils#foldtext()
   return  line . repeat(' ', length) . lines . ' #lines'
 endfunction
 
+" Hello there! {{{
 ""
 " Toggle a window open given a filetype. If no buffer is visible with
 " given filetype, execute open. Otherwise, close window.
@@ -102,65 +90,14 @@ fun! utils#toggle(filetype, open, ...) abort
     for i in range(1, winnr('$'))
         let bnum = winbufnr(i)
         if getbufvar(bnum, '&ft') == a:filetype
-            " if i'm telling to close (a:0 && !a:1), close and return
-            " if i'm trying to open (a:0 && a:1), return
-            " if i'm undecided, (!a:0) close and return
             if !a:0 || (a:0 && !a:1)
                 silent exe i . 'close'
             endif
             return
         endif
     endfor
-    " if i'm trying to open (a:0 && a:1), open
-    " if i'm trying to close (a:0 && !a:1) do nothing
-    " if i'm undecided (!a:0), open
     if !a:0 || (a:0 && a:1)
         exec a:open
     endif
 endfunction
-
-""
-"
-fun! utils#short_folderpath()
-    let l:path = substitute(getcwd(), expand($HOME), '~', '')
-    let l:maxwidth = winwidth(0) / 5
-    if strlen(l:path) > l:maxwidth
-        let l:path = '…'.matchstr(l:path, '.\{'.l:maxwidth.'\}$')
-    end
-    return l:path.'/'
-endfunction
-
-" HELPER FUNCS ==============================================================
-
-""
-" command complete used with -complete=customlist,utils#cmd_complete
-" only works for commands whose name is the same as the autocmd file
-" requires the cmd to be defined as such:
-" com! -nargs=1 -complete=customlist,utils#cmd_complete Lsp
-"        \  call utils#cmd_exec('lsp',<q-args>)
-" {required} a:1 = cmd prefix, a:2 = cmd origin, a:3 = length
-fun! utils#cmd_complete(...)
-    let cmd = substitute(a:2, '\s.*', '', '')
-    return filter(utils#function_list(cmd),
-        \ { _,s -> match(s, '^'. a:1) != -1 && len(s) > 0 })
-endf
-
-fun! utils#function_list(name)
-    return sort(map(split(execute('function /^'.tolower(a:name).'#'),"\n"),
-        \ { _,s -> matchstr(s[13:-1], '^\S\+()')[0:-3] }),
-        \ { x,y -> len(x) - len(y) })
-endf
-
-""
-" completes cmd_complete
-fun! utils#cmd_exec(name, ...)
-    echo execute('echo ' . a:name . '#' . a:1 . '()')
-endf
-
-" Wipe all deleted (unloaded & unlisted) or all unloaded buffers
-function! utils#bclear(listed) abort
-    let l:buffers = filter(getbufinfo(), {_, v -> !v.loaded && (!v.listed || a:listed)})
-    if !empty(l:buffers)
-        execute 'bwipeout' join(map(l:buffers, {_, v -> v.bufnr}))
-    endif
-endfunction
+" }}}

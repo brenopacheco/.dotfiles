@@ -1,28 +1,35 @@
+# TODO:
+# - remove Xresources dependency
+# - configure Rules
+# - update to 6.4
+# - remove bstrack, bstackhoriz
+# - find a way to move gtk settings and cursor theme here
+
 pkgname=dwm-fork
 pkgver=6.1
-pkgrel=1
+pkgrel=4
 pkgdesc="Dynamic window manager (dwm) fork"
 url="https://github.com/brenopacheco/dwm"
 arch=(x86_64)
 license=('MIT')
 options=(zipman)
-depends=('libx11' 'libxinerama' 'libxft' 'freetype2')
+depends=('dmenu' 'libx11' 'libxinerama' 'libxft' 'freetype2'
+	'ttf-firacode-nerd' 'xcursor-breeze')
 conflicts=(dwm)
 
 source=("dwm.desktop"
-	    "git+https://github.com/brenopacheco/dwm.git#commit=HEAD")
+	"git+https://github.com/brenopacheco/dwm.git#commit=HEAD")
 
 md5sums=('SKIP' 'SKIP')
 
-
 build() {
-  cd dwm
-  make X11INC=/usr/include/X11 X11LIB=/usr/lib
+	cd dwm
+	make X11INC=/usr/include/X11 X11LIB=/usr/lib
 }
 
 package() {
-  cd dwm
-  make PREFIX=/usr DESTDIR="$pkgdir" install
-  install -m644 -D LICENSE "$pkgdir/usr/share/licenses/dwm/LICENSE"
-  install -m644 -D ../dwm.desktop "$pkgdir/usr/share/xsessions/dwm.desktop"
+	cd dwm
+	make PREFIX=/usr DESTDIR="$pkgdir" install
+	install -m644 -D LICENSE "$pkgdir/usr/share/licenses/dwm/LICENSE"
+	install -m644 -D ../dwm.desktop "$pkgdir/usr/share/xsessions/dwm.desktop"
 }

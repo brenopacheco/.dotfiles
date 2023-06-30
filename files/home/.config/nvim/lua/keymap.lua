@@ -19,6 +19,7 @@ local defaults = [[
     "nnoremap } :<C-u>execute "keepjumps norm! " . v:count1 . "}"<CR>
     "nnoremap { :<C-u>execute "keepjumps norm! " . v:count1 . "{"<CR>
     nnoremap <leader><leader> :
+    cnoremap <C-x> <C-w>
 ]]
 
 -- TODO: diff toggle in leader D
@@ -101,15 +102,11 @@ local find = [[
   nnoremap <leader>fh :Telescope help_tags<cr>
   nnoremap <leader>f' :Telescope marks<cr>
   nnoremap <leader>fc :Telescope oldfiles<cr>
-  "nnoremap <leader>f. <cmd>lua require('telescope.builtin').find_files({cwd = require('util.fs').root(), hidden = true})<cr>
   nnoremap <leader>ff <cmd>lua u.files(true)<cr>
   nnoremap <leader>fp <cmd>lua u.files()<cr>
   nnoremap <leader>fg :Telescope git_status<cr>
-  " nnoremap <leader>fp <cmd>lua u.projects()<cr>
-  nnoremap <leader>fP <cmd>lua u.git_dirs()<cr>
   nnoremap <leader>fl <cmd>lua require('util.picker').lua()<cr>
   nnoremap <leader>fd <cmd>lua require('util.picker').dotfiles()<cr>
-  "nnoremap <leader>fs <cmd>lua u.stash()<cr>
   nnoremap <leader>f* <cmd>lua u.grep_string()<cr>
   nnoremap <leader>f~ <cmd>lua u.home_files()<cr>
   nnoremap <leader>f/ <cmd>lua u.live_grep()<cr>

@@ -81,6 +81,7 @@ set path=**                               " extend path to glob **
 set termguicolors
 set nobomb " remove <feff>
 let g:filetype_pl="prolog"
+let foldtext=utils#foldtext()
 ]])
 
 vim.go.grepprg = "rg --hidden --smart-case"

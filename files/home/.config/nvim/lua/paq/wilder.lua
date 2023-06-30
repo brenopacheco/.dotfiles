@@ -48,6 +48,10 @@ wilder.set_option(
 
 wilder.setup({
 	modes = { ":" },
+})
+
+wilder.setup({
+	modes = { ":" },
 	next_key = nil,
 	previous_key = nil,
 	accept_key = nil,
@@ -58,7 +62,6 @@ wilder.setup({
 
 vim.cmd([[
   cmap <expr> <C-n> wilder#next()
-  cmap <expr> <Tab> wilder#next()
   cmap <expr> <C-p> wilder#previous()
   cmap <expr> <Tab> wilder#can_accept_completion() ?
       \ wilder#accept_completion(0) :

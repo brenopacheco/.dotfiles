@@ -7,7 +7,7 @@ esac
 # get current branch in git repo
 export PROMPT_DIRTRIM=3
 
-PS1='\[\e[32m\]\u@\h\[\e[m\]:\[\e[34m\]\w\[\e\[m\]\[\e[31m\]$(git_branch)\[\e\[m\]\[\e[0m\]\$ '
+PS1='\[\e[32m\]\u@\h\[\e[m\]:\[\e[34m\]\w\[\e[m\]\[\e[31m\]$(git_branch)\[\e[m\]\[\e[0m\]\$ '
 
 function git_branch {     # get git branch of pwd
     local branch="$(git branch 2>/dev/null | grep "\*" | colrm 1 2)"
@@ -60,12 +60,12 @@ export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
 
 # PATH
-if [ "$SHLVL" = 1 ]; then
-    export PATH=$PATH:$HOME/bin
-    export PATH=$PATH:$HOME/.npm/bin    # node
-    export PATH=$PATH:$HOME/.cargo/bin  # rust
-    export PATH=$PATH:$HOME/.local/bin  # python 
-    export PATH=$PATH:$HOME/.pkgs/bin   # ngrok
-fi
+# if [ "$SHLVL" = 1 ]; then
+export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/.npm/bin    # node
+export PATH=$PATH:$HOME/.cargo/bin  # rust
+export PATH=$PATH:$HOME/.local/bin  # python 
+export PATH=$PATH:$HOME/.pkgs/bin   # ngrok
+# fi
 
 test -e .npmtoken && source .npmtoken

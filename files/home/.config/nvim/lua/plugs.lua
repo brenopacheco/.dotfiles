@@ -1,7 +1,6 @@
 local paq = require('paq')
 
 paq({
-    {'editorconfig/editorconfig-vim'};
     {'numToStr/Comment.nvim',                         config='comment'};
     {'tpope/vim-fugitive',                            config='fugitive'};
     {'junegunn/gv.vim'};
@@ -52,11 +51,9 @@ paq({
       {'rcarriga/nvim-dap-ui'};
       {'theHamsta/nvim-dap-virtual-text'};
 
-    {'gelguy/wilder.nvim',                            config='wilder'};
-    -- {'TimUntersberger/neogit'};
-    -- {'karb94/neoscroll.nvim'};
-    -- {'petertriho/nvim-scrollbar'};
-    -- {'declancm/cinnamon.nvim'};
+    {'projekt0n/github-nvim-theme'};
+    {'marko-cerovac/material.nvim'};
+    {'zanglg/nova.nvim'};
 })
 
 local disable_builtins = true
@@ -68,8 +65,8 @@ local disabled_built_ins = {
     "matchit"
 }
 
-if disable_builtins then
-  for _, plugin in pairs(disabled_built_ins) do
-      vim.g["loaded_" .. plugin] = 1
-  end
-end
+-- if disable_builtins then
+--   for _, plugin in pairs(disabled_built_ins) do
+--       vim.g["loaded_" .. plugin] = 1
+--   end
+-- end

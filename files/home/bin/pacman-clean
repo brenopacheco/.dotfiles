@@ -1,9 +1,4 @@
 #!/bin/bash
-# cleans package cache, .cache
-# and downloads folder. Removes
-# orphaned packages
-
-
 # remove cached packages
 sudo pacman -Scc
 
@@ -13,8 +8,5 @@ sudo pacman -Rns $(pacman -Qtdq)
 # clean home cache
 rm -rf ~/.cache/yay
 rm -rf ~/.cache/pacman
-
-# clean downloads
-rm -rf ~/Downloads/*
 
 exit 0

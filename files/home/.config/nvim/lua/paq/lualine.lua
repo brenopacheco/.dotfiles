@@ -44,7 +44,9 @@ end
 
 local config = {
 	options = {
-		theme = "palenight",
+		-- theme = "palenight",
+		-- theme = "nova",
+		-- theme = "github_light_high_contrast",
 		section_separators = "",
 		component_separators = "",
 		icons_enabled = true,

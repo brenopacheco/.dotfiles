@@ -5,5 +5,5 @@ function should_run() {
 }
 
 function task() {
-	pip3 install cmake-language-server && return $OK
+	pipx install cmake-language-server && return $OK
 }

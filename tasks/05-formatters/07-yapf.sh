@@ -5,5 +5,5 @@ function should_run() {
 }
 
 function task() {
-	pip3 install yapf && return $OK
+	pipx install yapf && return $OK
 }

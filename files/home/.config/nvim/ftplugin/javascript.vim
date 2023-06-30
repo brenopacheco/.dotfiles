@@ -3,7 +3,7 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-" compiler eslint
+compiler eslint
 " setlocal equalprg=prettier\ --parser\ typescript\ --single-quote
 setlocal equalprg=
 setlocal shiftwidth=2
