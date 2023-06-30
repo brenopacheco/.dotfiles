@@ -1,7 +1,4 @@
 #!/bin/sh
-#
-# ~/.xinitrc
-#
 # Executed by startx
 
 userresources=$HOME/.Xresources

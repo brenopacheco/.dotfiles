@@ -1,6 +1,7 @@
-! settings for lenovo keyboard {{{
-! loadkeys uk
-! setxkbmap -model pc105 -layout gb
+! k380 settings
+! What is this doing?
+! - loadkeys uk
+! - setxkbmap -model pc105 -layout gb
 
 clear lock
 clear control
@@ -11,25 +12,21 @@ add Control = Control_L
 clear mod5
 keycode 108 = Shift_L
 
-! remove mod4 = Super_L
-! keycode 133 = Delete
-
 ! other keybindings
 keycode 105 = slash question
 keycode 59 = comma less
 keycode 60 = period greater
-keycode 61 = semicolon colon 
+keycode 61 = semicolon colon
 keycode 20 = minus underscore
 keycode 49 = apostrophe quotedbl
 keycode 94 = backslash bar
 keycode 35 = bracketleft braceleft
 keycode 51 = bracketright braceright
 keycode 11 = 2 at
-keycode 21 = dead_acute dead_grave 
-keycode 48 = dead_tilde dead_circumflex 
+keycode 21 = dead_acute dead_grave
+keycode 48 = dead_tilde dead_circumflex
 keycode 47 = parenright parenleft
 keycode 34 = plus asterisk
 keycode 19 = 0 equal
 keycode 11 = 2 at 2 at at at at at
 keycode 12 = 3 numbersign 3 numbersign
-! }}}

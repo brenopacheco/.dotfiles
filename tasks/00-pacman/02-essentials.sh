@@ -17,6 +17,7 @@ packages=(
 	"imagemagick"
 	"inotify-tools"
 	"moreutils"
+	"most"
 	"ncdu"
 	"net-tools"
 	"network-manager-applet"

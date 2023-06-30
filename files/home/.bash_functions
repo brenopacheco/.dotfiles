@@ -3,19 +3,6 @@ function cd() {
 	builtin cd "$@" && ls -F
 }
 # }}}
-# man : Color man pages {{{
-man() {
-	env \
-		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-		LESS_TERMCAP_md=$(printf "\e[1;31m") \
-		LESS_TERMCAP_me=$(printf "\e[0m") \
-		LESS_TERMCAP_se=$(printf "\e[0m") \
-		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-		LESS_TERMCAP_ue=$(printf "\e[0m") \
-		LESS_TERMCAP_us=$(printf "\e[1;32m") \
-			man "$@"
-}
-# }}}
 # extract : extract a compressed file {{{
 function extract() {
 	if [ -f $1 ] ; then
@@ -49,64 +36,12 @@ function extract() {
 		[[ "$opt" == "yes" ]] && shutdown -h now
     }
 # }}}
-# dkill : kill process sing dmenu {{{
-    function dkill () {
-		while true; do
-			# ids=$(ps -e | tac |  fzf -m | awk '{print $1}')
-			ids=$(ps -e | tac |  dmenu_color -p "Process:" | awk '{print $1}')
-			if [[ ${#ids} == 0 ]]; then
-				# no id selected
-				break
-			fi
-			for id in $ids; do
-				# kill all selected processes
-				kill -9 $id
-			done
-		done
-    }
-# }}}
-# truecolortest : tests terminal truecolor {{{
-    function truecolortest () {
-		awk -v term_cols="${width:-$(tput cols || echo 80)}" 'BEGIN{
-			s="/\\";
-			for (colnum = 0; colnum<term_cols; colnum++) {
-				r = 255-(colnum*255/term_cols);
-				g = (colnum*510/term_cols);
-				b = (colnum*255/term_cols);
-				if (g>255) g = 510-g;
-				printf "\033[48;2;%d;%d;%dm", r,g,b;
-				printf "\033[38;2;%d;%d;%dm", 255-r,255-g,255-b;
-				printf "%s\033[0m", substr(s,colnum%2+1,1);
-			}
-			printf "\n";
-		}'
-    }
-# }}}
 # lf : run lf cding to last dir & reseting marks {{{
 	function lf () {
-		# reset marks
-        test ! -d $HOME/.local/share/lf && mkdir $HOME/.local/share/lf
-		marks=$HOME/.local/share/lf/marks
-		cat<<-EOF > $marks
-			a:/home/breno/Aulas
-			d:/home/breno/Desktop
-			w:/home/breno/Downloads
-			m:/run/media/breno
-			n:/home/breno/.config/nvim
-			o:/home/breno/org
-			h:/home/breno
-			t:/tmp
-			v:/home/breno/Videos
-			w:/home/breno/Downloads
-		EOF
-		[[ -f "$marks" ]] && sed -i 's/[ \t]//g' $marks
-		# run lf and save dir
 		tmp="$(mktemp)"
 		$(which lf) -last-dir-path="$tmp"
-		# when lf closes, cd into it
 		if [ -f "$tmp" ]; then
 			dir="$(cat "$tmp")"
-			rm -f "$tmp"
 			if [ -d "$dir" ]; then
 				if [ "$dir" != "$(pwd)" ]; then
 					cd "$dir"
@@ -121,23 +56,6 @@ function extract() {
 			/^Installed Size/{print $4$5, name}' \
 			| sort -hr | head -34
 	}
-# }}}
-# gpg-reload : reload gpg agent {{{
-function gpg-reload(){
-     pkill scdaemon
-     pkill gpg-agent
-     gpg-connect-agent /bye >/dev/null 2>&1
-     gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
-     gpgconf --reload gpg-agent
- }
- # }}}
-# query-packages : find pacman packages given a name/regex {{{
-function query-packages() {
-    for i in "${@}"; do
-        pacman -Qi | sed -n "/^Name.*$i/,/^$/p" | egrep "(Name|Installed Size)"
-        echo ""
-    done
-}
 # }}}
 # git-root : cd to root of git directory{{{
 function git-root() {
