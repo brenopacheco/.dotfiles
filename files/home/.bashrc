@@ -39,13 +39,13 @@ shopt -s globstar
 
 # Source aliases and functions and keybindings
 source $HOME/.bash_aliases
-# source $HOME/.bash_functions
-# source $HOME/.bash_keybindings
+source $HOME/.bash_functions
+source $HOME/.bash_keybindings
 
 # Set vim as default editor
 export EDITOR=vim
 export VISUAL=vim
-export PAGER=most # colored man pages
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 ## source fzf settings
 if $(which fzf >/dev/null 2>&1); then

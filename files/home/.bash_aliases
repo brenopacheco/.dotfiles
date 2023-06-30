@@ -21,6 +21,8 @@ alias gs='git status'
 alias grm='git clean -fd'
 alias ga='git add -A'
 alias gm='git commit'
+alias gc='git-checkout'
+alias gb='git-branch'
 
 # pacman
 alias pi='sudo pacman -Syu'
