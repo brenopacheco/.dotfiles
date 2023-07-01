@@ -28,7 +28,7 @@ alias gb='git-branch'
 alias pi='sudo pacman -Syu'
 alias pac='sudo pacman -S'
 alias pr='sudo pacman -Rncs'
-alias pq='list-pkgs'
+alias pq='pacman-list'
 
 # programs
 alias v='nvim'

@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-recordmydesktop --display=:0 --width=1920 --height=1080 --fps=15 --device pulse
-
-# vim:tw=78:ts=8:noet:ft=sh:norl:
