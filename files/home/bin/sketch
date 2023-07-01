@@ -3,8 +3,8 @@
 LANG=$1
 
 function help() {
-cat<<EOF
-Usage: sketch [go|js|ts|sh|c|lua] [NAME]
+	cat <<EOF
+Usage: sketch [go|js|ts|bun|sh|c|lua] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
@@ -14,17 +14,17 @@ EOF
 }
 
 if test "$#" -lt 1; then
-    help
-    exit 0
+	help
+	exit 0
 fi
 
 LANG=$1
 NAME=$2
 
-if [[ ! "$LANG" =~ ^(go|js|ts|sh|c|lua)$ ]]; then
-    help
-    echo "Invalid LANG: use go, sh, js, ts or lua" >&2
-    exit 1
+if [[ ! "$LANG" =~ ^(go|js|ts|bun|sh|c|lua)$ ]]; then
+	help
+	echo "Invalid LANG: use go, js, ts, bun, c or lua" >&2
+	exit 1
 fi
 
 mkdir -p ~/sketch
@@ -32,12 +32,12 @@ mkdir -p ~/sketch
 TMPNAME="$LANG_$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 10)"
 
 if [[ ! -z "$NAME" ]]; then
-    TMPNAME="$NAME-$TMPNAME"
+	TMPNAME="$NAME-$TMPNAME"
 fi
 
 DIR="$HOME/sketch/$TMPNAME"
 
-cat<<EOF
+cat <<EOF
 Setting up sketch project with $LANG in $DIR
 EOF
 
@@ -48,56 +48,54 @@ git init
 echo "$GO_TEMPLATE"
 
 case $LANG in
-    "go")
-        go mod init pkg
-        touch main.go
-        echo -e "package main\n\nfunc main() {\n\n\n}" > main.go
-        echo -e 'all:\n\tgo run main.go' > Makefile
-        ;;
-    "c")
-        echo -e "#include <stdio.h>\n\nint main() {\n\n  return 0;\n}" > main.c
-        echo -e 'all:\n\tgcc main.c -o main\n\t./main' > Makefile
-        ;;
-    "js")
-        npm init -y
-        touch main.js
-        echo -e 'all:\n\tnode main.js' > Makefile
-        tsc --init
-        ;;
-    "ts")
-        npm init -y
-        touch main.ts
-        echo -e 'all:\n\tts-node main.ts' > Makefile
-		~/bin/eslint-scaffold
-        tsc --init
-        ;;
-    "sh")
-        FILE="main.sh"
-        touch $FILE
-        chmod +x $FILE
-        echo -e "#!/usr/bin/env bash\n" > $FILE
-        echo -e "all:\n\t./$FILE" > Makefile
-        ;;
-    "lua")
-        touch main.lua
-        ;;
+"go")
+	go mod init pkg
+	touch main.go
+	echo -e "package main\n\nfunc main() {\n\n\n}" >main.go
+	echo -e 'all:\n\tgo run main.go' >Makefile
+	;;
+"c")
+	echo -e "#include <stdio.h>\n\nint main() {\n\n  return 0;\n}" >main.c
+	echo -e 'all:\n\tgcc main.c -o main\n\t./main' >Makefile
+	;;
+"js")
+	npm init -y
+	touch main.js
+	echo -e 'all:\n\tnode main.js' >Makefile
+	tsc --init
+	;;
+"ts")
+	npm init -y
+	touch main.ts
+	echo -e 'all:\n\tts-node main.ts' >Makefile
+	tsc --init
+	;;
+"bun")
+	bun init -y
+	echo -e 'all:\n\tbun run start' >Makefile
+	jq '.scripts = { "start": "bun run index.ts" }' package.json |
+		sponge package.json
+	;;
+"sh")
+	FILE="main.sh"
+	touch $FILE
+	chmod +x $FILE
+	echo -e "#!/usr/bin/env bash\n" >$FILE
+	echo -e "all:\n\t./$FILE" >Makefile
+	;;
+"lua")
+	touch main.lua
+	;;
 esac
 
 echo "Directory: $DIR"
 
-cp ~/.bashrc $DIR/.bashrc
+BASHRC=$(mktemp)
 
-cat<<EOF >> $DIR/.bashrc
-function git_branch {     # get git branch of pwd
-    local branch="\$(git branch 2>/dev/null | grep "\*" | colrm 1 2)"
-    if [ -n "\$branch" ]; then
-        echo " (\$branch)"
-    fi
-}
-EOF
+cat $HOME/.bashrc >$BASHRC
 
-echo "PS1='\[\033[38;5;20m\]\[\033[48;5;11m\]sketch\[$(tput sgr0)\]\[\e[34m\] \w\[$(tput sgr0)\]\$ '" >> $DIR/.bashrc
+echo "PS1='\[\033[38;5;20m\]\[\033[48;5;11m\]sketch\[$(tput sgr0)\]\[\e[34m\] \w\[$(tput sgr0)\]\$ '" >>$BASHRC
 
-tmux new -s $TMPNAME "bash --rcfile $DIR/.bashrc -i"
+tmux new -s $TMPNAME "bash --rcfile $BASHRC -i"
 
 exit 0

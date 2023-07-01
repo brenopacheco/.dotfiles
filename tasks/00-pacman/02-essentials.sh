@@ -23,6 +23,7 @@ packages=(
 	"pa-applet"
 	"parted"
 	"pass"
+	"pass-otp"
 	"pavucontrol"
 	"pdftk"
 	"perl"

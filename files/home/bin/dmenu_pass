@@ -3,36 +3,38 @@
 # `passmenu` is a [dmenu][]-based interface to [pass][], the standard Unix
 # password manager. This design allows you to quickly copy a password to the
 # clipboard without having to open up a terminal window if you don't already have
-# one open. If `--type` is specified, the password is typed using [xdotool][]
-# instead of copied to the clipboard.
+# one open. 
+#
+# Modified to work with otp passwords
 
-cat<<EOF
+cat <<EOF
 Usage
 
-    passmenu [--type] [dmenu arguments...]
+    passmenu [dmenu arguments...]
 
 EOF
 
 shopt -s nullglob globstar
 
-typeit=0
-if [[ $1 == "--type" ]]; then
-	typeit=1
-	shift
-fi
-
 prefix=${PASSWORD_STORE_DIR-~/.password-store}
-password_files=( "$prefix"/**/*.gpg )
-password_files=( "${password_files[@]#"$prefix"/}" )
-password_files=( "${password_files[@]%.gpg}" )
+password_files=("$prefix"/**/*.gpg)
+password_files=("${password_files[@]#"$prefix"/}")
+password_files=("${password_files[@]%.gpg}")
 
 password=$(printf '%s\n' "${password_files[@]}" | dmenu_color -p "Passwords: ")
 
+echo $password
+
 [[ -n $password ]] || exit
 
-if [[ $typeit -eq 0 ]]; then
-	pass show -c "$password" 2>/dev/null
+if [[ $password == otp/*  ]]; then
+	pass otp code -c "$password" 2>/dev/null
+	icon="/usr/share/icons/Papirus-Dark/24x24/actions/password-copy.svg"
+	name="${password#*/}"
+	name="${name^}"
+	echo $name
+	notify-send -a pass -t 60000 -i "$icon" "${name}" "$(xclip -o -selection 'clipboard')"
 else
-	pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } |
-		xdotool type --clearmodifiers --file -
+	pass show -c "$password" 2>/dev/null
 fi
+
