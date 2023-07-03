@@ -16,7 +16,7 @@ alias yr='rm -rf ./node_modules && yarn install'
 alias nr='rm -rf ./node_modules && npm install'
 
 # git
-alias gr='git-root'
+alias gr='cd $(git-root)'
 alias gs='git status'
 alias grm='git clean -fd'
 alias ga='git add -A'

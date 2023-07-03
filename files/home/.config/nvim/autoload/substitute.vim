@@ -1,4 +1,4 @@
-fun! tools#buffer_substitute()
+fun! substitute#buffer_substitute()
     let word = expand('<cword>')
     if mode() ==? 'v'
         norm! "xy

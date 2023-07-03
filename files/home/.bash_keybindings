@@ -2,11 +2,11 @@
 bind -r "\C-t"
 bind -r "c"
 
-bind -x '"": "clear"'      # C-l    :: clear screen
-bind -x '"´": "lf"'          # ´´     :: open lf
-bind -x '"ǘ": "fzf-vim"'     # ´v     :: nvim v
-bind '"ǵ": "fzf-dir /"'    # ´g     :: cd fzf
-bind '"": "fzf-hist"'    # ctrl-r :: show history
+bind -x '"": "clear"'             # C-l    :: clear screen
+bind -x '"´": "lf"'                 # ´´     :: open lf
+bind -x '"ǘ": "nvim $(fzf-files)"'  # ´v     :: nvim v
+bind '"ǵ": "cd $(fzf-dir)"'       # ´g     :: cd fzf
+bind '"": "fzf-hist"'           # ctrl-r :: show history
 
 bind '"\C-p": previous-history'
 bind '"\C-n": next-history'

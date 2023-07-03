@@ -28,7 +28,7 @@ paq({
 		  {'folke/twilight.nvim'};
 
     {'nvim-treesitter/nvim-treesitter',               config='treesitter', run = ':TSUpdate'};
-      -- {'nvim-treesitter/nvim-treesitter-textobjects'};
+      {'nvim-treesitter/nvim-treesitter-textobjects'};
 		  {'nvim-treesitter/nvim-treesitter-context'};
 
     {'neovim/nvim-lspconfig',                         config='lsp'};
