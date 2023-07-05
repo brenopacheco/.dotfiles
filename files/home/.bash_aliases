@@ -23,6 +23,7 @@ alias ga='git add -A'
 alias gm='git commit'
 alias gc='git-checkout'
 alias gb='git-branch'
+alias gp='git pull'
 
 # pacman
 alias pi='sudo pacman -Syu'

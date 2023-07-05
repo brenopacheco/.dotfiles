@@ -47,34 +47,86 @@ git init
 
 echo "$GO_TEMPLATE"
 
+CMAKE_MAKEFILE=$(
+	cat <<'END_HEREDOC'
+.ONESHELL:
+.PHONY: help
+
+BUILD_DIR = cmake
+BIN = main
+
+all: $(BIN)
+	$(BUILD_DIR)/$(BIN)
+
+$(BIN): $(BUILD_DIR)
+	cmake --build $(BUILD_DIR)
+
+$(BUILD_DIR):
+	cmake . -B $(BUILD_DIR) -G Ninja
+
+build: $(BIN)
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+help:
+	@echo "Available targets:"
+	@echo "  all      : Build using cmake and run"
+	@echo "  build  : Builds using cmake"
+	@echo "  clean    : Remove the build directory"
+	@echo "  help     : Show this help message"
+END_HEREDOC
+)
+
+CMAKE_LISTS=$(
+	cat <<'END_HEREDOC'
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+
+project(example LANGUAGES C)
+
+add_executable(main main.c)
+END_HEREDOC
+)
+
+IGNORE_DIR=$HOME/.ignores
+
 case $LANG in
 "go")
 	go mod init pkg
 	touch main.go
 	echo -e "package main\n\nfunc main() {\n\n\n}" >main.go
 	echo -e 'all:\n\tgo run main.go' >Makefile
+	cp $IGNORE_DIR/Go.gitignore .gitignore
 	;;
 "c")
 	echo -e "#include <stdio.h>\n\nint main() {\n\n  return 0;\n}" >main.c
-	echo -e 'all:\n\tgcc main.c -o main\n\t./main' >Makefile
+	echo -e "$CMAKE_MAKEFILE" >Makefile
+	echo -e "$CMAKE_LISTS" >CMakeLists.txt
+	cat $IGNORE_DIR/C.gitignore \
+		$IGNORE_DIR/CMake.gitignore \
+		>.gitignore
+	echo -e "\ncmake\n!Makefile" >>.gitignore
 	;;
 "js")
 	npm init -y
 	touch main.js
 	echo -e 'all:\n\tnode main.js' >Makefile
 	tsc --init
+	cp $IGNORE_DIR/Node.gitignore .gitignore
 	;;
 "ts")
 	npm init -y
 	touch main.ts
 	echo -e 'all:\n\tts-node main.ts' >Makefile
 	tsc --init
+	cp $IGNORE_DIR/Node.gitignore .gitignore
 	;;
 "bun")
 	bun init -y
 	echo -e 'all:\n\tbun run start' >Makefile
 	jq '.scripts = { "start": "bun run index.ts" }' package.json |
 		sponge package.json
+	cp $IGNORE_DIR/Node.gitignore .gitignore
 	;;
 "sh")
 	FILE="main.sh"
@@ -85,6 +137,7 @@ case $LANG in
 	;;
 "lua")
 	touch main.lua
+	cp $IGNORE_DIR/Lua.gitignore .gitignore
 	;;
 esac
 
