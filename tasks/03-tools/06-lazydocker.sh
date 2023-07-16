@@ -6,7 +6,7 @@ function should_run() {
 
 function task() {
 	go install github.com/jesseduffield/lazydocker@latest &&
-		asdf reshim golang &&
 		which lazydocker &&
 		return $OK
+		# asdf reshim golang &&
 }

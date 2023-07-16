@@ -4,7 +4,7 @@ endif
 let b:did_ftplugin = 1
 
 compiler tidy
-setlocal equalprg=prettier\ --parser\ html
+setlocal equalprg=
 setlocal foldmethod=marker
 setlocal foldmarker=<,/>
 " setlocal foldexpr=

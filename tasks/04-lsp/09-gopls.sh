@@ -6,6 +6,6 @@ function should_run() {
 
 function task() {
 	go install golang.org/x/tools/gopls@latest &&
-		asdf reshim golang &&
 		return $OK
+		# asdf reshim golang &&
 }

@@ -4,7 +4,7 @@ endif
 let b:did_ftplugin = 1
 
 compiler eslint
-setlocal equalprg=prettier\ --parser\ json
+setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
 setlocal formatoptions=croqlj

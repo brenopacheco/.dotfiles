@@ -6,6 +6,6 @@ function should_run() {
 
 function task() {
 	go install github.com/wader/jq-lsp@latest &&
-		asdf reshim golang &&
 		return $OK
+		# asdf reshim golang &&
 }

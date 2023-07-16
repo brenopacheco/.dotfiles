@@ -11,5 +11,7 @@ function lf() {
 	[[ -d "$dir" && "$dir" != "$(pwd)" ]] && cd "$dir"
 }
 # }}}
-
+function reset_caps() {
+    xdotool key Caps_Lock
+}
 # vim:tw=78:ts=8:noet:ft=sh:norl:

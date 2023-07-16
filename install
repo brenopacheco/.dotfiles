@@ -7,6 +7,8 @@ export PATH=$PATH:$HOME/.cargo/bin  # rust
 export PATH=$PATH:$HOME/.local/bin  # python
 export PATH=$PATH:$HOME/.pkgs/bin   # other
 
+export GOPATH=$HOME/.go
+
 source ./lib/engine.sh
 
 function show_usage() {

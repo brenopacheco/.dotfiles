@@ -70,6 +70,14 @@ local movement = [[
     nnoremap ['            :FloatermPrev<cr>
 ]]
 
+local test = [[
+  nmap <silent> <leader>t. <cmd>TestNearest<CR>
+  nmap <silent> <leader>tf <cmd>TestFile<CR>
+  nmap <silent> <leader>ta :TestSuite<CR>
+  nmap <silent> <leader>tp :TestLast<CR>
+  nmap <silent> <leader>tc :TestVisit<CR>
+]]
+
 vim.cmd([[
   au OptionSet diff if v:option_new ==# 'diff' | nunmap ]c | nunmap [c | endif
 ]])
@@ -82,17 +90,17 @@ local bufwintabs = [[
 ]]
 
 local toggles = [[
-  nnoremap ´         <cmd>lua u.lf()<cr>
-  nnoremap <leader>' <cmd>FloatermToggle<cr>
-  nnoremap <leader>" <cmd>FloatermNew<cr>
-  nnoremap <leader>n <cmd>NvimTreeToggle<cr>
-  nnoremap <leader>l <cmd>lua u.gtree()<cr>
-  nnoremap <leader>e <cmd>lua u.diagnostics(0)<cr>
-  nnoremap <leader>E <cmd>lua u.diagnostics()<cr>
-  nnoremap <leader>q <cmd>lua u.quickfix()<cr>
+  nnoremap ´             <cmd>lua u.lf()<cr>
+  nnoremap <leader>'     <cmd>FloatermToggle<cr>
+  nnoremap <leader>"     <cmd>FloatermNew<cr>
+  nnoremap <leader>n     <cmd>NvimTreeToggle<cr>
+  nnoremap <leader>l     <cmd>lua u.gtree()<cr>
+  nnoremap <leader>e     <cmd>lua u.diagnostics(0)<cr>
+  nnoremap <leader>E     <cmd>lua u.diagnostics()<cr>
+  nnoremap <leader>q     <cmd>lua u.quickfix()<cr>
   nnoremap <leader><tab> <cmd>lua u.tagbar()<cr>
-  nnoremap <leader>z <cmd>lua u.zen()<cr>
-  nnoremap <leader>t <cmd> lua u.toggle_scrolloff()<cr>
+  nnoremap <leader>z     <cmd>lua u.zen()<cr>
+  nnoremap <leader>o     <cmd> lua u.toggle_scrolloff()<cr>
 ]]
 
 local find = [[
@@ -146,7 +154,7 @@ local lsp = [[
     " ACTIONS
     nnoremap <buffer> <leader>r  <cmd>lua vim.lsp.buf.rename()<cr>
     nnoremap <buffer> <leader>a  <cmd>lua vim.lsp.buf.code_action()<cr>
-    xnoremap <buffer> <leader>a  <cmd>lua vim.lsp.buf.range_code_action()<cr>
+    xnoremap <buffer> <leader>a  <cmd>lua vim.lsp.buf.code_action()<cr>
 
     " JUMPS
     nnoremap <buffer> ]e         <cmd>lua vim.diagnostic.goto_next()<cr>
@@ -158,12 +166,42 @@ local lsp = [[
 ]]
 
 local complete = [[
-  inoremap <silent><expr> <C-Space> pumvisible() ? compe#close() : compe#complete()
-  inoremap <silent><expr> <TAB>     compe#confirm({'keys': '<TAB>', 'select': v:true})
   inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
   inoremap <silent><expr> <C-b>     compe#scroll({ 'delta': -4 })
   smap <Backspace> a<Backspace>
 ]]
+
+vim.keymap.set("i", "<Tab>", function()
+	if vim.fn.pumvisible() == 1 then
+		vim.fn["compe#confirm"]({ keys = "<TAB>", select = true })
+		return ""
+	end
+	if require("copilot.suggestion").is_visible() then
+		vim.schedule(require("copilot.suggestion").accept)
+		return ""
+	end
+	return "<Tab>"
+end, { expr = true, noremap = true })
+
+vim.keymap.set("i", "<C-n>", function()
+	if vim.fn.pumvisible() == 1 then
+		return "<C-n>"
+	end
+	vim.schedule(require("copilot.suggestion").next)
+	return ""
+end, { silent = true })
+
+vim.keymap.set("i", "<C-p>", function()
+	if vim.fn.pumvisible() == 1 then
+		return "<C-p>"
+	end
+	vim.schedule(require("copilot.suggestion").prev)
+	return ""
+end, { silent = true })
+
+vim.keymap.set("i", "<S-Tab>", function()
+	require("copilot.panel").open()
+end, { silent = true })
 
 local snippets = [[
   imap <expr> <C-k> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)' : ''
@@ -213,7 +251,6 @@ local term = [[
   nnoremap <buffer> <C-p> :FloatermPrev<cr>
 ]]
 
-
 vim.cmd(defaults)
 vim.cmd(actions)
 vim.cmd(movement)
@@ -225,27 +262,21 @@ vim.cmd(complete)
 vim.cmd(snippets)
 -- vim.cmd(args)
 vim.cmd(dap)
+vim.cmd(test)
 
 local M = {}
 
 function M.register_lsp(client, bufnr)
-  vim.cmd(lsp)
-  if client.name == 'eslint' then
-    vim.cmd([[
+	vim.cmd(lsp)
+	if client.name == "eslint" then
+		vim.cmd([[
       nnoremap <buffer> <leader>=  :EslintFixAll<cr>
     ]])
-  end
-  -- if client.name == 'elixirls' then
-  --   vim.cmd([[
-  --     nnoremap <buffer> <leader>=  :lua vim.lsp.buf.format()<cr>
-  --     vnoremap <buffer> <leader>=  <cmd>lua vim.lsp.buf.range_formatting()<cr>
-  --     " au TextChanged <buffer> lua vim.lsp.buf.format({async = true})
-  --     " au CursorHold <buffer> lua vim.lsp.buf.format({async = true})
-  --     au BufWritePre <buffer> lua vim.lsp.buf.format({async = false})
-  --   ]])
-  -- end
+	end
 end
-function M.register_term() vim.cmd(term) end
+function M.register_term()
+	vim.cmd(term)
+end
 
 vim.cmd([[
   augroup FloatermKeys

@@ -9,6 +9,25 @@ let g:neoformat_enabled_shell = ['shfmt']
 let g:neoformat_enabled_sql = ['sqlformat']
 let g:neoformat_enabled_typescript = ['prettierd']
 let g:neoformat_enabled_typescriptreact = ['prettierd']
+let g:neoformat_enabled_go = ['goimports', 'gofumptextra', 'golines']
 ]])
 
--- vim.cmd([[let g:neoformat_verbose = 1]])
+-- -extra
+
+vim.cmd([[
+let g:neoformat_python_gofumptextra = {
+        \ 'exe': 'gofumpt',
+        \ 'args': ['-wextra'],
+        \ 'stdin': 1,
+        \ }
+let g:neoformat_go_golines = {
+        \ 'exe': 'golines',
+        \ 'stdin': 1,
+        \ }
+]])
+
+vim.cmd([[
+let g:neoformat_run_all_formatters = 1
+]])
+
+vim.cmd([[let g:neoformat_verbose = 0]])

@@ -1,18 +1,23 @@
 #!/bin/sh
 exec 1>/tmp/xprofile.log 2>&1
-export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin"
+export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin:/home/$USER/.pkgs/bin"
 
 # background image
 export WALLPAPER=~/.wallpapers/abstract-d.png
-test -f  "$WALLPAPER" && feh --bg-fill $WALLPAPER
+test -f "$WALLPAPER" && feh --bg-fill $WALLPAPER
 
 # applications
-dunst -print >> /tmp/dunst.log &         # notification daemon
-info-daemon &                            # statusbar
-udiskie &                                # automount disks
-pa-applet &                              # pulseaudio volume applet
-nm-applet &                              # networkmanager applet
-blueman-applet &                         # bluetooth applet
-redshift -l 41.157944:-8.629105 &        # change screen brightness
+dunst -print >>/tmp/dunst.log & # notification daemon
+info-daemon &                   # statusbar
+udiskie &                       # automount disks
+pa-applet &                     # pulseaudio volume applet
+nm-applet &                     # networkmanager applet
+blueman-applet &                # bluetooth applet
+{
+	sleep 30
+	redshift -l 41.157944:-8.629105 -g 0.8 & disown
+	tasker-go >/tmp/tasker.log 2>&1 & disown
+} &
 
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+disown

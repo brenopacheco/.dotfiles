@@ -6,7 +6,7 @@ function should_run() {
 
 function task() {
 	env CGO_ENABLED=0 go install -ldflags="-s -w" github.com/gokcehan/lf@latest &&
-		asdf reshim golang &&
 		which lf &&
 		return $OK
+		# asdf reshim golang &&
 }

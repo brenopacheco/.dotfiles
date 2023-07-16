@@ -2,11 +2,11 @@
   "main": { "prefix": ["main"], "body": ["func main() {", "\t$0", "}"] },
   "fun": {
     "prefix": ["fun", "fu", "fn", "f"],
-    "body": ["func ${1:foo}(${2:b bar}) ${3:(${4:q qux})}  {", "\t${0}", "}"]
+    "body": ["func ${1:foo}(${2:b bar}) {", "\t${0}", "}"]
   },
   "afun": {
     "prefix": ["afun", "af"],
-    "body": ["func(${1:foo Foo}) (${2:bar Bar}) {", "\t${0}", "}"]
+    "body": ["func(${1:foo Foo}) {", "\t${0}", "}"]
   },
   "imp": { "prefix": ["imp"], "body": ["import (", "\t\"${0}\"", ")"] },
   "for": {
@@ -117,6 +117,20 @@
       "\t\t})",
       "\t}",
       "}"
+    ]
+  },
+  "sleep": {
+    "prefix": ["sleep"],
+    "body": [
+      "time.Sleep(${1:1 * time.Second})$0"
+    ]
+  },
+  "gofn": {
+    "prefix": ["gf", "gof", "gofn", "gofun"],
+    "body": [
+      "go func() {",
+      "\t$0",
+      "}()"
     ]
   }
 }

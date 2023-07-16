@@ -33,7 +33,7 @@ local servers = {
 	"solargraph",
 	"sqlls",
 	"tailwindcss",
-	"tsserver",
+	-- "tsserver",
 	"vimls",
 	"yamlls",
 	"svelte",
@@ -51,7 +51,25 @@ for _, server in pairs(servers) do
 	lspconfig[server].setup({
 		on_attach = utils.lsp_attach,
 		capabilities = capabilities,
+		on_init = function(client, _)
+			if client.server_capabilities then
+				client.server_capabilities.documentFormattingProvider = false
+				client.server_capabilities.semanticTokensProvider = false
+			end
+		end,
 		settings = {
+			gopls = {
+				completeUnimported = true,
+				usePlaceholders = true,
+				analyses = {
+					unusedparams = true,
+					fieldalignment = true,
+					shadow = true,
+					unusedwrite = true,
+					unusedvariable = true,
+					useany = true,
+				},
+			},
 			documentFormatting = false,
 			json = {
 				schemas = require("schemastore").json.schemas(),

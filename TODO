@@ -1,14 +1,15 @@
-https://arewewaylandyet.com/
 
-nixos
 
-wayland
-mako/dunst
-pipewire+wireplumber
-polkit-kde-agent
-Hyprland
-alacritty
-some theme
-rofi
-scratchpad
-GDM
+- awesomeWM 
+	+ top/left bar?
+	+ shadows/rounded corners?
+	+ color scheme?
+	+ keybindings?
+	+ widgets?
+	+ notifications?
+	+ lockscreen?
+	+ wallpaper?
+	+ terminal?
+	+ compositor?
+	+ browser styling?
+	+ launcher?

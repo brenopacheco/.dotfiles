@@ -1,0 +1,8 @@
+{
+  "col": {
+    "prefix": ["console", "col"],
+    "body": [
+      "Console.WriteLine($1);"
+    ]
+  }
+}

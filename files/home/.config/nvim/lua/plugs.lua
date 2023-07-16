@@ -54,6 +54,15 @@ paq({
     {'projekt0n/github-nvim-theme'};
     {'marko-cerovac/material.nvim'};
     {'zanglg/nova.nvim'};
+
+    {'zbirenbaum/copilot.lua', config='copilot'};
+
+    -- {'vim-test/vim-test', config='vim-test'};
+    {'nvim-neotest/neotest', config='neotest'};
+    -- https://github.com/michaelb/sniprun
+  --
+    {'karb94/neoscroll.nvim', config='neoscroll'};
+    {'pmizio/typescript-tools.nvim', config='typescript-tools'}
 })
 
 local disable_builtins = true
@@ -65,8 +74,4 @@ local disabled_built_ins = {
     "matchit"
 }
 
--- if disable_builtins then
---   for _, plugin in pairs(disabled_built_ins) do
---       vim.g["loaded_" .. plugin] = 1
---   end
--- end
+-- disable al builtins 

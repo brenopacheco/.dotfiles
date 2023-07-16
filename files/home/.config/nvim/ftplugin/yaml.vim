@@ -4,7 +4,7 @@ endif
 let b:did_ftplugin = 1
 
 compiler yaml
-setlocal equalprg=prettier\ --parser\ yaml
+setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
 setlocal foldmethod=indent

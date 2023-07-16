@@ -6,7 +6,7 @@ function should_run() {
 
 function task() {
 	go install mvdan.cc/sh/v3/cmd/shfmt@latest &&
-		asdf reshim golang &&
 		which shfmt &&
 		return $OK
+		# asdf reshim golang &&
 }

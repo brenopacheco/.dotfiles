@@ -7,7 +7,7 @@
 
 pkgname=dwm-fork
 pkgver=6.1
-pkgrel=5
+pkgrel=6
 pkgdesc="Dynamic window manager (dwm) fork"
 url="https://github.com/brenopacheco/dwm"
 arch=(x86_64)
@@ -15,7 +15,7 @@ license=('MIT')
 options=(zipman)
 depends=('dmenu' 'libx11' 'libxinerama' 'libxft' 'freetype2'
 	'ttf-firacode-nerd' 'xcursor-breeze')
-conflicts=(dwm)
+conflicts=('dwm' 'xdg-desktop-portal-gnome')
 
 source=("dwm.desktop"
 	"git+https://github.com/brenopacheco/dwm.git#commit=HEAD")
