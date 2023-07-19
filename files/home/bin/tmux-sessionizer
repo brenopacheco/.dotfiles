@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 
-function repositories() {
+notify-send "hello"
+
+WIN_ID=$(xprop -root | grep -e "^_NET_ACTIVE_WINDOW" | cut -d ' ' -f 5)
+PID=$(xprop -id $WIN_ID | grep -e "^_NET_WM_PID" | cut -d ' ' -f 3)
+PROCESS=$(ps -p $PID -o comm=)
+
+mkdir -p /tmp/rofi-tmux
+
+tmpfile=$(mktemp /tmp/rofi-tmux/rofi-tmux.XXXXXX)
+fnsfile=$(mktemp /tmp/rofi-tmux/rofi-tmux.fns.XXXXXX)
+
+function list-sessions() {
+	tmux ls | sed 's/:.*//'
+}
+
+function list-repositories() {
 	fd -t d -HI \
 		-E .cargo \
 		-E .go \
@@ -10,32 +25,63 @@ function repositories() {
 		-E .rustup \
 		-E cache \
 		-E .cache \
+		-E fc \
 		"^.git" ~/ |
 		sed 's/\/\.git.*//' | sed "s#$HOME/##" | sort | uniq
 }
 
-function attach() {
-	selected_name=$(basename "$selected" | tr . _)
+function setup_session() {
+	repository=$1
+	session_name=$(basename "$repository" | tr . _)
 	tmux_running=$(pgrep tmux)
-
-	if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-		tmux new-session -s $selected_name -c $selected
-		exit 0
+	if ! tmux has-session -t=$session_name 2>/dev/null; then
+		tmux new-session -ds $session_name -c $repository
 	fi
-
-	if ! tmux has-session -t=$selected_name 2>/dev/null; then
-		tmux new-session -ds $selected_name -c $selected
-	fi
-
-	if [[ -z $TMUX ]]; then
-		st -e tmux attach -t $selected_name
-	else
-		st -e tmux switch-client -t $selected_name
-	fi
+	echo $session_name
 }
 
-if [ -z "$1" ]; then
-	repositories
+echo "$(declare -f list-sessions)" >>$fnsfile
+echo "$(declare -f list-repositories)" >>$fnsfile
+
+function make_mode() {
+	mode=$1
+	list_function=$2
+	template=$(
+		cat <<EOF
+#!/usr/bin/env bash
+source $fnsfile
+echo -en "\0prompt\x1fTmux $mode\n"
+if [ -z "\$1" ]; then
+	$list_function
 else
-	attach "$HOME/$1"
+	echo \$1 > $tmpfile
 fi
+exit 0
+EOF
+	)
+	modefile=$(mktemp /tmp/rofi-tmux/rofi-tmux.${mode}-mode.XXXXXX)
+	echo "$template" >$modefile
+	chmod +x $modefile
+	echo $modefile
+}
+
+create=$(make_mode "create" "list-repositories")
+attach=$(make_mode "attach" "list-sessions")
+
+rofi -show "attach" -modes "attach:${attach},create:${create}"
+
+selected=$(cat $tmpfile)
+
+if [ -z "$selected" ]; then
+	exit 0
+fi
+
+session=$(setup_session $selected)
+
+rm /tmp/rofi-tmux/*
+
+st -e tmux attach -t $session &
+disown
+notify-send "Attached to $session"
+
+exit 0

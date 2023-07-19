@@ -1,9 +1,9 @@
 configuration {
-	modes: "run,tmux:~/bin/tmux-sessionizer";
+	modes: "run";
     matching: "fuzzy";
 	kb-element-next: "";
-    kb-mode-next: "Control+k,Tab";
-    kb-mode-previous: "Control+j,Shift+Tab";
+    kb-mode-next: "Alt+n,Tab";
+    kb-mode-previous: "Alt+p,Shift+Tab";
 	kb-accept-entry: "Return";
 	kb-remove-to-eol: "";
 }
