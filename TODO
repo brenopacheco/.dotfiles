@@ -1,15 +1,10 @@
 
-
-- awesomeWM 
-	+ top/left bar?
-	+ shadows/rounded corners?
-	+ color scheme?
-	+ keybindings?
-	+ widgets?
-	+ notifications?
-	+ lockscreen?
-	+ wallpaper?
-	+ terminal?
-	+ compositor?
-	+ browser styling?
-	+ launcher?
+wm: 
+bars:          eww/polybar(waybar)
+widgets:       eww
+colors:        rosepinetheme
+notifications: dunst
+lockscreen:
+terminal:
+compositor:
+launcher:      rofi/wofi(wayland)

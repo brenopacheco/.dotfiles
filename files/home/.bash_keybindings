@@ -1,6 +1,6 @@
 
-bind -r "\C-t"
-bind -r "c"
+# bind -r "\C-t"
+# bind -r "c"
 
 bind -x '"": "clear"'             # C-l    :: clear screen
 bind -x '"´": "lf"'                 # ´´     :: open lf

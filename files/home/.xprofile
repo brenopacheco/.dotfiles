@@ -6,6 +6,11 @@ export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin:/home/$USER/.pkgs/bin"
 export WALLPAPER=~/.wallpapers/abstract-d.png
 test -f "$WALLPAPER" && feh --bg-fill $WALLPAPER
 
+# TODO:
+# - control session (xgm/lxsession)
+# - control dbus launch (exec dbus-run-session dwm)
+# - pipewire (pipewire &, pipewire-pulse &)
+
 # applications
 dunst -print >>/tmp/dunst.log & # notification daemon
 info-daemon &                   # statusbar
@@ -15,7 +20,7 @@ nm-applet &                     # networkmanager applet
 blueman-applet &                # bluetooth applet
 {
 	sleep 30
-	redshift -l 41.157944:-8.629105 -g 0.8 & disown
+	redshift -l 41.157944:-8.629105 -g 0.75 & disown
 	tasker-go >/tmp/tasker.log 2>&1 & disown
 } &
 

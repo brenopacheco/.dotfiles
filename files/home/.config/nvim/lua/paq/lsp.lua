@@ -1,10 +1,11 @@
 local lspconfig = require("lspconfig")
 local utils = require("utils")
 
--- vim.lsp.set_log_level(vim.log.levels.OFF)
-vim.lsp.set_log_level(vim.log.levels.ERROR)
+vim.lsp.set_log_level(vim.log.levels.OFF)
+-- vim.lsp.set_log_level(vim.log.levels.ERROR)
 
 lspconfig.omnisharp.setup(require("paq.lsp.omnisharp"))
+lspconfig.efm.setup(require("paq.lsp.efm"))
 
 local servers = {
 	"ansiblels",
@@ -37,6 +38,7 @@ local servers = {
 	"vimls",
 	"yamlls",
 	"svelte",
+	-- "efm",
 }
 
 -- enable snippets. we are interested in function call snippets

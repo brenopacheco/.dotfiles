@@ -1,0 +1,5 @@
+*.tar.*
+license
+pkg
+rose-pine-gtk-theme-*
+src

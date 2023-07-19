@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+function repositories() {
+	fd -t d -HI \
+		-E .cargo \
+		-E .go \
+		-E node_modules \
+		-E yay \
+		-E .asdf \
+		-E .rustup \
+		-E cache \
+		-E .cache \
+		"^.git" ~/ |
+		sed 's/\/\.git.*//' | sed "s#$HOME/##" | sort | uniq
+}
+
+function attach() {
+	selected_name=$(basename "$selected" | tr . _)
+	tmux_running=$(pgrep tmux)
+
+	if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+		tmux new-session -s $selected_name -c $selected
+		exit 0
+	fi
+
+	if ! tmux has-session -t=$selected_name 2>/dev/null; then
+		tmux new-session -ds $selected_name -c $selected
+	fi
+
+	if [[ -z $TMUX ]]; then
+		st -e tmux attach -t $selected_name
+	else
+		st -e tmux switch-client -t $selected_name
+	fi
+}
+
+if [ -z "$1" ]; then
+	repositories
+else
+	attach "$HOME/$1"
+fi

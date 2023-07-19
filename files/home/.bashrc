@@ -45,7 +45,7 @@ source $HOME/.bash_keybindings
 # Set vim as default editor
 export EDITOR=vim
 export VISUAL=vim
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 ## source fzf settings
 if $(which fzf >/dev/null 2>&1); then

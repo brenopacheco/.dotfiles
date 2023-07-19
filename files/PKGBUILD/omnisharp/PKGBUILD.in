@@ -7,7 +7,7 @@ url='https://github.com/OmniSharp/omnisharp-roslyn'
 license=(MIT)
 
 source=("https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v$pkgver/omnisharp-linux-x64-net6.0.tar.gz")
-sha256sums=('dec738479648b0b9c94f5a8d3296de0d3a8e7a2777171b2242082a4a9bd8fb0e')
+sha256sums=('SKIP')
 
 package() {
 	install -Dm755 OmniSharp *.dll -t"$pkgdir"/usr/lib/omnisharp

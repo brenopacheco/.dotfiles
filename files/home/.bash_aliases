@@ -1,7 +1,8 @@
 alias ts='read -p "Session name: "; tmux new -s $REPLY'
-alias ta="tmux a -t \$(tmux ls | rofi -dmenu | awk '{print \$1}' | sed 's/:\$//')"
+alias ta="tmux-attach"
 alias tl='tmux list-sessions -F "#{session_id}: #{session_name} (group: #{session_group}) - #{?session_attached,attached,detached}"'
 alias tk='tmux kill-server'
+alias tm='tmux-sessionizer'
 
 alias pp='pushd .'
 alias po='popd'

@@ -1,31 +1,19 @@
 #!/bin/bash
-# Launches firefox given a group of bookmarks
-# Uses dmenu_color for selection
 
-# bookmarks
-cat<<EOF>/tmp/bookmarks
-Google       https://google.com
-Localhost    http://localhost:8080
-Youtube      https://youtube.com
-Whatsapp     https://web.whatsapp.com/
-Udemy        https://www.udemy.com
-Netflix      https://netflix.com
-Arch Wiki    https://wiki.archlinux.org/
-Bitbucket    https://bitbucket.com
-Github       https://github.com
-Gmail        https://gmail.com
-Libgen       https://libgen.unblocked.lc/
-Moodle       https://moodle.isep.ipp.pt
-Isep         https://portal.isep.ipp.pt
-Avenue       https://pit.avenue.us
-Clear        https://novopit.clear.com.br/MinhaConta/MeusAtivos
-Discord      https://discord.com/login
-EOF
+BROWSER="$(xdg-settings get default-web-browser | sed 's/\.desktop//')"
+URL="https://google.com"
 
-# launcher
-website=$(cat /tmp/bookmarks | dmenu_color -p "Bookmarks:")
-link=$(echo "$website" | sed 's#\(.*\)\(https\?://\)#\2#')
-[[ -z "$link" ]] && exit 1
-xdg-open "$link"
-echo "$link"
+chromium --new-window "$URL"
 exit 0
+
+if pgrep -x "$BROWSER" > /dev/null; then
+	WINDOW_ID=$(xdotool search --maxdepth 1 --onlyvisible --class "$BROWSER")
+    xdotool windowactivate ${WINDOW_ID}
+else
+    xdg-open "$URL"
+fi
+
+# to change the tag, we need to apply ewhm patch to dwm
+# CURRENT_TAG=$(xprop -id $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $NF}') _NET_WM_DESKTOP | awk '{print $NF}')
+# echo $CURRENT_TAG
+# echo "xdotool set_desktop_for_window $WINDOW_ID $CURRENT_TAG"
