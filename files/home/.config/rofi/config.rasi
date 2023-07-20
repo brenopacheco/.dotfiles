@@ -2,8 +2,10 @@ configuration {
 	modes: "run";
     matching: "fuzzy";
 	kb-element-next: "";
-    kb-mode-next: "Alt+n,Tab";
-    kb-mode-previous: "Alt+p,Shift+Tab";
+    kb-mode-next: "Tab";
+    kb-mode-previous: "Shift+Tab";
 	kb-accept-entry: "Return";
 	kb-remove-to-eol: "";
+	kb-row-down: "Down,Control+n,Alt+n";
+	kb-row-up: "Up,Control+p,Alt+p";
 }

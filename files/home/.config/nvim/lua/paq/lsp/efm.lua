@@ -10,4 +10,17 @@ local M = {
 	},
 }
 
+--[[ 
+go
+  golangci-lint 
+    - https://golangci-lint.run/usage/linters/
+    - enable all
+    disable:
+      staticcheck
+  staticcheck (needs to be run separately)
+
+
+  
+}
+]]
 return M

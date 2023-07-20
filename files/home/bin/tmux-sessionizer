@@ -1,10 +1,53 @@
 #!/usr/bin/env bash
+# Uses Rofi to find sessions to attach or repositories to create sessions for.
+# Can be run in one or two modes:
+# - swap: swap the current window terminal with the selected session
+# - launch: launch a new terminal with the selected session
+#
+# if swap is run from within a tmux session, it will change the session
+# if swap is run from within a non-tmux session, it will attach to the session
+# if swap is run without focusing a terminal window, a new terminal is launched
 
-notify-send "hello"
+MODE=$1
+
+case $MODE in 
+	"swap")
+		;;
+	"launch")
+		;;
+	*)
+		# show usage
+		notify-send "Usage: $(basename $0) [swap|launch]"
+		exit 1
+		;;
+esac
+
 
 WIN_ID=$(xprop -root | grep -e "^_NET_ACTIVE_WINDOW" | cut -d ' ' -f 5)
 PID=$(xprop -id $WIN_ID | grep -e "^_NET_WM_PID" | cut -d ' ' -f 3)
-PROCESS=$(ps -p $PID -o comm=)
+PROCESS=
+IS_TERMINAL=$(test -n "$(ps -p $PID -o comm= | grep -e "st")" && echo "0" || echo "1")
+IS_TMUX=1
+
+is_tmux() {
+	local pid=$1
+	local tids=$(ls /proc/$pid/task 2>/dev/null)
+	for tid in $tids; do
+		if [ -e /proc/$pid/task/$tid/children ]; then
+			local children=$(cat /proc/$pid/task/$tid/children)
+			for p in $children; do
+				local name=$(ps -p $p -o comm=)
+				ps -p $p -o comm= | grep -q "tmux"
+				if [[ $? -eq 0 ]]; then
+					IS_TMUX=0
+				fi
+				is_tmux $p
+			done
+		fi
+	done
+}
+
+is_tmux $PID
 
 mkdir -p /tmp/rofi-tmux
 
@@ -80,8 +123,42 @@ session=$(setup_session $selected)
 
 rm /tmp/rofi-tmux/*
 
-st -e tmux attach -t $session &
-disown
-notify-send "Attached to $session"
+function launch() {
+	st -e tmux attach -t $session &
+	disown
+	exit 0
+}
 
+function swap_tmux() {
+	xdotool key --clearmodifiers --window $WIN_ID Delete
+	xdotool type --window $WIN_ID ": switch-client -t $session"
+	xdotool key --window $WIN_ID Return
+	exit 0
+}
+
+function swap_term() {
+	xdotool type --window $WIN_ID "tmux attach -t $session"
+	xdotool key --window $WIN_ID Return
+	exit 0
+}
+
+notify-send "Attaching to $session"
+
+
+if [[ $MODE == "launch" ]]; then
+	launch
+	exit 0
+fi
+
+if [[ $IS_TMUX -eq 0 ]]; then
+	swap_tmux
+	exit 0
+fi
+
+if [[ $IS_TERMINAL -eq 0 ]]; then
+	swap_term
+	exit 0
+fi
+
+launch
 exit 0

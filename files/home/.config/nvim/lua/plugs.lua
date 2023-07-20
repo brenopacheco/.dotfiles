@@ -62,7 +62,8 @@ paq({
     -- https://github.com/michaelb/sniprun
   --
     {'karb94/neoscroll.nvim', config='neoscroll'};
-    {'pmizio/typescript-tools.nvim', config='typescript-tools'}
+    {'pmizio/typescript-tools.nvim', config='typescript-tools'};
+    {'creativenull/efmls-configs-nvim'};
 })
 
 local disable_builtins = true

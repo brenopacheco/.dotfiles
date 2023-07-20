@@ -2,7 +2,7 @@ local lspconfig = require("lspconfig")
 local utils = require("utils")
 
 vim.lsp.set_log_level(vim.log.levels.OFF)
--- vim.lsp.set_log_level(vim.log.levels.ERROR)
+-- vim.lsp.set_log_level(vim.log.levels.DEBUG)
 
 lspconfig.omnisharp.setup(require("paq.lsp.omnisharp"))
 lspconfig.efm.setup(require("paq.lsp.efm"))
@@ -11,6 +11,7 @@ local servers = {
 	"ansiblels",
 	"bashls",
 	"clangd",
+  -- "ccls",
 	"cmake",
 	"cssls",
 	"dockerls",
