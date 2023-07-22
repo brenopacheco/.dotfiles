@@ -1,0 +1,98 @@
+# vim:tw=78:ts=8:noet:ft=sxhkdrc:norl:fdm=marker:fdl=0
+# desc {{{
+# mod         + q            kill window
+# mod + shift + q            quit dwm
+# mod + shift + r            restart dwm
+# mod +       + r            restart sxhkd
+# mod         + t            toggle tiling mode
+# mod         + f            toggle floating mode
+# mod         + m            toggle monocle mode
+# mod         + spc          toggle window float
+# mod         + 0            toggle window full screen
+# mod         + n            focus next window
+# mod         + p            focus previous window
+# mod         + Tab          focus other monitor
+# mod         + i            increase master stack size
+# mod         + o            decrease master stack size
+# mod         + h            increase master width
+# mod         + l            decrease master width
+# mod         + b            toggle top bar
+# mod         + bsp          swap master
+# mod + shift + Tab          move window to next monitor
+# mod         + {1-9}        switch to tag {1-9}
+# mod + shift + {1-9}        move window to tag {1-9}
+# mod + ctrl  + {1-9}        toggle tag {1-9}
+# mod         + ret          launch terminal
+# mod         + '            run launcher (wofi/rofi)
+# mod         + s            run password manager (passmenu)
+# mod         + w            open browser (maybe remove and customize rofi)
+# mod         + e            open   tmux session
+# mod         + a            attach tmux session
+# }}}
+
+alt + q
+  dwm-msg --ignore-reply run_command killclient 0
+
+alt + shift + {q,r}
+  dwm-msg --ignore-reply run_command quit {0,1}
+  # pkill -USR1 -x dwm
+
+alt + r
+  pkill -USR1 -x sxhkd
+
+alt + {t,f,m}
+  dwm-msg --ignore-reply run_command setlayoutnr {0,1,2}
+
+alt + space
+  dwm-msg --ignore-reply run_command togglefloating
+
+alt + 0
+  dwm-msg --ignore-reply run_command togglefullscr
+
+alt + {n,p}
+  dwm-msg --ignore-reply run_command focusstack {1,-1}
+
+alt + Tab
+  dwm-msg --ignore-reply run_command focusmon 1
+
+alt + {i,o}
+  dwm-msg --ignore-reply run_command incnmaster {1,-1}
+
+alt + {h,l}
+  dwm-msg --ignore-reply run_command setmfact {-0.05,0.05}
+
+alt + b
+  dwm-msg --ignore-reply run_command togglebar
+
+alt + v
+  dwm-msg --ignore-reply run_command togglesticky
+
+alt + BackSpace
+  dwm-msg --ignore-reply run_command zoom
+
+alt + shift + Tab
+  dwm-msg --ignore-reply run_command tagmon 1
+
+alt + {_,shift,ctrl} + {1-9}
+  dwm-msg --ignore-reply run_command {view,tag,toggleview} $((1 << {0-8}))
+
+alt + Return
+  st
+
+alt + apostrophe
+  rofi -show drun
+
+alt + s
+  dmenu_pass
+
+alt + w
+  chromium
+
+alt + e
+  tmux-sessionizer launch
+
+alt + a
+  tmux-sessionizer swap
+
+Super_L; @Super_L
+  st

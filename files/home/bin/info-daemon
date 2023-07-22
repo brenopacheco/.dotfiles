@@ -42,7 +42,8 @@ while true; do
 		cpu_status=" ${cpu_temp}°C"
 	fi
 
-	message="󰋊 $disk_data  $cpu_data 󰆋 $mem_data $cpu_status   $date_data |"
+	# message="󰋊 $disk_data  $cpu_data 󰆋 $mem_data $cpu_status   $date_data |"
+	message="󰋊 $disk_data  $cpu_data 󰆋 $mem_data $cpu_status   $date_data "
     xsetroot -name "$message"
     sleep 3s
     echo $message

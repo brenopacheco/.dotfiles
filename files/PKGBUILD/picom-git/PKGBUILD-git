@@ -1,10 +1,10 @@
-pkgname=picom-pijulius-git
+pkgname=picom-git
 _gitname=picom
-pkgver=1691
+pkgver=1939_9.rc1.261.g6f868e5_2023.07.22
 pkgrel=1
 pkgdesc="X compositor (fork of compton) (git-version)"
 arch=(i686 x86_64)
-url="https://github.com/pijulius/${_gitname}"
+url="https://github.com/yshui/${_gitname}"
 license=('MIT' 'MPL2')
 depends=('libgl' 'libev' 'pcre' 'libx11' 'xcb-util-renderutil' 'libxcb' 'xcb-util-image' 'libxext'
          'pixman' 'libconfig' 'libdbus' 'hicolor-icon-theme')
@@ -16,13 +16,15 @@ optdepends=('dbus:          To control picom via D-Bus'
 provides=('compton' 'compton-git' 'picom')
 conflicts=('compton' 'compton-git' 'picom')
 replaces=('compton-git')
-source=(git+"https://github.com/pijulius/${_gitname}.git#branch=implement-window-animations")
+source=(git+"https://github.com/yshui/${_gitname}.git#branch=next")
 md5sums=("SKIP")
 
 pkgver() {
     cd ${_gitname}
+    _tag=$(git describe --tags | sed 's:^v::') # tag is mobile, and switches between numbers and letters, can't use it for versioning
     _commits=$(git rev-list --count HEAD) # total commits is the most sane way of getting incremental pkgver
-    printf "%s\n" "${_commits}"
+    _date=$(git log -1 --date=short --pretty=format:%cd)
+    printf "%s_%s_%s\n" "${_commits}" "${_tag}" "${_date}" | sed 's/-/./g'
 }
 
 build() {

@@ -5,7 +5,7 @@ vim.lsp.set_log_level(vim.log.levels.OFF)
 -- vim.lsp.set_log_level(vim.log.levels.DEBUG)
 
 lspconfig.omnisharp.setup(require("paq.lsp.omnisharp"))
-lspconfig.efm.setup(require("paq.lsp.efm"))
+-- lspconfig.efm.setup(require("paq.lsp.efm"))
 
 local servers = {
 	"ansiblels",
@@ -49,6 +49,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 	properties = { "documentation", "detail", "additionalTextEdits" },
 }
 -- capabilities.textDocument.semanticTokensProvider = nil
+capabilities.offsetEncoding = { "utf-16" }
 
 for _, server in pairs(servers) do
 	lspconfig[server].setup({

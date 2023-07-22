@@ -87,3 +87,5 @@ let foldtext=utils#foldtext()
 vim.go.grepprg = "rg --hidden --smart-case"
   .. " --color=never --no-heading --column"
   .. " --with-filename --line-number  -e $*"
+
+vim.g.editorconfig = true

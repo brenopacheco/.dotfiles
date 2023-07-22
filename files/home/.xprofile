@@ -11,18 +11,21 @@ test -f "$WALLPAPER" && feh --bg-fill $WALLPAPER
 # - control dbus launch (exec dbus-run-session dwm)
 # - pipewire (pipewire &, pipewire-pulse &)
 
-# applications
-dunst -print >>/tmp/dunst.log & # notification daemon
-info-daemon &                   # statusbar
-udiskie &                       # automount disks
-pa-applet &                     # pulseaudio volume applet
-nm-applet &                     # networkmanager applet
-blueman-applet &                # bluetooth applet
+dunst -print >>/tmp/dunst.log & disown # notification daemon
+info-daemon & disown                   # statusbar
+udiskie & disown                       # automount disks
+
+# applets
+pa-applet & disown              # pulseaudio volume applet
+nm-applet & disown              # networkmanager applet
+blueman-applet & disown         # bluetooth applet
+
 {
 	sleep 30
 	redshift -l 41.157944:-8.629105 -g 0.75 & disown
 	tasker-go >/tmp/tasker.log 2>&1 & disown
 } &
 
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-disown
+picom -b & disown
+
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown

@@ -1,32 +1,53 @@
 ! k380 settings
-! What is this doing?
-! - loadkeys uk
-! - setxkbmap -model pc105 -layout gb
+! loadkeys uk
+! setxkbmap -model pc105 -layout gb
+! xmodmam -pm  # show the modifier map
+! xmodmam -pke # show the keymap
+! NOTE:
+!  - k380 does not report Alt+AltGr+2 keypresses (it releases both alt and
+!  altgr when 2 is clicked). This can be tested by running evtest
 
+clear mod1
+clear mod2
+clear mod3
+clear mod4
+clear mod5
 clear lock
 clear control
-keycode 66 = Control_L
-keycode 37 =
-add Control = Control_L
+clear shift
 
-clear mod5
-keycode 108 = Shift_L
+! modifiers
+keycode 66  = Control_L   Control_L   Control_L   Control_L
+keycode 50  =
+keycode 37  =
+keycode 133 = Super_L     Super_L     Super_L     Super_L
+keycode 64  = Alt_L       Alt_L       Alt_L       Alt_L
+keycode 108 = Shift_L     Shift_L     Shift_L     Shift_L
+keycode 105 =
+keycode 62  = Shift_R     Shift_R     Shift_R     Shift_R
+keycode 204 =
+keycode 206 =
+keycode 92  =
+keycode 203 =
 
-! other keybindings
-keycode 105 = slash question
-keycode 59 = comma less
-keycode 60 = period greater
-keycode 61 = semicolon colon
-keycode 20 = minus underscore
-keycode 49 = apostrophe quotedbl
-keycode 94 = backslash bar
-keycode 35 = bracketleft braceleft
-keycode 51 = bracketright braceright
-keycode 11 = 2 at
-keycode 21 = dead_acute dead_grave
-keycode 48 = dead_tilde dead_circumflex
-keycode 47 = parenright parenleft
-keycode 34 = plus asterisk
-keycode 19 = 0 equal
-keycode 11 = 2 at 2 at at at at at
-keycode 12 = 3 numbersign 3 numbersign
+! other keymaps
+keycode 11  = 2            at              2            at
+keycode 12  = 3            numbersign      3            numbersign
+keycode 19  = 0            equal           0            equal
+keycode 20  = minus        underscore      minus        underscore
+keycode 21  = dead_acute   dead_grave      dead_acute   dead_grave
+keycode 34  = plus         asterisk        plus         asterisk
+keycode 35  = bracketleft  braceleft       bracketleft  braceleft
+keycode 47  = parenright   parenleft       parenright   parenleft
+keycode 48  = dead_tilde   dead_circumflex dead_tilde   dead_circumflex
+keycode 49  = apostrophe   quotedbl        apostrophe   quotedbl
+keycode 51  = bracketright braceright      bracketright braceright
+keycode 59  = comma        less            comma        less
+keycode 60  = period       greater         period       greater
+keycode 61  = semicolon    colon           semicolon    colon
+keycode 94  = backslash    bar             backslash    bar
+keycode 105 = slash        question        slash        question
+
+add mod1    = Alt_L
+add control = Control_L
+add shift   = Shift_L Shift_R
