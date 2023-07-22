@@ -34,7 +34,7 @@
 # }}}
 
 alt + {q,r}
-  pkill -USR1 -x {dwm,sxhkd}
+  pkill {-HUP -x dwm, -USR1 -x sxhkd}
 
 alt + shift + {q,r}
   dwm-msg --ignore-reply run_command quit {0,1}
