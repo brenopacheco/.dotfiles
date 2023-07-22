@@ -33,11 +33,15 @@
 #   st
 # }}}
 
-alt + {q,r}
-  pkill {-HUP -x dwm, -USR1 -x sxhkd}
+: alt + q
+  dwm-msg --ignore-reply run_command killclient 0
+
+alt + r
+  pkill -USR1 -x sxhkd
 
 alt + shift + {q,r}
   dwm-msg --ignore-reply run_command quit {0,1}
+  # pkill -HUP -x dwm
 
 alt + {t,f,m}
   dwm-msg --ignore-reply run_command setlayoutnr {0,1,2}
