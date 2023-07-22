@@ -28,32 +28,22 @@
 # mod         + w            open browser (maybe remove and customize rofi)
 # mod         + e            open   tmux session
 # mod         + a            attach tmux session
+#
+# Super_L; @Super_L
+#   st
 # }}}
 
-alt + q
-  dwm-msg --ignore-reply run_command killclient 0
+alt + {q,r}
+  pkill -USR1 -x {dwm,sxhkd}
 
 alt + shift + {q,r}
   dwm-msg --ignore-reply run_command quit {0,1}
-  # pkill -USR1 -x dwm
-
-alt + r
-  pkill -USR1 -x sxhkd
 
 alt + {t,f,m}
   dwm-msg --ignore-reply run_command setlayoutnr {0,1,2}
 
-alt + space
-  dwm-msg --ignore-reply run_command togglefloating
-
-alt + 0
-  dwm-msg --ignore-reply run_command togglefullscr
-
 alt + {n,p}
   dwm-msg --ignore-reply run_command focusstack {1,-1}
-
-alt + Tab
-  dwm-msg --ignore-reply run_command focusmon 1
 
 alt + {i,o}
   dwm-msg --ignore-reply run_command incnmaster {1,-1}
@@ -61,38 +51,23 @@ alt + {i,o}
 alt + {h,l}
   dwm-msg --ignore-reply run_command setmfact {-0.05,0.05}
 
-alt + b
-  dwm-msg --ignore-reply run_command togglebar
+alt + {space,0}
+  dwm-msg --ignore-reply run_command {togglefloating,togglefullscr}
 
-alt + v
-  dwm-msg --ignore-reply run_command togglesticky
-
-alt + BackSpace
-  dwm-msg --ignore-reply run_command zoom
-
-alt + shift + Tab
-  dwm-msg --ignore-reply run_command tagmon 1
+alt + {BackSpace,b,v}
+  dwm-msg --ignore-reply run_command {zoom,togglebar,togglesticky}
 
 alt + {_,shift,ctrl} + {1-9}
   dwm-msg --ignore-reply run_command {view,tag,toggleview} $((1 << {0-8}))
 
-alt + Return
-  st
+alt + {_,shift} + Tab
+  dwm-msg --ignore-reply run_command {focusmon,tagmon} 1
 
-alt + apostrophe
-  rofi -show drun
+alt + {apostrophe,Return}
+  {rofi -show drun,st}
 
-alt + s
-  dmenu_pass
+alt + {s,w}
+  {dmenu_pass,chromium}
 
-alt + w
-  chromium
-
-alt + e
-  tmux-sessionizer launch
-
-alt + a
-  tmux-sessionizer swap
-
-Super_L; @Super_L
-  st
+alt + {e,a}
+  tmux-sessionizer {launch,swap}

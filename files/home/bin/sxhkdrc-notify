@@ -2,17 +2,10 @@
 
 FIFO_PATH="/tmp/sxhkd.fifo"
 
-mkfifo $FIFO_PATH 2>/dev/null
-
 if [[ ! -p $FIFO_PATH ]]; then
 	echo "sxhkdrc-notify: $FIFO_PATH does not exist"
 	exit 1
 fi
-
-if ! pgrep -x sxhkd >/dev/null; then
-	sxhkd -s /tmp/sxhkd.fifo & disown
-fi
-
 
 icon="/usr/share/icons/Papirus-Dark/24x24/actions/help-keybord-shortcuts.svg"
 
