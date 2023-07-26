@@ -79,7 +79,7 @@ origin = top-right
 #
 # Examples: origin = top-right offset = 10x300 # a margin of 10 pixels from
 # the right and 300 pixels from the top
-offset = 30x50
+offset = 30x70
 
 
 # Specifies a scale factor for dimensions to adapt notifications to HiDPI

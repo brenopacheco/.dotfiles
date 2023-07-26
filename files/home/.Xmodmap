@@ -51,3 +51,4 @@ keycode 105 = slash        question        slash        question
 add mod1    = Alt_L
 add control = Control_L
 add shift   = Shift_L Shift_R
+add mod4    = Super_L

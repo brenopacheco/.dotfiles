@@ -25,6 +25,7 @@ local defaults = [[
 -- TODO: diff toggle in leader D
 
 local actions = [[
+    nnoremap <leader>bd :bd!<cr>
     xmap     ga         :EasyAlign<cr>
     nmap     ga         :EasyAlign<cr>
     nnoremap gy         <cmd>lua require('gitlinker').get_buf_range_url('n', {action_callback = require"gitlinker.actions".open_in_browser})<cr>
@@ -35,11 +36,11 @@ local actions = [[
     nnoremap <leader>#  <cmd>source %<cr>
     nnoremap <leader>!  <cmd>lua u.spawn_terminal()<cr>
     nnoremap <leader>m  <cmd>lua require('util.picker').run()<cr>
-		nnoremap <leader>M  <cmd>lua require('util.doodle').go_run()<cr>
     nnoremap <leader>/  <cmd>call quickfix#global_grep2()<cr>
     nnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
     xnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
     xnoremap g=         :Neoformat<cr>
+    xnoremap <leader>=  :Neoformat<cr>
     nnoremap <leader>=  :Neoformat<cr>
     nnoremap <leader>pi :PaqInstall<cr>
     nnoremap <leader>pu :PaqUpdate<cr>
@@ -51,6 +52,8 @@ local actions = [[
     nnoremap gx         <cmd>lua u.open_url()<cr>
     xnoremap gx         <cmd>lua u.open_url()<cr>
     nnoremap <leader>i  <cmd>Neogen<cr>
+    nnoremap mc         <cmd>lua u.clearmarks()<cr>
+    nnoremap <C-n>      <cmd>lua u.marks()<cr>
 ]]
 
 local movement = [[
@@ -91,9 +94,10 @@ local bufwintabs = [[
 
 local toggles = [[
   nnoremap ´             <cmd>lua u.lf()<cr>
+  nnoremap -             <cmd>lua require("oil").open()<cr>
   nnoremap <leader>'     <cmd>FloatermToggle<cr>
   nnoremap <leader>"     <cmd>FloatermNew<cr>
-  nnoremap <leader>n     <cmd>NvimTreeToggle<cr>
+  nnoremap <leader>n     <cmd>lua require('nvim-tree.api').tree.toggle({focus = false})<cr>
   nnoremap <leader>l     <cmd>lua u.gtree()<cr>
   nnoremap <leader>e     <cmd>lua u.diagnostics(0)<cr>
   nnoremap <leader>E     <cmd>lua u.diagnostics()<cr>
@@ -118,6 +122,7 @@ local find = [[
   nnoremap <leader>f* <cmd>lua u.grep_string()<cr>
   nnoremap <leader>f~ <cmd>lua u.home_files()<cr>
   nnoremap <leader>f/ <cmd>lua u.live_grep()<cr>
+  nnoremap <leader>fz <cmd>ZkNotes { sort = { 'modified' } }<cr>
 ]]
 
 local git = [[
@@ -211,12 +216,12 @@ local snippets = [[
   xmap s   <Plug>(vsnip-cut-text)
 ]]
 
-local args = [[
-  " fix wrapping issue
-  nnoremap ++        <cmd>lua u.argadd()<cr>
-  nnoremap --        <cmd>lua u.argdelete()<cr>
-  nnoremap <leader>+ <cmd>lua u.args()<cr>
-]]
+-- local args = [[
+--   " fix wrapping issue
+--   nnoremap ++        <cmd>lua u.argadd()<cr>
+--   nnoremap --        <cmd>lua u.argdelete()<cr>
+--   nnoremap <leader>+ <cmd>lua u.args()<cr>
+-- ]]
 
 local dap = [[
   nnoremap <leader>d> <cmd>lua require('dap').continue()<cr>
@@ -251,6 +256,15 @@ local term = [[
   nnoremap <buffer> <C-p> :FloatermPrev<cr>
 ]]
 
+local zk = [[
+  nnoremap <leader>zz <cmd>ZkNew { title = vim.fn.input('Title: ') }<cr>
+  vnoremap <leader>z :'<,'>ZkNewFromContentSelection { title = vim.fn.input('Title: ') }<cr>
+  nnoremap <leader>zb <cmd>ZkBacklinks<cr>
+  nnoremap <leader>zl <Cmd>ZkLinks<cr>
+  nnoremap <leader>zp <cmd>ZkInsertLink<cr>
+  nnoremap <leader>zf <cmd>ZkNotes { sort = { 'modified' } }<cr>
+]]
+
 vim.cmd(defaults)
 vim.cmd(actions)
 vim.cmd(movement)
@@ -262,7 +276,8 @@ vim.cmd(complete)
 vim.cmd(snippets)
 -- vim.cmd(args)
 vim.cmd(dap)
-vim.cmd(test)
+-- vim.cmd(test)
+vim.cmd(zk)
 
 local M = {}
 

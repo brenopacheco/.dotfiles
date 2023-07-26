@@ -82,6 +82,8 @@ set termguicolors
 set nobomb " remove <feff>
 let g:filetype_pl="prolog"
 let foldtext=utils#foldtext()
+" 'oldfiles, :cmdhistory, <registers, @input-line, f marks
+set shada='10,:50,<0,@10,s100,f1,h,/0,n~/.cache/nvim/main.shada
 ]])
 
 vim.go.grepprg = "rg --hidden --smart-case"

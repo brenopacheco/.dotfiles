@@ -1,26 +1,20 @@
+local gcc = require("efmls-configs.linters.gcc")
+local golangci = require("efmls-configs.linters.golangci")
+
 local M = {
 	init_options = { documentFormatting = false },
 	settings = {
 		rootMarkers = { ".git/" },
-		languages = {
-			-- lua = {
-			-- 	{ formatCommand = "lua-format -i", formatStdin = true },
-			-- },
-		},
 	},
 }
 
---[[ 
-go
-  golangci-lint 
-    - https://golangci-lint.run/usage/linters/
-    - enable all
-    disable:
-      staticcheck
-  staticcheck (needs to be run separately)
+local efmls = require("efmls-configs")
+efmls.init({
+	default_config = false,
+})
+efmls.setup({
+	c = { linter = gcc },
+	go = { linter = golangci },
+})
 
-
-  
-}
-]]
 return M

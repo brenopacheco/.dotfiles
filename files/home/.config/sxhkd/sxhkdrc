@@ -32,6 +32,7 @@
 # Super_L; @Super_L
 #   st
 # }}}
+# dwm {{{
 
 : alt + q
   dwm-msg --ignore-reply run_command killclient 0
@@ -41,7 +42,6 @@ alt + r
 
 alt + shift + {q,r}
   dwm-msg --ignore-reply run_command quit {0,1}
-  # pkill -HUP -x dwm
 
 alt + {t,f,m}
   dwm-msg --ignore-reply run_command setlayoutnr {0,1,2}
@@ -55,11 +55,8 @@ alt + {i,o}
 alt + {h,l}
   dwm-msg --ignore-reply run_command setmfact {-0.05,0.05}
 
-alt + {space,0}
-  dwm-msg --ignore-reply run_command {togglefloating,togglefullscr}
-
-alt + {BackSpace,b,v}
-  dwm-msg --ignore-reply run_command {zoom,togglebar,togglesticky}
+alt + {space,0,BackSpace,b,v}
+  dwm-msg --ignore-reply run_command {togglefloating,togglefullscr,zoom,togglebar,togglesticky}
 
 alt + {_,shift,ctrl} + {1-9}
   dwm-msg --ignore-reply run_command {view,tag,toggleview} $((1 << {0-8}))
@@ -67,11 +64,25 @@ alt + {_,shift,ctrl} + {1-9}
 alt + {_,shift} + Tab
   dwm-msg --ignore-reply run_command {focusmon,tagmon} 1
 
-alt + {apostrophe,Return}
-  {rofi -show drun,st}
+alt + apostrophe
+  rofi -modes window,drun -show drun
+
+alt + Return
+  st
 
 alt + {s,w}
   {dmenu_pass,chromium}
 
 alt + {e,a}
   tmux-sessionizer {launch,swap}
+
+#}}}
+# tmux {{{
+
+# Super_L; @Super_L
+#   tmux-cli
+
+super + {1-9}
+  tmux-dwm view {1-9}
+
+# }}}

@@ -221,8 +221,11 @@ end
 
 function M.lsp_attach(client, bufnr)
 	require("keymap").register_lsp(client, bufnr)
-	require("nvim-navic").attach(client, bufnr)
-  -- vim.lsp.buf.inlay_hint(0, true)
+  if client.server_capabilities.documentSymbolProvider then
+    require("nvim-navic").attach(client, bufnr)
+  end
+  local enable_inlay_hints = client.server_capabilities.inlayHintProvider ~= nil
+  vim.lsp.buf.inlay_hint(0, enable_inlay_hints)
 	vim.g.navic_silence = true
 	vim.api.nvim_command("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
 	client.server_capabilities.semanticTokensProvider = nil
@@ -232,6 +235,38 @@ function M.toggle_scrolloff()
 	local scrolloff = vim.api.nvim_get_option("scrolloff") > 0 and 0 or 999
 	vim.api.nvim_set_option("scrolloff", scrolloff)
 	print("scrolloff: " .. scrolloff)
+end
+
+function M.fnext()
+  local api = require('nvim-tree.api')
+  if not api.tree.is_visible() then
+    api.tree.open()
+  end
+  api.node.navigate.sibling.next()
+  local path = api.tree.get_node_under_cursor().absolute_path
+  if path ~= nil then
+    vim.cmd('edit ' .. path)
+  end
+end
+
+function M.fprev()
+  local api = require('nvim-tree.api')
+  if not api.tree.is_visible() then
+    api.tree.open()
+  end
+  api.node.navigate.sibling.prev()
+  local path = api.tree.get_node_under_cursor().absolute_path
+  if path ~= nil then
+    vim.cmd('edit ' .. path)
+  end
+end
+
+function M.clearmarks()
+  vim.cmd([[delmarks A-Z1-9]])
+end
+
+function M.marks()
+  require('util.picker').marks()
 end
 
 return M

@@ -58,12 +58,15 @@ paq({
     {'zbirenbaum/copilot.lua', config='copilot'};
 
     -- {'vim-test/vim-test', config='vim-test'};
-    {'nvim-neotest/neotest', config='neotest'};
+    -- {'nvim-neotest/neotest', config='neotest'};
     -- https://github.com/michaelb/sniprun
-  --
-    {'karb94/neoscroll.nvim', config='neoscroll'};
+    -- {'karb94/neoscroll.nvim', config='neoscroll'};
     {'pmizio/typescript-tools.nvim', config='typescript-tools'};
-    {'creativenull/efmls-configs-nvim'};
+    {'creativenull/efmls-configs-nvim', config='efmls-configs'};
+
+    {'mickael-menu/zk-nvim', config='zk'};
+    {'stevearc/oil.nvim', config='oil'};
+
 })
 
 local disable_builtins = true
@@ -76,3 +79,8 @@ local disabled_built_ins = {
 }
 
 -- disable al builtins 
+if disable_builtins then
+    for _, plugin in pairs(disabled_built_ins) do
+        vim.g["loaded_" .. plugin] = 1
+    end
+end

@@ -25,7 +25,6 @@ esac
 
 WIN_ID=$(xprop -root | grep -e "^_NET_ACTIVE_WINDOW" | cut -d ' ' -f 5)
 PID=$(xprop -id $WIN_ID | grep -e "^_NET_WM_PID" | cut -d ' ' -f 3)
-PROCESS=
 IS_TERMINAL=$(test -n "$(ps -p $PID -o comm= | grep -e "st")" && echo "0" || echo "1")
 IS_TMUX=1
 

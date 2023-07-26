@@ -76,3 +76,5 @@ export PATH=$PATH:$HOME/.go/bin    # go
 # fi
 
 test -e .npmtoken && source .npmtoken
+
+export ZK_NOTEBOOK_DIR=$HOME/notes

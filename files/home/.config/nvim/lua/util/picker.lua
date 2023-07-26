@@ -197,4 +197,22 @@ function M.run()
   M.select(targets, opts, on_choice)
 end
 
+function M.marks()
+	local items = vim.fn.getmarklist()
+	items = vim.tbl_filter(function(item)
+		return string.match(item.mark, "%d")
+	end, items)
+	local on_choice = function(selection)
+    P(selection)
+		vim.cmd("e " .. selection.value.file)
+    vim.fn.cursor(selection.value.pos)
+	end
+	local format = function(item)
+		return string.format("%-2s ➔ %s", item.mark, item.file)
+	end
+	local opts = { prompt = "Marks:", format_item = format }
+	return M.select(items, opts, on_choice)
+end
+
+
 return M
