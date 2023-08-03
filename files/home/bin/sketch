@@ -4,7 +4,7 @@ LANG=$1
 
 function help() {
 	cat <<EOF
-Usage: sketch [go|js|ts|bun|sh|c|lua] [NAME]
+Usage: sketch [go|js|ts|bun|sh|c|lua|rust] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
@@ -21,9 +21,9 @@ fi
 LANG=$1
 NAME=$2
 
-if [[ ! "$LANG" =~ ^(go|js|ts|bun|sh|c|lua)$ ]]; then
+if [[ ! "$LANG" =~ ^(go|js|ts|bun|sh|c|lua|rust)$ ]]; then
 	help
-	echo "Invalid LANG: use go, js, ts, bun, c or lua" >&2
+	echo "Invalid LANG: use go, js, ts, bun, c, lua or rust" >&2
 	exit 1
 fi
 
@@ -100,12 +100,7 @@ case $LANG in
 	;;
 "c")
 	echo -e "#include <stdio.h>\n\nint main() {\n\n  return 0;\n}" >main.c
-	echo -e "$CMAKE_MAKEFILE" >Makefile
-	echo -e "$CMAKE_LISTS" >CMakeLists.txt
-	cat $IGNORE_DIR/C.gitignore \
-		$IGNORE_DIR/CMake.gitignore \
-		>.gitignore
-	echo -e "\ncmake\n!Makefile" >>.gitignore
+	echo -e 'all:\n\tgcc main.c -o main\n\t./main' >Makefile
 	;;
 "js")
 	npm init -y
@@ -138,6 +133,11 @@ case $LANG in
 "lua")
 	touch main.lua
 	cp $IGNORE_DIR/Lua.gitignore .gitignore
+	;;
+"rust")
+	touch main.rs
+	cargo init --name ${2:-sketch}
+	cp $IGNORE_DIR/Rust.gitignore .gitignore
 	;;
 esac
 

@@ -62,11 +62,15 @@ paq({
     -- https://github.com/michaelb/sniprun
     -- {'karb94/neoscroll.nvim', config='neoscroll'};
     {'pmizio/typescript-tools.nvim', config='typescript-tools'};
-    {'creativenull/efmls-configs-nvim', config='efmls-configs'};
+    -- {'creativenull/efmls-configs-nvim', config='efmls-configs'};
 
     {'mickael-menu/zk-nvim', config='zk'};
     {'stevearc/oil.nvim', config='oil'};
 
+    {'j-hui/fidget.nvim', config='fidget'};
+  -- {'simrat39/rust-tools.nvim', config='rust-tools'};
+  --
+  {'NeogitOrg/neogit', config='neogit'};
 })
 
 local disable_builtins = true

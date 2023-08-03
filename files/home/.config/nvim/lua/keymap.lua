@@ -26,6 +26,7 @@ local defaults = [[
 
 local actions = [[
     nnoremap <leader>bd :bd!<cr>
+    nnoremap <leader>bc :%bd\|e#<cr>
     xmap     ga         :EasyAlign<cr>
     nmap     ga         :EasyAlign<cr>
     nnoremap gy         <cmd>lua require('gitlinker').get_buf_range_url('n', {action_callback = require"gitlinker.actions".open_in_browser})<cr>
@@ -98,12 +99,12 @@ local toggles = [[
   nnoremap <leader>'     <cmd>FloatermToggle<cr>
   nnoremap <leader>"     <cmd>FloatermNew<cr>
   nnoremap <leader>n     <cmd>lua require('nvim-tree.api').tree.toggle({focus = false})<cr>
-  nnoremap <leader>l     <cmd>lua u.gtree()<cr>
+  "nnoremap <leader>l     <cmd>lua u.gtree()<cr>
   nnoremap <leader>e     <cmd>lua u.diagnostics(0)<cr>
   nnoremap <leader>E     <cmd>lua u.diagnostics()<cr>
   nnoremap <leader>q     <cmd>lua u.quickfix()<cr>
   nnoremap <leader><tab> <cmd>lua u.tagbar()<cr>
-  nnoremap <leader>z     <cmd>lua u.zen()<cr>
+  "nnoremap <leader>z     <cmd>lua u.zen()<cr>
   nnoremap <leader>o     <cmd> lua u.toggle_scrolloff()<cr>
 ]]
 
@@ -167,7 +168,8 @@ local lsp = [[
 
     " INFO
     nnoremap <buffer> <c-k>      <cmd>lua vim.lsp.buf.hover()<cr>
-    nnoremap <buffer> <c-p>      <cmd>lua vim.lsp.buf.peek_definition()<cr>
+    "nnoremap <buffer> <c-p>      <cmd>lua vim.lsp.buf.peek_definition()<cr>
+    nnoremap <buffer> <c-p>      <cmd>lua vim.lsp.buf.signature_help()<cr>
 ]]
 
 local complete = [[
@@ -282,7 +284,9 @@ vim.cmd(zk)
 local M = {}
 
 function M.register_lsp(client, bufnr)
-	vim.cmd(lsp)
+  if client.name ~= "efm" then
+    vim.cmd(lsp)
+  end
 	if client.name == "eslint" then
 		vim.cmd([[
       nnoremap <buffer> <leader>=  :EslintFixAll<cr>

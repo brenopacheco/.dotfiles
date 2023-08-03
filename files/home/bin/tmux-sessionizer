@@ -8,6 +8,10 @@
 # if swap is run from within a non-tmux session, it will attach to the session
 # if swap is run without focusing a terminal window, a new terminal is launched
 
+function notify() {
+	notify-send "tmux-sessionizer" "$1"
+}
+
 MODE=$1
 
 case $MODE in 
@@ -17,7 +21,7 @@ case $MODE in
 		;;
 	*)
 		# show usage
-		notify-send "Usage: $(basename $0) [swap|launch]"
+		notify "Usage: $(basename $0) [swap|launch]"
 		exit 1
 		;;
 esac
@@ -141,7 +145,7 @@ function swap_term() {
 	exit 0
 }
 
-notify-send "Attaching to $session"
+notify "Attaching to $session"
 
 
 if [[ $MODE == "launch" ]]; then

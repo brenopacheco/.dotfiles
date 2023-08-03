@@ -43,8 +43,8 @@ source $HOME/.bash_functions
 source $HOME/.bash_keybindings
 
 # Set vim as default editor
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=/usr/bin/vim
+export VISUAL=/usr/bin/vim
 # export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 ## source fzf settings

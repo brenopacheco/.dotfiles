@@ -38,7 +38,6 @@ window_panes=
 killlast=
 mfact=
 
-# TODO: 
 newpane() {
   tmux \
     split-window -t :.0\; \

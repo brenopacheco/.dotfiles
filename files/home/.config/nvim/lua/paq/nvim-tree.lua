@@ -1,5 +1,6 @@
+local api = require("nvim-tree.api")
+
 local function on_attach(bufnr)
-	local api = require("nvim-tree.api")
 
 	local function opts(desc)
 		return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
@@ -10,7 +11,8 @@ local function on_attach(bufnr)
 	vim.keymap.set("n", "-", api.tree.change_root_to_parent, opts("Up"))
 	vim.keymap.set("n", "]c", api.node.navigate.git.next, opts("Next Git"))
 	vim.keymap.set("n", "[c", api.node.navigate.git.prev, opts("Prev Git"))
-	vim.keymap.set("n", "<CR>", api.node.open.edit, opts("Open"))
+	vim.keymap.set("n", "<CR>", api.tree.change_root_to_node, opts("Open"))
+	vim.keymap.set("n", "+", api.tree.change_root_to_node, opts("Open"))
 	vim.keymap.set("n", "<C-s>", api.node.open.horizontal, opts("Open: Horizontal Split"))
 	vim.keymap.set("n", "<C-v>", api.node.open.vertical, opts("Open: Vertical Split"))
 	vim.keymap.set("n", "d", api.fs.remove, opts("Delete"))
@@ -31,15 +33,33 @@ end
 
 require("nvim-tree").setup({
 	on_attach = on_attach,
-	respect_buf_cwd = true,
+  hijack_cursor = true,
 	update_focused_file = {
 		enable = true,
-		update_root = true,
+		update_root = false,
 	},
 	git = { enable = true, ignore = true, show_on_dirs = true },
+
+	respect_buf_cwd = false,
 	sync_root_with_cwd = false,
-	reload_on_bufenter = true,
+	reload_on_bufenter = false,
 	hijack_directories = {
 		enable = false,
 	},
 })
+
+
+function setup()
+	local group = vim.api.nvim_create_augroup('nvim_tree_reload', { clear = true })
+
+	vim.api.nvim_create_autocmd('BufEnter', {
+		desc = 'Updates nvim-tree root' ,
+		group = group,
+		callback = function()
+      root = require('utils').root()
+      api.tree.change_root(root)
+		end,
+	})
+end
+
+setup()

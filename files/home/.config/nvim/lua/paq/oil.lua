@@ -1,6 +1,6 @@
-local utils = require("utils")
+local oil = require("oil")
 
-require("oil").setup({
+oil.setup({
 	keymaps = {
 		["g?"] = "actions.show_help",
 		["+"] = "actions.select",
@@ -14,7 +14,21 @@ require("oil").setup({
 		["<C-r>"] = "actions.refresh",
 		["zh"] = "actions.toggle_hidden",
 	},
+	buf_options = {
+		buflisted = false,
+		bufhidden = "hide",
+    swapfile = false,
+	},
 	default_file_explorer = true,
 	skip_confirm_for_simple_edits = true,
 	use_default_keymaps = false,
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+	desc = "Autochdir in oil",
+	pattern = { "oil://*" },
+	group = vim.api.nvim_create_augroup("oil-custom", { clear = true }),
+	callback = function()
+		vim.cmd("cd " .. oil.get_current_dir())
+	end,
 })

@@ -2,7 +2,7 @@ whichkey = require("which-key")
 whichkey.setup({
     plugins = {
         marks = true, -- shows a list of your marks on ' and `
-        registers = false, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+        registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
         presets = {
             operators = false, -- adds help for operators like d, y, ... and registers them for motion / text object completion
             motions = false, -- adds help for motions

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+FC_BACKEND=~/fc/backend
+
+tmux kill-session -t fc-backend
+tmux kill-session -t fc-frontend
+tmux kill-session -t fc-editor
+
+cd $FC_BACKEND || exit
+docker-compose down
+
+echo "Done"

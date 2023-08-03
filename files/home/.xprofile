@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 exec 1>/tmp/xprofile.log 2>&1
 export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin:/home/$USER/.pkgs/bin"
 
@@ -23,6 +23,6 @@ blueman-applet & disown         # bluetooth applet
 redshift -l 41.157944:-8.629105 -g 0.75 & disown
 tasker-go >/tmp/tasker.log 2>&1 & disown
 
-picom -b & disown
+# picom -b & disown
 
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown

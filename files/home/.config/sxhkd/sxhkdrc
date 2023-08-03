@@ -73,16 +73,24 @@ alt + Return
 alt + {s,w}
   {dmenu_pass,chromium}
 
+# What do I want here?
+# TODO: Attach should look for an open window running the session I'm interested in
+# If it doesn't exist, it should launch it
 alt + {e,a}
   tmux-sessionizer {launch,swap}
 
 #}}}
 # tmux {{{
 
+# TODO: 
+
 # Super_L; @Super_L
 #   tmux-cli
 
-super + {1-9}
-  tmux-dwm view {1-9}
+# super + {1-9}
+#   tmux-dwm view {1-9}
+
+# Super_L; @Super_L
+#     tmux-dwm newpane
 
 # }}}
