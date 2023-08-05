@@ -9,7 +9,7 @@ paq({
     {'windwp/nvim-autopairs',                         config='autopairs'};
     {'lewis6991/gitsigns.nvim',                       config='gitsigns'};
     {'bluz71/vim-nightfly-guicolors'};
-    {'lukas-reineke/indent-blankline.nvim',           config='blankline'};
+    -- {'lukas-reineke/indent-blankline.nvim',           config='blankline'};
     {'kyazdani42/nvim-web-devicons',                  config='devicons'};
 		{'kyazdani42/nvim-tree.lua',                      config='nvim-tree'};
     {'norcalli/nvim-colorizer.lua',                   config='colorizer'};
@@ -51,9 +51,9 @@ paq({
       {'rcarriga/nvim-dap-ui'};
       {'theHamsta/nvim-dap-virtual-text'};
 
-    {'projekt0n/github-nvim-theme'};
-    {'marko-cerovac/material.nvim'};
-    {'zanglg/nova.nvim'};
+    -- {'projekt0n/github-nvim-theme'};
+    -- {'marko-cerovac/material.nvim'};
+    -- {'zanglg/nova.nvim'};
 
     {'zbirenbaum/copilot.lua', config='copilot'};
 
@@ -70,7 +70,8 @@ paq({
     {'j-hui/fidget.nvim', config='fidget'};
   -- {'simrat39/rust-tools.nvim', config='rust-tools'};
   --
-  {'NeogitOrg/neogit', config='neogit'};
+  -- {'NeogitOrg/neogit', config='neogit'};
+  {'shellRaining/hlchunk.nvim', config='hlchunk'};
 })
 
 local disable_builtins = true
