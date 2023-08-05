@@ -5,5 +5,5 @@ function should_run() {
 }
 
 function task() {
-	makepkg_task dwm && return $OK
+	makepkg_task dwm-fork && return $OK
 }

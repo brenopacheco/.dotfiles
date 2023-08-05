@@ -5,5 +5,5 @@ function should_run() {
 }
 
 function task() {
-	makepkg_task st && return $OK
+	makepkg_task st-fork && return $OK
 }
