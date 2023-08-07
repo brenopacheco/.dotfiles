@@ -3,22 +3,22 @@
 function should_run() {
 	test -e /etc/udev/rules.d/50-keyboard.rules &&
 		test -e /opt/bin/keyboard.sh &&
-		return $DONE || return $RUN
+		return "$DONE" || return "$RUN"
 }
 
 function task() {
 	echo "$RULE" | sudo tee /etc/udev/rules.d/50-keyboard.rules &&
 		sudo mkdir -p /opt/bin &&
-		echo "$KEYBOARD_SH" >/opt/bin/keyboard.sh &&
+		echo "$KEYBOARD_SH" | sudo tee /opt/bin/keyboard.sh &&
 		sudo chmod +x /opt/bin/keyboard.sh &&
-		return $OK
+		return "$OK"
 }
 
 RULE='ACTION=="bind", SUBSYSTEM=="hid", ENV{DISPLAY}=":0", RUN+="/usr/bin/su breno -c /opt/bin/keyboard.sh %p"'
 
 KEYBOARD_SH=$(mktemp)
 
-cat <<EOF >$KEYBOARD_SH
+cat <<EOF >"$KEYBOARD_SH"
 #!/bin/sh
 # Called by udev rule with %p
 

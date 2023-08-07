@@ -39,6 +39,7 @@ local servers = {
 	"yamlls",
 	"svelte",
 	-- "efm",
+  "zls",
 }
 
 -- enable snippets. we are interested in function call snippets

@@ -42,7 +42,7 @@
         ]
     },
     "code": {
-        "prefix": "code",
+        "prefix": ["code", "block"],
         "description": "```vim",
         "body": [
             "```${1:vim}",

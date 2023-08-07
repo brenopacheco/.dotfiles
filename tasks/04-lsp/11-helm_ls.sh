@@ -8,12 +8,12 @@ function get_version() {
 function should_run() {
 	VERSION=$(get_version)
 	is_version_newer helm-ls $VERSION &&
-		return $RUN || return $DONE
+		return "$RUN" || return "$DONE"
 }
 
 function task() {
 	VERSION=$(get_version)
 	DATA=$(jq -n --arg input "$VERSION" '{"PKGVER": $input}')
 	makepkg_PKGBUILD helm-ls PKGBUILD.in "$DATA"
-	makepkg_task helm-ls && return $OK
+	makepkg_task helm-ls && return "$OK"
 }

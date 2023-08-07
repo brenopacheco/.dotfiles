@@ -7,9 +7,9 @@ packages=(
 )
 
 function should_run() {
-	has_packages $packages && return $DONE || return $RUN
+	has_packages "${packages[@]}" && return "$DONE" || return "$RUN"
 }
 
 function task() {
-	sudo pacman -S --noconfirm ${packages[*]} && return $OK
+	sudo pacman -S --noconfirm "${packages[*]}" && return "$OK"
 }

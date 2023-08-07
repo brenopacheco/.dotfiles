@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function should_run() {
-	which java && which mvn && return $DONE || return $RUN
+	which java && which mvn && return "$DONE" || return "$RUN"
 }
 
 function task() {
@@ -11,5 +11,5 @@ function task() {
 		asdf install java openjdk-13:latest &&
 		asdf install java openjdk-17:latest &&
 		sudo pacman -S --noconfirm maven &&
-		return $OK
+		return "$OK"
 }

@@ -24,6 +24,7 @@ alias gm='git commit'
 alias gc='git-checkout'
 alias gb='git-branch'
 alias gp='git pull'
+alias gcd='git commit -m "$(date)"'
 
 # pacman
 alias pi='sudo pacman -Syu'

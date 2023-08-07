@@ -14,10 +14,10 @@ EOF
 
 function should_run() {
 	test -e /etc/X11/xorg.conf.d/30-touchpad.conf &&
-		return $DONE || return $RUN
+		return "$DONE" || return "$RUN"
 }
 
 function task() {
-	sudo echo "$CONFIG" >/etc/X11/xorg.conf.d/30-touchpad.conf &&
-		return $OK
+	echo "$CONFIG" | sudo tee /etc/X11/xorg.conf.d/30-touchpad.conf &&
+		return "$OK"
 }

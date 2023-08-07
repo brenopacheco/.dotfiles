@@ -1,0 +1,15 @@
+{
+  "script": {
+    "prefix": [
+      "script"
+    ],
+    "body": [
+      "//usr/bin/env zig run \"\\$0\" -- \"\\$@\"; exit",
+      "",
+      "pub fn main() void {",
+      "    @import(\"std\").debug.print(\"hello there\\n\", .{});",
+      "}",
+      ""
+    ]
+  }
+}

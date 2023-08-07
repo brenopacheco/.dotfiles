@@ -8,7 +8,7 @@ function get_version() {
 function should_run() {
 	VERSION=$(get_version)
 	is_version_newer marksman $VERSION &&
-		return $RUN || return $DONE
+		return "$RUN" || return "$DONE"
 }
 
 function task() {
@@ -16,5 +16,5 @@ function task() {
 	TAG=$(echo "20${VERSION}" | sed 's/\./-/g')
 	DATA=$(jq -n --arg ver "$VERSION" --arg tag "$TAG" '{"PKGVER": $ver, "TAG": $tag}')
 	makepkg_PKGBUILD marksman PKGBUILD.in "$DATA"
-	makepkg_task marksman && return $OK
+	makepkg_task marksman && return "$OK"
 }

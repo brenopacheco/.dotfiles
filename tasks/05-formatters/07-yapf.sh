@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function should_run() {
-	which yapf && return $DONE || return $RUN
+	which yapf && return "$DONE" || return "$RUN"
 }
 
 function task() {
-	pipx install yapf && return $OK
+	pipx install yapf && return "$OK"
 }

@@ -2,9 +2,9 @@
 # gem install solargraph
 
 function should_run() {
-	which solargraph && return $DONE || return $RUN
+	which solargraph && return "$DONE" || return "$RUN"
 }
 
 function task() {
-	gem install solargraph && return $OK
+	gem install solargraph && return "$OK"
 }

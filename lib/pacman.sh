@@ -28,7 +28,7 @@ function are_packages_synced() {
 # Parameters:
 #  - $1: package name
 function package_version() {
-	pacman -Qi $1 | grep Version | awk '{print $3}'
+	pacman -Qi "$1" | grep Version | awk '{print $3}'
 }
 
 ## Checks if a version for a package is newer than the currently one installed
@@ -42,9 +42,9 @@ function package_version() {
 function is_version_newer() {
 	package=$1
 	required_version=$2
-	installed_version=$(package_version $1)
-	has_packages $package || return 0
-	if [[ $(vercmp $required_version $installed_version) -eq 1 ]]; then
+	installed_version=$(package_version "$1")
+	has_packages "$package" || return 0
+	if [[ $(vercmp "$required_version" "$installed_version") -eq 1 ]]; then
 		return 0
 	fi
 	return 1
@@ -60,7 +60,7 @@ function makepkg_task() {
 	package=$1
 	dir="./files/PKGBUILD/${package}"
 	(
-		cd $dir && makepkg -sicC --noconfirm
+		cd "$dir" && makepkg -sicC --noconfirm
 	)
 	return $?
 }
@@ -75,11 +75,11 @@ function makepkg_PKGBUILD() {
 	template=$2
 	data=$3
 	(
-		cd ./files/PKGBUILD/${package}
-		cp $template PKGBUILD
+		cd "./files/PKGBUILD/${package}" || exit 1
+		cp "$template" PKGBUILD
 		jq -r 'to_entries[] | "\(.key)=\(.value)"' <<<"$data" |
 			while IFS='=' read -r key value; do
-				stripped=$(echo $value | sed 's/^"//' | sed 's/"$//')
+				stripped=$(echo "$value" | sed 's/^"//' | sed 's/"$//')
 				echo "key: $key - value: $stripped"
 				sed -i "s/{{$key}}/$stripped/g" PKGBUILD
 			done

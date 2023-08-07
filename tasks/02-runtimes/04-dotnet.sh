@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function should_run() {
-	which dotnet && return $DONE || return $RUN
+	which dotnet && return "$DONE" || return "$RUN"
 }
 
 function task() {
@@ -9,5 +9,5 @@ function task() {
 	asdf install dotnet-core 5 &&
 		asdf install dotnet-core 6 &&
 		asdf install dotnet-core 7 &&
-		return $OK
+		return "$OK"
 }

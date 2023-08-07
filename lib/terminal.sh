@@ -17,12 +17,13 @@ function message() {
 	elif [[ -z "$suffix" ]]; then
 		pattern="%s =%s%s"
 	fi
+	# shellcheck disable=SC2059
 	printf "${pattern}\n" "$prefix" "$spacer" "$suffix"
 }
 
 function spin() {
 	for s in / - \\ \|; do
-		printf "$s"
+		printf "%s" "$s"
 		tput cub 1
 		sleep .05
 	done
@@ -44,7 +45,7 @@ function async_run() {
 	local work_function=$2
 
 	(
-		$work_function &>$tmpfile
+		$work_function &>"$output_file"
 		exit $?
 	) &
 	pid=$!

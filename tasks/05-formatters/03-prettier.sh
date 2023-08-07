@@ -3,9 +3,9 @@
 function should_run() {
 	which prettier &&
 		which prettierd &&
-		return $DONE || return $RUN
+		return "$DONE" || return "$RUN"
 }
 
 function task() {
-	npm i -g prettier @fsouza/prettierd && return $OK
+	npm i -g prettier @fsouza/prettierd && return "$OK"
 }

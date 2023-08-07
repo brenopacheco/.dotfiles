@@ -21,7 +21,6 @@ function show_usage() {
 
 HELP=false
 INTERACTIVE=false
-FLAG=false
 
 while getopts "hiv" opt; do
     case $opt in
@@ -58,7 +57,7 @@ if $INTERACTIVE; then
 	do
 		echo "Selected: $task"
 		if [[ -n $task ]]; then
-			runner $task $VERBOSE
+			runner "$task" "$VERBOSE"
 		fi
 	done
 	exit 0
@@ -67,10 +66,10 @@ fi
 declare -A counts
 
 for task in $tasks; do
-	runner $task $VERBOSE
+	runner "$task" "$VERBOSE"
 	status=$?
 	(( counts[$status]++ ))
-	test $status -eq $FAILED && exit 1
+	test $status -eq "$FAILED" && exit 1
 done
 
 echo

@@ -8,12 +8,12 @@ function get_version() {
 function should_run() {
 	VERSION=$(get_version)
 	is_version_newer quick-lint-js $VERSION &&
-		return $RUN || return $DONE
+		return "$RUN" || return "$DONE"
 }
 
 function task() {
 	VERSION=$(get_version)
 	DATA=$(jq -n --arg input "$VERSION" '{"PKGVER": $input}')
 	makepkg_PKGBUILD quick-lint-js PKGBUILD.in "$DATA"
-	makepkg_task quick-lint-js && return $OK
+	makepkg_task quick-lint-js && return "$OK"
 }
