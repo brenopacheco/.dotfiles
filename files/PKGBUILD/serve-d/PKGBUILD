@@ -1,0 +1,21 @@
+# shellcheck disable=all
+
+pkgname=('serve-d')
+pkgver=0.8.0
+pkgrel=1
+pkgdesc="Language server protocol implementation for D using workspace-d"
+arch=('x86_64')
+url="https://github.com/Pure-D/serve-d"
+license=("MIT")
+groups=('dlang')
+
+source=(
+	"https://github.com/Pure-D/serve-d/releases/download/nightly/serve-d_linux-nightly-x86_64-20230715-5a8cbb.tar.xz"
+)
+
+md5sums=('SKIP')
+
+package() {
+	install -Dm755 "$srcdir/serve-d" "$pkgdir/usr/bin/serve-d"
+}
+	

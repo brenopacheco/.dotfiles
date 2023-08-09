@@ -4,7 +4,7 @@ LANG=$1
 
 function help() {
 	cat <<EOF
-Usage: sketch [go|js|ts|bun|sh|c|lua|rust|zig] [NAME]
+Usage: sketch [ocaml|d|go|js|ts|bun|sh|c|lua|rust|zig] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
@@ -21,9 +21,9 @@ fi
 LANG=$1
 NAME=$2
 
-if [[ ! "$LANG" =~ ^(go|js|ts|bun|sh|c|lua|rust|zig)$ ]]; then
+if [[ ! "$LANG" =~ ^(ocaml|d|go|js|ts|bun|sh|c|lua|rust|zig)$ ]]; then
 	help
-	echo "Invalid LANG: use go, js, ts, bun, c, lua, rust or zig" >&2
+	echo "Invalid LANG: use d, go, js, ts, bun, c, lua, rust or zig" >&2
 	exit 1
 fi
 
@@ -88,6 +88,19 @@ add_executable(main main.c)
 END_HEREDOC
 )
 
+D_TEMPLATE=$(
+	cat <<'END_HEREDOC'
+#!/usr/bin/env rdmd
+
+void main()
+{
+    import std.stdio : writeln;
+
+    writeln("Hello, World!");
+}
+END_HEREDOC
+)
+
 IGNORE_DIR=$HOME/.ignores
 
 case $LANG in
@@ -140,9 +153,19 @@ case $LANG in
 	cp $IGNORE_DIR/Rust.gitignore .gitignore
 	;;
 "zig")
-	echo -e 'all:\n\tzig run main.zig' >Makefile
+	echo -e 'all:\n\tzig run main.zig\n\nbuild:\n\tzig build-exe main.zig' >Makefile
 	echo -e 'const std = @import("std");\n\npub fn main() !void {\n\tconst stdout = std.io.getStdOut().writer();\n\ttry stdout.print("Hello, {s}!\\n", .{"world"});\n}' >main.zig
 	cp $IGNORE_DIR/zig.gitignore .gitignore
+	;;
+"d")
+	echo -e "$D_TEMPLATE" >main.d
+	chmod +x ./main.d
+	echo -e 'all:\n\t./main.d' >Makefile
+	;;
+"ocaml")
+	echo -e "#!/usr/bin/env ocaml\n\nprint_endline \"Hello, world!\"" >main.ml
+	chmod +x ./main.ml
+	echo -e 'all:\n\t./main.ml' >Makefile
 	;;
 esac
 

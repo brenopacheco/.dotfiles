@@ -73,6 +73,7 @@ export PATH=$PATH:$HOME/.local/bin # python
 export PATH=$PATH:$HOME/.pkgs/bin  # ngrok
 export GOPATH=$HOME/.go
 export PATH=$PATH:$HOME/.go/bin    # go
+export PATH=$PATH:$HOME/.nimble/bin # nim
 # fi
 
 test -e .npmtoken && source .npmtoken

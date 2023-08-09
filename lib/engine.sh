@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SRC_ROOT="$(dirname "${BASH_SOURCE[@]}")"
+SRC_ROOT="$(dirname "${BASH_SOURCE[0]}")"
 source "${SRC_ROOT}/pacman.sh"
 source "${SRC_ROOT}/terminal.sh"
 source "${SRC_ROOT}/tasks.sh"

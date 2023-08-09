@@ -40,6 +40,7 @@ local servers = {
 	"svelte",
 	-- "efm",
   "zls",
+  "serve_d"
 }
 
 -- enable snippets. we are interested in function call snippets
