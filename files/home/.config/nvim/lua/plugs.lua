@@ -67,7 +67,7 @@ paq({
     {'mickael-menu/zk-nvim', config='zk'};
     {'stevearc/oil.nvim', config='oil'};
 
-    {'j-hui/fidget.nvim', config='fidget'};
+    {'j-hui/fidget.nvim', config='fidget', branch='legacy'};
   -- {'simrat39/rust-tools.nvim', config='rust-tools'};
   --
   -- {'NeogitOrg/neogit', config='neogit'};

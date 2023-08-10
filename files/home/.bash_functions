@@ -8,7 +8,7 @@ function lf() {
 	tmp="$(mktemp)"
 	$(which lf) -last-dir-path="$tmp"
 	dir="$(cat "$tmp")"
-	[[ -d "$dir" && "$dir" != "$(pwd)" ]] && cd "$dir"
+	[[ -d "$dir" && "$dir" != "$(pwd)" ]] && cd "$dir" || exit
 }
 # }}}
 # reset_caps : toggle caps lock  {{{
@@ -24,4 +24,7 @@ function tmux_fzf() {
 	fi
 }
 # }}}
+function ocaml() {
+    rlwrap /bin/ocaml "$@"
+}
 # vim:tw=78:ts=8:noet:ft=sh:norl:

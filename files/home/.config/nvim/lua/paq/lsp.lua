@@ -40,7 +40,8 @@ local servers = {
 	"svelte",
 	-- "efm",
   "zls",
-  "serve_d"
+  "serve_d",
+  "ocamllsp" -- fix root dir to allow non-git
 }
 
 -- enable snippets. we are interested in function call snippets
@@ -50,7 +51,8 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 	properties = { "documentation", "detail", "additionalTextEdits" },
 }
 -- capabilities.textDocument.semanticTokensProvider = nil
-capabilities.offsetEncoding = { "utf-8", "utf-16" }
+-- capabilities.offsetEncoding = { "utf-8", "utf-16" }
+capabilities.offsetEncoding = { "utf-16" }
 
 for _, server in pairs(servers) do
 	lspconfig[server].setup({

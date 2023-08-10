@@ -10,9 +10,8 @@ let g:neoformat_enabled_sql = ['sqlformat']
 let g:neoformat_enabled_typescript = ['prettierd']
 let g:neoformat_enabled_typescriptreact = ['prettierd']
 let g:neoformat_enabled_go = ['goimports', 'gofumptextra', 'golines']
+let g:neoformat_enabled_ocaml = ['ocpindent', 'ocamlformatcustom']
 ]])
-
--- -extra
 
 vim.cmd([[
 let g:neoformat_python_gofumptextra = {
@@ -23,6 +22,12 @@ let g:neoformat_python_gofumptextra = {
 let g:neoformat_go_golines = {
         \ 'exe': 'golines',
         \ 'stdin': 1,
+        \ }
+let g:neoformat_ocaml_ocamlformatcustom = {
+        \ 'exe': 'ocamlformat',
+        \ 'no_append': 1,
+        \ 'stdin': 1,
+        \ 'args': ['--enable-outside-detected-project', '--name', '"%:p"', '-']
         \ }
 ]])
 
