@@ -34,7 +34,6 @@ paq({
     {'neovim/nvim-lspconfig',                         config='lsp'};
       {'onsails/lspkind-nvim',                        config='lspkind'};
       {'JoosepAlviste/nvim-ts-context-commentstring', config='commentstring'};
-		  {'glepnir/lspsaga.nvim'};
       {'simrat39/symbols-outline.nvim',               config='symbols-outline'};
       {'Hoffs/omnisharp-extended-lsp.nvim'};
       {'ray-x/lsp_signature.nvim',                    config='signature'};
@@ -72,6 +71,7 @@ paq({
   --
   -- {'NeogitOrg/neogit', config='neogit'};
   {'shellRaining/hlchunk.nvim', config='hlchunk'};
+  {'chrishrb/gx.nvim', config='gx'};
 })
 
 local disable_builtins = true

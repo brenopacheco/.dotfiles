@@ -27,7 +27,7 @@ let g:neoformat_ocaml_ocamlformatcustom = {
         \ 'exe': 'ocamlformat',
         \ 'no_append': 1,
         \ 'stdin': 1,
-        \ 'args': ['--enable-outside-detected-project', '--name', '"%:p"', '-']
+        \ 'args': ['--break-cases=fit-or-vertical', '--enable-outside-detected-project', '--name', '"%:p"', '-']
         \ }
 ]])
 

@@ -9,4 +9,5 @@ tnoremap <buffer> jk <Esc>
 tnoremap <buffer> kj <Esc>
 tnoremap <buffer> <Esc> <Esc>
 
+" TODO: is this necessary?
 let b:undo_ftplugin="call utils#unmap('tmap <buffer>')"

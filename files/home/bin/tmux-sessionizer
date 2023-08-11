@@ -69,6 +69,7 @@ function list-repositories() {
 		-E node_modules \
 		-E yay \
 		-E .asdf \
+		-E .opam \
 		-E .rustup \
 		-E cache \
 		-E .cache \

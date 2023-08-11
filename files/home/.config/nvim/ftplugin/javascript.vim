@@ -3,8 +3,7 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-compiler eslint
-" setlocal equalprg=prettier\ --parser\ typescript\ --single-quote
+compiler node
 setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
@@ -16,6 +15,5 @@ setlocal comments=s1:/*,mb:*,ex:*/
 setlocal commentstring=//%s
 setlocal suffixesadd+=.cjs,.css,.d.ts,.html,.js,.json,.jsx,.mjs,.ts,.tsx
 setlocal keywordprg=:zeal\ javascript:\
-" setlocal iskeyword+=#
 
 let b:undo_ftplugin='setl mp< efm< ep< sw< ts< fdm< fde< fo< tw< com< cms< sua< kp< isk<'

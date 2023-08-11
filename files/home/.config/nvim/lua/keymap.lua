@@ -36,7 +36,6 @@ local actions = [[
     nnoremap qn         <cmd>lua u.cnewer()<CR>
     nnoremap <leader>#  <cmd>source %<cr>
     nnoremap <leader>!  <cmd>lua u.spawn_terminal()<cr>
-    nnoremap <leader>m  <cmd>lua require('util.picker').run()<cr>
     nnoremap <leader>/  <cmd>call quickfix#global_grep2()<cr>
     nnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
     xnoremap <leader>*  <cmd>call quickfix#global_star()<cr>
@@ -50,8 +49,6 @@ local actions = [[
     nnoremap <leader>po :PaqLogOpen<cr>
     xnoremap <leader>s  <cmd>lua u.substitute()<cr>
     nnoremap <leader>s  <cmd>lua u.substitute()<cr>
-    nnoremap gx         <cmd>lua u.open_url()<cr>
-    xnoremap gx         <cmd>lua u.open_url()<cr>
     nnoremap <leader>i  <cmd>Neogen<cr>
     nnoremap mc         <cmd>lua u.clearmarks()<cr>
     nnoremap <C-n>      <cmd>lua u.marks()<cr>
@@ -141,6 +138,11 @@ local git = [[
    nnoremap <leader>gB <cmd>lua u.blame()<cr>
    nnoremap <leader>g2 :diffget //2<CR>
    nnoremap <leader>g3 :diffget //3<CR>
+]]
+
+local make = [[
+   nnoremap <leader>m <cmd>make %<cr>
+   nnoremap <leader>fm <cmd>lua require('util.picker').run()<cr>
 ]]
 
 local lsp = [[
@@ -280,6 +282,7 @@ vim.cmd(snippets)
 vim.cmd(dap)
 -- vim.cmd(test)
 vim.cmd(zk)
+vim.cmd(make)
 
 local M = {}
 

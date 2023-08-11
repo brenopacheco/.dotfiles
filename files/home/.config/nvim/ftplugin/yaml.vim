@@ -3,7 +3,6 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-compiler yaml
 setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
@@ -14,4 +13,4 @@ setlocal comments=:#
 setlocal commentstring=#\ %s
 setlocal expandtab
 
-let b:undo_ftplugin='setl mp< efm< ep< sw< fdm< fo< tw< com< cms< et<'
+let b:undo_ftplugin='setl ep< sw< fdm< fo< tw< com< cms< et<'

@@ -4,7 +4,7 @@ LANG=$1
 
 function help() {
 	cat <<EOF
-Usage: sketch [ocaml|d|go|js|ts|bun|sh|c|lua|rust|zig] [NAME]
+Usage: sketch [ml|d|go|js|ts|bun|sh|c|lua|rust|zig] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
@@ -21,9 +21,9 @@ fi
 LANG=$1
 NAME=$2
 
-if [[ ! "$LANG" =~ ^(ocaml|d|go|js|ts|bun|sh|c|lua|rust|zig)$ ]]; then
+if [[ ! "$LANG" =~ ^(ml|d|go|js|ts|bun|sh|c|lua|rust|zig)$ ]]; then
 	help
-	echo "Invalid LANG: use d, go, js, ts, bun, c, lua, rust or zig" >&2
+	echo "Invalid LANG: use ml, d, go, js, ts, bun, c, lua, rust or zig" >&2
 	exit 1
 fi
 
@@ -90,13 +90,22 @@ END_HEREDOC
 
 D_TEMPLATE=$(
 	cat <<'END_HEREDOC'
-#!/usr/bin/env rdmd
-
+import io = std.stdio;
 void main()
 {
-    import std.stdio : writeln;
+    io.writeln("Hello, World!");
+}
+END_HEREDOC
+)
 
-    writeln("Hello, World!");
+JS_TSCONFIG=$(
+	cat <<'END_HEREDOC'
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true
+  }
 }
 END_HEREDOC
 )
@@ -119,7 +128,8 @@ case $LANG in
 	npm init -y
 	touch main.js
 	echo -e 'all:\n\tnode main.js' >Makefile
-	tsc --init
+	echo $JS_TSCONFIG >tsconfig.json
+	npm i -D typescript @types/node
 	cp $IGNORE_DIR/Node.gitignore .gitignore
 	;;
 "ts")
@@ -160,9 +170,9 @@ case $LANG in
 "d")
 	echo -e "$D_TEMPLATE" >main.d
 	chmod +x ./main.d
-	echo -e 'all:\n\t./main.d' >Makefile
+	echo -e 'all:\n\trdmd ./main.d' >Makefile
 	;;
-"ocaml")
+"ml")
 	echo -e "#!/usr/bin/env ocaml\n\nprint_endline \"Hello, world!\"" >main.ml
 	chmod +x ./main.ml
 	echo -e 'all:\n\t./main.ml' >Makefile
@@ -174,6 +184,8 @@ echo "Directory: $DIR"
 BASHRC=$(mktemp)
 
 cat $HOME/.bashrc >$BASHRC
+
+echo "nvim ." >>$BASHRC
 
 echo "PS1='\[\033[38;5;20m\]\[\033[48;5;11m\]sketch\[$(tput sgr0)\]\[\e[34m\] \w\[$(tput sgr0)\]\$ '" >>$BASHRC
 

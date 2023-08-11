@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo 'compile... ' $1
+gcc $1 && ./a.out && rm a.out

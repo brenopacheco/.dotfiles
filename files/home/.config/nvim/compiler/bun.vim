@@ -1,10 +1,12 @@
-if exists("current_compiler")
+if exists('current_compiler')
   finish
 endif
-let current_compiler = "eslint"
+let current_compiler = 'bun'
 
 let s:save_cpo = &cpo
 set cpo-=C
+
+CompilerSet makeprg=bun
 
 let &l:errorformat  = '%AError: %m' . ','
 let &l:errorformat .= '%AEvalError: %m' . ','
@@ -19,7 +21,7 @@ let &l:errorformat .= '%*[\ ]at\ %f:%l:%c' . ','
 let &l:errorformat .= '%Z%p^,%A%f:%l,%C%m' . ','
 let &l:errorformat .= '%-G%.%#'
 
-CompilerSet makeprg=node
-
 let &cpo = s:save_cpo
 unlet s:save_cpo
+
+
