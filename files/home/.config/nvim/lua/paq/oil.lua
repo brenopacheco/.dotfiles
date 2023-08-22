@@ -6,18 +6,24 @@ oil.setup({
 		["+"] = "actions.select",
 		["-"] = "actions.parent",
 		["<C-v>"] = "actions.select_vsplit",
-		["e"] = "actions.select",
+		["<CR>"] = "actions.select",
 		["<C-s>"] = "actions.select_split",
 		["<C-t>"] = "actions.select_tab",
 		["<C-p>"] = "actions.preview",
 		["q"] = "actions.close",
 		["<C-r>"] = "actions.refresh",
 		["zh"] = "actions.toggle_hidden",
+		["gf"] = function()
+			local entry = oil.get_cursor_entry()
+			local fname = entry.name
+			vim.cmd("silent !xdg-open " .. fname .. " & disown")
+		end,
+		["e"] = "actions.select",
 	},
 	buf_options = {
 		buflisted = false,
 		bufhidden = "hide",
-    swapfile = false,
+		swapfile = false,
 	},
 	default_file_explorer = true,
 	skip_confirm_for_simple_edits = true,

@@ -29,13 +29,13 @@ function should_run() {
 
 function task() {
 
-	if [[ ! -d "$HOME/.opam" ]]; then
-		pushd .
-		cd ~/ || return
-		opam init -a
-		popd || return
-	fi
+	# if [[ ! -d "$HOME/.opam" ]]; then
+	# 	pushd .
+	# 	cd ~/ || return
+	# 	opam init -a
+	# 	popd || return
+	# fi
 
-	sudo pacman -S --noconfirm "${packages[*]}" &&
-		opam install "${packages[*]}" -y && return "$OK"
+	sudo pacman -S --noconfirm "${packages[@]}" &&
+		opam install "${opam_pkgs[@]}" -y && return "$OK"
 }

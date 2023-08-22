@@ -17,5 +17,5 @@ function should_run() {
 }
 
 function task() {
-	sudo pacman -S --noconfirm "${packages[*]}" && return "$OK"
+	sudo pacman -S --noconfirm "${packages[@]}" && return "$OK"
 }

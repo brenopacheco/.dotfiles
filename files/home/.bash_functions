@@ -8,7 +8,7 @@ function lf() {
 	tmp="$(mktemp)"
 	$(which lf) -last-dir-path="$tmp"
 	dir="$(cat "$tmp")"
-	[[ -d "$dir" && "$dir" != "$(pwd)" ]] && cd "$dir" || exit
+	[[ -d "$dir" && "$dir" != "$(pwd)" ]] && cd "$dir"
 }
 # }}}
 # reset_caps : toggle caps lock  {{{

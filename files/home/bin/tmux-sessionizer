@@ -73,6 +73,9 @@ function list-repositories() {
 		-E .rustup \
 		-E cache \
 		-E .cache \
+		-E .dub \
+		-E .emacs.d \
+		-E .local \
 		-E fc \
 		"^.git" ~/ |
 		sed 's/\/\.git.*//' | sed "s#$HOME/##" | sort | uniq
