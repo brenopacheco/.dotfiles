@@ -72,6 +72,11 @@ paq({
   -- {'NeogitOrg/neogit', config='neogit'};
   {'shellRaining/hlchunk.nvim', config='hlchunk'};
   {'chrishrb/gx.nvim', config='gx'};
+
+
+  {'nvim-neorg/neorg', config='neorg', run=':Neorg sync-parsers'};
+
+
 })
 
 local disable_builtins = true

@@ -83,6 +83,7 @@ export PATH=$PATH:$HOME/.pkgs/bin         # ngrok
 export PATH=$PATH:$HOME/.go/bin           # go
 export PATH=$PATH:$HOME/.nimble/bin       # nim
 export PATH=$PATH:$HOME/.opam/default/bin # ocaml
+export PATH=$PATH:$HOME/.dotnet/tools
 # fi
 
 test -e ~/.npmtoken && source ~/.npmtoken

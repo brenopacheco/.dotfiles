@@ -1,4 +1,3 @@
----@diagnostic disable: unused-function, unused-local
 vim.o.termguicolors = true
 
 local function nightifly()
@@ -23,7 +22,5 @@ local function nightifly()
 
 	vim.cmd("colorscheme nightfly")
 end
-
--- light-theme: nova.nvim
 
 nightifly()

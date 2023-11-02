@@ -7,6 +7,8 @@ vim.lsp.set_log_level(vim.log.levels.ERROR)
 lspconfig.omnisharp.setup(require("paq.lsp.omnisharp"))
 
 local servers = {
+  -- "csharp_ls",
+
 	"ansiblels",
 	"bashls",
 	"clangd",

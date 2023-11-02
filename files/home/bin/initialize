@@ -16,7 +16,7 @@ function init_fc() {
 	# fc-backend/server
 	tmux new-window  -t    fc-backend  -n server     -c $FC_BACKEND
 	tmux send-keys -t fc-backend:server 'sleep 60' C-m
-	tmux send-keys -t fc-backend:server 'dotnet watch run --project ./src/FarmerConnect.Api' C-m
+	tmux send-keys -t fc-backend:server 'dotnet watch run --project ./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj' C-m
 
 	# fc-frontend/hub
 	tmux new-session -d -s fc-frontend  -n hub        -c $FC_FRONTEND

@@ -14,6 +14,9 @@ opam_pkgs=(
 )
 
 function should_run() {
+
+	return $SKIP
+
 	has_packages "${packages[@]}" || return "$RUN"
 
 	for package in "${opam_pkgs[@]}"; do
