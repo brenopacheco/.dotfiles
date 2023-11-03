@@ -20,6 +20,7 @@ function get_rel() {
 }
 
 function should_run() {
+	return "$SKIP"
 	VER=$(get_ver)
 	REL=$(get_rel)
 	VERSION="$VER-$REL"

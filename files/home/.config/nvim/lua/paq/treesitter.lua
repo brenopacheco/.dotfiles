@@ -131,3 +131,5 @@ require("nvim-treesitter.configs").setup({
 		},
 	},
 })
+
+vim.print(vim.treesitter.language.add('bash', { path = require("nvim-treesitter.configs").get_parser_install_dir() .. "/bash.so" }))

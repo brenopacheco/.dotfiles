@@ -43,7 +43,8 @@ local servers = {
 	-- "efm",
   "zls",
   "serve_d",
-  "ocamllsp" -- fix root dir to allow non-git
+  "ocamllsp", -- fix root dir to allow non-git
+  "zk"
 }
 
 -- enable snippets. we are interested in function call snippets

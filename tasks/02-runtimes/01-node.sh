@@ -10,6 +10,7 @@ function task() {
 		asdf install nodejs latest:16 &&
 		asdf install nodejs latest:18 &&
 		asdf install nodejs latest:19 &&
+		asdf install nodejs latest:21 &&
 		asdf global nodejs latest &&
 		npm i -g yarn &&
 		return "$OK"

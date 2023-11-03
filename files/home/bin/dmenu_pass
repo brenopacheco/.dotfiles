@@ -23,7 +23,7 @@ password_files=("${password_files[@]%.gpg}")
 
 password=$(printf '%s\n' "${password_files[@]}" | dmenu_color -p "Passwords: ")
 
-echo $password
+echo "$password"
 
 [[ -n $password ]] || exit
 
@@ -32,7 +32,7 @@ if [[ $password == otp:*  ]]; then
 	icon="/usr/share/icons/Papirus-Dark/24x24/actions/password-copy.svg"
 	name="${password#*/}"
 	name="${name^}"
-	echo $name
+	echo "$name"
 	notify-send -a pass -t 60000 -i "$icon" "${name}" "$(xclip -o -selection 'clipboard')"
 else
 	pass show -c "$password" 2>/dev/null

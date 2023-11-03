@@ -1,0 +1,22 @@
+pkgname=tasker-go
+pkgver=1
+pkgrel=1
+pkgdesc="Run twitch notifications"
+url="https://github.com/brenopacheco/tasker-go"
+arch=(x86_64)
+license=('MIT')
+depends=('go' 'dunst')
+
+source=("git+https://github.com/brenopacheco/tasker-go.git#commit=HEAD")
+
+md5sums=('SKIP')
+
+build() {
+	cd tasker-go
+	go build -o tasker-go . && chmod +x tasker-go
+}
+
+package() {
+	cd tasker-go
+    install -Dm755 tasker-go -t "$pkgdir/usr/bin"
+}

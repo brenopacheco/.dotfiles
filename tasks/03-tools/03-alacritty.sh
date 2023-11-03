@@ -4,6 +4,7 @@
 #       by default. The same happens to kitty, but not st or xterm
 
 function should_run() {
+	return "$SKIP"
 	has_packages alacritty && return "$DONE" || return "$RUN"
 }
 

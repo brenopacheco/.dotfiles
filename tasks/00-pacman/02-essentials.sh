@@ -51,6 +51,8 @@ packages=(
 	"zathura"
 	"zathura-pdf-mupdf"
 	"xarchiver"
+	"jq"
+	"zk"
 )
 
 function should_run() {

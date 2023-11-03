@@ -224,8 +224,9 @@ function M.lsp_attach(client, bufnr)
   if client.server_capabilities.documentSymbolProvider then
     require("nvim-navic").attach(client, bufnr)
   end
-  local enable_inlay_hints = client.server_capabilities.inlayHintProvider ~= nil
-  vim.lsp.buf.inlay_hint(0, enable_inlay_hints)
+  -- local enable_inlay_hints = client.server_capabilities.inlayHintProvider ~= nil
+  -- vim.lsp.buf.inlay_hint(0, enable_inlay_hints)
+  -- vim.lsp.buf.inlay_hint(0, false)
 	vim.g.navic_silence = true
 	vim.api.nvim_command("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
 	client.server_capabilities.semanticTokensProvider = nil

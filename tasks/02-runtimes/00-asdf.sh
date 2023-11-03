@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function should_run() {
-	file ~/.asdf/asdf.sh && return "$DONE" || return "$RUN"
+	test -f ~/.asdf/asdf.sh && return "$DONE" || return "$RUN"
 }
 
 function task() {

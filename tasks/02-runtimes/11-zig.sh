@@ -5,7 +5,7 @@ function should_run() {
 }
 
 function task() {
-	asdf plugin add elixir https://github.com/asdf-community/asdf-zig.git
+	asdf plugin add zig https://github.com/asdf-community/asdf-zig.git
 	asdf install zig latest &&
 		asdf global zig latest &&
 		return "$OK"

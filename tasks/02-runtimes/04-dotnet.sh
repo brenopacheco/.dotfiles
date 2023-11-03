@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 function should_run() {
+	return "$SKIP"
 	which dotnet && return "$DONE" || return "$RUN"
 }
 

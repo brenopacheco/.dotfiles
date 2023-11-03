@@ -10,9 +10,9 @@ function should_run() {
 }
 
 function task() {
-	sudo pacman -S "${packages[@]}" &&
-		systemctl enable docker.service &&
-		systemctl start docker.service &&
-		usermod -aG docker "$USER" &&
+	sudo pacman -S --noconfirm "${packages[@]}" &&
+		sudo systemctl enable docker.service &&
+		sudo systemctl start docker.service &&
+		sudo usermod -aG docker "$USER" &&
 		return "$OK"
 }
