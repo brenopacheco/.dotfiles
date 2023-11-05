@@ -1,6 +1,6 @@
 dmenu=dmenu
 pkgname="$dmenu-fork"
-pkgver=5.2.r9.c35d589
+pkgver=5.2.r10.b54bdab
 pkgrel=1
 pkgdesc="Generic menu for X"
 arch=(x86_64)

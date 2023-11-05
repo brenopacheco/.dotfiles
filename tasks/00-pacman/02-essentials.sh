@@ -3,6 +3,7 @@
 packages=(
 	"arandr"
 	"bash-completion"
+	"bear"
 	"blueman"
 	"bluez"
 	"bluez-utils"
@@ -13,9 +14,11 @@ packages=(
 	"fd"
 	"feh"
 	"fzf"
+	"gpick"
 	"htop"
 	"imagemagick"
 	"inotify-tools"
+	"jq"
 	"moreutils"
 	"ncdu"
 	"net-tools"
@@ -42,6 +45,7 @@ packages=(
 	"unrar"
 	"unzip"
 	"wget"
+	"xarchiver"
 	"xclip"
 	"xdotool"
 	"xorg-xev"
@@ -50,10 +54,7 @@ packages=(
 	"xorg-xsetroot"
 	"zathura"
 	"zathura-pdf-mupdf"
-	"xarchiver"
-	"jq"
 	"zk"
-	"bear"
 )
 
 function should_run() {
