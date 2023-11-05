@@ -7,7 +7,7 @@ packages=(
 	"cmake"
 	"ninja"
 	"stow"
-	"vim"
+	"gvim"
 )
 
 function should_run() {

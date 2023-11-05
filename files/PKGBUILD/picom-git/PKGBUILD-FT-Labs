@@ -1,10 +1,10 @@
 pkgname=picom-git
 _gitname=picom
-pkgver=2032__2023.07.20
+pkgver=2063__2023.09.30
 pkgrel=1
 pkgdesc="X compositor (fork of compton) (git-version)"
 arch=(i686 x86_64)
-url="https://github.com/brenoleonhardt-poatek/${_gitname}"
+url="https://github.com/FT-Labs/${_gitname}"
 license=('MIT' 'MPL2')
 depends=('libgl' 'libev' 'pcre' 'libx11' 'xcb-util-renderutil' 'libxcb' 'xcb-util-image' 'libxext'
          'pixman' 'libconfig' 'libdbus' 'hicolor-icon-theme')
@@ -16,7 +16,7 @@ optdepends=('dbus:          To control picom via D-Bus'
 provides=('compton' 'compton-git' 'picom')
 conflicts=('compton' 'compton-git' 'picom')
 replaces=('compton-git')
-source=(git+"https://github.com/brenoleonhardt-poatek/${_gitname}.git#branch=next")
+source=(git+"https://github.com/FT-Labs/${_gitname}.git#branch=next")
 md5sums=("SKIP")
 
 pkgver() {

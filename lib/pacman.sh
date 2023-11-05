@@ -1,4 +1,5 @@
 # Pacman helper fuctions
+# shellcheck disable=SC2155
 
 ## Check weather a list of packages are installed
 # Parameters
@@ -7,7 +8,7 @@
 #  - 0: all packages are installed
 #  - 1: at least one package is not installed
 function has_packages() {
-	packages=$1
+	local packages=$1
 	for package in "${packages[@]}"; do
 		if ! pacman -Q "$package" >/dev/null 2>&1; then
 			return 1
@@ -40,9 +41,9 @@ function package_version() {
 #       if the package is not yet installed
 #  - 1: the version is equal or older than the one installed
 function is_version_newer() {
-	package=$1
-	required_version=$2
-	installed_version=$(package_version "$1")
+	local package=$1
+	local required_version=$2
+	local installed_version=$(package_version "$1")
 	has_packages "$package" || return 0
 	if [[ $(vercmp "$required_version" "$installed_version") -eq 1 ]]; then
 		return 0
@@ -57,8 +58,8 @@ function is_version_newer() {
 #  - 0: installed with success
 #  otherwise build errored
 function makepkg_task() {
-	package=$1
-	dir="./files/PKGBUILD/${package}"
+	local package=$1
+	local dir="./files/PKGBUILD/${package}"
 	(
 		cd "$dir" && makepkg -sicC --noconfirm
 	)
@@ -71,15 +72,15 @@ function makepkg_task() {
 #  - $2: template name in files/PKGBUILD/ (e.g: PKGBUILD.in)
 #  - $3: json object with key-value pairs to replace in template
 function makepkg_PKGBUILD() {
-	package=$1
-	template=$2
-	data=$3
+	local package=$1
+	local template=$2
+	local data=$3
 	(
 		cd "./files/PKGBUILD/${package}" || exit 1
 		cp "$template" PKGBUILD
 		jq -r 'to_entries[] | "\(.key)=\(.value)"' <<<"$data" |
 			while IFS='=' read -r key value; do
-				stripped=$(echo "$value" | sed 's/^"//' | sed 's/"$//')
+				local stripped=$(echo "$value" | sed 's/^"//' | sed 's/"$//')
 				echo "key: $key - value: $stripped"
 				sed -i "s/{{$key}}/$stripped/g" PKGBUILD
 			done

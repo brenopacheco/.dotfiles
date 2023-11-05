@@ -16,7 +16,8 @@ function task() {
 }
 
 # Display depends on which HDMI port we are using
-RULE='ACTION=="bind", SUBSYSTEM=="hid", ENV{DISPLAY}=":1", RUN+="/usr/bin/su breno -c /opt/bin/keyboard.sh %p"'
+RULE='ACTION=="bind", SUBSYSTEM=="hid", ENV{DISPLAY}=":0", RUN+="/usr/bin/su breno -c /opt/bin/keyboard.sh %p"
+ACTION=="bind", SUBSYSTEM=="hid", ENV{DISPLAY}=":1", RUN+="/usr/bin/su breno -c /opt/bin/keyboard.sh %p"'
 
 KEYBOARD_SH=$(mktemp)
 

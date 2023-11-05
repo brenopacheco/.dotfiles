@@ -9,4 +9,4 @@ all:
 	./install
 
 task:
-	./install -i
+	./install -i -v

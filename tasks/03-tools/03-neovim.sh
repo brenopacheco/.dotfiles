@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# function get_version() {
-# 	curl -s https://api.github.com/repos/neovim/neovim/releases |
-# 		jq '.[] | select(.tag_name == "nightly")' |
-# 		jq '.body | capture("NVIM (?<version>.+)")' |
-# 		jq -r '.version | gsub("^v|(-dev)|(\\+.*)"; "")'
-# }
-
 function get_ver() {
 	curl -s https://api.github.com/repos/neovim/neovim/releases |
 		jq '.[] | select(.tag_name == "nightly")' |
@@ -20,7 +13,6 @@ function get_rel() {
 }
 
 function should_run() {
-	return "$SKIP"
 	VER=$(get_ver)
 	REL=$(get_rel)
 	VERSION="$VER-$REL"

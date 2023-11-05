@@ -6,22 +6,25 @@
 # - find a way to move gtk settings and cursor theme here
 
 pkgname=dwm-fork
-pkgver=6.1
-pkgrel=6
+pkgver=r38.5163a87
+pkgrel=1
 pkgdesc="Dynamic window manager (dwm) fork"
-url="https://github.com/brenopacheco/dwm"
+url="https://github.com/brenopacheco/dwm-fork"
 arch=(x86_64)
 license=('MIT')
 options=(zipman)
-depends=('dmenu' 'libx11' 'libxinerama' 'libxft' 'freetype2' 'yajl'
-	'ttf-firacode-nerd')
-conflicts=('dwm')
-# 'xdg-desktop-portal-gnome')
+depends=('dmenu' 'libx11' 'libxinerama' 'libxft' 'freetype2' 'yajl' 'ttf-firacode-nerd')
+conflicts=('dwm') # 'xdg-desktop-portal-gnome'
 
 source=("dwm.desktop"
 	"git+https://github.com/brenopacheco/dwm-fork.git#commit=HEAD")
 
 md5sums=('SKIP' 'SKIP')
+
+pkgver() {
+	cd dwm-fork
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
 
 build() {
 	cd dwm-fork

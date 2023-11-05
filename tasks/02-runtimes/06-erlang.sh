@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 function should_run() {
-	return "$SKIP"
 	which erl && return "$DONE" || return "$RUN"
 }
 
