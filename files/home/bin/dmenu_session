@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+function notify() {
+	notify-send "$(basename "$0")" "$1"
+}
+
+function list-sessions() {
+	tmux ls | sed 's/:.*//'
+}
+
+function list-repositories() {
+	fd -t d -HI \
+		-E .cargo \
+		-E .go \
+		-E node_modules \
+		-E yay \
+		-E .asdf \
+		-E .opam \
+		-E .rustup \
+		-E cache \
+		-E .cache \
+		-E .dub \
+		-E .emacs.d \
+		-E .local \
+		-E fc \
+		"^.git" ~/ |
+		sed 's/\/\.git.*//' | sed "s#$HOME/##" | sort | uniq
+}
+
+function setup_session() {
+	local repository=$1
+	local session_name
+	session_name=$(basename "$repository" | tr . _)
+	if ! tmux has-session -t="$session_name" 2>/dev/null; then
+		tmux new-session -ds "$session_name" -c "$repository"
+	fi
+	echo "$session_name"
+}
+
+function launch() {
+	local session=$1
+	(setsid nohup st -e tmux attach -t "$session" >/dev/null 2>&1) & disown
+}
+
+declare -x repo
+
+case $1 in 
+	-a|--attach)
+		repo=$(list-sessions | dmenu -p "Attach session: ")
+		;;
+	-o|--open)
+		repo=$(list-repositories | dmenu -p "Launch session: ")
+		;;
+	*)
+		# show usage
+		notify "Usage: $(basename "$0") [-a,--attach|-o,--open]"
+		exit 1
+		;;
+esac
+
+if [[ -n "$repo" ]]; then
+	session=$(setup_session "$repo")
+	launch "$session"
+	notify "git: $session"
+fi
+
+# tmux-sessionizer launch

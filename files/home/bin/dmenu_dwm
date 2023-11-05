@@ -1,8 +1,0 @@
-#!/bin/bash
-# Lists available executables in dmenu 
-# and executes chosen binary
-
-fd . -t x $(echo $PATH | tr ':' ' ') --color=never | sed 's|.*/||' \
-    | dmenu_color "$@" -p "Launch:" | ${SHELL:-"/bin/bash"} & disown
-[[ $? -eq 0 ]] || exit 1
-exit 0

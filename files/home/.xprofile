@@ -11,8 +11,9 @@ test -f "$WALLPAPER" && feh --bg-fill $WALLPAPER
 # - control dbus launch (exec dbus-run-session dwm)
 # - pipewire (pipewire &, pipewire-pulse &)
 
+slstatus & disown                      # statusbar
+
 dunst -print >>/tmp/dunst.log & disown # notification daemon
-info-daemon & disown                   # statusbar
 udiskie & disown                       # automount disks
 
 # applets

@@ -53,6 +53,7 @@ packages=(
 	"xarchiver"
 	"jq"
 	"zk"
+	"bear"
 )
 
 function should_run() {
