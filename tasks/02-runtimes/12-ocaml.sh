@@ -14,9 +14,6 @@ opam_pkgs=(
 )
 
 function should_run() {
-
-	return $SKIP
-
 	has_packages "${packages[@]}" || return "$RUN"
 
 	for package in "${opam_pkgs[@]}"; do
@@ -25,20 +22,16 @@ function should_run() {
 		fi
 	done
 
-	[[ ! -d "$HOME/.opam" ]] || return "$RUN"
+	[[ -d "$HOME/.opam" ]] || return "$RUN"
 
 	return "$DONE"
 }
 
 function task() {
-
-	# if [[ ! -d "$HOME/.opam" ]]; then
-	# 	pushd .
-	# 	cd ~/ || return
-	# 	opam init -a
-	# 	popd || return
-	# fi
-
 	sudo pacman -S --noconfirm "${packages[@]}" &&
-		opam install "${opam_pkgs[@]}" -y && return "$OK"
+		mkdir -p "$HOME/.opam" &&
+		cd "$HOME/.opam" &&
+		opam init -y &&
+		opam install "${opam_pkgs[@]}" -y &&
+		return "$OK"
 }

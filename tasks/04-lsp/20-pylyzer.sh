@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 function should_run() {
-	return "$SKIP"
 	which pylyzer && return "$DONE" || return "$RUN"
 }
 

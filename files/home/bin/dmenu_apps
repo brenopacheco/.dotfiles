@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 rg '^Name=' /usr/share/applications/ \
-		--no-heading \
-		--with-filename \
-		--no-line-number |
-		sed 's/:Name=/;/' | dmenu -p Application -d ';|'
+	--no-heading \
+	--with-filename \
+	--max-count 1 \
+	--no-line-number |
+	sed 's/:Name=/;/' |
+	dmenu -p Application -d ';|' |
+	sed 's/.*\///' |
+	xargs -r gtk-launch
