@@ -2,8 +2,8 @@ require("hlchunk").setup({
 	chunk = {
 		enable = true,
 		use_treesitter = true,
-		-- style = { "#00FFFF" },
 		style = { "#81A9FE" },
+		exclude_filetypes = { fugitive = true, noft = true },
 	},
 	indent = { enable = false },
 	line_num = {
