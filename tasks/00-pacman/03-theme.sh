@@ -8,7 +8,7 @@
 
 function should_run() {
 	has_packages rose-pine-gtk-theme-full || return "$RUN"
-	has_packages bibata-modern-ice || return "$RUN"
+	has_packages bibata-modern-ice-bin || return "$RUN"
 	return "$DONE"
 
 }
@@ -16,7 +16,7 @@ function should_run() {
 function task() {
 	has_packages rose-pine-gtk-theme-full ||
 		makepkg_task rose-pine-gtk-theme-full || return
-	has_packages bibata-modern-ice ||
-		makepkg_task bibata-modern-ice || return
+	has_packages bibata-modern-ice-bin ||
+		makepkg_task bibata-modern-ice-bin || return
 	return "$OK"
 }
