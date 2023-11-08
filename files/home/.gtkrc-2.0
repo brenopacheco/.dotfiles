@@ -3,7 +3,7 @@
 
 include "/home/breno/.gtkrc-2.0.mine"
 gtk-theme-name="rose-pine-gtk"
-gtk-icon-theme-name="Papirus-Adapta-Nokto-Maia"
+gtk-icon-theme-name="rose-pine-icons"
 gtk-font-name="FiraCode Nerd Font 11"
 gtk-cursor-theme-name="Bibata-Modern-Ice"
 gtk-cursor-theme-size=0
