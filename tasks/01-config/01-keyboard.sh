@@ -16,27 +16,35 @@ function task() {
 }
 
 # Display depends on which HDMI port we are using
-RULE='ACTION=="bind", SUBSYSTEM=="hid", ENV{DISPLAY}=":0", RUN+="/usr/bin/su breno -c /opt/bin/keyboard.sh %p"
-ACTION=="bind", SUBSYSTEM=="hid", ENV{DISPLAY}=":1", RUN+="/usr/bin/su breno -c /opt/bin/keyboard.sh %p"'
+RULE='ACTION=="bind", SUBSYSTEM=="hid", RUN+="/usr/bin/su breno -c /opt/bin/keyboard.sh %p"'
 
 KEYBOARD_SH=$(mktemp)
 
-cat >"$KEYBOARD_SH" << 'EOF' 
+cat >"$KEYBOARD_SH" <<'EOF'
 #!/bin/sh
 # Called by udev rule with %p
 
 exec 1> >(logger -p user.notice -t keyboard)
 exec 2> >(logger -p user.err -t keyboard)
 
-echo "Configuring keyboard - $(whoami): ACTION $ACTION - HID_NAME: $HID_NAME"
-
-case "$HID_NAME" in
+lsof -U 2>/dev/null |
+	grep "X[0-9]" |
+	sed 's/^.*\/tmp\/.X11-unix\/X//' |
+	sed 's/ .*//' |
+	sort |
+	uniq | while read -r DISPLAY; do
+	echo "Configuring keyboard - $(whoami): DISPLAY - $DISPLAY - ACTION $ACTION - HID_NAME: $HID_NAME"
+	case "$HID_NAME" in
 	"Keyboard K380")
-                setxkbmap -model pc105 -layout gb
-                xmodmap "$HOME/.Xmodmap"
+		setxkbmap -model pc105 -layout gb
+		xmodmap "$HOME/.Xmodmap"
 		;;
 	"Adv360 Pro")
-                setxkbmap -model pc104 -layout us
+		setxkbmap -model pc104 -layout us
 		;;
-esac
+	esac
+done
+
+exit 0
 EOF
+

@@ -141,7 +141,7 @@ local git = [[
 ]]
 
 local make = [[
-   nnoremap <leader>m <cmd>make %<cr>
+   nnoremap <leader>m <cmd>make! %<cr>
    nnoremap <leader>fm <cmd>lua require('util.picker').run()<cr>
 ]]
 

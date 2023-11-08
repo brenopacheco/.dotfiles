@@ -1,11 +1,11 @@
 #!/bin/bash
 # Burns an .iso from anywhere in $HOME into
 # one of the plugged devices using dd
-# Uses dmenu_color for selection
+# Uses dmenu for selection
 
-device=$(ls /dev/ | egrep "^(sd.|mmcblk[1-9]p.)$" | dmenu_color)
+device=$(ls /dev/ | egrep "^(sd.|mmcblk[1-9]p.)$" | dmenu)
 [[ $? -eq 0 ]] || exit 1
-image=$(fd ".*\.(img|iso)$" ~ | dmenu_color)
+image=$(fd ".*\.(img|iso)$" ~ | dmenu)
 [[ $? -eq 0 ]] || exit 1
 echo "trying to burn $image to $device"
 sudo umount /dev/${device}*

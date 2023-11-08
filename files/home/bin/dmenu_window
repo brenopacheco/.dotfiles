@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Function to trim and add "..." to a string
+function trim_and_ellipsis() {
+	local input_string="$1"
+	local max_length
+	local winnr
+	local class
+	max_length=20
+	winnr=${input_string%% *}
+	name=$(echo "$input_string" | sed 's/.*  \S \S\+ //')
+	class=$(xprop -id "$winnr" | grep WM_CLASS | awk -F'"' '{print $4}')
+	if [ ${#name} -gt $max_length ]; then
+		trimmed_name="${name:0:max_length-3}..."
+	else
+		trimmed_name="$name"
+	fi
+	echo "${winnr};${class}: ${trimmed_name}"
+}
+
+export -f trim_and_ellipsis
+
+wmctrl -l |
+	xargs -I {} bash -c 'trim_and_ellipsis "{}"' |
+	column -t -s ':' |
+	dmenu -p Window -d ';|' |
+	xargs -r wmctrl -i -a

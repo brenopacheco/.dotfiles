@@ -9,7 +9,7 @@
                              brenoleonhardt@gmail.com
 --]]
 
-require('options')
+require('options') -- OK
 require('keymap')
 require('backup')
 require('plugs')

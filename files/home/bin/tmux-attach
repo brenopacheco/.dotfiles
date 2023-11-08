@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-session=$(tmux ls | sed 's/:.*//' | fzf)
-
-if [ -n "$session" ]; then
-	tmux attach -t "$session"
-fi
-

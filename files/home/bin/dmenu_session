@@ -39,7 +39,7 @@ function setup_session() {
 
 function launch() {
 	local session=$1
-	(setsid nohup st -e tmux attach -t "$session" >/dev/null 2>&1) & disown
+	(setsid nohup st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1) & disown
 }
 
 declare -x repo

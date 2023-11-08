@@ -55,6 +55,7 @@ packages=(
 	"zathura"
 	"zathura-pdf-mupdf"
 	"zk"
+	"wmctrl"
 )
 
 function should_run() {

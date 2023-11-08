@@ -22,7 +22,7 @@ nm-applet & disown              # networkmanager applet
 blueman-applet & disown         # bluetooth applet
 
 redshift -l 41.157944:-8.629105 -g 0.75 & disown
-tasker-go >/tmp/tasker.log 2>&1 & disown
+# tasker-go >/tmp/tasker.log 2>&1 & disown
 
 # picom -b & disown
 
