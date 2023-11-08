@@ -7,11 +7,11 @@
 # colors will be flipped
 
 function should_run() {
-	has_packages rose-pine-gtk-theme && return "$DONE" || return "$RUN"
+	has_packages rose-pine-gtk-theme-full && return "$DONE" || return "$RUN"
 }
 
 function task() {
-	makepkg_task rose-pine-gtk-theme && 
+	makepkg_task rose-pine-gtk-theme-full && 
 		gsettings set org.gnome.desktop.interface gtk-theme rose-pine-gtk &&
 		return "$OK"
 }

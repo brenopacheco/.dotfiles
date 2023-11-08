@@ -7,12 +7,14 @@ packages=(
 	"blueman"
 	"bluez"
 	"bluez-utils"
+	"chromium"
 	"conky"
 	"ctags"
 	"dmenu"
 	"dunst"
 	"fd"
 	"feh"
+	"firefox"
 	"fzf"
 	"gpick"
 	"htop"
@@ -38,6 +40,7 @@ packages=(
 	"rofi"
 	"rsync"
 	"screengrab"
+	"stow"
 	"sxiv"
 	"tmux"
 	"tree"
@@ -45,6 +48,7 @@ packages=(
 	"unrar"
 	"unzip"
 	"wget"
+	"wmctrl"
 	"xarchiver"
 	"xclip"
 	"xdotool"
@@ -55,7 +59,6 @@ packages=(
 	"zathura"
 	"zathura-pdf-mupdf"
 	"zk"
-	"wmctrl"
 )
 
 function should_run() {

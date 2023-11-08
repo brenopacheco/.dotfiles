@@ -27,7 +27,7 @@ paq({
     {'folke/zen-mode.nvim'};
 		  {'folke/twilight.nvim'};
 
-    {'nvim-treesitter/nvim-treesitter',               config='treesitter', run = ':TSUpdate'};
+    {'nvim-treesitter/nvim-treesitter',               config='treesitter'};
       {'nvim-treesitter/nvim-treesitter-textobjects'};
 		  {'nvim-treesitter/nvim-treesitter-context'};
 
