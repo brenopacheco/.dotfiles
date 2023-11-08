@@ -37,7 +37,6 @@ packages=(
 	"redshift"
 	"renameutils"
 	"ripgrep"
-	"rofi"
 	"rsync"
 	"screengrab"
 	"stow"

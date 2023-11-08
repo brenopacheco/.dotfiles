@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
-rg '^Name=' /usr/share/applications/ \
-	--no-heading \
-	--with-filename \
-	--max-count 1 \
-	--no-line-number |
-	sed 's/:Name=/;/' |
-	dmenu -p Application -d ';|' |
-	sed 's/.*\///' |
+rg --max-count 1 "^Name=" /usr/share/applications | 
+	sed 's/.*\/\(.\+\)\.desktop:Name=\(.\+\)$/\2;(\1):\1.desktop/' | 
+	column -t -s ';' | 
+	dmenu -p Application -d ':' |
 	xargs -r gtk-launch

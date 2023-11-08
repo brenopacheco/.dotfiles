@@ -189,6 +189,6 @@ echo "nvim ." >>$BASHRC
 
 echo "PS1='\[\033[38;5;20m\]\[\033[48;5;11m\]sketch\[$(tput sgr0)\]\[\e[34m\] \w\[$(tput sgr0)\]\$ '" >>$BASHRC
 
-tmux new -s $TMPNAME "bash --rcfile $BASHRC -i"
+tmux new -s sketch-$TMPNAME "bash --rcfile $BASHRC -i"
 
 exit 0
