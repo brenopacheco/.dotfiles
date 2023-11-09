@@ -27,7 +27,7 @@ function task() {
 	DATA=$(jq -n --arg input "$VERSION" '{"PKGVER": ($input | split("-")[0]), "PKGREL": ($input | split("-")[1])}')
 	makepkg_PKGBUILD neovim PKGBUILD.in "$DATA"
 	makepkg_task neovim && 
-		neovim --headless +PaqInstall +qa &&
-		neovim --headless +TSUpdateSync +qa &&
+		nvim --headless +PaqInstall +qa &&
+		nvim --headless +TSUpdateSync +qa &&
 		return "$OK"
 }

@@ -1,0 +1,4 @@
+sxhkd-*
+src/
+pkg/
+*.tar.*
