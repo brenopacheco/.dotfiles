@@ -2,13 +2,7 @@
 exec 1>/tmp/xprofile.log 2>&1
 export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin:/home/$USER/.pkgs/bin"
 
-# background image
-test -d ~/.wallpapers || mkdir ~/.wallpapers
-export WALLPAPER=~/.wallpapers/abstract-d.png
-if [[ ! -f $WALLPAPER ]]; then
-	curl https://gitlab.manjaro.org/artwork/wallpapers/manjaro-wallpapers/-/raw/master/Abstract%20Dark/image.png --output $WALLPAPER
-fi
-feh --bg-fill $WALLPAPER
+feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
 
 # TODO:
 # - control session (xgm/lxsession)

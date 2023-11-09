@@ -61,7 +61,7 @@ esac
 if [[ -n "$repo" ]]; then
 	session=$(setup_session "$repo")
 	launch "$session"
-	notify "git: $session"
+	notify "$session"
 fi
 
 # tmux-sessionizer launch

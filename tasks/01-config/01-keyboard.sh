@@ -34,6 +34,7 @@ lsof -U 2>/dev/null |
 	sort |
 	uniq | while read -r DISPLAY; do
 	echo "Configuring keyboard - $(whoami): DISPLAY - $DISPLAY - ACTION $ACTION - HID_NAME: $HID_NAME"
+	export DISPLAY=":$DISPLAY"
 	case "$HID_NAME" in
 	"Keyboard K380")
 		setxkbmap -model pc105 -layout gb
