@@ -39,23 +39,24 @@ function setup_session() {
 
 function launch() {
 	local session=$1
-	(setsid nohup st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1) & disown
+	(setsid nohup st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1) &
+	disown
 }
 
 declare -x repo
 
-case $1 in 
-	-a|--attach)
-		repo=$(list-sessions | dmenu -p "Attach session: ")
-		;;
-	-o|--open)
-		repo=$(list-repositories | dmenu -p "Launch session: ")
-		;;
-	*)
-		# show usage
-		notify "Usage: $(basename "$0") [-a,--attach|-o,--open]"
-		exit 1
-		;;
+case $1 in
+-a | --attach)
+	repo=$(list-sessions | dmenu -p "Attach session: ")
+	;;
+-o | --open)
+	repo=$(list-repositories | dmenu -p "Launch session: ")
+	;;
+*)
+	# show usage
+	notify "Usage: $(basename "$0") [-a,--attach|-o,--open]"
+	exit 1
+	;;
 esac
 
 if [[ -n "$repo" ]]; then

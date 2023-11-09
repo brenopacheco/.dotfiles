@@ -3,7 +3,7 @@
 # `passmenu` is a [dmenu][]-based interface to [pass][], the standard Unix
 # password manager. This design allows you to quickly copy a password to the
 # clipboard without having to open up a terminal window if you don't already have
-# one open. 
+# one open.
 #
 # Modified to work with otp passwords
 
@@ -27,7 +27,7 @@ echo "$password"
 
 [[ -n $password ]] || exit
 
-if [[ $password == otp:*  ]]; then
+if [[ $password == otp:* ]]; then
 	pass otp code -c "$password" 2>/dev/null
 	icon="/usr/share/icons/Papirus-Dark/24x24/actions/password-copy.svg"
 	name="${password#*/}"
@@ -37,4 +37,3 @@ if [[ $password == otp:*  ]]; then
 else
 	pass show -c "$password" 2>/dev/null
 fi
-

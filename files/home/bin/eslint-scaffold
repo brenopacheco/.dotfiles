@@ -2,7 +2,7 @@
 
 npm i -D eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin
 
-cat<<EOF > .editorconfig
+cat <<EOF >.editorconfig
 root = true
 
 [*]
@@ -19,7 +19,7 @@ indent_style = tab
 indent_size = 4
 EOF
 
-cat<<EOF > .eslintrc.json
+cat <<EOF >.eslintrc.json
 {
   "env": {
     "browser": true,
@@ -43,7 +43,7 @@ cat<<EOF > .eslintrc.json
 }
 EOF
 
-cat<<EOF > .prettierrc.json
+cat <<EOF >.prettierrc.json
 {
   "trailingComma": "es5",
   "semi": false,

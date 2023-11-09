@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-rg --max-count 1 "^Name=" /usr/share/applications | 
-	sed 's/.*\/\(.\+\)\.desktop:Name=\(.\+\)$/\2;(\1):\1.desktop/' | 
-	column -t -s ';' | 
+rg --max-count 1 "^Name=" /usr/share/applications |
+	sed 's/.*\/\(.\+\)\.desktop:Name=\(.\+\)$/\2;(\1):\1.desktop/' |
+	column -t -s ';' |
 	dmenu -p Application -d ':' |
 	xargs -r gtk-launch

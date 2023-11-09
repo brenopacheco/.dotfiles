@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# spawn a new shell
-
-st >/dev/null 2>&1 &
-disown
