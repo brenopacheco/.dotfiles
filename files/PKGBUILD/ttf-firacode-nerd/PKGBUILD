@@ -1,0 +1,18 @@
+pkgname=ttf-firacode-nerd
+pkgver=3.0.2
+pkgrel=1
+pkgdesc='Patched font Fira (Fura) Code from nerd fonts library'
+url='https://github.com/ryanoasis/nerd-fonts'
+arch=(x86_64)
+license=('MIT')
+conflicts=(nerd-fonts-fira-code)
+replaces=(nerd-fonts-fira-code)
+
+source=('https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/FiraCode.zip')
+
+md5sums=('SKIP')
+
+package() {
+	install -Dm644 *.ttf -t "${pkgdir}/usr/share/fonts/TTF"
+	install -Dm644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
