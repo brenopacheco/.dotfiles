@@ -1,0 +1,5 @@
+set softvol=false
+set softvol_state=0 0
+clear
+cd ~/music
+add ~/music

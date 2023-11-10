@@ -63,6 +63,7 @@ fi
 
 # Misc settings
 export XDG_CONFIG_HOME=$HOME/.config
+export XDG_DOWNLOAD_DIR=$HOME/downloads
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
 

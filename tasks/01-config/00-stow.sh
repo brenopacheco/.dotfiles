@@ -8,7 +8,5 @@ function should_run() {
 
 function task() {
 	rm ~/.bashrc
-	cd files || return
-	mkdir -p ~/Desktop ~/Downloads/ ~/Music ~/git/ ~/tmp/
-	stow -t ~/ home && return "$OK"
+	cd files && stow -t ~/ home && return "$OK"
 }
