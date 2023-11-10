@@ -46,7 +46,7 @@ alias la='ls -la'
 
 # directories
 alias mnt='cd /var/run/media/breno'
-alias desk='cd ~/Desktop'
-alias down='cd ~/Downloads'
+alias desk='cd ~/desktop'
+alias down='cd ~/downloads'
 alias dot='cd ~/.dotfiles'
 alias bin='cd ~/.bin'

@@ -8,7 +8,7 @@
 
 function should_run() {
 	has_packages rose-pine-gtk-theme-full || return "$RUN"
-	has_packages bibata-cursor-theme-bin || return "$RUN"
+	has_packages xcursor-breeze || return "$RUN"
 	has_packages gnome-backgrounds || return "$RUN"
 	return "$DONE"
 
@@ -17,8 +17,8 @@ function should_run() {
 function task() {
 	has_packages rose-pine-gtk-theme-full ||
 		makepkg_task rose-pine-gtk-theme-full || return
-	has_packages bibata-cursor-theme-bin ||
-		makepkg_task bibata-cursor-theme-bin || return
+	has_packages xcursor-breeze ||
+		makepkg_task xcursor-breeze || return
 	has_packages gnome-backgrounds ||
 		sudo pacman -S --noconfirm gnome-backgrounds || return
 	return "$OK"
