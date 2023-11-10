@@ -1,5 +1,5 @@
 pkgname=slstatus-fork
-pkgver=r2.17803cd
+pkgver=r3.8da9a90
 pkgrel=1
 pkgdesc="A status monitor for window managers"
 url="https://github.com/brenopacheco/slstatus-fork"

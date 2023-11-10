@@ -7,7 +7,6 @@ feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
 # TODO:
 # - control session (xgm/lxsession)
 # - control dbus launch (exec dbus-run-session dwm)
-# - pipewire (pipewire &, pipewire-pulse &)
 
 slstatus & disown                      # statusbar
 
@@ -15,9 +14,12 @@ dunst -print >>/tmp/dunst.log & disown # notification daemon
 udiskie & disown                       # automount disks
 
 # applets
-pa-applet & disown              # pulseaudio volume applet
 nm-applet & disown              # networkmanager applet
 blueman-applet & disown         # bluetooth applet
+pasystray \
+	--notify=all \
+	--key-grabbing \
+	--volume-inc=3 & disown     # pulseaudio volume applet
 
 redshift -l 41.157944:-8.629105 -g 0.75 & disown
 (sleep 5; tasker-go >/tmp/tasker.log 2>&1) & disown

@@ -172,11 +172,6 @@ horizontal_padding = 16
 text_icon_padding = 0
 
 
-# Defines width in pixels of frame around the notification window. Set to 0 to
-# disable.
-frame_width = 0
-
-
 # Sets the color of the separator line between two notifications.
 #
 # auto
@@ -322,18 +317,6 @@ min_icon_size = 0
 # If icon_position is set to off, this setting is ignored.
 max_icon_size = 32
 
-
-# Can be set to a colon-separated list of paths to search for icons to use
-# with notifications.
-# 
-# Dunst doens't search outside of these direcories. For a recursive icon
-# lookup system, see enable_recursive_icon_lookup. This new system will
-# eventually replace this and will need new settings.
-# 
-# (default: "/usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/")
-icon_path = /usr/share/icons/Adwaita/32x32/status:/usr/share/icons/Adwaita/32x32/devices
-
-
 # Comma-separated of names of the the themes to use for looking up icons. This
 # has to be the name of the directory in which the theme is located, not the
 # human-friendly name of the theme. So for example, the theme Breeze Dark is
@@ -351,7 +334,7 @@ icon_path = /usr/share/icons/Adwaita/32x32/status:/usr/share/icons/Adwaita/32x32
 # This setting is experimental and not enabled by default. See
 # enable_recursive_icon_lookup for how to enable it.
 #
-icon_theme = Adwaita
+icon_theme = rose-pine-gtk
 
 
 # This setting enables the new icon lookup method. This new system will
@@ -455,3 +438,29 @@ ignore_dbusclose = false
 
 [global]
     timeout = 20
+    icon_path = /usr/share/icons/rose-pine-icons/24x24/panel/
+
+
+# Defines width in pixels of frame around the notification window. Set to 0 to
+# disable.
+frame_width = 0
+
+# [global]
+frame_color = "#aaaaaa"
+separator_color = frame
+
+[urgency_low]
+    background = "#285577"
+    foreground = "#ffffff"
+    timeout = 10
+
+[urgency_normal]
+    background = "#285577"
+    foreground = "#ffffff"
+    timeout = 10
+
+[urgency_critical]
+    background = "#900000"
+    foreground = "#ffffff"
+    frame_color = "#ff0000"
+    timeout = 0

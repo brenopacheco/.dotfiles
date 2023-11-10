@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 function should_run() {
+	source ~/.asdf/asdf.sh
 	test -f ~/.asdf/asdf.sh && return "$DONE" || return "$RUN"
 }
 

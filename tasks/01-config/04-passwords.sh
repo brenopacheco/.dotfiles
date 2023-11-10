@@ -8,5 +8,6 @@ function should_run() {
 
 function task() {
 	cd "$HOME" || return
-	git clone https://github.com/brenopacheco/.password-store.git "$HOME/.password-store"
+	git clone https://github.com/brenopacheco/.password-store.git "$HOME/.password-store" &&
+		return "$OK"
 }
