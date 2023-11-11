@@ -57,6 +57,7 @@ packages=(
 	"xorg-xkill"
 	"xorg-xmodmap"
 	"xorg-xsetroot"
+	"xorg-xwininfo"
 	"zathura"
 	"zathura-pdf-mupdf"
 	"zk"

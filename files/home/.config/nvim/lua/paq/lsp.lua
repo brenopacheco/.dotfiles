@@ -123,10 +123,10 @@ end
 
 -- -- custom diagnostic signs / remove underline
 local signs = {
-	Error = " ",
-	Warning = " ",
-	Hint = " ",
-	Information = " ",
+	Error = " ",
+	Warning = " ",
+	Hint = " ",
+	Information = " ",
 }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type

@@ -5,7 +5,6 @@ export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin:/home/$USER/.pkgs/bin"
 feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
 
 # TODO:
-# - control session (xgm/lxsession)
 # - control dbus launch (exec dbus-run-session dwm)
 
 slstatus & disown                      # statusbar
@@ -24,6 +23,6 @@ pasystray \
 redshift -l 41.157944:-8.629105 -g 0.75 & disown
 (sleep 5; tasker-go >/tmp/tasker.log 2>&1) & disown
 
-# picom -b & disown
+picom -b & disown
 
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown

@@ -37,10 +37,16 @@ function setup_session() {
 	echo "$session_name"
 }
 
-function launch() {
-	local session=$1
-	(setsid nohup st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1) &
-	disown
+function launch_or_attach() {
+	local session=${1//./_}
+	local open_window
+	open_window=$(xwininfo -root -tree | grep st-256color | grep "$session" | awk '{print $1}' | head -n1)
+	if [[ -n "$open_window" ]]; then
+		wmctrl -i -a "$open_window"
+	else
+		(setsid nohup st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1) &
+		disown
+	fi
 }
 
 declare -x repo
@@ -61,8 +67,6 @@ esac
 
 if [[ -n "$repo" ]]; then
 	session=$(setup_session "$repo")
-	launch "$session"
+	launch_or_attach "$session"
 	notify "$session"
 fi
-
-# tmux-sessionizer launch
