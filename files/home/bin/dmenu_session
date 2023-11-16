@@ -9,21 +9,9 @@ function list-sessions() {
 }
 
 function list-repositories() {
-	fd -t d -HI \
-		-E .cargo \
-		-E .go \
-		-E node_modules \
-		-E yay \
-		-E .asdf \
-		-E .opam \
-		-E .rustup \
-		-E cache \
-		-E .cache \
-		-E .dub \
-		-E .emacs.d \
-		-E .local \
-		-E fc \
-		"^.git" ~/ |
+	fd -HI -t d "^.git$" -d 2 \
+		~/ ~/git ~/desktop/ ~/sketch/ ~/tmp/ \
+		-E .asdf |
 		sed 's/\/\.git.*//' | sed "s#$HOME/##" | sort | uniq
 }
 

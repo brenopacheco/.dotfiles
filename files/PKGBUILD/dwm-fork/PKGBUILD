@@ -6,7 +6,7 @@
 # - find a way to move gtk settings and cursor theme here
 
 pkgname=dwm-fork
-pkgver=6.4.r45.7c16f04
+pkgver=6.4.r46.ff4c287
 pkgrel=1
 pkgdesc="Dynamic window manager (dwm) fork"
 url="https://github.com/brenopacheco/dwm-fork"

@@ -9,5 +9,8 @@ function task() {
 	asdf install dotnet-core 5 &&
 		asdf install dotnet-core 6 &&
 		asdf install dotnet-core 7 &&
+		asdf global dotnet-core 7 &&
+		curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh &&
+		sudo /tmp/dotnet-install.sh --install-dir /usr/share/dotnet -channel STS -version latest &&
 		return "$OK"
 }

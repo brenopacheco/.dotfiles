@@ -3,7 +3,7 @@ require("hlchunk").setup({
 		enable = true,
 		use_treesitter = true,
 		style = { "#81A9FE" },
-		exclude_filetypes = { fugitive = true, noft = true, oil = true, floaterm = true },
+		exclude_filetypes = { fugitive = true, noft = true, oil = true, floaterm = true, conf = true },
 	},
 	indent = { enable = false },
 	line_num = {
