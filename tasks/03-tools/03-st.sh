@@ -10,5 +10,6 @@ function should_run() {
 }
 
 function task() {
+	sudo pacman -R --noconfirm st
 	makepkg_task st-fork && return "$OK"
 }

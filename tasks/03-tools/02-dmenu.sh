@@ -10,6 +10,6 @@ function should_run() {
 }
 
 function task() {
-	pacman -R --no-confirm dmenu
+	sudo pacman -R --noconfirm dmenu
 	makepkg_task dmenu-fork && return "$OK"
 }

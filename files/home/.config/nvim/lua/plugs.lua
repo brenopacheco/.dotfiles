@@ -76,8 +76,9 @@ paq({
 
   {'nvim-neorg/neorg', config='neorg', run=':Neorg sync-parsers'};
 
-  {'rcarriga/nvim-notify', config='nvim-notify'};
+  -- {'rcarriga/nvim-notify', config='nvim-notify'};
 
+  {'stevearc/dressing.nvim'}
 })
 
 local disable_builtins = true

@@ -9,9 +9,6 @@ export PATH=$PATH:$HOME/.pkgs/bin  # other
 
 export GOPATH=$HOME/.go
 
-# shellcheck disable=SC1091
-test -f "$HOME/.asdf/asdf.sh" && source "$HOME/.asdf/asdf.sh" 2>/dev/null
-
 source ./lib/engine.sh
 
 function show_usage() {
@@ -69,6 +66,8 @@ fi
 declare -A counts
 
 for task in $tasks; do
+	# shellcheck disable=SC1091
+	test -f "$HOME/.asdf/asdf.sh" && source "$HOME/.asdf/asdf.sh" 2>/dev/null
 	runner "$task" "$VERBOSE"
 	status=$?
 	((counts[$status]++))

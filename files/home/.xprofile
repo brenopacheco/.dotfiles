@@ -23,6 +23,6 @@ pasystray \
 redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 (sleep 5; tasker-go >/tmp/tasker.log 2>&1) & disown
 
-picom -b & disown
+# picom -b & disown
 
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown

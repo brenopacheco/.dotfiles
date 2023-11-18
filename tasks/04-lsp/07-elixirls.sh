@@ -6,7 +6,6 @@ function get_version() {
 }
 
 function should_run() {
-	return "$SKIP"
 	local VERSION=$(get_version)
 	is_version_newer elixir-ls $VERSION &&
 		return "$RUN" || return "$DONE"

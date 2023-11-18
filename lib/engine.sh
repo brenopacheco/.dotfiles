@@ -26,6 +26,9 @@ function runner() {
 
 	case $exit_status in
 	"$RUN")
+		if [[ $debug == true ]]; then
+			cat "$tmpfile"
+		fi
 		message "$prefix" "RUNNING "
 		async_run "$tmpfile" task
 		exit_status=$?

@@ -10,5 +10,6 @@ function should_run() {
 }
 
 function task() {
+	sudo pacman -R --noconfirm dmenu
 	makepkg_task dwm-fork && return "$OK"
 }
