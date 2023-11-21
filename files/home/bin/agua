@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+while true; do
+    sleep $((60 * (60 - $(date +%M))))
+	notify-send -t 0 --urgency=critical "Drink water now!" "Time: $(date +%H)h"
+done
+

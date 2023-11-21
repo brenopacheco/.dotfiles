@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+import signal
+import gi
+import subprocess
+import time
+
+gi.require_version('Gtk', '3.0')
+gi.require_version('AppIndicator3', '0.1')
+from gi.repository import Gtk, GLib, AppIndicator3
+
+APPINDICATOR_ID = 'picom-systray'
+PICOM_PROCESS_NAME = 'picom'
+ICON_RUNNING = 'weather-windy'
+ICON_STOPPED = 'weather-fog'
+
+
+def is_picom_running():
+    try:
+        subprocess.check_output(['pgrep', PICOM_PROCESS_NAME])
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+
+def toggle_picom(indicator):
+    if is_picom_running():
+        status = subprocess.run(['pkill', '-9', PICOM_PROCESS_NAME])
+        if status.returncode != 0:
+            subprocess.Popen([
+                'notify-send', '-u', 'critical', 'picomtray',
+                'Picom could not be stopped'
+            ])
+        else:
+            subprocess.Popen(['notify-send', 'picomtray', 'Picom stopped'])
+    else:
+        subprocess.Popen([PICOM_PROCESS_NAME])
+        if not is_picom_running():
+            subprocess.Popen([
+                'notify-send', '-u', 'critical', 'picomtray',
+                'Picom could not be started'
+            ])
+        else:
+            subprocess.Popen(['notify-send', 'picomtray', 'Picom started'])
+
+
+def build_menu(indicator):
+    menu = Gtk.Menu()
+
+    def toggle(menu):
+        toggle_picom(indicator)
+
+    item_toggle_picom = Gtk.MenuItem(label='Toggle Picom')
+    item_toggle_picom.connect('activate', toggle)
+
+    item_quit = Gtk.MenuItem(label='Quit')
+    item_quit.connect('activate', quit)
+
+    menu.append(item_toggle_picom)
+    menu.append(item_quit)
+
+    menu.show_all()
+    return menu
+
+
+def quit(_):
+    Gtk.main_quit()
+
+
+def main():
+    indicator = AppIndicator3.Indicator.new(
+        APPINDICATOR_ID, ICON_STOPPED,
+        AppIndicator3.IndicatorCategory.SYSTEM_SERVICES)
+    indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
+    indicator.set_menu(build_menu(indicator))
+
+    def ticker():
+        if is_picom_running():
+            indicator.set_icon_full(ICON_RUNNING, 'Picom is running')
+        else:
+            indicator.set_icon_full(ICON_STOPPED, 'Picom is stopped')
+        return True
+
+    GLib.timeout_add_seconds(1, ticker)
+
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+    Gtk.main()
+
+
+if __name__ == "__main__":
+    main()

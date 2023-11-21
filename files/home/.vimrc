@@ -10,4 +10,4 @@ function! Fzy(choice_command, vim_command)
   redraw!
 endfunction
 
-command Find :call FzyCommand("find . -type f", ":e")
+command Find :call Fzy("find . -type f", ":e")

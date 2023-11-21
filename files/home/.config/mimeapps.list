@@ -618,3 +618,4 @@ x-scheme-handler/steamlink=steam.desktop;
 #x-scheme-handler/code-oss=code-oss-url-handler.desktop;
 #x-scheme-handler/vscode=code-url-handler.desktop;
 x-scheme-handler/mailto=;
+x-scheme-handler/eclipse+command=_usr_lib_dbeaver_.desktop

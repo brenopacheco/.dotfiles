@@ -71,14 +71,17 @@ paq({
   --
   -- {'NeogitOrg/neogit', config='neogit'};
   {'shellRaining/hlchunk.nvim', config='hlchunk'};
-  {'chrishrb/gx.nvim', config='gx'};
+  {'brenopacheco/gx.nvim', config='gx'};
 
 
   {'nvim-neorg/neorg', config='neorg', run=':Neorg sync-parsers'};
 
   -- {'rcarriga/nvim-notify', config='nvim-notify'};
 
-  {'stevearc/dressing.nvim'}
+  {'stevearc/dressing.nvim'},
+  {'ibhagwan/fzf-lua'},
+  {'junegunn/fzf', run=":call fzf#install()" },
+  {'junegunn/fzf.vim'}
 })
 
 local disable_builtins = true

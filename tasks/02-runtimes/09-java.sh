@@ -10,6 +10,8 @@ function task() {
 		asdf install java openjdk-11:latest &&
 		asdf install java openjdk-13:latest &&
 		asdf install java openjdk-17:latest &&
+		asdf global java openjdk-17 &&
+		asdf reshim &&
 		sudo pacman -S --noconfirm maven &&
 		return "$OK"
 }

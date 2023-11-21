@@ -49,4 +49,5 @@ extensions = {
 telescope.setup({defaults = defaults, extensions = extensions});
 
 require('telescope').load_extension('fzy_native')
--- require('telescope').load_extension('dap')
+
+vim.cmd([[hi! link TelescopeBorder Normal]])

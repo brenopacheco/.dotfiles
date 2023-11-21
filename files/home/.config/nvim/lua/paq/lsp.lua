@@ -30,7 +30,7 @@ local servers = {
 	"marksman",
 	-- 'omnisharp',
 	"prismals",
-	"pylyzer",
+	-- "pylyzer",
 	"quick_lint_js",
 	"rust_analyzer",
 	"solargraph",
