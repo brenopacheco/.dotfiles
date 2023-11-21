@@ -8,5 +8,6 @@ function task() {
 	asdf plugin add elixir https://github.com/asdf-vm/asdf-elixir.git
 	KERL_BUILD_DOCS="yes" asdf install elixir latest &&
 		asdf global elixir latest &&
+		asdf reshim &&
 		return "$OK"
 }

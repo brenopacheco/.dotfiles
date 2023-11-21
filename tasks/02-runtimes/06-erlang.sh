@@ -8,5 +8,6 @@ function task() {
 	asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
 	KERL_BUILD_DOCS="yes" asdf install erlang latest &&
 		asdf global erlang latest &&
+		asdf reshim &&
 		return "$OK"
 }

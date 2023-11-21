@@ -6,12 +6,15 @@ function should_run() {
 
 function task() {
 	asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+	asdf plugin add yarn   https://github.com/twuni/asdf-yarn.git
 	asdf install nodejs latest:14 &&
 		asdf install nodejs latest:16 &&
 		asdf install nodejs latest:18 &&
 		asdf install nodejs latest:19 &&
 		asdf install nodejs latest:21 &&
-		asdf global nodejs latest &&
-		npm i -g yarn &&
+		asdf install yarn 1.20.0 &&
+		asdf global nodejs latest:18 &&
+		asdf global yarn 1.20.0 &&
+		asdf reshim &&
 		return "$OK"
 }

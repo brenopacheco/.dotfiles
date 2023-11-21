@@ -8,9 +8,4 @@ function task() {
 	sudo pacman -S --noconfirm go && 
 		go install golang.org/x/tools/cmd/godoc@latest &&
 		return "$OK"
-
-	# asdf plugin-add golang https://github.com/kennyp/asdf-golang.git &&
-	# 	asdf install golang latest &&
-	# 	asdf global golang latest &&
-	# 	return "$OK"
 }
