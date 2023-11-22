@@ -12,6 +12,7 @@ function task() {
 		asdf global dotnet-core 7 &&
 		asdf reshim &&
 		curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh &&
+		chmod +x /tmp/dotnet-install.sh &&
 		sudo /tmp/dotnet-install.sh --install-dir /usr/share/dotnet -channel STS -version latest &&
 		return "$OK"
 }
