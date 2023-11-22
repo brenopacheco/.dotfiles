@@ -13,7 +13,6 @@ packages=(
 	"cmake"
 	"conky"
 	"ctags"
-	"dmenu"
 	"dunst"
 	"fd"
 	"feh"
