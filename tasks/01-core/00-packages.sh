@@ -2,12 +2,15 @@
 
 packages=(
 	"arandr"
+	"base"
+	"base-devel"
 	"bash-completion"
 	"bear"
 	"blueman"
 	"bluez"
 	"bluez-utils"
 	"chromium"
+	"cmake"
 	"conky"
 	"ctags"
 	"dmenu"
@@ -16,16 +19,21 @@ packages=(
 	"feh"
 	"firefox"
 	"fzf"
+	"git"
 	"gpick"
+	"gvim"
+	"gvim"
 	"htop"
 	"imagemagick"
 	"inotify-tools"
 	"jq"
+	"libappindicator-gtk3"
 	"lsof"
 	"moreutils"
 	"ncdu"
 	"net-tools"
 	"network-manager-applet"
+	"ninja"
 	"pamixer"
 	"parted"
 	"pass"
@@ -41,6 +49,7 @@ packages=(
 	"ripgrep"
 	"rsync"
 	"screengrab"
+	"stow"
 	"stow"
 	"sxiv"
 	"tmux"
@@ -64,9 +73,12 @@ packages=(
 )
 
 function should_run() {
-	has_packages "${packages[@]}" && return "$DONE" || return "$RUN"
+	are_packages_synced || return "$RUN"
+	has_packages "${packages[@]}" || return "$RUN"
+	return "$DONE"
 }
 
 function task() {
-	sudo pacman -S --noconfirm "${packages[@]}" && return "$OK"
+	sudo pacman -Syu --noconfirm &&
+		sudo pacman -S --noconfirm "${packages[@]}" && return "$OK"
 }
