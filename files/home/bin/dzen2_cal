@@ -1,6 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-WINDOW_ID=$(xdotool search --class dwm)
+while ! WINDOW_ID=$(xdotool search --class dwm); do
+	sleep 1
+done
+
 WINDOW_SIZE=$(xwininfo -id "$WINDOW_ID" | grep "Width" | awk '{print $2}')
 DAY=$(date +'%d')
 MATCH=$(printf "%s" "^bg(#1f1d2e)^fg(#e0def4)$DAY^bg(#e0def4)^fg(#1f1d2e)")
@@ -29,7 +32,7 @@ while true; do
 	DZEN_PID=$!
 	echo "$DZEN_PID"
 	while true; do
-		sleep 1
+		sleep 5
 		NEW_WINDOW_SIZE=$(xwininfo -id "$WINDOW_ID" | grep "Width" | awk '{print $2}')
 		if [ "$WINDOW_SIZE" -ne "$NEW_WINDOW_SIZE" ]; then
 			kill "$DZEN_PID"

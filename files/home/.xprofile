@@ -1,16 +1,13 @@
 #!/bin/bash
 exec 1>/tmp/xprofile.log 2>&1
-export PATH="/bin:/usr/bin:/usr/local/bin:/home/$USER/bin:/home/$USER/.pkgs/bin"
+export PATH="/bin:/usr/bin:/home/$USER/bin"
 
 feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
 
-# TODO:
-# - control dbus launch (exec dbus-run-session dwm)
-
-slstatus & disown # statusbar
-dunst & disown # notification daemon
-udiskie & disown # automount disks
-nm-applet & disown # networkmanager applet
+slstatus       & disown # statusbar
+dunst          & disown # notification daemon
+udiskie        & disown # automount disks
+nm-applet      & disown # networkmanager applet
 blueman-applet & disown # bluetooth applet
 pasystray \
 	--notify=all \
@@ -19,10 +16,18 @@ pasystray \
 redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
 
+picomtray & disown # picom systray indicator
+agua      & disown # drink water notifier (TODO: make a systray indicator)
+dzen2_cal & disown # calendar widget (TODO: change the name of the script)
+
+# TODO: fix this on twitch-notify
 (
-	sleep 5;
-	tasker-go & disown;
-	picomtray & disown;
-	agua & disown;
-	dzen2_cal & disown;
+	# shellcheck disable=SC1090
+	source /home/"$USER"/.twitch-notify.conf
+	while ! pgrep -x dwm; do
+		sleep 1;
+	done;
+	twitch-notify >>/tmp/twitch-notify.log 2>&1;
 ) & disown
+
+# TODO: control dbus launch (exec dbus-run-session dwm)

@@ -88,6 +88,7 @@ export PATH=$PATH:$HOME/.dotnet/tools
 # fi
 
 test -e ~/.npmtoken && source ~/.npmtoken
+test -e ~/.twitch-notify.conf && source ~/.twitch-notify.conf
 
 export ZK_NOTEBOOK_DIR=$HOME/notes
 

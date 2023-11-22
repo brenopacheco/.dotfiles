@@ -1,0 +1,28 @@
+# shellcheck disable=all
+pkgname=twitch-notify
+pkgver=1.0.r8.bfcff50
+pkgrel=1
+pkgdesc="Notify when a streamer goes live on Twitch"
+url="https://github.com/brenopacheco/twitch-notify"
+arch=(x86_64)
+license=('MIT')
+depends=('libnotify' 'chromium')
+
+source=("git+https://github.com/brenopacheco/twitch-notify.git#commit=HEAD")
+
+md5sums=('SKIP')
+
+pkgver() {
+	cd ${pkgname}
+	printf "1.0.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd ${pkgname}
+	make build
+}
+
+package() {
+	cd ${pkgname}
+	make PREFIX=/usr DESTDIR="$pkgdir" install
+}
