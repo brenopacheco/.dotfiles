@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
+# TODO: fix this. something is not right, where does /bin/dotnet come from?
 function should_run() {
+	return "$SKIP"
 	which dotnet && return "$DONE" || return "$RUN"
 }
 
