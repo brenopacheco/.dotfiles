@@ -6,14 +6,18 @@ function get_version() {
 }
 
 function should_run() {
-	local VERSION=$(get_version)
-	is_version_newer elixir-ls $VERSION &&
+	return "$SKIP"
+	local VERSION
+	VERSION=$(get_version)
+	is_version_newer elixir-ls "$VERSION" &&
 		return "$RUN" || return "$DONE"
 }
 
 function task() {
-	local VERSION=$(get_version)
-	local DATA=$(jq -n --arg input "$VERSION" '{"PKGVER": $input}')
+	local VERSION
+	local DATA
+	VERSION=$(get_version)
+	DATA=$(jq -n --arg input "$VERSION" '{"PKGVER": $input}')
 	makepkg_PKGBUILD elixir-ls PKGBUILD.in "$DATA"
 	makepkg_task elixir-ls && return "$OK"
 }
