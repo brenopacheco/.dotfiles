@@ -28,7 +28,7 @@ function should_run() {
 	has_packages rose-pine-gtk-theme-full || return "$RUN"
 	has_packages xcursor-breeze || return "$RUN"
 	has_packages gnome-backgrounds || return "$RUN"
-	verify_symlinks || return "$RUN"
+	# verify_symlinks || return "$RUN"
 	return "$DONE"
 }
 
@@ -40,10 +40,10 @@ function task() {
 	has_packages gnome-backgrounds ||
 		sudo pacman -S --noconfirm gnome-backgrounds || return
 	# TODO: fix this: we have not run stow yet. need to use ./files/home/...
-	sudo ln -sf "$HOME/.gtkrc-2.0" "/usr/share/gtk-2.0/gtkrc" || return
-	sudo ln -sf "$HOME/.config/gtk-3.0/settings.ini" \
-		"/usr/share/gtk-3.0/settings.ini" || return
-	sudo ln -sf "$HOME/.config/gtk-4.0/settings.ini" \
-		"/usr/share/gtk-4.0/settings.ini" || return
+	# sudo ln -sf "$HOME/.gtkrc-2.0" "/usr/share/gtk-2.0/gtkrc" || return
+	# sudo ln -sf "$HOME/.config/gtk-3.0/settings.ini" \
+	# 	"/usr/share/gtk-3.0/settings.ini" || return
+	# sudo ln -sf "$HOME/.config/gtk-4.0/settings.ini" \
+	# 	"/usr/share/gtk-4.0/settings.ini" || return
 	return "$OK"
 }
