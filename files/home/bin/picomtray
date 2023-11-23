@@ -16,7 +16,7 @@ ICON_STOPPED = 'weather-fog'
 
 def is_picom_running():
     try:
-        subprocess.check_output(['pgrep', PICOM_PROCESS_NAME])
+        subprocess.check_output(['pgrep', '-x', PICOM_PROCESS_NAME])
         return True
     except subprocess.CalledProcessError:
         return False
@@ -24,7 +24,7 @@ def is_picom_running():
 
 def toggle_picom(indicator):
     if is_picom_running():
-        status = subprocess.run(['pkill', '-9', PICOM_PROCESS_NAME])
+        status = subprocess.run(['pkill', '-x', '-9', PICOM_PROCESS_NAME])
         if status.returncode != 0:
             subprocess.Popen([
                 'notify-send', '-u', 'critical', 'picomtray',
