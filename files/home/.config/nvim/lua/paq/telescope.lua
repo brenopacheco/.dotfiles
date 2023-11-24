@@ -1,4 +1,3 @@
--- https://github.com/caojoshua/telescope.nvim/pull/1
 local telescope = require('telescope')
 local actions = require('telescope.actions')
 
@@ -18,6 +17,7 @@ defaults.layout_config = {
 
 defaults.mappings = {
   i = {
+    ["<CR>"] = actions.select_default,
     ['<C-c>'] = actions.close,
     ['<ESC>'] = actions.close,
     ['jk'] = actions.close,
@@ -29,8 +29,8 @@ defaults.mappings = {
     ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
     ['<C-a>'] = actions.select_all,
     ['<C-d>'] = actions.drop_all,
-    ['<Tab>'] = actions.add_selection + actions.move_selection_better,
-    ['<S-Tab>'] = actions.remove_selection + actions.move_selection_worse,
+    ['<Tab>'] = actions.add_selection + actions.move_selection_worse,
+    ['<S-Tab>'] = actions.remove_selection + actions.move_selection_better,
     ['<C-s>'] = actions.select_horizontal,
     ['<C-v>'] = actions.select_vertical,
     ['<C-t>'] = actions.select_tab
