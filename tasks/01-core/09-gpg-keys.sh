@@ -35,8 +35,8 @@ function task() {
 		tar -zxf "$fname" --directory "$tmpdir"
 		find "$tmpdir" -name "netrc.gpg-*" | while read -r netrc; do
 			cp "$netrc" "$HOME/.$(basename $netrc)" || return
+			ln -sn "$netrc" "$HOME/.netrc.gpg"
 		done
-		ln -sn .netrc.gpg-breno .netrc.gpg
 		find "$tmpdir" -name "*.private.pgp" | while read -r key; do
 			gpg --pinentry-mode loopback --import "$key" || return
 		done

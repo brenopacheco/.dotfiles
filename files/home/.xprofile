@@ -2,6 +2,8 @@
 exec 1>/tmp/xprofile.log 2>&1
 export PATH="/bin:/usr/bin:/home/$USER/bin"
 
+test -x "/home/$USER/.screenlayout/default.sh" && "/home/$USER/.screenlayout/default.sh"
+
 feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
 
 slstatus         & disown # statusbar
@@ -29,5 +31,7 @@ dzen2_cal & disown # calendar widget (TODO: change the name of the script)
 	done;
 	twitch-notify >>/tmp/twitch-notify.log 2>&1;
 ) & disown
+
+(sleep 1; xmodmap ~/.Xmodmap) & disown
 
 # TODO: control dbus launch (exec dbus-run-session dwm)
