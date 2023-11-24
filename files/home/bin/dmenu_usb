@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+devices=$(lsblk | grep -e "/run/media" | awk '{print $7}' | sed 's#.*/##')
+
+if [ -z "$devices" ]; then
+	notify-send -u critical "dmenu_usb" "No devices found"
+	exit 1
+fi
+
+device=$(echo "$devices" | dmenu -p "USB device: ")
+
+if [ -z "$device" ]; then
+	exit 1
+fi
+
+st -e bash -c "cd /run/media/$USER/$device; bash" &
+disown
