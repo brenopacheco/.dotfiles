@@ -125,7 +125,7 @@ end
 local signs = {
 	Error = " ",
 	Warning = " ",
-	Hint = " ",
+	Hint = " ", --[[󰷫 ]]
 	Information = " ",
 }
 for type, icon in pairs(signs) do

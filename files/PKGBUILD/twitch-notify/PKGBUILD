@@ -1,6 +1,6 @@
 # shellcheck disable=all
 pkgname=twitch-notify
-pkgver=1.0.r8.bfcff50
+pkgver=1.0.r9.b8ba160
 pkgrel=1
 pkgdesc="Notify when a streamer goes live on Twitch"
 url="https://github.com/brenopacheco/twitch-notify"

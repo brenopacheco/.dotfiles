@@ -15,8 +15,10 @@ packages=(
 	"ctags"
 	"dosfstools"
 	"dunst"
+	"dzen2"
 	"fd"
 	"feh"
+	"file-roller"
 	"firefox"
 	"fzf"
 	"git"
@@ -70,6 +72,7 @@ packages=(
 	"xorg-xwininfo"
 	"zathura"
 	"zathura-pdf-mupdf"
+	"zip"
 	"zk"
 )
 
