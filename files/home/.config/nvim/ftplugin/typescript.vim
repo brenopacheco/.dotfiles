@@ -3,7 +3,6 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-" compiler ts-node
 compiler bun
 setlocal equalprg=
 setlocal shiftwidth=2

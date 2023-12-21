@@ -12,5 +12,4 @@ setlocal commentstring=<!--%s-->
 setlocal suffixesadd=.html,.js,.css
 setlocal matchpairs+=<:>
 
-let b:undo_ftplugin='setl ep< fdm< fmr< fde< fo< tw< com< cms< sua<'
-    \ . ' kp< isk< mps<'
+let b:undo_ftplugin='setl ep< fdm< fmr< fde< fo< tw< com< cms< sua< kp< isk< mps<'

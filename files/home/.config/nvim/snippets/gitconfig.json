@@ -1,8 +1,0 @@
-{
-  "git-url": {
-    "prefix": ["git-url"],
-    "body": [
-      "url = https://FarmerConnectSA@dev.azure.com/FarmerConnectSA/Promote/_git/$0"
-    ]
-  }
-}

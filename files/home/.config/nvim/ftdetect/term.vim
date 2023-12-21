@@ -4,7 +4,6 @@ fun! s:setup_term()
     tnoremap <buffer> <C-[> <C-\><c-n>
     tnoremap <buffer> jk <C-\><C-n>
     tnoremap <buffer> kj <C-\><C-n>
-    " au WinEnter <buffer> if winnr('$') == 1 | q | endif
     let b:term = v:true
 endf
 

@@ -1,93 +1,113 @@
-vim.cmd([[
-set encoding=utf-8                        " set default internal encoding
-filetype on                               " enable filetype detection
-filetype plugin on                        " load /plugin for file
-filetype indent on                        " load /indent for file
-syntax on                                 " enable syntax highlighting
-let mapleader     =' '                    " set leader as comma
-let &shellcmdflag ='-O globstar -c'       " enables gr **/* w/ grepprg
-set autochdir                             " use file path as vim's dir
-set autoindent                            " new lines inherits indentation
-set clipboard     =unnamed,unnamedplus    " copy/pasting from x11 clipboard
-set cmdheight     =1                      " only 1 row for cmdline
-set colorcolumn   =78                     " draw column at position
-set conceallevel  =0                      " shows |hyperlinks|
-set cursorline                            " highlights current line
-set noexpandtab                           " don't expands tabs as spaces
-set fileencoding  =utf-8                  " default buffer file encoding
-set fillchars     =fold:\                 " make v:folddashes whitespace
-set foldlevelstart=99                     " make folds open initially
-set foldmethod    =marker                 " default fold method using {{{}}}
-set foldcolumn=auto:9                     " show fold level in gutter
-set foldopen=insert,quickfix,mark,search,tag,undo  " movements to open closed folds
-set foldminlines=0
-set foldnestmax=6
-set formatoptions =j,n,q                  " defaults for formatting text
-set hidden                                " hide files don't prompt for save
-set history       =500                    " keep more history in q:
-set hlsearch                              " keep search highlighted
-set ignorecase                            " ignore case when searching
-set incsearch                             " search as chars are entered
-set inccommand    =nosplit                " preview subsittution as you type
-set keywordprg    =:help                  " use help as default for <S-k>
-set laststatus    =3                      " show a single statusline
-set lazyredraw                            " do not redraw during macros
-set linebreak                             " don't break word when wrapping
-set list                                  " actually use listchars
-set listchars     =tab:»\ ,trail:¬,nbsp:␣ " show symbols for tab/trail/nbsp
-set listchars    +=extends:›,precedes:‹   " symbol for longlines on nowrap
-" set listchars    +=eol:↵
-set more                                  " show --more-- to scroll messages
-set nojoinspaces                          " always insert 1 spc on join J
-set noshowmode                            " don't show --INSERT-- message
-set nosmartindent                         " ??? this fixes issue with > #
-set nospell                               " disable spell check
-set nosplitbelow                          " :sp creates top split
-set nostartofline                         " do not reset col when moving
-set nowrap                                " don't wrap lines
-set nowrapscan                            " search next stops at end of file
-set number                                " set numeration of lines
-set pumheight     =12                     " max num of items in popup menu
-set pumwidth      =15                     " min popup menu width
-set relativenumber                        " set relative numbers
-set report=0                              " always report on :substitute
-set scrolloff     =999                    " keep cursor centered
-" set scrolloff     =0                      " keep cursor centered also on EOF
-" autocmd CursorMoved,CursorMovedI * norm! zz
-set shiftwidth    =4                      " number of spaces used by = op.
-set shortmess    +=cs                     " remove annoying messages
-set showbreak     =↪\                     " symbol for wrapped lines
-set showcmd                               " show commands being used
-set showmatch                             " highlights matches [{()}]
-set signcolumn=yes:1                      " keep always one signcolumn
-set smartcase                             " smart case for search
-set suffixesadd   =                       " clean suffixes
-set splitright                            " :vsp creates right split
-set tabstop       =4                      " display tab as 4 spaces
-set tags          =tags;~                 " search tags file up to $HOME
-set textwidth     =78                     " norm gq width. see formatoptions
-set undolevels     =500                   " keep more undos
-set updatetime    =300                    " time for writting swap to disk
-set virtualedit   =onemore                " put cursor where there is no char
-set visualbell                            " ...
-set wildignore   +=.git/**,tags           " ignore pattern using vimgrep
-set wildignore   +=node_modules/**        " ignore pattern using vimgrep
-set wildmenu                              " tab help in cmdline
-set wildmode      =full                   " how wildmenu appears
-set grepformat    =%f:%l:%c:%m            " format for grep in quickfix
-let g:vim_indent_cont = &sw               " \ indents shiftwidth
-let c_syntax_for_h = 1                    " recognize .h as c file
-set path=**                               " extend path to glob **
-set termguicolors
-set nobomb " remove <feff>
-let g:filetype_pl="prolog"
-let foldtext=utils#foldtext()
-" 'oldfiles, :cmdhistory, <registers, @input-line, f marks
-set shada='10,:50,<0,@10,s100,f1,h,/0,n~/.cache/nvim/main.shada
-]])
+﻿--- Options
 
-vim.go.grepprg = "rg --hidden --smart-case"
-  .. " --color=never --no-heading --column"
-  .. " --with-filename --line-number  -e $*"
-
-vim.g.editorconfig = true
+-- stylua: ignore start
+vim.opt.autochdir      = true                          -- use file path as vim's dir
+vim.opt.autoindent     = true                          -- new lines inherits indentation
+vim.opt.clipboard      = 'unnamed,unnamedplus'         -- copy/pasting from x11 clipboard
+vim.opt.cmdheight      = 1                             -- only 1 row for cmdline
+vim.opt.colorcolumn    = { 78 }                        -- draw column at position
+vim.opt.conceallevel   = 0                             -- shows |hyperlinks|
+vim.opt.cursorline     = true                          -- highlights current line
+vim.opt.encoding       = 'utf-8'                       -- set default internal encoding
+vim.opt.fileencoding   = 'utf-8'                       -- default buffer file encoding
+vim.opt.fillchars      = 'fold:\\'                     -- make v:folddashes whitespace
+vim.opt.foldcolumn     = 'auto:9'                      -- show fold level in gutter
+vim.opt.foldlevelstart = 99                            -- make folds open initially
+vim.opt.foldmethod     = 'marker'                      -- default fold method using {{{}}}
+vim.opt.foldminlines   = 0
+vim.opt.foldnestmax    = 6
+vim.opt.foldopen       = {                             -- movements to open closed folds
+  'insert',
+  'quickfix',
+  'mark',
+  'search',
+  'tag',
+  'undo'
+}
+vim.opt.formatoptions  = 'j,n,q'                       -- defaults for formatting text
+vim.opt.grepformat     = '%f:%l:%c:%m'                 -- format for grep in quickfix
+vim.opt.grepprg        = table.concat({
+  'rg',
+  '-.',
+  '-S',
+  '--color=never',
+  '--no-heading',
+  '--column',
+  '--with-filename',
+  '--line-number',
+  '-e $*'
+}, ',')
+vim.opt.hidden         = true                          -- hide files don't prompt for save
+vim.opt.history        = 500                           -- keep more history in q:
+vim.opt.hlsearch       = true                          -- keep search highlighted
+vim.opt.ignorecase     = true                          -- ignore case when searching
+vim.opt.inccommand     = 'nosplit'                     -- preview subsittution as you type
+vim.opt.incsearch      = true                          -- search as chars are entered
+vim.opt.keywordprg     = ':help'                       -- use help as default for <S-k>
+vim.opt.laststatus     = 3                             -- show a single statusline
+vim.opt.lazyredraw     = true                          -- do not redraw during macros
+vim.opt.linebreak      = true                          -- don't break word when wrapping
+vim.opt.listchars      = {
+  tab                  = [[» ]],
+  trail                = '¬',
+  nbsp                 = '␣',
+  extends              = '›',
+  precedes             = '‹',
+  -- eol                  = '$',
+}
+vim.opt.list           = true                          -- actually use listchars
+vim.opt.more           = true                          -- show --more-- to scroll messages
+vim.opt.bomb           = true                          -- remove <feff>
+vim.opt.expandtab      = false                         -- don't expands tabs as spaces
+vim.opt.joinspaces     = false                         -- always insert 1 spc on join J
+vim.opt.showmode       = false                         -- don't show --INSERT-- message
+vim.opt.smartindent    = false                         -- ??? this fixes issue with > #
+vim.opt.spell          = false                         -- disable spell check
+vim.opt.splitbelow     = false                         -- :sp creates top split
+vim.opt.startofline    = false                         -- do not reset col when moving
+vim.opt.wrapscan       = false                         -- search next stops at end of file
+vim.opt.wrap           = false                         -- don't wrap lines
+vim.opt.number         = true                          -- set numeration of lines
+vim.opt.path           = '**'                          -- extend path to glob **
+vim.opt.pumheight      = 12                            -- max num of items in popup menu
+vim.opt.pumwidth       = 15                            -- min popup menu width
+vim.opt.relativenumber = true                          -- set relative numbers
+vim.opt.report         = 0                             -- always report on :substitute
+vim.opt.scrolloff      = 999                           -- keep cursor centered
+vim.opt.shellcmdflag   = '-O globstar -c'
+vim.opt.shiftwidth     = 4                             -- number of spaces used by = op.
+vim.opt.shortmess:append('cs')                         -- remove annoying messages
+vim.opt.showbreak      = '↪ '                          -- symbol for wrapped lines
+vim.opt.showcmd        = true                          -- show commands being used
+vim.opt.showmatch      = true                          -- highlights matches [{()}]
+vim.opt.signcolumn     = 'yes:1'                       -- keep always one signcolumn
+vim.opt.smartcase      = true                          -- smart case for search
+vim.opt.splitright     = true                          -- :vsp creates right split
+vim.opt.suffixesadd    = ''                            -- clean suffixes
+vim.opt.tabstop        = 4                             -- display tab as 4 spaces
+vim.opt.tags           = 'tags;~'                      -- search tags file up to $HOME
+vim.opt.termguicolors  = true
+vim.opt.textwidth      = 78                            -- norm gq width. see formatoptions
+vim.opt.undolevels     = 500                           -- keep more undos
+vim.opt.updatetime     = 300                           -- time for writting swap to disk
+vim.opt.virtualedit    = 'onemore'                     -- put cursor where there is no char
+vim.opt.visualbell     = true
+vim.opt.wildignore     = {                             -- ignore pattern using vimgrep
+  '.git',
+  'node_modules',
+  '*.o',
+  '*.obj'
+}
+vim.opt.wildmenu       = true                          -- tab help in cmdline
+vim.opt.wildmode       = 'full'                        -- how wildmenu appears
+-- Extras
+vim.g.vim_indent_cont  = 4                             -- in vimscript, \ indents shiftwidth
+vim.g.c_syntax_for_h   = 1                             -- recognize .h as c file
+-- Disable a few builtin modules
+vim.g.loaded_matchit = 1
+vim.g.loaded_matchparen = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_spellfile_plugin = 1
+vim.g.loaded_2html_plugin = 1
+vim.g.loaded_tutor_mode_plugin = 1
+-- stylua: ignore end
