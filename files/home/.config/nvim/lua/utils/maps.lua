@@ -82,14 +82,18 @@ end
 
 -- Run project target from Makefile, Go, Rust, etc.
 M.find_make = function()
-	require('utils.pickers.make')
+	require('utils.pickers.make')()
 end
 
 -- Find file in current project (nearest project file directory)
 M.find_project = function()
 	local roots = rootutil.project_roots()
 	if #roots == 0 then
-		return vim.notify('error: no project roots found', vim.log.levels.WARN)
+		roots = { rootutil.git_root() }
+		vim.notify('error: no project roots found - defaulting to git', vim.log.levels.WARN)
+	end
+	if #roots == 0 then
+		return vim.notify('error: not a git repository', vim.log.levels.WARN)
 	end
 	require('telescope.builtin').find_files({
 		cwd = roots[1].path,
@@ -143,6 +147,9 @@ end
 
 -- Git open fugitive window
 M.git_fugitive = function()
+	if not rootutil.is_git() then
+		return vim.notify('error: not a git repository', vim.log.levels.WARN)
+	end
 	vim.cmd([[G]])
 end
 

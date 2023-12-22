@@ -2,17 +2,6 @@
 --
 -- Run any target from Makefile, Go, Rust, etc.
 
-local trim_dir = function(path)
-	local trim = 18
-	local len = string.len(path)
-	local _diff = len - trim
-	if _diff < 0 then
-		return path
-	end
-	local _dir = string.sub(path, _diff, len)
-	return string.gsub(_dir, '^[^/]+/', '…/')
-end
-
 return function()
 	local targets = require('utils.make').targets()
 	local max_target_len = 0
@@ -21,6 +10,9 @@ return function()
 				and string.len(target.name)
 			or max_target_len
 	end
+	if #targets == 0 then
+		return vim.notify('No targets found', vim.log.levels.WARN)
+	end
 	vim.ui.select(targets, {
 		prompt = 'Run:',
 		format_item = function(item)
@@ -28,15 +20,14 @@ return function()
 			local target = item
 			local format = '✔ %-8s %-'
 				.. tostring(max_target_len) + 4
-				.. 's %-'
-				.. 38 - max_target_len
-				.. 's %22s'
+				.. 's %'
+				.. 59 - max_target_len
+				.. 's'
 			return string.format(
 				format,
 				'[' .. target.kind .. ']',
 				target.name,
-				target.desc,
-				trim_dir(target.dir)
+				vim.fn.fnamemodify(target.dir, ':t')
 			)
 		end,
 	}, function(choice)

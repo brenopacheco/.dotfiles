@@ -32,6 +32,9 @@ wk.setup({
 	icons = {
 		group = '', -- symbol prepended to a group
 	},
+	-- triggers_blacklist = {
+	-- 	n = { 'c' },
+	-- },
 	-- triggers = { '<leader>', '<c-w>', 'g', 'z', ']', '[' },
 	disable = {
 		buftypes = { 'nofile', 'fugitive' },

@@ -27,4 +27,11 @@ M.lines = function(data)
 	return lines
 end
 
+--- Check if file exists
+--- @param path string File path
+--- @return boolean
+M.exists = function(path)
+	return vim.fn.filereadable(path) == 1
+end
+
 return M

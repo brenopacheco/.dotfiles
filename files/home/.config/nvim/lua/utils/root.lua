@@ -75,4 +75,11 @@ M.project_roots = function()
 	return roots
 end
 
+M.is_git = function()
+	local result = vim
+		.system({ 'git', 'rev-parse', '--show-toplevel' }, { text = true })
+		:wait()
+	return result.code == 0
+end
+
 return M

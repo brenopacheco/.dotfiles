@@ -5,7 +5,6 @@ local M = {}
 
 ---@class Target
 ---@field name string
----@field desc string
 ---@field cmd string
 ---@field dir string
 ---@field file string
@@ -26,10 +25,10 @@ local make = {
 		for _, line in ipairs(fileutil.lines(data)) do
 			local rule = string.match(line, '^([a-zA-Z_%-]+):')
 			if rule ~= nil then
+				vim.print({ rule = rule, line = line })
 				---@type Target
 				local target = {
-					name = 'all',
-					desc = 'run "' .. rule .. '" rule',
+					name = rule,
 					cmd = 'make ' .. rule,
 					dir = dir,
 					file = file,
@@ -42,7 +41,64 @@ local make = {
 	end,
 }
 
-local systems = { make }
+---@type System
+local node = {
+	name = 'node',
+	patterns = { 'package.json' },
+	targets = function(dir, file, data)
+		---@type Target[]
+		local targets = {}
+		---@type table<string, string>
+		local scripts = vim.json.decode(data).scripts
+		local manager = fileutil.exists(dir .. '/yarn.lock') and 'yarn' or 'npm'
+		for script, _ in pairs(scripts) do
+			---@type Target
+			local target = {
+				name = script,
+				cmd = manager .. ' run ' .. script,
+				dir = dir,
+				file = file,
+				kind = manager,
+			}
+			table.insert(targets, target)
+		end
+		table.insert(targets, {
+			name = 'clear node_modules && install',
+			cmd = 'rm -rf node_modules && ' .. manager .. ' install',
+			dir = dir,
+			file = file,
+			kind = manager,
+		})
+		return targets
+	end,
+}
+
+---@type System
+local dotnet = {
+	name = 'dotnet',
+	patterns = { '.+%.sln' },
+	targets = function(dir, file, data)
+		---@type Target[]
+		local targets = {}
+		table.insert(targets, {
+			name = 'test Category=Unit',
+			cmd = [[dotnet test --filter 'Category=Unit']],
+			dir = dir,
+			file = file,
+			kind = 'dotnet',
+		})
+		table.insert(targets, {
+			name = 'test Category=Integration',
+			cmd = [[dotnet test --filter 'Category=Integration']],
+			dir = dir,
+			file = file,
+			kind = 'dotnet',
+		})
+		return targets
+	end,
+}
+
+local systems = { make, node, dotnet }
 
 --- Get all run targets from all systems (make, go, rust, etc.)
 ---
