@@ -24,9 +24,8 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 	desc = 'Reload nvim lua modules on save',
 	callback = function(context)
 		vim.schedule(function()
-			local config = tostring(vim.fn.stdpath('config'))
-			local regex = '^' .. string.gsub(config, '%-', '%%-') .. '/lua/(.*)%.lua'
-			local module, matches = string.gsub(context.match, regex, '%1')
+			local regex = '(.*)/%.config/nvim/lua/(.*)%.lua'
+			local module, matches = string.gsub(context.match, regex, '%2')
 			if matches == 1 then
 				reload(module)
 			end
