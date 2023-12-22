@@ -25,7 +25,6 @@ local make = {
 		for _, line in ipairs(fileutil.lines(data)) do
 			local rule = string.match(line, '^([a-zA-Z_%-]+):')
 			if rule ~= nil then
-				vim.print({ rule = rule, line = line })
 				---@type Target
 				local target = {
 					name = rule,
