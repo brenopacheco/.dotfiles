@@ -13,6 +13,9 @@ local function reload(module)
 	if key ~= nil then
 		package.loaded[key] = nil
 	end
+	package.loaded['keymaps'] = nil
+	package.loaded['utils.maps'] = nil
+	require('keymaps')
 	require(dkey)
 	vim.notify("Package '" .. dkey .. "' reloaded")
 end

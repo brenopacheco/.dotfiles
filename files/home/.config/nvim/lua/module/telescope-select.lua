@@ -43,7 +43,8 @@ local function select(items, opts, on_choice)
 			finder = finders.new_table({
 				results = items or {},
 				entry_maker = function(item)
-					local text = opts and opts.format_item and opts.format_item(item) or item
+					local text = opts and opts.format_item and opts.format_item(item)
+						or item
 					return {
 						value = item,
 						display = text,
@@ -52,7 +53,8 @@ local function select(items, opts, on_choice)
 				end,
 			}),
 			sorter = conf.generic_sorter({}),
-			attach_mappings = function(prompt_bufnr)
+			attach_mappings = function(prompt_bufnr, map)
+				map('i', '<tab>', actions.select_default)
 				actions.select_default:replace(function()
 					actions.close(prompt_bufnr)
 					local selection = action_state.get_selected_entry()

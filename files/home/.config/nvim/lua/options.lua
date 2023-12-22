@@ -28,15 +28,16 @@ vim.opt.formatoptions  = 'j,n,q'                       -- defaults for formattin
 vim.opt.grepformat     = '%f:%l:%c:%m'                 -- format for grep in quickfix
 vim.opt.grepprg        = table.concat({
   'rg',
-  '-.',
-  '-S',
+  '--hidden',
+  '--smart-case',
   '--color=never',
   '--no-heading',
   '--column',
   '--with-filename',
   '--line-number',
-  '-e $*'
-}, ',')
+  '-e',
+  '$*'
+}, ' ')
 vim.opt.hidden         = true                          -- hide files don't prompt for save
 vim.opt.history        = 500                           -- keep more history in q:
 vim.opt.hlsearch       = true                          -- keep search highlighted

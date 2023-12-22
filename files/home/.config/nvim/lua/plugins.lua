@@ -7,7 +7,7 @@ vim.z.packadd({
 	'bluz71/vim-nightfly-guicolors',
 	'kyazdani42/nvim-web-devicons',
 	'norcalli/nvim-colorizer.lua',
-	-- 'folke/which-key.nvim',
+	'folke/which-key.nvim',
 	'shellRaining/hlchunk.nvim',
 	'brenopacheco/gx.nvim',
 	'ruifm/gitlinker.nvim',

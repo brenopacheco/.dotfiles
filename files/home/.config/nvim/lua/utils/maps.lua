@@ -1,7 +1,12 @@
-﻿local bufutil = require('utils.buf')
+﻿local argsutil = require('utils.args')
+local bufutil = require('utils.buf')
 local greputils = require('utils.grep')
 local lsputil = require('utils.lsp')
+local qfutil = require('utils.qf')
 local rootutil = require('utils.root')
+
+-- TODO: all function implementations here should be placed elsewhere, and in
+-- there we can just replace the function with a call to the implementation.
 
 local M = {}
 
@@ -10,42 +15,13 @@ local _dummy = function()
 end
 
 -- Add buffer to arglist
-M.args_add = function()
-	if vim.fn.bufname() == '' then
-		return vim.notify(
-			'error: the buffer is not associated with a file',
-			vim.log.levels.WARN
-		)
-	end
-	vim.cmd('argadd')
-	vim.cmd('argdedupe')
-	vim.cmd('argu ' .. vim.fn.argc())
-	return vim.notify(
-		'info: "' .. vim.fn.expand('%') .. '" added to arglist',
-		vim.log.levels.INFO
-	)
-end
+M.args_add = argsutil.args_add
 
 -- Clear arglist
-M.args_clear = function()
-	vim.cmd('argdelete *')
-	return vim.notify('info: arglist cleared', vim.log.levels.INFO)
-end
+M.args_clear = argsutil.args_clear
 
 -- Remove buffer from arglist
-M.args_delete = function()
-	if not vim.fn.bufexists(0) then
-		return vim.notify(
-			'error: the buffer is not associated with a file',
-			vim.log.levels.WARN
-		)
-	end
-	vim.cmd('argdelete %')
-	return vim.notify(
-		'info: "' .. vim.fn.expand('%') .. '" removed from arglist',
-		vim.log.levels.INFO
-	)
-end
+M.args_delete = argsutil.args_delete
 
 -- Open buffer diagnostics in quickfix
 M.errors_buffer = function()
@@ -66,9 +42,7 @@ M.errors_workspace = function()
 end
 
 -- Find file in arglist
-M.find_args = function()
-	require('utils.pickers.arglist')()
-end
+M.find_args = require('utils.pickers.arglist')
 
 -- Find buffer in buffer list
 M.find_buffers = function()
@@ -242,16 +216,12 @@ end
 
 -- Jump to next arg in arglist
 M.jump_argnext = function()
-	vim.cmd(
-		'argu' .. vim.fn.argidx() + 1 >= vim.fn.argc() and 1 or vim.fn.argidx() + 2
-	)
+	argsutil.arg_next()
 end
 
 -- Jump to previous arg in arglist
 M.jump_argprev = function()
-	vim.cmd(
-		'argu' .. vim.fn.argidx() == 0 and vim.fn.argc() + 1 or vim.fn.argidx()
-	)
+	argsutil.arg_prev()
 end
 
 -- Jump to next buffer in buffer list
@@ -266,12 +236,12 @@ end
 
 -- Jump to next git hunk or diff chunk
 M.jump_chunknext = function()
-	return vim.o.diff and ']c' or require('gitsigns').next_hunk()
+	return vim.o.diff and ']c' or (require('gitsigns').next_hunk() and '')
 end
 
 -- Jump to prev git hunk or diff chunk
 M.jump_chunkprev = function()
-	return vim.o.diff and '[c' or require('gitsigns').prev_hunk()
+	return vim.o.diff and '[c' or (require('gitsigns').prev_hunk() and '')
 end
 
 -- Jump to the next diagnostic
@@ -322,28 +292,12 @@ end
 
 -- Jump to next quickfix entry
 M.jump_qfnext = function()
-	--@table {idx: string, size: string}
-	local qfinfo = vim.fn.getqflist({ idx = 0, size = 0 })
-	if qfinfo == nil or qfinfo.size == 0 then
-		vim.notify('error: quickfix list is empty', vim.log.levels.WARN)
-	elseif qfinfo.idx == qfinfo.size then
-		vim.cmd('cfirst')
-	else
-		vim.cmd('cnext')
-	end
+	qfutil.next_entry()
 end
 
 -- Jump to previous quickfix entry
 M.jump_qfprev = function()
-	--@table {idx: string, size: string}
-	local qfinfo = vim.fn.getqflist({ idx = 0, size = 0 })
-	if qfinfo == nil or qfinfo.size == 0 then
-		vim.notify('error: quickfix list is empty', vim.log.levels.WARN)
-	elseif qfinfo.idx == 1 then
-		vim.cmd('clast')
-	else
-		vim.cmd('cprev')
-	end
+	qfutil.prev_entry()
 end
 
 -- Jump to next tab
@@ -393,13 +347,7 @@ end
 
 -- Delete buffer
 M.run_bd = function()
-	local status, _ = pcall(vim.api.nvim_buf_delete, 0, {})
-	if not status then
-		local x = vim.fn.confirm('buffer has been modified', '&qCancel\n&xDelete')
-		if x == 2 then
-			return vim.cmd('bd!')
-		end
-	end
+	bufutil.delete()
 end
 
 -- Run code action
@@ -478,7 +426,7 @@ end
 M.run_star = function()
 	local pattern = bufutil.is_visual()
 			and table.concat(bufutil.get_visual().text, '')
-		or vim.fn.expand('<cword>')
+		or tostring(vim.fn.expand('<cword>'))
 	greputils.grep_pattern(pattern)
 end
 

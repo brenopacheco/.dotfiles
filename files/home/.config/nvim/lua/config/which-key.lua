@@ -32,17 +32,17 @@ wk.setup({
 	icons = {
 		group = '', -- symbol prepended to a group
 	},
-	triggers = { '<leader>', '<c-w>', 'g', 'z', ']', '[' },
+	-- triggers = { '<leader>', '<c-w>', 'g', 'z', ']', '[' },
 	disable = {
-		buftypes = { 'nofile' },
-		filetypes = { },
+		buftypes = { 'nofile', 'fugitive' },
+		filetypes = { 'fugitive' },
 	},
 })
 
 wk.register(vim.z.keyboard.prefixes, { prefix = '<leader>', mode = 'n' })
 
 wk.register({
-  ga = 'align',
+	ga = 'align',
 	gb = 'comment-block',
 	gc = 'comment-line',
 	gf = 'goto-file',
@@ -58,7 +58,7 @@ wk.register({
 }, { mode = 'n' })
 
 wk.register({
-  ga = 'align',
+	ga = 'align',
 	gb = 'comment-block',
 	gc = 'comment-line',
 	gq = 'fmt-width',

@@ -12,6 +12,7 @@ local M = {}
 ---@field pos {start: Pos, finish: Pos}
 ---@field text string[]
 
+---@return boolean
 function M.is_visual()
 	local mode = vim.fn.mode()
 	return mode == 'v' or mode == 'V'
@@ -85,6 +86,17 @@ end
 function M.is_file(bufnr)
 	bufnr = bufnr or vim.fn.bufnr()
 	return vim.fn.bufname(bufnr) ~= ''
+end
+
+-- Delete buffer
+M.delete = function()
+	local status, _ = pcall(vim.api.nvim_buf_delete, 0, {})
+	if not status then
+		local x = vim.fn.confirm('buffer has been modified', '&qCancel\n&xDelete')
+		if x == 2 then
+			return vim.cmd('bd!')
+		end
+	end
 end
 
 return M

@@ -6,20 +6,16 @@ local lsp = require('lspconfig')
 
 lsp.lua_ls.setup({
 	capabilities = capabilities,
-	-- on_attach = on_attach,
 	Lua = {
 		workspace = {
-			library = {
-				[vim.fn.expand('$VIMRUNTIME/lua')] = true,
-				[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-			},
+            library = vim.api.nvim_get_runtime_file("", true)
 		},
 		runtime = {
 			version = 'LuaJIT',
 			path = vim.split(package.path, ';'),
 		},
 		diagnostics = {
-			globals = { 'vim', 'love' },
+			globals = { 'vim' },
 			disable = { 'lowercase-global', 'unused-vararg' },
 		},
 	},

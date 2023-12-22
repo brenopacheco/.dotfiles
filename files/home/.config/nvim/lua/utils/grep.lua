@@ -1,11 +1,12 @@
 local rootutils = require('utils.root')
+local qfutil = require('utils.qf')
 
 local M = {}
 
 ---@param opts { invert: boolean }
 M.qf_filter = function(opts)
-	local qf = vim.fn.getqflist()
-	if qf == nil or #qf == 0 then
+	local qf, empty = qfutil.qf()
+	if empty then
 		return vim.notify('No quickfix list found', vim.log.levels.WARN)
 	end
 	local letter = opts.invert and 'v' or 'g'
@@ -43,27 +44,28 @@ M.grep_pattern = function(pattern)
 			function(choice)
 				local buffer = vim.fn.bufnr()
 				if choice == 'git' then
-					vim.cmd("grep! '" .. pattern .. "' " .. rootutils.git_root())
+					vim.cmd("silent grep! '" .. input .. "' " .. rootutils.git_root())
 				elseif choice == 'project' then
-					vim.cmd("grep! '" .. pattern .. "' " .. rootutils.project_roots())
+					vim.cmd("silent grep! '" .. input .. "' " .. rootutils.project_roots())
 				elseif choice == 'curdir' then
-					vim.cmd("grep! '" .. pattern .. "' " .. vim.fn.getcwd())
+					vim.cmd("silent grep! '" .. input .. "' " .. vim.fn.getcwd())
 				elseif choice == 'buffer' then
-					vim.cmd('vimgrep /' .. input .. '/j %')
+					vim.cmd('silent vimgrep /' .. input .. '/j %')
 				elseif choice == 'buflist' then
 					vim.cmd(
-						':cexpr [] | bufdo vimgrepadd /'
-							.. pattern
+						'silent cexpr [] | bufdo vimgrepadd /'
+							.. input
 							.. '/j % | '
 							.. buffer
 							.. 'b'
 					)
 				elseif choice == 'arglist' then
-					vim.cmd('vimgrep /' .. pattern .. '/j ## | ' .. buffer .. 'b')
+					vim.cmd('silent vimgrep /' .. input .. '/j ## | ' .. buffer .. 'b')
 				else
 					return
 				end
-				if vim.fn.getqflist({ bufnr = buffer }).total ~= 0 then
+				local _, empty = qfutil.qf()
+				if not empty then
 					vim.cmd('copen | wincmd p')
 				end
 			end
