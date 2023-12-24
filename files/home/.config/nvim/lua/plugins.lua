@@ -60,4 +60,5 @@ vim.z.modload({
 	'shada',
 	'telescope-select',
 	'yank-highlight',
+	'argsview',
 })

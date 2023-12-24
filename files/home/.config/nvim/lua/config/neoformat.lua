@@ -35,4 +35,4 @@ vim.cmd([[
 let g:neoformat_run_all_formatters = 1
 ]])
 
-vim.cmd([[let g:neoformat_verbose = 1]])
+vim.cmd([[let g:neoformat_verbose = 0]])

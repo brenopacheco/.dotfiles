@@ -1,11 +1,15 @@
 --- Lf
 --
 -- Lf file browser wrapper
+-- TODO: fix this - it's broken
 
 --@type string|nil
 local selection_path = nil
 
 local function fopen()
+	if selection_path == nil then
+		return
+	end
 	local fd = assert(vim.uv.fs_open(selection_path, 'r', 438))
 	local stat = assert(vim.uv.fs_fstat(fd))
 	local data = assert(vim.uv.fs_read(fd, stat.size, 0))

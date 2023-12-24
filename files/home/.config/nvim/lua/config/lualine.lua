@@ -40,15 +40,23 @@ local filename = {
 
 local directory = {
 	function()
-		trim = 60
-		local path = vim.fn.getcwd()
-		local len = string.len(path)
-		local _diff = len - trim
-		if _diff < 0 then
-			return path
+		local len = 60
+		local path = tostring(vim.fn.getcwd())
+		local match
+		local tpath = tostring(path)
+		while true do
+			if string.len(tpath) <= len or string.find(tpath, '^/?[^/]+$') then
+				break
+			end
+			tpath, match = string.gsub(tpath, '^/[^/]+', '')
+			if match == 0 then
+				break
+			end
 		end
-		local _dir = string.sub(path, _diff, len)
-		return string.gsub(_dir, '^[^/]+/', '…/')
+		if string.len(path) > string.len(tpath) then
+			return '…' .. tpath
+		end
+		return tpath
 	end,
 }
 

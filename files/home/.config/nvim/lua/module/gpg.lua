@@ -4,7 +4,7 @@
 -- Encrypts .gpg/.asc files on saving
 -- Provides GPG [decrypt/encrypt] command
 
----@param buf? string
+---@param buf? integer
 ---@param mode 'encrypt' | 'decrypt'
 ---@param cb? fun(ok: boolean)
 local function run_gpg(buf, mode, cb)
@@ -36,13 +36,13 @@ local function run_gpg(buf, mode, cb)
 	cb(true)
 end
 
----@param buf? string
+---@param buf? integer
 ---@param cb? fun(result: boolean)
 local function encrypt(buf, cb)
 	run_gpg(buf, 'encrypt', cb)
 end
 
----@param buf? string
+---@param buf? integer
 ---@param cb? fun(result: boolean)
 local function decrypt(buf, cb)
 	run_gpg(buf, 'decrypt', cb)

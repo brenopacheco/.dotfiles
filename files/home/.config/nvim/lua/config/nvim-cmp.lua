@@ -78,10 +78,13 @@ cmp.setup({
 		['<C-e>'] = cmp.mapping.abort(),
 		['<Tab>'] = cmp.mapping(function(fallback)
 			if cmp.visible() then
+				vim.print('confirming')
 				cmp.confirm({ select = true })
 			elseif require('copilot.suggestion').is_visible() then
+				vim.print('accepting copilot')
 				vim.schedule(require('copilot.suggestion').accept)
 			else
+				vim.print('fallback')
 				fallback()
 			end
 		end, { 'i', 's' }),

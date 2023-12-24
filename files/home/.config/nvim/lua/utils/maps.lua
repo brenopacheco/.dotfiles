@@ -90,7 +90,10 @@ M.find_project = function()
 	local roots = rootutil.project_roots()
 	if #roots == 0 then
 		roots = { rootutil.git_root() }
-		vim.notify('error: no project roots found - defaulting to git', vim.log.levels.WARN)
+		vim.notify(
+			'error: no project roots found - defaulting to git',
+			vim.log.levels.WARN
+		)
 	end
 	if #roots == 0 then
 		return vim.notify('error: not a git repository', vim.log.levels.WARN)
@@ -243,12 +246,12 @@ end
 
 -- Jump to next git hunk or diff chunk
 M.jump_chunknext = function()
-	return vim.o.diff and ']c' or (require('gitsigns').next_hunk() and '')
+	require('gitsigns').next_hunk()
 end
 
 -- Jump to prev git hunk or diff chunk
 M.jump_chunkprev = function()
-	return vim.o.diff and '[c' or (require('gitsigns').prev_hunk() and '')
+	require('gitsigns').prev_hunk()
 end
 
 -- Jump to the next diagnostic
