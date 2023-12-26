@@ -1,15 +1,11 @@
 ﻿local M = {}
 
-local ft_clients = {
-	lua = 'lua_ls',
-}
-
 ---@return boolean, table | nil
 M.is_attached = function()
 	local clients = vim.lsp.get_clients()
 	for _, client in pairs(clients) do
-		if client.name == ft_clients[vim.bo.filetype] then
-			return not client.is_stopped(), client
+		if client.server_capabilities.hoverProvider then
+			return true, client
 		end
 	end
 	return false, nil

@@ -44,9 +44,17 @@ M.grep_pattern = function(pattern)
 			function(choice)
 				local buffer = vim.fn.bufnr()
 				if choice == 'git' then
+					local root = rootutils.git_root()
+					if root == nil then
+						return vim.notify('No git root found', vim.log.levels.WARN)
+					end
 					vim.cmd("silent grep! '" .. input .. "' " .. rootutils.git_root())
 				elseif choice == 'project' then
-					vim.cmd("silent grep! '" .. input .. "' " .. rootutils.project_roots())
+					local root = rootutils.project_roots()[1]
+					if root == nil then
+						return vim.notify('No project root found', vim.log.levels.WARN)
+					end
+					vim.cmd("silent grep! '" .. input .. "' " .. root.path)
 				elseif choice == 'curdir' then
 					vim.cmd("silent grep! '" .. input .. "' " .. vim.fn.getcwd())
 				elseif choice == 'buffer' then

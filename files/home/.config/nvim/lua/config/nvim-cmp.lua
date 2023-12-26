@@ -5,37 +5,38 @@ local luasnip = require('luasnip')
 
 vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
 
-local is_whitespace = function()
-	-- returns true if the character under the cursor is whitespace.
-	local col = vim.fn.col('.') - 1
-	local line = vim.fn.getline('.')
-	local char_under_cursor = string.sub(line, col, col)
+-- local is_whitespace = function()
+-- 	-- returns true if the character under the cursor is whitespace.
+-- 	local col = vim.fn.col('.') - 1
+-- 	local line = tostring(vim.fn.getline('.'))
+-- 	local char_under_cursor = string.sub(line, col, col)
 
-	if col == 0 or string.match(char_under_cursor, '%s') then
-		return true
-	else
-		return false
-	end
-end
+-- 	if col == 0 or string.match(char_under_cursor, '%s') then
+-- 		return true
+-- 	else
+-- 		return false
+-- 	end
+-- end
 
-local is_comment = function()
-	-- uses treesitter to determine if cursor is currently in a comment.
-	local context = require('cmp.config.context')
-	return context.in_treesitter_capture('comment') == true
-		or context.in_syntax_group('Comment')
-end
+-- local is_comment = function()
+-- 	-- uses treesitter to determine if cursor is currently in a comment.
+-- 	local context = require('cmp.config.context')
+-- 	return context.in_treesitter_capture('comment') == true
+-- 		or context.in_syntax_group('Comment')
+-- end
 
 cmp.setup({
-	enabled = function()
-		if is_comment() or is_whitespace() then
-			return false
-		else
-			return true
-		end
-	end,
+	-- enabled = function()
+	-- 	if is_comment() or is_whitespace() then
+	-- 		return false
+	-- 	else
+	-- 		return true
+	-- 	end
+	-- end,
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
 		keyword_length = 1,
+		keyword_pattern = "[^%s]+",
 		-- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
 		autocomplete = {
 			cmp.TriggerEvent.TextChanged,
@@ -115,6 +116,8 @@ cmp.setup({
 			ellipsis_char = '...',
 			symbol_map = { Copilot = '' },
 		}),
+		expandable_indicator = true,
+    	fields = {'abbr','kind','menu'},
 	},
 })
 

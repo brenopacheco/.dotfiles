@@ -1,23 +1,34 @@
 local M = {}
 
+--- Returns a list of files in a directory
+---@param dir string directory
+---@return string[] -- list of filenames
+local function dir_files(dir)
+	local files = {}
+	local req = vim.loop.fs_scandir(dir)
+	if req then
+		repeat
+			local name, _ = vim.loop.fs_scandir_next(req)
+			if name then
+				table.insert(files, name)
+			end
+		until not name
+	end
+	return files
+end
+
 --- Checks wether a file or directory exists in directory
 ---
 --- @param dir string directory
 --- @param pattern string filename pattern
 --- @return string|nil -- true if file exists, filename matching pattern
 local function has_file(dir, pattern)
-	local req = vim.loop.fs_scandir(dir)
-	if req then
-		repeat
-			local name, _ = vim.loop.fs_scandir_next(req)
-			if name then
-				if string.match(name, pattern) then
-					return name
-				end
-			end
-		until not name
+	local files =  dir_files(dir)
+	for _, file in ipairs(files) do
+		if string.match(file, pattern) then
+			return file
+		end
 	end
-	return nil
 end
 
 --- Find all upward roots for the given file patterns.
@@ -56,10 +67,11 @@ end
 
 --- Find the first project root for the current directory.
 ---
----@return {path: string, pattern: string, file: string} The first project root
+---@return {path: string, pattern: string, file: string}[] The project roots
 M.project_roots = function()
 	local roots = M.roots({
 		'package%.json',
+		'project%.json',
 		'.*%.sln',
 		'.*%.csproj',
 		'go%.mod',

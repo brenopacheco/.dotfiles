@@ -59,8 +59,10 @@ end
 
 -- Find files in git directory
 M.find_files = function()
+	local root = rootutil.git_root()
+	vim.notify("info: searching '" .. root .. "'", vim.log.levels.INFO)
 	require('telescope.builtin').find_files({
-		cwd = rootutil.git_root(),
+		cwd = root,
 		hidden = true,
 	})
 end
@@ -98,6 +100,7 @@ M.find_project = function()
 	if #roots == 0 then
 		return vim.notify('error: not a git repository', vim.log.levels.WARN)
 	end
+	vim.notify("info: searching '" .. roots[1].path .. "'", vim.log.levels.INFO)
 	require('telescope.builtin').find_files({
 		cwd = roots[1].path,
 		hidden = true,
