@@ -27,21 +27,13 @@ cat >"$KEYBOARD_SH" <<'EOF'
 exec 1> >(logger -p user.notice -t keyboard)
 exec 2> >(logger -p user.err -t keyboard)
 
-lsof -U 2>/dev/null |
-	grep "X[0-9]" |
-	sed 's/^.*\/tmp\/.X11-unix\/X//' |
-	sed 's/ .*//' |
-	sort |
-	uniq | while read -r DISPLAY; do
+ls /tmp/.X11-unix 2>/dev/null | sed 's/X//' | sort | uniq | while read -r DISPLAY; do
 	echo "Configuring keyboard - $(whoami): DISPLAY - $DISPLAY - ACTION $ACTION - HID_NAME: $HID_NAME"
 	export DISPLAY=":$DISPLAY"
 	case "$HID_NAME" in
 	"Keyboard K380")
-		setxkbmap -model pc105 -layout gb
+		setxkbmap -model ppc105+inet -layout us
 		xmodmap "$HOME/.Xmodmap"
-		;;
-	"Adv360 Pro")
-		setxkbmap -model pc104 -layout us
 		;;
 	esac
 done
