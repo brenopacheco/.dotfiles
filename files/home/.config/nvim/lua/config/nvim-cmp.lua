@@ -1,43 +1,36 @@
-﻿local cmp = require('cmp')
+local cmp = require('cmp')
+local copilot = require('copilot.suggestion')
 local defaults = require('cmp.config.default')()
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
 
 vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
 
--- local is_whitespace = function()
--- 	-- returns true if the character under the cursor is whitespace.
--- 	local col = vim.fn.col('.') - 1
--- 	local line = tostring(vim.fn.getline('.'))
--- 	local char_under_cursor = string.sub(line, col, col)
-
--- 	if col == 0 or string.match(char_under_cursor, '%s') then
--- 		return true
--- 	else
--- 		return false
--- 	end
--- end
-
--- local is_comment = function()
--- 	-- uses treesitter to determine if cursor is currently in a comment.
--- 	local context = require('cmp.config.context')
--- 	return context.in_treesitter_capture('comment') == true
--- 		or context.in_syntax_group('Comment')
--- end
+local is_whitespace = function()
+	local col = vim.fn.col('.') - 1
+	---@diagnostic disable-next-line: param-type-mismatch
+	local line = tostring(vim.fn.getline('.'))
+	local char_under_cursor = string.sub(line, col, col)
+	if col == 0 or string.match(char_under_cursor, '%s') then
+		return true
+	else
+		return false
+	end
+end
 
 cmp.setup({
-	-- enabled = function()
-	-- 	if is_comment() or is_whitespace() then
-	-- 		return false
-	-- 	else
-	-- 		return true
-	-- 	end
-	-- end,
+	enabled = function()
+		local disabled = false
+		disabled = disabled
+			or (vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt')
+		disabled = disabled or (vim.fn.reg_recording() ~= '')
+		disabled = disabled or (vim.fn.reg_executing() ~= '')
+		disabled = disabled or is_whitespace()
+		return not disabled
+	end,
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
-		keyword_length = 1,
-		keyword_pattern = "[^%s]+",
-		-- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
+		keyword_pattern = '[^%s]+',
 		autocomplete = {
 			cmp.TriggerEvent.TextChanged,
 			cmp.TriggerEvent.InsertEnter,
@@ -55,7 +48,7 @@ cmp.setup({
 					behavior = cmp.SelectBehavior.Insert,
 				})
 			else
-				require('copilot.suggestion').next()
+				cmp.complete()
 			end
 		end, { 'i', 's' }),
 		['<C-p>'] = cmp.mapping(function()
@@ -64,28 +57,19 @@ cmp.setup({
 					behavior = cmp.SelectBehavior.Insert,
 				})
 			else
-				require('copilot.suggestion').prev()
+				cmp.complete()
 			end
 		end, { 'i', 's' }),
 		['<C-b>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
-		['<C-Space>'] = cmp.mapping(function()
-			if cmp.visible() then
-				cmp.abort()
-			else
-				cmp.complete()
-			end
-		end, { 'i', 's' }),
 		['<C-e>'] = cmp.mapping.abort(),
+		['<C-space>'] = cmp.mapping.abort(),
 		['<Tab>'] = cmp.mapping(function(fallback)
 			if cmp.visible() then
-				vim.print('confirming')
 				cmp.confirm({ select = true })
-			elseif require('copilot.suggestion').is_visible() then
-				vim.print('accepting copilot')
-				vim.schedule(require('copilot.suggestion').accept)
+			elseif copilot.is_visible() then
+				vim.schedule(copilot.accept)
 			else
-				vim.print('fallback')
 				fallback()
 			end
 		end, { 'i', 's' }),
@@ -97,11 +81,47 @@ cmp.setup({
 		end, { 'i', 's' }),
 	}),
 	sources = cmp.config.sources({
-		{ name = 'nvim_lsp' },
-		{ name = 'luasnip' },
-		{ name = 'path' },
-	}, {
-		{ name = 'buffer' },
+		{
+			name = 'nvim_lsp',
+			keyword_length = 3,
+			group_index = 1,
+			priority = 100,
+			trigger_characters = { '.', '>', '-' },
+		},
+		{
+			name = 'luasnip',
+			keyword_length = 2,
+			group_index = 1,
+			priority = 200,
+			trigger_characters = { '#' },
+		},
+		{
+			name = 'path',
+			keyword_length = 1,
+			group_index = 1,
+			priority = 300,
+			trigger_characters = { '/', '.' },
+			option = {
+				trailing_slash = true,
+				label_trailing_slash = true,
+			},
+		},
+		{
+			name = 'buffer',
+			keyword_length = 3,
+			group_index = 2,
+			priority = 100,
+			trigger_characters = {},
+			option = {
+				get_bufnrs = function()
+					local bufs = {}
+					for _, win in ipairs(vim.api.nvim_list_wins()) do
+						bufs[vim.api.nvim_win_get_buf(win)] = true
+					end
+					return vim.tbl_keys(bufs)
+				end,
+			},
+		},
 	}),
 	experimental = {
 		ghost_text = {
@@ -109,6 +129,7 @@ cmp.setup({
 		},
 	},
 	sorting = defaults.sorting,
+	---@diagnostic disable-next-line: missing-fields
 	formatting = {
 		format = lspkind.cmp_format({
 			mode = 'symbol',
@@ -116,8 +137,6 @@ cmp.setup({
 			ellipsis_char = '...',
 			symbol_map = { Copilot = '' },
 		}),
-		expandable_indicator = true,
-    	fields = {'abbr','kind','menu'},
 	},
 })
 

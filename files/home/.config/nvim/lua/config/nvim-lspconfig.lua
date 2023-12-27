@@ -49,7 +49,6 @@ lsp.omnisharp.setup({
 	},
 	capabilities = capabilities,
 })
-lsp.tsserver.setup({ capabilities = capabilities })
 lsp.vimls.setup({ capabilities = capabilities })
 lsp.yamlls.setup({
 	yaml = {

@@ -5,9 +5,6 @@ local lsputil = require('utils.lsp')
 local qfutil = require('utils.qf')
 local rootutil = require('utils.root')
 
--- TODO: all function implementations here should be placed elsewhere, and in
--- there we can just replace the function with a call to the implementation.
-
 local M = {}
 
 local _dummy = function()
@@ -25,20 +22,12 @@ M.args_delete = argsutil.args_delete
 
 -- Open buffer diagnostics in quickfix
 M.errors_buffer = function()
-	local diagnostics = vim.diagnostic.get(0)
-	local qfitems = vim.diagnostic.toqflist(diagnostics)
-	vim.fn.setqflist(qfitems)
-	vim.cmd('copen')
-	vim.cmd('wincmd p')
+	qfutil.errors({ workspace = false })
 end
 
 -- Open workspace diagnostics in quickfix
 M.errors_workspace = function()
-	local diagnostics = vim.diagnostic.get(nil)
-	local qfitems = vim.diagnostic.toqflist(diagnostics)
-	vim.fn.setqflist(qfitems)
-	vim.cmd('copen')
-	vim.cmd('wincmd p')
+	qfutil.errors({ workspace = true })
 end
 
 -- Find file in arglist
@@ -118,6 +107,7 @@ M.find_recent = function()
 end
 
 -- Finds roots in current git project
+-- TODO: fix this, it should look upwards from git root
 M.find_roots = function()
 	require('utils.pickers.roots')()
 end
@@ -199,7 +189,11 @@ end
 
 -- Goto symbol definition
 M.goto_definition = function()
-	vim.lsp.buf.definition({ on_list = lsputil.on_list })
+	if vim.o.ft == 'help' then
+		vim.cmd(vim.o.keywordprg .. ' ' .. vim.fn.expand('<cword>'))
+	else
+		vim.lsp.buf.definition({ on_list = lsputil.on_list })
+	end
 end
 
 -- Goto interface implementation
@@ -355,7 +349,8 @@ end
 
 -- Run align
 M.run_align = function()
-	vim.cmd('EasyAlign')
+	bufutil.set_visual(bufutil.get_visual())
+	vim.cmd([['<,'>EasyAlign]])
 end
 
 -- Delete buffer

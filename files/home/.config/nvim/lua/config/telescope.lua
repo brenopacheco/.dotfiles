@@ -5,7 +5,6 @@ local telescope = require('telescope')
 local defaults = {}
 
 defaults.layout_strategy = 'horizontal'
--- defaults.layout_strategy = 'vertical'
 
 defaults.layout_config = {
 	height = 0.9,
@@ -27,18 +26,18 @@ defaults.layout_config = {
 
 defaults.mappings = {
 	i = {
-		['<CR>'] = actions.select_default,
-		['<C-c>'] = actions.close,
-		['<ESC>'] = actions.close,
+		['<cr>'] = actions.select_default,
+		['<c-c>'] = actions.close,
+		['<esc>'] = actions.close,
 		['jk'] = actions.close,
 		['kj'] = actions.close,
-		['<C-n>'] = actions.move_selection_next,
-		['<C-p>'] = actions.move_selection_previous,
-		['<C-f>'] = actions.preview_scrolling_up,
-		['<C-b>'] = actions.preview_scrolling_down,
-		['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
-		['<C-a>'] = actions.select_all,
-		['<C-d>'] = actions.drop_all,
+		['<c-n>'] = actions.move_selection_next,
+		['<c-p>'] = actions.move_selection_previous,
+		['<c-f>'] = actions.preview_scrolling_up,
+		['<c-b>'] = actions.preview_scrolling_down,
+		['<c-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
+		['<c-a>'] = actions.select_all,
+		['<c-d>'] = actions.drop_all,
 		['<Tab>'] = actions.add_selection + actions.move_selection_worse,
 		['<S-Tab>'] = actions.remove_selection + actions.move_selection_better,
 		['<C-s>'] = actions.select_horizontal,
@@ -60,8 +59,6 @@ defaults.vimgrep_arguments = {
 	'--smart-case',
 }
 
-extensions = {}
-
-telescope.setup({ defaults = defaults, extensions = extensions })
+telescope.setup({ defaults = defaults })
 
 vim.cmd([[hi! link TelescopeBorder Normal]])

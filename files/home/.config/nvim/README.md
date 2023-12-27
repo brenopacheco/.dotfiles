@@ -1,3 +1,5 @@
+# BUGS
+
 # TODO
 
 - [x] keymaps

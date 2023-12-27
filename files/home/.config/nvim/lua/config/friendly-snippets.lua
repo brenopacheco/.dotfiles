@@ -1,2 +1,0 @@
--- TODO: this takes a lot of time to load
--- require("luasnip.loaders.from_vscode").load()

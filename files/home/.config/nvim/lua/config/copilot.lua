@@ -18,4 +18,12 @@ require('copilot').setup({
 		auto_trigger = true,
 		accept = false,
 	},
+	server_opts_overrides = {
+		settings = {
+			advanced = {
+				listCount = 3, -- #completions for panel
+				inlineSuggestCount = 1, -- #completions for getCompletions
+			},
+		},
+	},
 })

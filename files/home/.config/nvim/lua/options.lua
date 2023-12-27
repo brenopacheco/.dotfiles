@@ -3,6 +3,7 @@
 -- stylua: ignore start
 vim.opt.autochdir      = true                          -- use file path as vim's dir
 vim.opt.autoindent     = true                          -- new lines inherits indentation
+vim.opt.bomb           = false                         -- ??? <feff>
 vim.opt.clipboard      = 'unnamed,unnamedplus'         -- copy/pasting from x11 clipboard
 vim.opt.cmdheight      = 1                             -- only 1 row for cmdline
 vim.opt.colorcolumn    = { 78 }                        -- draw column at position
@@ -96,6 +97,7 @@ vim.opt.termguicolors  = true
 vim.opt.textwidth      = 78                            -- norm gq width. see formatoptions
 vim.opt.undolevels     = 500                           -- keep more undos
 vim.opt.updatetime     = 300                           -- time for writting swap to disk
+vim.opt.timeout 	   = false
 vim.opt.virtualedit    = 'onemore'                     -- put cursor where there is no char
 vim.opt.visualbell     = true
 vim.opt.wildignore     = {                             -- ignore pattern using vimgrep

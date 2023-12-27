@@ -1,6 +1,6 @@
 local wk = require('which-key')
 vim.o.timeout = true
-vim.o.timeoutlen = 100
+vim.o.timeoutlen = 250
 wk.setup({
 	key_labels = {
 		['<space>'] = '␣',

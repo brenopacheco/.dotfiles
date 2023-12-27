@@ -11,7 +11,8 @@ end
 
 -- Add buffer to arglist
 M.args_add = function()
-	if vim.fn.bufname() == '' then
+	local bufname = tostring(vim.fn.bufname())
+	if bufname == '' then
 		return err('error: the buffer is not associated with a file')
 	end
 	vim.cmd('$argadd')
@@ -28,8 +29,13 @@ end
 
 -- Remove buffer from arglist
 M.args_delete = function()
-	if not vim.fn.bufexists(0) then
-		return err('error: the buffer is not associated with a file')
+	local args = vim.fn.argv() or {}
+	if type(args) ~= 'table' then
+		return err('error: arglist is empty')
+	end
+	local bufname = tostring(vim.fn.bufname())
+	if not vim.list_contains(args, bufname) then
+		return err('error: buffer is not in arglist')
 	end
 	vim.cmd('argdelete %')
 	notify('info: "' .. vim.fn.expand('%') .. '" removed from arglist')

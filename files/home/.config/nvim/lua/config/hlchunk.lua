@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 require('hlchunk').setup({
 	chunk = {
 		enable = true,

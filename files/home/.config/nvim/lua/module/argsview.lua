@@ -65,7 +65,6 @@ local function format_list(list, max_width)
 end
 
 local function setup()
-	vim.print('calling init')
 	pcall(vim.api.nvim_buf_delete, vim.fn.bufnr(bufname), { force = true })
 	pcall(vim.api.nvim_del_augroup_by_name, group)
 	ns = vim.api.nvim_create_namespace('arglist')
@@ -107,7 +106,6 @@ local function update()
 	vim.api.nvim_buf_set_lines(buffer, 0, #arglist - 1, false, list)
 	vim.highlight.range(buffer, ns, 'Cursor', { 0, 0 }, { 0, -1 })
 	vim.highlight.range(buffer, ns, 'Title', { 1, 0 }, { cols, -1 })
-	vim.print(opts)
 end
 
 group = vim.api.nvim_create_augroup('arglist_view', { clear = true })

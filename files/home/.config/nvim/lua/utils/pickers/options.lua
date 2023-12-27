@@ -61,6 +61,7 @@ return function()
 		end,
 	}, function(choice)
 		if choice ~= nil then
+			vim.print('option: ' .. choice.name)
 			choice.callback()
 		end
 	end)

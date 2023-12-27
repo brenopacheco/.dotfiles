@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 require('Comment').setup({
 	ignore = '^$',
 	pre_hook = function()
@@ -10,5 +11,3 @@ require('Comment').setup({
 		extra = false, -- Extra mapping; `gco`, `gcO`, `gcA`
 	},
 })
-
--- TODO: manually create mappings (operator + visual)

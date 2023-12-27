@@ -32,4 +32,14 @@ M.next_entry = function()
 	end
 end
 
+---@param opts { workspace: boolean }
+M.errors = function(opts)
+	local bufnr = opts.workspace and nil or vim.fn.bufnr()
+	local diagnostics = vim.diagnostic.get(bufnr)
+	local qfitems = vim.diagnostic.toqflist(diagnostics)
+	vim.fn.setqflist(qfitems)
+	vim.cmd('copen')
+	vim.cmd('wincmd p')
+end
+
 return M
