@@ -7,10 +7,11 @@ if not vim.z.enabled('L3MON4D3/LuaSnip') then
 end
 
 local open = function()
+	local ft = tostring(string.len(vim.o.ft) > 0 and vim.o.ft or 'all')
 	local file = vim.fn.stdpath('config')
 		.. '/snippets'
 		.. '/'
-		.. vim.o.ft
+		.. ft
 		.. '.snippets'
 	local bufnr = vim.fn.bufnr(file)
 	if bufnr ~= -1 then

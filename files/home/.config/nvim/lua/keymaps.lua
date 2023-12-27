@@ -21,7 +21,7 @@ local keyboard = {
       { { 'n',     }, 'go',             maps.goto_outgoing,      { desc = ' outgoing-calls'       } },
       { { 'n',     }, 'gd',             maps.goto_declaration,   { desc = ' declaration'          } },
       { { 'n',     }, '<c-]>',          maps.goto_definition,    { desc = ' definition'           } },
-      { { 'n',     }, 'g+',             maps.args_add,           { desc = ' argsadd',             } },
+      { { 'n',     }, 'g=',             maps.args_add,           { desc = ' argsadd',             } },
       { { 'n',     }, 'g-',             maps.args_delete,        { desc = ' argsdel',             } },
       { { 'n',     }, 'g0',             maps.args_clear,         { desc = ' argsclr',             } },
       { { 'n',     }, '<c-p>',          maps.show_signature,     { desc = ' signature'            } },

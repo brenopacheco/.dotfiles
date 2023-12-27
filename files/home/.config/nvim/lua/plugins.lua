@@ -43,6 +43,8 @@ vim.z.packadd({
 	'folke/todo-comments.nvim',
 	'simrat39/symbols-outline.nvim',
 	'nvim-telescope/telescope.nvim',
+	'HiPhish/rainbow-delimiters.nvim',
+	'monkoose/matchparen.nvim',
 	-- TODO
 	'theHamsta/nvim-dap-virtual-text',
 	'rcarriga/nvim-dap-ui',
@@ -53,7 +55,7 @@ vim.z.packadd({
 vim.z.modload({
 	'argsview',
 	'autochdir',
-	-- 'backup',
+	'backup',
 	'bufferizer',
 	'gpg',
 	'lf',

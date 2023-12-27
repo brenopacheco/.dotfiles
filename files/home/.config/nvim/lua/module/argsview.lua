@@ -21,7 +21,7 @@ local function trim_path(path, len)
 		end
 	end
 	if string.len(path) > string.len(tpath) then
-		-- return '…' .. tpath
+		-- TODO: fix this - '…'
 		return '...' .. tpath
 	end
 	return tpath
@@ -40,6 +40,7 @@ local function get_arglist(max_width)
 		local str = trim_path(arg, max_width - 3)
 		local len = string.len(str)
 		if arg == vim.fn.expand('%') then
+			-- TODO: fix this - ›, », ❯
 			str = str .. ' <'
 			len = len + 2
 			if i ~= idx then
@@ -63,7 +64,8 @@ local function format_list(list, max_width)
 	return formatted_list
 end
 
-local function init()
+local function setup()
+	vim.print('calling init')
 	pcall(vim.api.nvim_buf_delete, vim.fn.bufnr(bufname), { force = true })
 	pcall(vim.api.nvim_del_augroup_by_name, group)
 	ns = vim.api.nvim_create_namespace('arglist')
@@ -78,22 +80,21 @@ local function init()
 		focusable = false,
 		zindex = 500,
 		border = 'none',
-		-- border = 'single',
 		style = 'minimal',
-		hide = false,
+		hide = true,
 	})
 end
 
 local function update()
 	if #vim.fn.win_findbuf(buffer) < 1 then
-		return init()
+		setup()
 	end
 	local trim_width = 30
 	local arglist, max_len = get_arglist(trim_width)
 	local editor_width = vim.api.nvim_get_option_value('columns', {})
 	local list = format_list(arglist, max_len)
 	local cols = max_len + 1
-	vim.api.nvim_win_set_config(win, {
+	local opts = {
 		relative = 'editor',
 		row = 2,
 		col = editor_width - cols,
@@ -101,27 +102,29 @@ local function update()
 		height = #arglist > 0 and #arglist or 1,
 		hide = #arglist == 0,
 		focusable = false,
-	})
+	}
+	vim.api.nvim_win_set_config(win, opts)
 	vim.api.nvim_buf_set_lines(buffer, 0, #arglist - 1, false, list)
 	vim.highlight.range(buffer, ns, 'Cursor', { 0, 0 }, { 0, -1 })
 	vim.highlight.range(buffer, ns, 'Title', { 1, 0 }, { cols, -1 })
+	vim.print(opts)
 end
 
-local function setup()
-	init()
-	group = vim.api.nvim_create_augroup('arglist_view', { clear = true })
-	vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter' }, {
-		desc = 'Show arg list in floating window',
-		group = group,
-		callback = update,
-	})
-	vim.api.nvim_create_autocmd('User', {
-		desc = 'Update arg list shown in floating window',
-		pattern = 'ArgsChanged',
-		group = group,
-		callback = update,
-	})
-	update()
-end
+group = vim.api.nvim_create_augroup('arglist_view', { clear = true })
 
-setup()
+vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter' }, {
+	desc = 'Show arg list in floating window',
+	group = group,
+	callback = function()
+		if #vim.fn.argv() ~= 0 then
+			update()
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd('User', {
+	desc = 'Update arg list shown in floating window',
+	pattern = 'ArgsChanged',
+	group = group,
+	callback = update,
+})

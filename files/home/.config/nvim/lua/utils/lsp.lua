@@ -57,7 +57,7 @@ end
 M.wrap = function(fn, ...)
 	local args = { ... }
 	if not M.is_attached() then
-		return vim.notify('No client attached', vim.log.levels.WARN)
+		return vim.notify('[lsp]: no client attached', vim.log.levels.WARN)
 	end
 	return fn(unpack(args))
 end

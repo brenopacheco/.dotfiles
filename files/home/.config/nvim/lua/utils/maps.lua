@@ -458,20 +458,17 @@ end
 
 -- Highlight symbol under cursor
 M.show_highlight = function()
-	return lsputil.is_attached() and vim.lsp.buf.document_highlight()
-		or vim.notify('error: no language server attached', vim.log.levels.WARN)
+	lsputil.wrap(vim.lsp.buf.document_highlight)
 end
 
 -- Show hover information
 M.show_hover = function()
-	return lsputil.is_attached() and vim.lsp.buf.hover()
-		or vim.notify('error: no language server attached', vim.log.levels.WARN)
+	lsputil.wrap(vim.lsp.buf.hover)
 end
 
 -- Show function signature help
 M.show_signature = function()
-	return lsputil.is_attached() and vim.lsp.buf.signature_help()
-		or vim.notify('error: no language server attached', vim.log.levels.WARN)
+	lsputil.wrap(vim.lsp.buf.signature_help)
 end
 
 -- Visit file where last test was run
