@@ -1,6 +1,7 @@
 ﻿--- Arglistview
 --
 -- Creates a window with the current argument list.
+-- Provides the :ArgNext, :ArgPrev, :ArgClear, :ArgDelete, :ArgAdd commands.
 
 local group, ns, buffer, win
 
@@ -22,7 +23,6 @@ local function trim_path(path, len)
 	end
 	if string.len(path) > string.len(tpath) then
 		return '…' .. tpath, string.len(tpath) + 1
-		-- return '...' .. tpath, string.len(tpath) + 3
 	end
 	return tpath, string.len(tpath)
 end
@@ -87,7 +87,6 @@ local function setup()
 		focusable = false,
 		zindex = 500,
 		border = 'none',
-		-- border = 'single',
 		style = 'minimal',
 		hide = true,
 	})
@@ -135,3 +134,66 @@ vim.api.nvim_create_autocmd('User', {
 	group = group,
 	callback = update,
 })
+
+local notify = function(msg)
+	vim.api.nvim_exec_autocmds('User', { pattern = 'ArgsChanged' })
+	vim.notify(msg, vim.log.levels.INFO)
+end
+
+local err = function(msg)
+	vim.notify(msg, vim.log.levels.WARN)
+end
+
+-- Add buffer to arglist
+local args_add = function()
+	if tostring(vim.fn.bufname()) == '' then
+		return err('error: the buffer is not associated with a file')
+	end
+	vim.cmd('$argadd')
+	vim.cmd('argdedupe')
+	vim.cmd('argu ' .. vim.fn.argc())
+	notify('info: "' .. vim.fn.expand('%') .. '" added to arglist')
+end
+
+local args_clear = function()
+	vim.cmd('argdelete *')
+	notify('info: arglist cleared')
+end
+
+local args_delete = function()
+	local args = vim.fn.argv() or {}
+	if type(args) ~= 'table' then
+		return err('error: arglist is empty')
+	end
+	if not vim.list_contains(args, tostring(vim.fn.bufname())) then
+		return err('error: buffer is not in arglist')
+	end
+	vim.cmd('argdelete %')
+	notify('info: "' .. vim.fn.expand('%') .. '" removed from arglist')
+end
+
+local args_next = function()
+	if vim.fn.argc() == 0 then
+		return err('error: arglist is empty')
+	end
+	local idx = vim.fn.argidx() + 1 >= vim.fn.argc() and '1'
+		or tostring(vim.fn.argidx() + 2)
+	vim.cmd('argu ' .. idx)
+	notify('info: "' .. vim.fn.expand('%') .. '"')
+end
+
+local args_prev = function()
+	if vim.fn.argc() == 0 then
+		return err('error: arglist is empty')
+	end
+	local idx = vim.fn.argidx() == 0 and tostring(vim.fn.argc())
+		or tostring(vim.fn.argidx())
+	vim.cmd('argu ' .. idx)
+	notify('info: "' .. vim.fn.expand('%') .. '"')
+end
+
+vim.api.nvim_create_user_command('ArgNext', args_next, { nargs = 0 })
+vim.api.nvim_create_user_command('ArgPrev', args_prev, { nargs = 0 })
+vim.api.nvim_create_user_command('ArgClear', args_clear, { nargs = 0 })
+vim.api.nvim_create_user_command('ArgDelete', args_delete, { nargs = 0 })
+vim.api.nvim_create_user_command('ArgAdd', args_add, { nargs = 0 })

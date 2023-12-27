@@ -1,5 +1,4 @@
-﻿local argsutil = require('utils.args')
-local bufutil = require('utils.buf')
+﻿local bufutil = require('utils.buf')
 local greputils = require('utils.grep')
 local lsputil = require('utils.lsp')
 local qfutil = require('utils.qf')
@@ -12,13 +11,19 @@ local _dummy = function()
 end
 
 -- Add buffer to arglist
-M.args_add = argsutil.args_add
+M.args_add = function()
+	vim.cmd('ArgAdd')
+end
 
 -- Clear arglist
-M.args_clear = argsutil.args_clear
+M.args_clear = function()
+	vim.cmd('ArgClear')
+end
 
 -- Remove buffer from arglist
-M.args_delete = argsutil.args_delete
+M.args_delete = function()
+	vim.cmd('ArgDelete')
+end
 
 -- Open buffer diagnostics in quickfix
 M.errors_buffer = function()
@@ -223,12 +228,12 @@ end
 
 -- Jump to next arg in arglist
 M.jump_argnext = function()
-	argsutil.arg_next()
+	vim.cmd('ArgNext')
 end
 
 -- Jump to previous arg in arglist
 M.jump_argprev = function()
-	argsutil.arg_prev()
+	vim.cmd('ArgPrev')
 end
 
 -- Jump to next buffer in buffer list
