@@ -7,7 +7,7 @@ local group, ns, buffer, win
 local bufname = '__arglist__'
 
 ---@param path string
----@return string
+---@return string, number : trimmed path, length of trimmed path
 local function trim_path(path, len)
 	local match
 	local tpath = tostring(path)
@@ -21,10 +21,10 @@ local function trim_path(path, len)
 		end
 	end
 	if string.len(path) > string.len(tpath) then
-		-- TODO: fix this - '…'
-		return '...' .. tpath
+		return '…' .. tpath, string.len(tpath) + 1
+		-- return '...' .. tpath, string.len(tpath) + 3
 	end
-	return tpath
+	return tpath, string.len(tpath)
 end
 
 ---@param max_width number
@@ -37,11 +37,10 @@ local function get_arglist(max_width)
 		return {}, 0
 	end
 	for i, arg in ipairs(arglist) do
-		local str = trim_path(arg, max_width - 3)
-		local len = string.len(str)
+		local str, len = trim_path(arg, max_width - 3)
 		if arg == vim.fn.expand('%') then
-			-- TODO: fix this - ›, », ❯
-			str = str .. ' <'
+			-- TODO: fix this - ❰
+			str = str .. ' ❰'
 			len = len + 2
 			if i ~= idx then
 				vim.cmd('argu ' .. i)
@@ -59,7 +58,16 @@ end
 local function format_list(list, max_width)
 	local formatted_list = {}
 	for _, item in ipairs(list) do
-		table.insert(formatted_list, string.format('%' .. max_width .. 's', item))
+		local path_special = string.match(item, '…')
+		local sel_special = string.match(item, '❰')
+		local width = max_width
+		if path_special then
+			width = width + 2
+		end
+		if sel_special then
+			width = width + 2
+		end
+		table.insert(formatted_list, string.format('%' .. width .. 's', item))
 	end
 	return formatted_list
 end
@@ -79,6 +87,7 @@ local function setup()
 		focusable = false,
 		zindex = 500,
 		border = 'none',
+		-- border = 'single',
 		style = 'minimal',
 		hide = true,
 	})
