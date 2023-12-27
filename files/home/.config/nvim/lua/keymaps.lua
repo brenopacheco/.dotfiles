@@ -120,8 +120,8 @@ local keyboard = {
       { { 'n',     }, '<leader>n',      maps.toggle_ntree,      { desc = ' ntree'                } },
       { { 'n',     }, '<leader>u',      maps.toggle_dapui,      { desc = ' dapui'                } },
       { { 'n',     }, '<leader>o',      maps.toggle_option,     { desc = ' option'               } },
-      { { 'n',     }, '<leader>\'',     maps.toggle_term,       { desc = ' terminal'             } },
-      { { 'n',     }, '<leader>"',      maps.newterm,           { desc = '󱓞 newterm'              } },
+      { { 'n',     }, '<leader>`',      maps.toggle_term,       { desc = ' terminal'             } },
+      { { 'n',     }, '<leader>~',      maps.newterm,           { desc = '󱓞 newterm'              } },
       { { 'n',     }, '´',              maps.toggle_lf,         { desc = '󱓞 lf'                   } },
       { { 'n',     }, '-',              maps.toggle_oil,        { desc = '󱓞 oil'                  } },
     }, -- ]]

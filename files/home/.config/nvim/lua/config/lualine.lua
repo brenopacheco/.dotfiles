@@ -83,6 +83,15 @@ local fileformat = {
 	},
 }
 
+local bomb = {
+	function()
+		if vim.bo.bomb then
+			return 'BOM'
+		end
+		return ''
+	end,
+}
+
 local encoding = { 'encoding' }
 
 local lsp = {
@@ -148,7 +157,7 @@ require('lualine').setup({
 		lualine_c = { directory },
 		lualine_x = {},
 		lualine_y = { lsp, diff, diagnostics, foldlevel, filetype },
-		lualine_z = { fileformat, encoding },
+		lualine_z = { fileformat, bomb, encoding },
 	},
 	tabline = {
 		lualine_a = { tabs },

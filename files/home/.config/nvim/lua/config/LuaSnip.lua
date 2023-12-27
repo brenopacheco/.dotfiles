@@ -3,4 +3,4 @@ require('luasnip').setup({
 	delete_check_events = 'TextChanged',
 })
 
-require('luasnip.loaders.from_snipmate').load({ paths = { vim.fn.stdpath('config') .. "/snippets" } })
+require('luasnip.loaders.from_snipmate').lazy_load({ paths = { vim.fn.stdpath('config') .. "/snippets" } })

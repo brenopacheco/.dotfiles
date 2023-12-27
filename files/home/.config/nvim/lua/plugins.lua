@@ -51,14 +51,15 @@ vim.z.packadd({
 })
 
 vim.z.modload({
+	'argsview',
 	'autochdir',
-	'backup',
+	-- 'backup',
 	'bufferizer',
 	'gpg',
 	'lf',
 	'reloader',
 	'shada',
+	'sniputil',
 	'telescope-select',
-	'yank-highlight',
-	'argsview',
+	'yank-highlight'
 })

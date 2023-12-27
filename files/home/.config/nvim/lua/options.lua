@@ -1,4 +1,4 @@
-﻿--- Options
+--- Options
 
 -- stylua: ignore start
 vim.opt.autochdir      = true                          -- use file path as vim's dir
@@ -10,6 +10,12 @@ vim.opt.conceallevel   = 0                             -- shows |hyperlinks|
 vim.opt.cursorline     = true                          -- highlights current line
 vim.opt.encoding       = 'utf-8'                       -- set default internal encoding
 vim.opt.fileencoding   = 'utf-8'                       -- default buffer file encoding
+vim.opt.fileencodings  = {
+	'utf-8',
+	'latin1',
+	'ucs-bom',
+	'default'
+}
 vim.opt.fillchars      = 'fold:\\'                     -- make v:folddashes whitespace
 vim.opt.foldcolumn     = 'auto:9'                      -- show fold level in gutter
 vim.opt.foldlevelstart = 99                            -- make folds open initially
@@ -58,7 +64,6 @@ vim.opt.listchars      = {
 }
 vim.opt.list           = true                          -- actually use listchars
 vim.opt.more           = true                          -- show --more-- to scroll messages
-vim.opt.bomb           = true                          -- remove <feff>
 vim.opt.expandtab      = false                         -- don't expands tabs as spaces
 vim.opt.joinspaces     = false                         -- always insert 1 spc on join J
 vim.opt.showmode       = false                         -- don't show --INSERT-- message

@@ -53,17 +53,17 @@ local function addautocmd(debug)
 			end
 			local ts = os.date('%Y-%m-%d-%Hh%Mm%Ss')
 			local obj = vim
-				---@diagnostic disable-next-line: missing-fields
 				.system({ 'base64' }, { text = true, stdin = ev.match })
 				:wait()
 			if obj.code ~= 0 then
 				vim.notify(
-					'Backup: failed hasing file name ' .. ev.match .. ' - ' .. obj.stderr,
+					'Backup: failed hashing file name ' .. ev.match .. ' - ' .. obj.stderr,
 					vim.log.levels.ERROR
 				)
 				return
 			end
-			local fpath = vim.g.backupdir .. ts .. '_' .. vim.trim(obj.stdout)
+			local name = string.gsub(vim.trim(obj.stdout), '\n', '')
+			local fpath = vim.g.backupdir .. ts .. '_' .. name
 			obj = vim.system({ 'cp', ev.match, fpath }):wait()
 			if obj.code ~= 0 then
 				vim.notify(
@@ -88,7 +88,7 @@ local function backups()
 	local choices = {}
 	for _, path in ipairs(paths) do
 		if path ~= '' then
-			local ts = string.gsub(vim.fn.fnamemodify(path, ':t'), '_.*$', '')
+			local ts = string.gsub(tostring(vim.fn.fnamemodify(path, ':t')), '_.*$', '')
 			local backup = string.gsub(path, '^.*_', '')
 			local name = vim
 				---@diagnostic disable-next-line: missing-fields
@@ -107,9 +107,6 @@ local function backups()
 	end
 	vim.ui.select(choices, {
 		prompt = 'Backup file:',
-		format_item = function(item)
-			return "I'd like to choose " .. item
-		end,
 	}, function(choice)
 		backups = entries[choice]
 		vim.ui.select(backups, {
