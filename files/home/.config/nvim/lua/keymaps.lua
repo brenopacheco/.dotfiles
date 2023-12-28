@@ -63,6 +63,8 @@ local keyboard = {
       { { 'n',     }, '<leader>f*',     maps.find_star,          { desc = ' star'                 } },
       { { 'n',     }, '<leader>fz',     maps.find_zk,            { desc = ' zk-notes'             } },
       { { 'n',     }, '<leader>f\'',    maps.find_mark,          { desc = ' marks'                } },
+      { { 'n',     }, '<leader>fs',     maps.find_doc_symbol,    { desc = ' doc-symbol'           } },
+      { { 'n',     }, '<leader>fw',     maps.find_ws_symbol,     { desc = ' ws-symbol'            } },
     }, -- ]]
     git = { -- [[
       { { 'n',     }, '<leader>gg',     maps.git_fugitive,       { desc = ' fugitive'             } },

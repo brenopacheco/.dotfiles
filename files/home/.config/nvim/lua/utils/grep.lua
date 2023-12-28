@@ -39,7 +39,7 @@ M.grep_pattern = function(pattern)
 		vim.ui.select(
 			{ 'git', 'project', 'curdir', 'buffer', 'buflist', 'arglist' },
 			{
-				prompt = 'Where to apply grep pattern:',
+				prompt = 'Grep /' .. input,
 			},
 			function(choice)
 				local buffer = vim.fn.bufnr()

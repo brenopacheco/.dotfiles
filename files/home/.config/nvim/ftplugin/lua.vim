@@ -18,7 +18,4 @@ setlocal suffixesadd=.lua
 setlocal keywordprg=:help
 setlocal isfname+=.,/
 
-" iab <buffer> af  function() <CR><CR>end<ESC>ki<TAB>
-" iab <buffer> fn  function() <CR><CR>end<ESC>?(<CR>i
-
 let b:undo_ftplugin='setl mp< sw< ts< efm< ep< fdm< fde< fo< tw< com< cms< sua< kp< isf<'

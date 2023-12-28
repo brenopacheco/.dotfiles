@@ -141,6 +141,16 @@ M.find_mark = function()
 	require('telescope.builtin').marks({})
 end
 
+-- Find symbol in buffer
+M.find_doc_symbol = function()
+	require('telescope.builtin').lsp_document_symbols({})
+end
+
+-- Find symbol in buffer
+M.find_ws_symbol = function()
+	require('telescope.builtin').lsp_workspace_symbols({})
+end
+
 -- Git show blame lines
 M.git_blame = function()
 	vim.cmd([[Git blame]])
@@ -148,10 +158,9 @@ end
 
 -- Git open fugitive window
 M.git_fugitive = function()
-	if not rootutil.is_git() then
-		return vim.notify('error: not a git repository', vim.log.levels.WARN)
-	end
-	vim.cmd([[G]])
+	bufutil.toggle('fugitive', function()
+		vim.cmd('G')
+	end)
 end
 
 -- Open permalink to current line in browser and copy to clipboard
@@ -400,7 +409,7 @@ end
 
 -- Run make command
 M.run_make = function()
-	return bufutil.is_file() and vim.cmd([[Make %]])
+	return bufutil.is_file() and vim.cmd([[make %]])
 		or vim.notify('not implemented', vim.log.levels.WARN)
 end
 
@@ -452,7 +461,7 @@ end
 M.run_zknew = function()
 	local title = vim.fn.input('Title: ')
 	if title ~= nil and title ~= '' then
-		vim.cmd('ZkNew ' .. title)
+    require("zk.commands").get("ZkNew")({ title = title })
 	end
 end
 

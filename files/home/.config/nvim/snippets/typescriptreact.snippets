@@ -1,1 +1,15 @@
 extends typescript
+
+snippet use-effect
+	  useEffect(() => {
+	    $0
+	  }, []);
+
+snippet component
+	function ${1:Component}() {
+	  return (
+	    <>
+	        $0
+	    </>
+	  );
+	}

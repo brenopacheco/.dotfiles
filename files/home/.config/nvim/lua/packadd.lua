@@ -149,11 +149,11 @@ for _, plugin in pairs({
 	vim.g['loaded_' .. plugin] = 1
 end
 
--- setup
 vim.opt.runtimepath = {
-	'/usr/share/nvim/runtime',
 	vim.fn.stdpath('config'),
 	vim.fn.stdpath('config') .. '/after',
+	vim.env.VIMRUNTIME,
+	'/usr/lib/nvim',
 }
 vim.opt.packpath = { plugin_dir }
 vim.api.nvim_create_user_command('Packadd', packcmd, { bang = true })

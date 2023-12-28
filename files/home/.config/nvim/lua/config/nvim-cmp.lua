@@ -6,26 +6,13 @@ local luasnip = require('luasnip')
 
 vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
 
-local is_whitespace = function()
-	local col = vim.fn.col('.') - 1
-	---@diagnostic disable-next-line: param-type-mismatch
-	local line = tostring(vim.fn.getline('.'))
-	local char_under_cursor = string.sub(line, col, col)
-	if col == 0 or string.match(char_under_cursor, '%s') then
-		return true
-	else
-		return false
-	end
-end
-
 cmp.setup({
 	enabled = function()
 		local disabled = false
-		disabled = disabled
-			or (vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt')
+		local buftype = vim.api.nvim_get_option_value('buftype', { buf = 0 })
+		disabled = disabled or (buftype == 'prompt')
 		disabled = disabled or (vim.fn.reg_recording() ~= '')
 		disabled = disabled or (vim.fn.reg_executing() ~= '')
-		disabled = disabled or is_whitespace()
 		return not disabled
 	end,
 	completion = {
@@ -65,6 +52,7 @@ cmp.setup({
 		['<C-e>'] = cmp.mapping.abort(),
 		['<C-space>'] = cmp.mapping.abort(),
 		['<Tab>'] = cmp.mapping(function(fallback)
+			vim.print('here')
 			if cmp.visible() then
 				cmp.confirm({ select = true })
 			elseif copilot.is_visible() then
@@ -83,7 +71,7 @@ cmp.setup({
 	sources = cmp.config.sources({
 		{
 			name = 'nvim_lsp',
-			keyword_length = 3,
+			keyword_length = 2,
 			group_index = 1,
 			priority = 100,
 			trigger_characters = { '.', '>', '-' },
@@ -92,7 +80,7 @@ cmp.setup({
 			name = 'luasnip',
 			keyword_length = 2,
 			group_index = 1,
-			priority = 200,
+			priority = 250,
 			trigger_characters = { '#' },
 		},
 		{
