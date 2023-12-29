@@ -1,4 +1,4 @@
-﻿local M = {}
+local M = {}
 
 ---@return boolean, table | nil
 M.is_attached = function()

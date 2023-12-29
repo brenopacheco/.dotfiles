@@ -3,7 +3,7 @@
 -- Creates a window with the current argument list.
 -- Provides the :ArgNext, :ArgPrev, :ArgClear, :ArgDelete, :ArgAdd commands.
 
-local group, ns, buffer, win
+local group, ns, buffer, win, autocmd
 
 local bufname = '__arglist__'
 
@@ -31,7 +31,7 @@ end
 local function get_arglist(max_width)
 	local idx = vim.fn.argidx() + 1
 	local list = { ':Arglist:' }
-	local max_len = 0
+	local max_len = 9
 	local arglist = vim.fn.argv()
 	if arglist == nil or type(arglist) ~= 'table' or #arglist == 0 then
 		return {}, 0
@@ -39,7 +39,6 @@ local function get_arglist(max_width)
 	for i, arg in ipairs(arglist) do
 		local str, len = trim_path(arg, max_width - 3)
 		if arg == vim.fn.expand('%') then
-			-- TODO: fix this - ❰
 			str = str .. ' ❰'
 			len = len + 2
 			if i ~= idx then
@@ -94,7 +93,18 @@ end
 
 local function update()
 	if #vim.fn.win_findbuf(buffer) < 1 then
+    pcall(vim.api.nvim_del_autocmd, autocmd)
 		setup()
+		autocmd = vim.api.nvim_create_autocmd({ 'WinClosed' }, {
+			desc = 'Refresh arg list window on close',
+			group = group,
+      pattern = { tostring(win) },
+			callback = function()
+				if #vim.fn.argv() ~= 0 then
+					vim.schedule(update)
+				end
+			end,
+		})
 	end
 	local trim_width = 30
 	local arglist, max_len = get_arglist(trim_width)

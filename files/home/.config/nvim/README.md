@@ -1,5 +1,7 @@
 # BUGS
 
+- [ ] tapping <leader><key> too quick is not registered (keyboard issue?)
+
 # TODO
 
 - [x] keymaps

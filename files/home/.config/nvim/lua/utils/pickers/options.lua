@@ -45,11 +45,32 @@ local opt_relnumber = function()
 		}
 end
 
+---@return Option
+local opt_bomb = function()
+	return vim.o.bomb
+			and {
+				name = 'nobomb',
+				description = 'BOM (Byte Order Mark) is not written',
+				callback = function()
+					vim.o.bomb = false
+				end,
+			}
+		or {
+			name = 'bomb',
+			description = 'BOM (Byte Order Mark) is written',
+			callback = function()
+				vim.o.bomb = true
+			end,
+		}
+end
+
+
 ---@return Option[]
 local options = function()
 	return {
 		opt_scrolloff(),
 		opt_relnumber(),
+		opt_bomb(),
 	}
 end
 

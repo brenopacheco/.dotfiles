@@ -1,4 +1,5 @@
-﻿local bufutil = require('utils.buf')
+local bufutil = require('utils.buf')
+local daputil = require('utils.dap')
 local greputils = require('utils.grep')
 local lsputil = require('utils.lsp')
 local qfutil = require('utils.qf')
@@ -372,6 +373,86 @@ M.run_bd = function()
 	bufutil.delete()
 end
 
+-- Start new debug session
+M.debug_start = function()
+	daputil.debug_start()
+end
+
+-- Restart current debug session
+M.debug_restart = function()
+	daputil.debug_restart()
+end
+
+-- Run last debug configuration
+M.debug_last = function()
+	daputil.debug_last()
+end
+
+-- Terminate current debug session
+M.debug_terminate = function()
+	daputil.debug_terminate()
+end
+
+-- Pause thread
+M.debug_pause = function()
+	daputil.debug_pause()
+end
+
+-- Continue thread
+M.debug_continue = function()
+	daputil.debug_continue()
+end
+
+-- Step into next function
+M.debug_step_into = function()
+	daputil.debug_step_into()
+end
+
+-- Step out of current function
+M.debug_step_out = function()
+	daputil.debug_step_out()
+end
+
+-- Step over to next line
+M.debug_step_over = function()
+	daputil.debug_step_over()
+end
+
+-- Focus debug repl console
+M.debug_repl = function()
+	daputil.debug_repl()
+end
+
+-- Toggle breakpoint on current line
+M.debug_bp_toggle = function()
+	daputil.debug_bp_toggle()
+end
+
+-- Toggle breakpoint on current line - apply condition
+M.debug_bp_condition = function()
+	daputil.debug_bp_condition()
+end
+
+-- Clear breakpoints
+M.debug_bp_clear = function()
+	daputil.debug_bp_clear()
+end
+
+-- List breakpoints in qf list
+M.debug_bp_list = function()
+	daputil.debug_bp_list()
+end
+
+-- Hover variable under cursor
+M.debug_hover = function()
+	daputil.debug_hover()
+end
+
+-- Preview variable under cursor
+M.debug_preview = function()
+	daputil.debug_preview()
+end
+
 -- Run code action
 M.run_code = function()
 	vim.lsp.buf.code_action()
@@ -461,7 +542,7 @@ end
 M.run_zknew = function()
 	local title = vim.fn.input('Title: ')
 	if title ~= nil and title ~= '' then
-    require("zk.commands").get("ZkNew")({ title = title })
+		require('zk.commands').get('ZkNew')({ title = title })
 	end
 end
 

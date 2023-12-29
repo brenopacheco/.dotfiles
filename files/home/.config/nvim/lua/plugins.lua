@@ -10,7 +10,7 @@ vim.z.packadd({
 	'folke/which-key.nvim',
 	'shellRaining/hlchunk.nvim',
 	'brenopacheco/gx.nvim',
-	'ruifm/gitlinker.nvim',
+	'brenopacheco/gitlinker.nvim',
 	'numToStr/Comment.nvim',
 	'kylechui/nvim-surround',
 	'junegunn/vim-easy-align',

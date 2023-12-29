@@ -1,6 +1,6 @@
 local wk = require('which-key')
 vim.o.timeout = true
-vim.o.timeoutlen = 250
+vim.o.timeoutlen = 1000
 wk.setup({
 	key_labels = {
 		['<space>'] = '␣',
@@ -32,9 +32,7 @@ wk.setup({
 	icons = {
 		group = '', -- symbol prepended to a group
 	},
-	-- triggers_blacklist = {
-	-- 	n = { 'c' },
-	-- },
+  -- somewhy this bugs out fugitive `cc`
 	-- triggers = { '<leader>', '<c-w>', 'g', 'z', ']', '[' },
 	disable = {
 		buftypes = { 'nofile', 'fugitive' },

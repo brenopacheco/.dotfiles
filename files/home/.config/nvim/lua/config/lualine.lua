@@ -1,6 +1,4 @@
--- TODO:
--- dap status +number of breakpoints)
--- is file in arg list
+-- Lualine configuration
 
 local ok, devicons = pcall(require, 'nvim-web-devicons')
 if not ok then
@@ -16,6 +14,20 @@ local foldlevel = {
 }
 
 local branch = { 'branch', icon = { '' } }
+
+local dap = {
+	function()
+		local loaded = pcall(require, 'dap')
+		if not loaded then
+			return ''
+		end
+		local status = require('dap').status()
+		if string.len(status) == 0 then
+			return ''
+		end
+		return ' [' .. status .. ']'
+	end,
+}
 
 local diff = {
 	'diff',
@@ -153,7 +165,7 @@ require('lualine').setup({
 	},
 	sections = {
 		lualine_a = { mode },
-		lualine_b = { branch, filename },
+		lualine_b = { branch, dap, filename },
 		lualine_c = { directory },
 		lualine_x = {},
 		lualine_y = { lsp, diff, diagnostics, foldlevel, filetype },

@@ -1,5 +1,4 @@
 local cmp = require('cmp')
-local copilot = require('copilot.suggestion')
 local defaults = require('cmp.config.default')()
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
@@ -17,12 +16,12 @@ cmp.setup({
 	end,
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
-		keyword_pattern = '[^%s]+',
 		autocomplete = {
 			cmp.TriggerEvent.TextChanged,
 			cmp.TriggerEvent.InsertEnter,
 		},
 	},
+  preselect = cmp.PreselectMode.None,
 	snippet = {
 		expand = function(args)
 			require('luasnip').lsp_expand(args.body)
@@ -52,11 +51,13 @@ cmp.setup({
 		['<C-e>'] = cmp.mapping.abort(),
 		['<C-space>'] = cmp.mapping.abort(),
 		['<Tab>'] = cmp.mapping(function(fallback)
-			vim.print('here')
 			if cmp.visible() then
 				cmp.confirm({ select = true })
-			elseif copilot.is_visible() then
-				vim.schedule(copilot.accept)
+			elseif
+				vim.z.enabled('copilot')
+				and require('copilot.suggestion').is_visible()
+			then
+				vim.schedule(require('copilot.suggestion').accept)
 			else
 				fallback()
 			end
