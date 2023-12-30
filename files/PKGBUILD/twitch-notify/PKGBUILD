@@ -1,4 +1,5 @@
 # shellcheck disable=all
+
 pkgname=twitch-notify
 pkgver=1.0.r9.b8ba160
 pkgrel=1

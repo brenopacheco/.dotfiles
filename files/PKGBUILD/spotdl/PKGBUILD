@@ -1,0 +1,16 @@
+# shellcheck disable=all
+
+pkgname=spotdl
+pkgver=4.2.4
+pkgrel=1
+pkgdesc='Download your Spotify playlists and songs along with album art and metadata from YouTube'
+arch=('x86_64')
+license=('MIT')
+url=https://github.com/spotDL/spotify-downloader
+source=("https://github.com/spotDL/spotify-downloader/releases/download/v${pkgver}/spotdl-${pkgver}-linux")
+
+md5sums=('cf3de92108b60c75a6ea2f4850c28f98')
+
+package() {
+	install -Dm755 "$srcdir/$pkgname-$pkgver-linux" "$pkgdir/usr/bin/$pkgname"
+}

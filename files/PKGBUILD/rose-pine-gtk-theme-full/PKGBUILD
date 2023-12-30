@@ -1,3 +1,5 @@
+# shellcheck disable=all
+
 # Maintainer: Daniel McLarty <info@savagedevs.com>
 pkgname='rose-pine-gtk-theme-full'
 pkgver=2.1.0

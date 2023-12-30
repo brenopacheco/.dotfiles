@@ -1,3 +1,5 @@
+# shellcheck disable=all
+
 pkgname=sxhkd-fork
 pkgver=0.6.2.193.7fc400d
 pkgrel=1

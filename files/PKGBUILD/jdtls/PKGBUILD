@@ -1,3 +1,5 @@
+# shellcheck disable=all
+
 pkgname=jdtls
 pkgver=1.24.0
 pkgrel=1

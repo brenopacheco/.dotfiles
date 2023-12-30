@@ -1,3 +1,5 @@
+# shellcheck disable=all
+
 pkgname=slstatus-fork
 pkgver=r4.447e543
 pkgrel=1

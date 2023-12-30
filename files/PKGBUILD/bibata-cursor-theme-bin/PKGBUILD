@@ -1,3 +1,5 @@
+# shellcheck disable=all
+
 # Maintainer: Mark Wagie <mark dot wagie at proton dot me>
 pkgname=bibata-cursor-theme-bin
 pkgver=2.0.4

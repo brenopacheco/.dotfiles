@@ -17,7 +17,6 @@ vim.z.packadd({
 	'sbdchd/neoformat',
 	'danymat/neogen',
 	'voldikss/vim-floaterm',
-	'mickael-menu/zk-nvim',
 	'kyazdani42/nvim-tree.lua',
 	'stevearc/oil.nvim',
 	'folke/zen-mode.nvim',
@@ -46,6 +45,7 @@ vim.z.packadd({
 	'nvim-telescope/telescope.nvim',
 	'HiPhish/rainbow-delimiters.nvim',
 	'monkoose/matchparen.nvim',
+	'mickael-menu/zk-nvim',
 	-- TODO
 	'theHamsta/nvim-dap-virtual-text',
 	'rcarriga/nvim-dap-ui',

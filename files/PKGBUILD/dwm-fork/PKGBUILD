@@ -1,3 +1,5 @@
+# shellcheck disable=all
+
 # TODO:
 # - remove Xresources dependency
 # - configure Rules

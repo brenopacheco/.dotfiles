@@ -1,3 +1,5 @@
+# shellcheck disable=all
+
 # Maintainer: goetzc
 # Contributor: Philip Goto <philip.goto@gmail.com>
 # Contributor: grimi

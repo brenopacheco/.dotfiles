@@ -1,3 +1,5 @@
+# shellcheck disable=all
+
 pkgname=golangci-lint
 pkgdesc='Linters Runner for Go. 5x faster than gometalinter.'
 pkgver=1.53.3
