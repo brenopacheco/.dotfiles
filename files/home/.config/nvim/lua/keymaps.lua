@@ -31,6 +31,7 @@ local keyboard = {
       { { 'n',     }, '<leader>E',      maps.errors_workspace,   { desc = ' errors-ws'            } },
       { { 'n', 'x' }, 'ga',             maps.run_align,          { desc = ' align'                } },
       { { 'n', 'x' }, 'gx',             maps.run_gx,             { desc = ' browse',              } },
+      { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
       { { 'n', 'x' }, '<leader>r',      maps.run_replace,        { desc = ' replace'              } },
       { { 'n', 'x' }, '<leader>p',      maps.run_zknew,          { desc = ' zk-new',              } },
       { { 'n',     }, '<leader>m',      maps.run_make,           { desc = ' make',                } },

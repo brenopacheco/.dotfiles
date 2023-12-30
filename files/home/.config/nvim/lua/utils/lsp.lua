@@ -50,6 +50,7 @@ M.on_list = function(opts)
 			vim.o.fileencoding,
 			nil
 		)
+    vim.notify('This is the only result')
 	end
 end
 

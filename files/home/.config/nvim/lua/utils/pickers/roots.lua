@@ -4,31 +4,26 @@
 
 local rootutil = require('utils.root')
 
-local pattern_regex = '('
-	.. vim.fn.join({
-		'package.json',
-		'.*.sln',
-		'.*.csproj',
-		'go.mod',
-		'Makefile',
-		'Cargo.toml',
-	}, [[|]])
-	.. ')'
-
 return function()
-	local root = rootutil.git_root()
-	local result = vim
-		.system({ 'fd', '-a', '-t', 'f', pattern_regex, root }, { text = true })
-		:wait()
-	assert(result.code == 0, 'fd command failed')
+  local root = rootutil.git_root()
+	local roots = rootutil.all_roots({ dir = root })
 
-	local dirs = vim.fn.sort(vim.tbl_map(function(line)
-		return tostring(vim.fs.dirname(line))
-	end, vim.split(tostring(vim.fn.trim(result.stdout)), '\n')))
+  if not root then
+    return vim.notify('Not in a git repository', vim.log.levels.WARN)
+  end
 
-	assert(dirs ~= nil, 'c is nil')
+  if #roots == 0 then
+    return vim.notify('No roots found', vim.log.levels.WARN)
+  end
 
-	dirs = vim.fn.uniq(dirs)
+  ---@type string[]
+	local dirs = vim.tbl_map(function(r)
+		return r.path
+	end, roots)
+
+  ---@type string[]
+  ---@diagnostic disable-next-line: assign-type-mismatch
+  dirs = vim.fn.uniq(dirs)
 
 	vim.ui.select(dirs, {
 		prompt = 'Select root from ' .. root,

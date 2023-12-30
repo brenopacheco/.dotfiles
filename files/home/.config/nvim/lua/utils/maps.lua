@@ -113,7 +113,6 @@ M.find_recent = function()
 end
 
 -- Finds roots in current git project
--- TODO: fix this, it should look upwards from git root
 M.find_roots = function()
 	require('utils.pickers.roots')()
 end
@@ -458,11 +457,6 @@ M.run_code = function()
 	vim.lsp.buf.code_action()
 end
 
--- Run dummy message
-M.run_dummy = function()
-	_dummy()
-end
-
 -- Create new unnamed buffer
 M.run_enew = function()
 	vim.cmd('enew')
@@ -486,6 +480,11 @@ end
 -- xdg-open
 M.run_gx = function()
 	require('gx').search_for_url()
+end
+
+-- Open messages
+M.messages = function()
+	vim.cmd('Messages')
 end
 
 -- Run make command

@@ -54,7 +54,7 @@ cmp.setup({
 			if cmp.visible() then
 				cmp.confirm({ select = true })
 			elseif
-				vim.z.enabled('copilot')
+				vim.z.enabled('copilot.lua')
 				and require('copilot.suggestion').is_visible()
 			then
 				vim.schedule(require('copilot.suggestion').accept)

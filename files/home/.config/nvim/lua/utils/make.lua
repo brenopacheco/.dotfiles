@@ -105,8 +105,16 @@ local systems = { make, node, dotnet }
 M.targets = function()
 	---@type Target[]
 	local targets = {}
+	local all_roots = rootutil.all_roots()
 	for _, system in ipairs(systems) do
-		local roots = rootutil.roots(system.patterns)
+		local roots = vim.tbl_filter(function(root)
+			for _, pattern in ipairs(system.patterns) do
+				if vim.fn.match(root.file, pattern) ~= -1 then
+					return true
+				end
+			end
+			return false
+		end, all_roots)
 		for _, root in ipairs(roots) do
 			local filepath = root.path .. '/' .. root.file
 			local data = fileutil.read(filepath)
