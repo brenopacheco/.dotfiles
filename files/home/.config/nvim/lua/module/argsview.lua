@@ -110,7 +110,7 @@ local function update()
 	local arglist, max_len = get_arglist(trim_width)
 	local editor_width = vim.api.nvim_get_option_value('columns', {})
 	local list = format_list(arglist, max_len)
-	local cols = max_len + 1
+	local cols = max_len + 2
 	local opts = {
 		relative = 'editor',
 		row = 2,
