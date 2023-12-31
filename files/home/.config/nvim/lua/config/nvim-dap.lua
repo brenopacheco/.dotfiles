@@ -18,9 +18,34 @@ Golang -- always launch delve debugger server
 --]]
 
 local dap = require('dap')
+local daputil  = require('utils.dap')
 
-require("dapui").setup()
+---@diagnostic disable-next-line: missing-fields
+require("dapui").setup({
+    controls = {
+      element = "repl",
+      enabled = true,
+      icons = {
+        disconnect = " ",
+        pause = " ",
+        play = " ",
+        run_last = " ",
+        step_back = " ",
+        step_into = " ",
+        step_out = " ",
+        step_over = " ",
+        terminate = " "
+      }
+    }
+})
+
 require('nvim-dap-virtual-text').setup({})
+
+vim.fn.sign_define('DapBreakpoint', {text='󰯯', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakpointCondition', {text='󰟃', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapLogPoint', {text='󰍢', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapStopped', {text='', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakpointRejected', {text='󱞌', texthl='', linehl='', numhl=''})
 
 local installed = function(pkg)
 	local str = vim.fn.system('pacman -Qs ' .. pkg) or ''
@@ -33,7 +58,7 @@ end
 local debuggers = {
 	go = 'delve',
 	node = 'vscode-js-debug',
-	-- dotnet = 'netcoredbg',
+	dotnet = 'netcoredbg',
   c = 'lldb',
 }
 
@@ -46,59 +71,41 @@ for lang, debugger in pairs(debuggers) do
 	end
 end
 
-dap.adapters.delve = {
-  type = 'server',
-  port = '${port}',
-  executable = {
-    command = 'dlv',
-    args = {'dap', '-l', '127.0.0.1:${port}'},
-  }
-}
+for key, adapter in pairs(daputil.adapters) do
+  dap.adapters[key] = adapter
+end
 
-dap.configurations.go = {
-  {
-    type = "delve",
-    name = "Debug",
-    request = "launch",
-    program = "${file}"
-  },
-  {
-    type = "delve",
-    name = "Debug test (file)", -- configuration for debugging test files
-    request = "launch",
-    mode = "test",
-    program = "${file}"
-  },
-  -- works with go.mod packages and sub packages 
-  {
-    type = "delve",
-    name = "Debug tests (go.mod)",
-    request = "launch",
-    mode = "test",
-    program = "./${relativeFileDirname}"
-  }
-}
+for key, configuration in pairs(daputil.configurations) do
+  dap.configurations[key] = configuration
+end
 
--- dap.adapters['pwa-node'] = {
--- 	type = 'server',
--- 	host = 'localhost',
--- 	port = '${port}',
--- 	executable = {
--- 		command = 'node',
--- 		args = { '/usr/lib/vscode-js-debug/src/dapDebugServer.js', '${port}' },
--- 	},
--- }
+-- Go configurations =========================================================
 
--- dap.configurations.lua = {
--- 	{
--- 		type = 'nlua',
--- 		request = 'attach',
--- 		name = 'Attach to running Neovim instance',
--- 	},
--- }
+--[[ Use cases for debugging
 
--- dap.adapters.coreclr = {
--- 	type = 'executable',
--- 	command = '/path/to/dotnet/netcoredbg/netcoredbg',
--- 	args = { '--interpreter=vscode' },
--- }
+What do I want to debug?
+
+- Package/program  - debugs the main function
+- Test package     - debugs the whole test package
+- Test file        - debugs the current test file or pick one
+- Test function    - debugs the current test function or pick one
+
+To debug tests, we allways want to launch the process (i.e: run `go test`)
+To debug the package, we can either launch the process or attach to a
+running process. Do we want to allow attaching to a running process? Yes
+
+Use cases:
+1. Debug package (launch)
+2. Debug package (attach)
+3. Debug test package (launch)
+4. Debug test file (launch)
+5. Debug test function (launch)
+
+How can I perform these use cases using dlv?
+
+It seems we configure the delve adapter as a server - 
+1. 
+
+--]]
+
+

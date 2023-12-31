@@ -99,4 +99,21 @@ M.delete = function()
 	end
 end
 
+--- Checks if any visible window has a buffer of the given filetype
+---@param filetype string
+---@return boolean, number, number : is visible, winid, bufnr
+M.is_visible = function(filetype)
+	for _, winnr in ipairs(vim.fn.range(1, vim.fn.winnr('$')) or {}) do
+    local winid = vim.fn.win_getid(winnr) or -1
+		local bufnr = vim.fn.winbufnr(winnr)
+		if bufnr ~= nil then
+			local ft = vim.fn.getbufvar(bufnr, '&ft')
+			if ft == filetype then
+				return true, winid, bufnr
+			end
+		end
+	end
+  return false, -1, -1
+end
+
 return M

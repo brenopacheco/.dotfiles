@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function should_run() {
-	return "$SKIP"
+	has_packages netcoredbg && return "$DONE" || return "$RUN"
 }
 
 function task() {
-	return "$OK"
+	makepkg_task netcoredbg && return "$OK"
 }

@@ -452,6 +452,11 @@ M.debug_preview = function()
 	daputil.debug_preview()
 end
 
+-- Continues execution to the current cursor.
+M.debug_to_cursor = function()
+	daputil.to_cursor()
+end
+
 -- Run code action
 M.run_code = function()
 	vim.lsp.buf.code_action()
@@ -587,7 +592,7 @@ end
 
 -- Toggle dap ui
 M.toggle_dapui = function()
-	require('dapui').toggle()
+  daputil.toggle_ui()
 end
 
 -- Open lf file explorer

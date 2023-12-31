@@ -3,3 +3,5 @@ src
 neovim-*
 nvim-*
 PKGBUILD
+pkg/
+src/

@@ -1,2 +1,4 @@
 js-debug-dap-*
 vscode-js-debug-*
+src/
+pkg/

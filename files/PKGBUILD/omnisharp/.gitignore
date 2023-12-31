@@ -1,2 +1,4 @@
 omni*
 PKGBUILD
+pkg/
+src/

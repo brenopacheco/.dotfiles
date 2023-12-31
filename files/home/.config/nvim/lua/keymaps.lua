@@ -61,6 +61,7 @@ local keyboard = {
       { {'n',      }, '<leader>dq',     maps.debug_bp_list,      { desc = ' breakpoint list'      } },
       { {'n',      }, '<leader>dh',     maps.debug_hover,        { desc = '󱄑 info hover'           } },
       { {'n',      }, '<leader>dp',     maps.debug_preview,      { desc = '󰩣 info preview'         } },
+      { {'n',      }, '<leader>d.',     maps.debug_to_cursor,    { desc = '󰇀 run to cursor'        } },
     }, -- ]]
     find = { -- [[
       { { 'n',     }, '<leader>fa',     maps.find_args,          { desc = ' arglist'              } },
