@@ -492,6 +492,12 @@ M.messages = function()
 	vim.cmd('Messages')
 end
 
+-- Open lsp info
+M.lsp_info = function()
+	lsputil.open_config()
+end
+
+
 -- Run make command
 M.run_make = function()
 	return bufutil.is_file() and vim.cmd([[make %]])
@@ -597,7 +603,8 @@ end
 
 -- Open lf file explorer
 M.toggle_lf = function()
-	vim.cmd('Lf')
+  P('lf')
+	-- vim.cmd('Lf')
 end
 
 -- Toggle side tree

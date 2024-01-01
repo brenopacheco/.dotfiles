@@ -1,6 +1,6 @@
 local M = {}
 
----@return boolean, table | nil
+---@return boolean, table | nil : is_attached, client
 M.is_attached = function()
 	local clients = vim.lsp.get_clients()
 	for _, client in pairs(clients) do
@@ -12,15 +12,39 @@ M.is_attached = function()
 end
 
 ---@param bufnr number | nil
----@return string[]
+---@return string[], lsp.Client[] : names, configs
 M.clients = function(bufnr)
 	bufnr = bufnr or vim.fn.bufnr()
 	local clients = vim.lsp.get_clients({ bufnr = bufnr })
 	local names = {}
+  local configs = {}
 	for _, client in pairs(clients) do
 		table.insert(names, client.name)
+    table.insert(configs, client.config)
 	end
-	return names
+	return names, configs
+end
+
+---@param bufnr number | nil
+M.open_config = function(bufnr)
+	bufnr = bufnr or vim.fn.bufnr()
+  local _, configs  = M.clients(bufnr)
+	vim.ui.select(configs, {
+		prompt = 'Open lsp configuration for:',
+		format_item = function(item)
+      return item.name
+		end,
+	}, function(choice)
+		if choice ~= nil then
+        vim.print(choice)
+        local text = vim.split(vim.inspect(choice), '\n')
+        bufnr = vim.api.nvim_create_buf(false, true)
+        vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, text)
+        vim.cmd('vsplit')
+        local winnr = vim.api.nvim_get_current_win()
+        vim.api.nvim_win_set_buf(winnr, bufnr)
+		end
+	end)
 end
 
 -- Handle the result of functions such as goto_definition.

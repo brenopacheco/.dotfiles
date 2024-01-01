@@ -1,5 +1,14 @@
 require('neodev').setup({
-	library = { plugins = { 'nvim-dap-ui' }, types = true },
+	-- This makes any root trigger neodev's setup. Otherwise, only neovim files
+	-- will trigger it.
+	override = function(_, library)
+		library.enabled = true
+		library.runtime = true
+		library.plugins = true
+		library.types = true
+	end,
+	lspconfig = true,
+	pathStrict = true,
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -8,17 +17,13 @@ local lsp = require('lspconfig')
 
 lsp.lua_ls.setup({
 	capabilities = capabilities,
-	Lua = {
-		workspace = {
-			library = vim.api.nvim_get_runtime_file('', true),
-		},
-		runtime = {
-			version = 'LuaJIT',
-			path = vim.split(package.path, ';'),
-		},
-		diagnostics = {
-			globals = { 'vim' },
-			disable = { 'lowercase-global', 'unused-vararg' },
+	settings = {
+		Lua = {
+			workspace = {
+				library = {
+					vim.fn.resolve(vim.fn.stdpath('config') .. '/lua/types'),
+				},
+			},
 		},
 	},
 })

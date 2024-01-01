@@ -45,7 +45,7 @@ vim.z.packadd({
 	'nvim-telescope/telescope.nvim',
 	'HiPhish/rainbow-delimiters.nvim',
 	'monkoose/matchparen.nvim',
-	'mickael-menu/zk-nvim',
+	'brenopacheco/zk-nvim',
 	-- TODO
 	'theHamsta/nvim-dap-virtual-text',
 	'rcarriga/nvim-dap-ui',
