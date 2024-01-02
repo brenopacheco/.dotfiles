@@ -14,5 +14,6 @@ _G.P = vim.print
 vim.z = {}
 require('options')
 require('packadd')
-require('keymaps')
 require('plugins')
+require('keymaps')
+vim.z.packadd({ 'folke/which-key.nvim' })

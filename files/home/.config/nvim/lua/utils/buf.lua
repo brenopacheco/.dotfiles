@@ -104,7 +104,7 @@ end
 ---@return boolean, number, number : is visible, winid, bufnr
 M.is_visible = function(filetype)
 	for _, winnr in ipairs(vim.fn.range(1, vim.fn.winnr('$')) or {}) do
-    local winid = vim.fn.win_getid(winnr) or -1
+		local winid = vim.fn.win_getid(winnr) or -1
 		local bufnr = vim.fn.winbufnr(winnr)
 		if bufnr ~= nil then
 			local ft = vim.fn.getbufvar(bufnr, '&ft')
@@ -113,7 +113,19 @@ M.is_visible = function(filetype)
 			end
 		end
 	end
-  return false, -1, -1
+	return false, -1, -1
+end
+
+---Create a new buffer throwaway buffer with the given content
+---
+---@param content string[]
+M.throwaway = function(content)
+	local bufnr = vim.api.nvim_create_buf(false, true)
+	vim.cmd('vsplit')
+	local winnr = vim.api.nvim_get_current_win()
+	vim.api.nvim_win_set_buf(winnr, bufnr)
+	vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, content)
+	vim.api.nvim_set_current_win(winnr)
 end
 
 return M

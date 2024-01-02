@@ -54,7 +54,9 @@ local function select(items, opts, on_choice)
 			}),
 			sorter = conf.generic_sorter({}),
 			attach_mappings = function(prompt_bufnr, map)
-				map('i', '<tab>', actions.select_default)
+				map('i', '<tab>', actions.move_selection_next)
+				map('i', '<s-tab>', actions.move_selection_previous)
+				-- map('i', '<tab>', actions.select_default)
 				actions.select_default:replace(function()
 					actions.close(prompt_bufnr)
 					local selection = action_state.get_selected_entry()

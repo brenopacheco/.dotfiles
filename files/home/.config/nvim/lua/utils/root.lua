@@ -22,6 +22,7 @@ local root_patterns = {
 ---@param dir string directory
 ---@return string[] -- list of filenames
 local function dir_files(dir)
+	assert(dir ~= nil, 'Invalid dir')
 	local files = {}
 	local req = vim.loop.fs_scandir(dir)
 	if req then
@@ -43,29 +44,18 @@ end
 local function has_file(dir, pattern)
 	local files = dir_files(dir)
 	for _, file in ipairs(files) do
-		if string.match(file, pattern) then
+		local matches = string.match(file, pattern)
+		if matches then
 			return file
 		end
 	end
 end
 
---- Checks directory exists and cleans it
----@param dir? string directory
----@return string
-local clean_dir = function(dir)
-	dir = dir or M.git_root()
-	assert(vim.fn.isdirectory(dir) == 1, 'dir must be an existing directory')
-	return tostring(vim.fn.simplify(vim.fn.fnamemodify(dir, ':p')))
-end
-
 --- Find all downward roots for the given file patterns.
 ---
----@param opts? { dir?: string, patterns?: string[] }
+---@param opts { dir: string, patterns: string[] }
 ---@return Root[]
 M.downward_roots = function(opts)
-	opts = opts or {}
-	opts.dir = clean_dir(opts.dir)
-	opts.patterns = opts.patterns or root_patterns
 	local obj = vim
 		.system({ 'fd', '-a', '-H', '.', opts.dir }, { text = true })
 		:wait()
@@ -91,12 +81,9 @@ end
 
 --- Find all upward roots for the given file patterns.
 ---
----@param opts? { dir?: string, patterns?: string[] }
+---@param opts { dir: string, patterns: string[] }
 ---@return Root[]
 M.upward_roots = function(opts)
-	opts = opts or {}
-	opts.dir = clean_dir(opts.dir)
-	opts.patterns = opts.patterns or root_patterns
 	local roots = {}
 	for _, pattern in ipairs(opts.patterns) do
 		---@type string
@@ -113,19 +100,11 @@ M.upward_roots = function(opts)
 	return roots
 end
 
---- Find all possible upward roots for the given file patterns, and for each
---- root, find all downward roots for the given file patterns.
---- NOTE: this can be changed by always using git_root as the shortest_root
----
----@param opts? { dir?: string, patterns?: string[] }
+--- Find all roots from the git repository (defaults to current directory)
+--
 ---@return Root[]
-M.all_roots = function(opts)
-	opts = opts or {}
-	opts.dir = clean_dir(opts.dir)
-	opts.patterns = opts.patterns or root_patterns
-	local all_roots =
-		M.downward_roots({ patterns = opts.patterns, dir = opts.dir })
-	return all_roots
+M.all_roots = function()
+	return M.downward_roots({ patterns = root_patterns, dir = M.git_root() })
 end
 
 --- Finds the path for the git root in current cwd. If not a git repository,
@@ -146,7 +125,10 @@ end
 ---
 ---@return Root[] The project roots
 M.project_roots = function()
-	local roots = M.upward_roots()
+	local roots = M.upward_roots({
+		patterns = root_patterns,
+		dir = tostring(vim.fn.getcwd()),
+	})
 	if #roots == 0 then
 		return {}
 	end

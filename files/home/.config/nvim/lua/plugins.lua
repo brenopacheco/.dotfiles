@@ -7,7 +7,6 @@ vim.z.packadd({
 	'bluz71/vim-nightfly-guicolors',
 	'kyazdani42/nvim-web-devicons',
 	'norcalli/nvim-colorizer.lua',
-	'folke/which-key.nvim',
 	'shellRaining/hlchunk.nvim',
 	'brenopacheco/gx.nvim',
 	'brenopacheco/gitlinker.nvim',
@@ -46,7 +45,7 @@ vim.z.packadd({
 	'HiPhish/rainbow-delimiters.nvim',
 	'monkoose/matchparen.nvim',
 	'brenopacheco/zk-nvim',
-	-- TODO
+	-- -- TODO
 	'theHamsta/nvim-dap-virtual-text',
 	'rcarriga/nvim-dap-ui',
 	'mfussenegger/nvim-dap',

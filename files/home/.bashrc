@@ -90,7 +90,5 @@ export PATH=$PATH:$HOME/.dotnet/tools
 test -e ~/.npmtoken && source ~/.npmtoken
 test -e ~/.twitch-notify.conf && source ~/.twitch-notify.conf
 
-export ZK_NOTEBOOK_DIR=$HOME/notes
-
 export ASPNETCORE_Kestrel__Certificates__Default__Password=""
 export ASPNETCORE_Kestrel__Certificates__Default__Path="$HOME/.aspnet/localhost.pfx"

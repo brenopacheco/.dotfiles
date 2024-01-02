@@ -7,6 +7,6 @@ function should_run() {
 }
 
 function task() {
-	rm ~/.bashrc
+	test -f ~/.bashrc && rm ~/.bashrc
 	cd files && stow -t ~/ home && return "$OK"
 }

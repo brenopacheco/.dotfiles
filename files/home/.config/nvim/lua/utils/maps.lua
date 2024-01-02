@@ -457,6 +457,11 @@ M.debug_to_cursor = function()
 	daputil.to_cursor()
 end
 
+-- Open dap log
+M.debug_open_log = function()
+	daputil.open_log()
+end
+
 -- Run code action
 M.run_code = function()
 	vim.lsp.buf.code_action()

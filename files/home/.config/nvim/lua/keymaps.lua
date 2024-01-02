@@ -46,6 +46,7 @@ local keyboard = {
       { { 'n',     }, '<leader>x',      maps.run_bd,             { desc = ' bufdelete'            } },
     }, -- ]]
     debug = { -- [[
+      --  TODO: change keybindings
       { {'n',      }, '<leader>dd',     maps.debug_start,        { desc = ' start'                } },
       { {'n',      }, '<leader>dr',     maps.debug_restart,      { desc = ' restart'              } },
       { {'n',      }, '<leader>dw',     maps.debug_last,         { desc = ' run last'             } },
@@ -63,6 +64,7 @@ local keyboard = {
       { {'n',      }, '<leader>dh',     maps.debug_hover,        { desc = '󱄑 info hover'           } },
       { {'n',      }, '<leader>dp',     maps.debug_preview,      { desc = '󰩣 info preview'         } },
       { {'n',      }, '<leader>d.',     maps.debug_to_cursor,    { desc = '󰇀 run to cursor'        } },
+      { {'n',      }, '<leader>d?',     maps.debug_open_log,     { desc = ' dap log'              } },
     }, -- ]]
     find = { -- [[
       { { 'n',     }, '<leader>fa',     maps.find_args,          { desc = ' arglist'              } },

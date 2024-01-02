@@ -1,52 +1,64 @@
---[[ Notes
-
-Use cases for debugging
-------------------------
-1. attach to process           (e.g: attach to running server)
-2. launch a process            (e.g: run c executable)
-3. run task and attach process (e.g: run dotnet test in debug more and attach)
-4. run task and launch process (e.g: compile c program and launch)
-
-Golang -- always launch delve debugger server
-  1. Debug package
-    launch <file>
-  2. Attach
-    select from user spawned processes
-    e.g: ps -ae | grep pts | egrep -v "(bash|tmux|ps|grep|nvim|node)"
-  3. Debug test file
-
---]]
-
 local dap = require('dap')
-local daputil  = require('utils.dap')
+local dapui = require('dapui')
+
+dap.set_log_level('TRACE')
 
 ---@diagnostic disable-next-line: missing-fields
-require("dapui").setup({
-    controls = {
-      element = "repl",
-      enabled = true,
-      icons = {
-        disconnect = " ",
-        pause = " ",
-        play = " ",
-        run_last = " ",
-        step_back = " ",
-        step_into = " ",
-        step_out = " ",
-        step_over = " ",
-        terminate = " "
-      }
-    }
+require('dapui').setup({
+	controls = {
+		element = 'repl',
+		enabled = true,
+		icons = {
+			disconnect = ' ',
+			pause = ' ',
+			play = ' ',
+			run_last = ' ',
+			step_back = ' ',
+			step_into = ' ',
+			step_out = ' ',
+			step_over = ' ',
+			terminate = ' ',
+		},
+	},
 })
 
 require('nvim-dap-virtual-text').setup({})
 
-vim.fn.sign_define('DapBreakpoint', {text='󰯯', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapBreakpointCondition', {text='󰟃', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapLogPoint', {text='󰍢', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapStopped', {text='', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapBreakpointRejected', {text='󱞌', texthl='', linehl='', numhl=''})
+dap.listeners.after.event_initialized['dapui_config'] = function()
+	dapui.open()
+end
+dap.listeners.before.event_terminated['dapui_config'] = function()
+	dapui.close()
+end
+dap.listeners.before.event_exited['dapui_config'] = function()
+	dapui.close()
+end
 
+vim.fn.sign_define(
+	'DapBreakpoint',
+	{ text = '󰯯', texthl = '', linehl = '', numhl = '' }
+)
+vim.fn.sign_define(
+	'DapBreakpointCondition',
+	{ text = '󰟃', texthl = '', linehl = '', numhl = '' }
+)
+vim.fn.sign_define(
+	'DapLogPoint',
+	{ text = '󰍢', texthl = '', linehl = '', numhl = '' }
+)
+vim.fn.sign_define(
+	'DapStopped',
+	{ text = '', texthl = '', linehl = '', numhl = '' }
+)
+vim.fn.sign_define(
+	'DapBreakpointRejected',
+	{ text = '󱞌', texthl = '', linehl = '', numhl = '' }
+)
+
+---Checks if the pacman package for the given debugger is installed
+---
+---@param pkg string : the name of the debugger package
+---@return boolean : true if the package is installed
 local installed = function(pkg)
 	local str = vim.fn.system('pacman -Qs ' .. pkg) or ''
 	str = vim.split(str, '\n')[1] or ''
@@ -55,11 +67,23 @@ local installed = function(pkg)
 	return str == pkg
 end
 
+--- Registers the given adapters and configurations with dap
+---
+---@param settings { adapters: table<string, Adapter>, configurations: Configuration[] }
+local register = function(settings)
+	for key, adapter in pairs(settings.adapters) do
+		dap.adapters[key] = adapter
+	end
+	for key, configuration in pairs(settings.configurations) do
+		dap.configurations[key] = configuration
+	end
+end
+
 local debuggers = {
 	go = 'delve',
 	node = 'vscode-js-debug',
 	dotnet = 'netcoredbg',
-  c = 'lldb',
+	c = 'lldb',
 }
 
 for lang, debugger in pairs(debuggers) do
@@ -71,41 +95,7 @@ for lang, debugger in pairs(debuggers) do
 	end
 end
 
-for key, adapter in pairs(daputil.adapters) do
-  dap.adapters[key] = adapter
-end
-
-for key, configuration in pairs(daputil.configurations) do
-  dap.configurations[key] = configuration
-end
-
--- Go configurations =========================================================
-
---[[ Use cases for debugging
-
-What do I want to debug?
-
-- Package/program  - debugs the main function
-- Test package     - debugs the whole test package
-- Test file        - debugs the current test file or pick one
-- Test function    - debugs the current test function or pick one
-
-To debug tests, we allways want to launch the process (i.e: run `go test`)
-To debug the package, we can either launch the process or attach to a
-running process. Do we want to allow attaching to a running process? Yes
-
-Use cases:
-1. Debug package (launch)
-2. Debug package (attach)
-3. Debug test package (launch)
-4. Debug test file (launch)
-5. Debug test function (launch)
-
-How can I perform these use cases using dlv?
-
-It seems we configure the delve adapter as a server - 
-1. 
-
---]]
-
-
+register(require('utils.dap.c'))
+register(require('utils.dap.dotnet'))
+register(require('utils.dap.go'))
+register(require('utils.dap.node'))
