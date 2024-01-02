@@ -93,4 +93,4 @@ test -e ~/.twitch-notify.conf && source ~/.twitch-notify.conf
 export ASPNETCORE_Kestrel__Certificates__Default__Password=""
 export ASPNETCORE_Kestrel__Certificates__Default__Path="$HOME/.aspnet/localhost.pfx"
 
-tmux_shell
+# tmux_shell
