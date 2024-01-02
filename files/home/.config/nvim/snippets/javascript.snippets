@@ -1,2 +1,33 @@
 snippet col console.log object
 	  console.log($0);
+
+snippet fn > __named function__
+	function ${1:fn}(${2}) {
+		$0
+	}
+
+snippet fn-async > __async named function__
+	async function ${1:fn}(${2}) {
+		$0
+	}
+
+snippet afn > __anonymous function__
+	(${2}) => {
+		$0
+	};
+
+snippet afn-async __async anonymous function__
+	(${2}) => {
+		$0
+	};
+
+snippet cafn > __const anonymous function__
+	const ${1:fn} = (${2}) => {
+		$0
+	};
+
+snippet cafn-async > __const async anonymous function__
+	const ${1:fn} = async (${2}) => {
+		$0
+	};
+

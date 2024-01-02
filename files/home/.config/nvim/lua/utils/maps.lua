@@ -7,10 +7,6 @@ local rootutil = require('utils.root')
 
 local M = {}
 
-local _dummy = function()
-	vim.notify('Not implemented', vim.log.levels.WARN)
-end
-
 -- Add buffer to arglist
 M.args_add = function()
 	vim.cmd('ArgAdd')

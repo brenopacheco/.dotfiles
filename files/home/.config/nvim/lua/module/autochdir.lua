@@ -5,6 +5,7 @@
 local blacklist = {
 	'^fugitive://',
 	'^term://',
+	'/tmp/nvim%.' .. vim.env.USER .. '/'
 }
 
 local group = vim.api.nvim_create_augroup('autochdir', { clear = true })
@@ -27,7 +28,7 @@ vim.api.nvim_create_autocmd({ 'BufEnter' }, {
 			return
 		end
 		for _, pat in ipairs(blacklist) do
-			if string.match(ev.buf, pat) then
+			if string.match(ev.file, pat) then
 				return
 			end
 		end
