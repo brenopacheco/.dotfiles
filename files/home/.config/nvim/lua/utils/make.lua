@@ -13,7 +13,7 @@ local M = {}
 ---@class System
 ---@field name string The system name
 ---@field patterns string[] The patterns to match against the system file
----@field targets fun(dir: string, file: string, data: string): Target[]
+---@field targets fun(dir: string, file: string, data: string[]): Target[]
 
 ---@type System
 local make = {
@@ -22,7 +22,7 @@ local make = {
 	targets = function(dir, file, data)
 		---@type Target[]
 		local targets = {}
-		for _, line in ipairs(fileutil.lines(data)) do
+		for _, line in ipairs(data) do
 			local rule = string.match(line, '^([a-zA-Z_%-]+):')
 			if rule ~= nil then
 				---@type Target
@@ -41,14 +41,50 @@ local make = {
 }
 
 ---@type System
+local go = {
+	name = 'go',
+	patterns = { '^go%.mod$' },
+	targets = function(dir, file)
+		local cmds = {
+			'run',
+			'build',
+			'install',
+			'get',
+			'fmt',
+			'vet',
+			'test',
+			'test -v',
+			'doc',
+			'mod tidy',
+			'clean',
+		}
+		---@type Target[]
+		local targets = vim.tbl_map(function(cmd)
+			return {
+				name = cmd,
+				cmd = 'go ' .. cmd .. ' .',
+				dir = dir,
+				file = file,
+				kind = 'go',
+			}
+		end, cmds)
+		return targets
+	end,
+}
+
+---@type System
 local node = {
 	name = 'node',
 	patterns = { 'package.json' },
 	targets = function(dir, file, data)
 		---@type Target[]
 		local targets = {}
+    local status, decoded = pcall(vim.json.decode, vim.join(data, '\n'))
+    if not status then
+      return {}
+    end
 		---@type table<string, string>
-		local scripts = vim.json.decode(data).scripts
+		local scripts = decoded.scripts
 		local manager = fileutil.exists(dir .. '/yarn.lock') and 'yarn' or 'npm'
 		for script, _ in pairs(scripts) do
 			---@type Target
@@ -76,7 +112,7 @@ local node = {
 local dotnet = {
 	name = 'dotnet',
 	patterns = { '.+%.sln' },
-	targets = function(dir, file, data)
+	targets = function(dir, file)
 		---@type Target[]
 		local targets = {}
 		table.insert(targets, {
@@ -97,7 +133,7 @@ local dotnet = {
 	end,
 }
 
-local systems = { make, node, dotnet }
+local systems = { make, node, dotnet, go }
 
 --- Get all run targets from all systems (make, go, rust, etc.)
 ---
@@ -109,7 +145,7 @@ M.targets = function()
 	for _, system in ipairs(systems) do
 		local roots = vim.tbl_filter(function(root)
 			for _, pattern in ipairs(system.patterns) do
-				if vim.fn.match(root.file, pattern) ~= -1 then
+				if string.match(root.file, pattern) then
 					return true
 				end
 			end

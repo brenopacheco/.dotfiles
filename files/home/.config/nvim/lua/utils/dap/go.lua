@@ -1,6 +1,15 @@
-local rootutil = require('utils.root')
+--[[ References:
+https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
+Reference: https://github.com/leoluz/nvim-dap-go/blob/main/lua/dap-go.lua#L132
+]]
 
 local M = {}
+
+local fileutil = require('utils.file')
+local rootutil = require('utils.root')
+local treeutil = require('utils.treesitter')
+
+local T = {}
 
 ---@class GoLaunchConfiguration : Configuration
 ---@field type 'delve'
@@ -47,7 +56,55 @@ local function get_pids()
 	return result
 end
 
-local function get_arguments()
+local function resolve_test_file()
+	local path = tostring(vim.fn.expand('%:p'))
+	if not string.match(path, '_test%.go$') then
+		path = vim.fn.expand('%:p:r') .. '_test.go'
+	end
+	if fileutil.exists(path) then
+		return path
+	end
+	return nil
+end
+
+---@param path string
+---@return string[]
+local function resolve_file_tests(path)
+	local content = fileutil.read(path)
+	assert(content ~= nil, 'file not found')
+	local query = [[
+    ((function_declaration 
+       name: (identifier) @name)
+     (#match? @name "^Test[A-Z].+$"))
+  ]]
+	local captures = treeutil.apply_query(content, 'go', query)
+	local tests = vim.tbl_map(function(capture)
+		return capture.value
+	end, captures)
+	return tests
+end
+
+local function resolve_nearest_test()
+	---@type TSNode|nil
+	local node = vim.treesitter.get_node()
+	while node do
+		local type = node:type()
+		if type == 'function_declaration' then
+			local name_field = node:field('name')[1]
+			if name_field then
+				local function_name = vim.treesitter.get_node_text(name_field, 0)
+				local matches = string.match(function_name, '^Test[A-Z].+$')
+				if matches then
+					return function_name
+				end
+			end
+		end
+		node = node:parent()
+	end
+	return nil
+end
+
+T.launch_args = function()
 	return coroutine.create(function(dap_run_co)
 		local args = {}
 		vim.ui.input({ prompt = 'Args: ' }, function(input)
@@ -57,7 +114,7 @@ local function get_arguments()
 	end)
 end
 
-local function get_pid()
+T.attach_pid = function()
 	return coroutine.create(function(dap_run_co)
 		vim.ui.select(
 			get_pids(),
@@ -78,7 +135,7 @@ local function get_pid()
 	end)
 end
 
-local function go_root()
+T.go_root = function()
 	local roots = rootutil.upward_roots({
 		dir = tostring(vim.fn.getcwd()),
 		patterns = { '^go%.mod$' },
@@ -87,21 +144,56 @@ local function go_root()
 	return roots[1].path
 end
 
-local function go_test_file()
-	local path = vim.fn.expand('%:p')
-	assert(type(path) == 'string' and path ~= '', 'Buffer is not a valid file')
-	assert(vim.bo.filetype == 'go', 'File is not a go file')
-	if string.match(path, '_test.go$') then
-		return path
+T.test_file_args = function()
+	local path = resolve_test_file()
+	assert(path, 'not a test file')
+	local tests = resolve_file_tests(path)
+	assert(#tests, 'no tests found')
+	local patterns = table.concat(tests, '|')
+	return { '-test.run', '^(' .. patterns .. ')$' }
+end
+
+T.test_pick_args = function()
+	local tests = {}
+	local path = resolve_test_file()
+	if path then
+		vim.print('path: ' .. path)
+		vim.list_extend(tests, resolve_file_tests(path))
 	end
-	local files = rootutil.downward_roots({
-		dir = go_root(),
-		patterns = {
-			'^' .. vim.fn.expand('%:r') .. '_test.go$',
-		},
+	local matches = rootutil.downward_roots({
+		dir = T.go_root(),
+		patterns = { '_test%.go$' },
 	})
-	assert(#files > 0, 'No test file')
-	return files[1].path .. '/' .. files[1].file
+	local files = vim.tbl_map(function(item)
+		return item.path .. '/' .. item.file
+	end, matches)
+	for _, file in ipairs(files) do
+		local file_tests = resolve_file_tests(file)
+		for _, test in ipairs(file_tests) do
+			if not vim.list_contains(tests, test) then
+				table.insert(tests, test)
+			end
+		end
+	end
+	assert(#tests, 'no tests found')
+	return coroutine.create(function(dap_run_co)
+		local args = {}
+		vim.ui.select(tests, { prompt = 'Test: ' }, function(test)
+			args = { '-test.run', '^' .. test .. '$' }
+			coroutine.resume(dap_run_co, args)
+		end)
+	end)
+end
+
+T.test_closest_args = function()
+	local path = tostring(vim.fn.expand('%:p'))
+	local matches = string.match(path, '_test%.go$')
+	P({ path, matches })
+	assert(matches, 'not a test file')
+	local test = resolve_nearest_test()
+	P({ test })
+	assert(test, 'no test found')
+	return { '-test.run', '^' .. test .. '$' }
 end
 
 ---@type table<string, Adapter>
@@ -120,147 +212,74 @@ M.adapters = {
 ---@type table<string, GoConfiguration[]>
 M.configurations = {
 	go = {
-		--- NOTE: OK
 		{
-			name = '  Debug program       (launch)',
+			name = '  Debug program',
 			type = 'delve',
 			request = 'launch',
 			mode = 'debug',
-			program = go_root,
+			program = T.go_root,
 			args = {},
-      buildFlags = {}
+			buildFlags = {},
 		},
 
-		--- NOTE: OK
 		{
-			name = '  Debug program+args  (launch)',
+			name = '  Debug program w/ args',
 			type = 'delve',
 			request = 'launch',
 			mode = 'debug',
-			program = go_root,
-			args = get_arguments,
-      buildFlags = {}
+			program = T.go_root,
+			args = T.launch_args,
+			buildFlags = {},
 		},
 
-		--- TODO: check this with http-server
 		{
-			name = '  Debug process       (attach)',
+			name = '  Debug attached to process',
 			type = 'delve',
 			request = 'attach',
 			mode = 'local',
-			processId = get_pid,
+			processId = T.attach_pid,
 		},
 
-		--- NOTE: OK
 		{
-			name = '  Debug test          (go.mod)',
+			name = '  Debug all tests',
 			type = 'delve',
 			request = 'launch',
 			mode = 'test',
-			program = go_root,
+			program = T.go_root,
 			args = {},
-      buildFlags = {}
+			buildFlags = {},
 		},
 
-		--- TODO: not working for some reason? missing build flag?
 		{
-			name = '  Debug test            (file)',
+			name = '  Debug file tests',
 			type = 'delve',
 			request = 'launch',
 			mode = 'test',
-			program = '${file}',
-			-- program = go_test_file,
-			args = {},
-      buildFlags = {}
+			program = T.go_root,
+			args = T.test_file_args,
+			buildFlags = {},
 		},
 
-		--- TODO: needs a function for args that pulls the current closes test
 		{
-			name = '  Debug test         (closest)',
+			name = '  Debug closest test',
 			type = 'delve',
 			request = 'launch',
 			mode = 'test',
-			program = '${file}',
-			-- args = { "-test.run", "^" .. testname .. "$" },
-			args = {},
-      buildFlags = {}
+			program = T.go_root,
+			args = T.test_closest_args,
+			buildFlags = {},
+		},
+
+		{
+			name = '  Debug selected test',
+			type = 'delve',
+			request = 'launch',
+			mode = 'test',
+			program = T.go_root,
+			args = T.test_pick_args,
+			buildFlags = {},
 		},
 	},
 }
 
 return M
-
--- NOTES: ====================================================================
-
---[[
-
-What do I want to debug?
-
-- Package/program  - debugs the main function
-- Test package     - debugs the whole test package
-- Test file        - debugs the current test file or pick one
-- Test function    - debugs the current test function or pick one
-
-To debug tests, we allways want to launch the process (i.e: run `go test`)
-To debug the package, we can either launch the process or attach to a
-running process. Do we want to allow attaching to a running process? Yes
-
-Use cases:
-1. Debug package (launch)
-2. Debug package (attach)
-3. Debug test package (launch)
-4. Debug test file (launch)
-5. Debug test function (launch)
-
-How can I perform these use cases using dlv?
-
-It seems we configure the delve adapter as a server, adding instructions on
-how to spawn it. nvim-dap will launch the server and for each session and
-connect to it via socket.
-
-https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
-
-**The dap plugin does not `launch` the application. It simply sends either
-a `launch` or `attach` request to the debugger. The debugger then launches
-or attaches to the application.**
-
-For debugging the program/package, We have 3 options:
-1. Launch the program ourselves and ask delve to attach (like 'dlv attach')
-   This won't work well for programs that exit before the debugger can attach
-2. Ask delve to launch the program (like 'dlv debug')
-   This is probably the easiest option, as delve is responsible for building
-3. Build the binaries and ask delve to launch the binary (like 'dlv exec')
-   This is the most versatile option, as we can build the binary ourselves
-   in any way (Makefile, go build, etc) with the flags we want
-
-What about tests? We need to ask delve to build and run test (like dlv test)
-
-In conclusion, we need to:
-
--. Launch delve in headless DAP mode
-1. Debug package (launch)
-   - request: `launch`
-   - mode: `debug`
-   - program: go_mod_dir()
-   - args: get_arguments()
-2. Debug package (attach)
-   - request: `attach`
-   - mode: `local`
-   - processId = ...,
-3. Test package (launch)
-   - request: `launch`
-   - mode: `test`
-   - program: go_mod_dir(),
-4. Test file
-   - request: `launch`
-   - mode: `test`
-   - program: "${file}",
-
-Reference: https://github.com/leoluz/nvim-dap-go/blob/main/lua/dap-go.lua#L132
-
-TODO: 
-- [x] write missing functions
-- [ ] check all configurations work
-- [ ] tidy up configuration
-
---]]

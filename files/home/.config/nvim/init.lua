@@ -13,6 +13,7 @@ _G.P = vim.print
 
 vim.z = {}
 require('options')
+require('binding')
 require('packadd')
 require('plugins')
 require('keymaps')

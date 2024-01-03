@@ -38,4 +38,32 @@ M.is_comment = function()
 	return false
 end
 
+---Loads contents into an unnamed buffer, starts treesitter, traverse the tree
+---and returns the query captures.
+---
+---@param content string[] : file contents
+---@param ft string : file type
+---@param query string : query
+M.apply_query = function(content, ft, query)
+	local bufnr = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_buf_set_lines(bufnr, 1, -1, false, content)
+	local lang = vim.treesitter.language.get_lang(ft)
+	assert(lang ~= nil, 'treesitter ' .. ft .. ' parser missing')
+	local parser = vim.treesitter.get_parser(bufnr, lang)
+	local parsed_query = vim.treesitter.query.parse(ft, query)
+	local tree = parser:parse()[1]
+	local root = tree:root()
+	local first, _, last, _ = root:range()
+	local captures = {}
+	for _, match, _ in parsed_query:iter_matches(root, bufnr, first, last) do
+		for id, node in pairs(match) do
+			local name = parsed_query.captures[id]
+			local value = vim.treesitter.get_node_text(node, bufnr)
+			table.insert(captures, { name = name, value = value })
+		end
+	end
+	pcall(vim.api.nvim_buf_delete, bufnr, { force = true })
+	return captures
+end
+
 return M

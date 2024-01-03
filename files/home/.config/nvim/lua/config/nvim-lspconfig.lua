@@ -21,6 +21,7 @@ vim.diagnostic.config({
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = false
 
 lsp.autotools_ls.setup({ capabilities = capabilities })
 lsp.bashls.setup({ capabilities = capabilities })

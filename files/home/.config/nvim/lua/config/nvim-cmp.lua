@@ -1,5 +1,4 @@
 local cmp = require('cmp')
-local defaults = require('cmp.config.default')()
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
 
@@ -21,7 +20,7 @@ cmp.setup({
 			cmp.TriggerEvent.InsertEnter,
 		},
 	},
-  preselect = cmp.PreselectMode.None,
+	preselect = cmp.PreselectMode.None,
 	snippet = {
 		expand = function(args)
 			require('luasnip').lsp_expand(args.body)
@@ -72,7 +71,7 @@ cmp.setup({
 	sources = cmp.config.sources({
 		{
 			name = 'nvim_lsp',
-			keyword_length = 2,
+			keyword_length = 1,
 			group_index = 1,
 			priority = 100,
 			trigger_characters = { '.', '>', '-' },
@@ -117,7 +116,20 @@ cmp.setup({
 			hl_group = 'CmpGhostText',
 		},
 	},
-	sorting = defaults.sorting,
+	sorting = {
+		priority_weight = 2,
+		comparators = {
+			cmp.config.compare.score,
+			cmp.config.compare.offset,
+			cmp.config.compare.kind,
+			cmp.config.compare.scopes,
+			cmp.config.compare.locality,
+			cmp.config.compare.exact,
+			cmp.config.compare.sort_text,
+			cmp.config.compare.length,
+			cmp.config.compare.order,
+		},
+	},
 	---@diagnostic disable-next-line: missing-fields
 	formatting = {
 		format = lspkind.cmp_format({

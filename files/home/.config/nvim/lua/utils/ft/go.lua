@@ -2,16 +2,17 @@ local M = {}
 
 --  TODO: maybe we can configure this for multiple filetypes
 
-local tsutil = require('utils.treesitter')
+local treeutil = require('utils.treesitter')
 
 local mappings = {
 	['eq'] = [[:=]],
-  ['ife'] = [[if err != nil {<cr><cr>}<up><tab>]]
+  ['ife'] = [[if err != nil {<cr><cr>}<up><tab>]],
+  ['fn'] = [[func() {}<left><cr>.<cr><up><tab><del>]]
 }
 
 local wrap = function(lhs, rhs)
 	return function()
-		return tsutil.is_comment() and lhs or rhs
+		return treeutil.is_comment() and lhs or rhs
 	end
 end
 

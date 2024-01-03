@@ -1,6 +1,11 @@
-snippet fn > __named function__
-	func ${1}(${2}) ${3} {
+snippet fun > __named function__
+	func ${1}(${2}) ${3}{
 		${4}
+	}
+
+snippet fn > __unnamed function__
+	func () {
+		${0}
 	}
 
 snippet afn > __anonymous function__
@@ -11,9 +16,19 @@ snippet afn > __anonymous function__
 snippet defer > __defer function__
 	defer func() { ${0} }()
 
-snippet main "func main()"
+snippet main > __func main()__
 	package main
 
 	func main() {
 		${0}
 	}
+
+snippet test > __test template__
+	func Test${1:Fun}(t *testing.T) {
+		ans := ${1}(${2:nil})
+		want := ${3:nil}
+		if ans != want {
+			t.Errorf("${1}(${2}) = %d; want %d", ans, want)
+		}
+	}
+
