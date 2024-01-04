@@ -6,8 +6,8 @@ local treeutil = require('utils.treesitter')
 
 local mappings = {
 	['eq'] = [[:=]],
-  ['ife'] = [[if err != nil {<cr><cr>}<up><tab>]],
-  ['fn'] = [[func() {}<left><cr>.<cr><up><tab><del>]]
+	['ife'] = [[if err != nil {<cr><cr>}<up><tab>]],
+	['fn'] = [[func() {}<left><cr>.<cr><up><tab><del>]],
 }
 
 local wrap = function(lhs, rhs)

@@ -58,6 +58,7 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost' }, {
 	callback = function(ev)
 		decrypt(ev.buf)
 	end,
+	nested = true,
 })
 
 vim.api.nvim_create_autocmd('BufWritePre', {
@@ -67,6 +68,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 	callback = function(ev)
 		encrypt(ev.buf)
 	end,
+	nested = true,
 })
 
 vim.api.nvim_create_user_command('GPG', function(cmd)

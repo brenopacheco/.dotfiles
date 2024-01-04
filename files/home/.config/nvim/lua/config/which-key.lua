@@ -32,11 +32,11 @@ wk.setup({
 	icons = {
 		group = '', -- symbol prepended to a group
 	},
-  -- somewhy this bugs out fugitive `cc`
+	-- somewhy this bugs out fugitive `cc`
 	-- triggers = { '<leader>', '<c-w>', 'g', 'z', ']', '[' },
 	disable = {
-		buftypes = { 'nofile', 'fugitive' },
-		filetypes = { 'fugitive' },
+		-- buftypes = { 'nofile', 'fugitive' },
+		-- filetypes = { 'fugitive' },
 	},
 })
 

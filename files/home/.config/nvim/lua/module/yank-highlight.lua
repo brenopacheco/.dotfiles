@@ -7,6 +7,7 @@
 local group = vim.api.nvim_create_augroup('yank_highlight', { clear = true })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
+	nested = true,
 	desc = 'Highlight on yank',
 	group = group,
 	callback = function()

@@ -43,6 +43,7 @@ local function addautocmd(debug)
 	debug = debug or false
 	local group = vim.api.nvim_create_augroup('backup_files', { clear = true })
 	vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+		nested = true,
 		desc = 'Backup file before writting',
 		group = group,
 		pattern = { '*' },
@@ -88,7 +89,8 @@ local function backups()
 	local choices = {}
 	for _, path in ipairs(paths) do
 		if path ~= '' then
-			local ts = string.gsub(tostring(vim.fn.fnamemodify(path, ':t')), '_.*$', '')
+			local ts =
+				string.gsub(tostring(vim.fn.fnamemodify(path, ':t')), '_.*$', '')
 			local backup = string.gsub(path, '^.*_', '')
 			local name = vim
 				---@diagnostic disable-next-line: missing-fields

@@ -14,7 +14,6 @@ require('neodev').setup({
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = false
 
-
 local lsp = require('lspconfig')
 
 lsp.lua_ls.setup({
@@ -26,9 +25,9 @@ lsp.lua_ls.setup({
 					vim.fn.resolve(vim.fn.stdpath('config') .. '/lua/types'),
 				},
 			},
-      completion = {
-        keywordSnippet = "Disable"
-      }
+			completion = {
+				keywordSnippet = 'Disable',
+			},
 		},
 	},
 })

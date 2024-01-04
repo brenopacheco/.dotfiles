@@ -98,7 +98,10 @@ local function packadd(repos)
 				pkg.config = false
 				local pattern = [[module ']] .. config .. [[' not found:]]
 				if string.sub(err, 1, string.len(pattern)) ~= pattern then
-					vim.notify("Error loading config " .. config .. ":\n" .. err, vim.log.levels.ERROR)
+					vim.notify(
+						'Error loading config ' .. config .. ':\n' .. err,
+						vim.log.levels.ERROR
+					)
 				end
 			end
 		end

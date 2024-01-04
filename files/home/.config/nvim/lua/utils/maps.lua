@@ -498,7 +498,6 @@ M.lsp_info = function()
 	lsputil.open_config()
 end
 
-
 -- Run make command
 M.run_make = function()
 	return bufutil.is_file() and vim.cmd([[make %]])
@@ -599,12 +598,12 @@ end
 
 -- Toggle dap ui
 M.toggle_dapui = function()
-  daputil.toggle_ui()
+	daputil.toggle_ui()
 end
 
 -- Open lf file explorer
 M.toggle_lf = function()
-  P('lf')
+	P('lf')
 	-- vim.cmd('Lf')
 end
 

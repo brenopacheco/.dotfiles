@@ -84,7 +84,7 @@ M.on_list = function(opts)
 			vim.o.fileencoding,
 			false
 		)
-    vim.notify('This is the only result')
+		vim.notify('This is the only result')
 	end
 end
 

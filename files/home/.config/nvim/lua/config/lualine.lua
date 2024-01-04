@@ -108,7 +108,7 @@ local encoding = { 'encoding' }
 
 local lsp = {
 	function()
-		local clients = vim.lsp.get_clients({bufnr = vim.fn.bufnr()})
+		local clients = vim.lsp.get_clients({ bufnr = vim.fn.bufnr() })
 		local names = ''
 		for i, client in pairs(clients) do
 			if i == 1 then

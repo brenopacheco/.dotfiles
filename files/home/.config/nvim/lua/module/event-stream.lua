@@ -3,37 +3,37 @@
 -- Provides Events command to open a buffer that captures all events
 --
 -- Skips `SafeState` and `UserGettingBored`
+-- Skips Cmd-event: 'BufReadCmd', 'BufWriteCmd', 'FileAppendCmd', 'FileReadCmd', 'FileWriteCmd', 'SourceCmd',
+-- Skips 'BufRead' as it is 'BufReadPre' repeated
 
 local bufname = '__events__'
 
 -- stylua: ignore start
 local all_events = {
   'BufAdd', 'BufDelete', 'BufEnter', 'BufFilePost', 'BufFilePre', 'BufHidden',
-  'BufLeave', 'BufModifiedSet', 'BufNew', 'BufNewFile', 'BufRead',
-  'BufReadPost', 'BufReadCmd', 'BufReadPre', 'BufUnload', 'BufWinEnter',
-  'BufWinLeave', 'BufWipeout', 'BufWrite', 'BufWritePre', 'BufWriteCmd',
-  'BufWritePost', 'ChanInfo', 'ChanOpen', 'CmdUndefined', 'CmdlineChanged',
-  'CmdlineEnter', 'CmdlineLeave', 'CmdwinEnter', 'CmdwinLeave', 'ColorScheme',
-  'ColorSchemePre', 'CompleteChanged', 'CompleteDonePre', 'CompleteDone',
-  'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI', 'DiffUpdated',
-  'DirChanged', 'DirChangedPre', 'ExitPre', 'FileAppendCmd', 'FileAppendPost',
-  'FileAppendPre', 'FileChangedRO', 'FileChangedShell',
-  'FileChangedShellPost', 'FileReadCmd', 'FileReadPost', 'FileReadPre',
-  'FileType', 'FileWriteCmd', 'FileWritePost', 'FileWritePre',
+  'BufLeave', 'BufModifiedSet', 'BufNew', 'BufNewFile', 'BufReadPost',
+  'BufReadPre', 'BufUnload', 'BufWinEnter', 'BufWinLeave', 'BufWipeout',
+  'BufWrite', 'BufWritePre', 'BufWritePost', 'ChanInfo', 'ChanOpen',
+  'CmdUndefined', 'CmdlineChanged', 'CmdlineEnter', 'CmdlineLeave',
+  'CmdwinEnter', 'CmdwinLeave', 'ColorScheme', 'ColorSchemePre',
+  'CompleteChanged', 'CompleteDonePre', 'CompleteDone', 'CursorHold',
+  'CursorHoldI', 'CursorMoved', 'CursorMovedI', 'DiffUpdated', 'DirChanged',
+  'DirChangedPre', 'ExitPre', 'FileAppendPost', 'FileAppendPre',
+  'FileChangedRO', 'FileChangedShell', 'FileChangedShellPost', 'FileReadPost',
+  'FileReadPre', 'FileType', 'FileWritePost', 'FileWritePre',
   'FilterReadPost', 'FilterReadPre', 'FilterWritePost', 'FilterWritePre',
   'FocusGained', 'FocusLost', 'FuncUndefined', 'UIEnter', 'UILeave',
   'InsertChange', 'InsertCharPre', 'InsertEnter', 'InsertLeavePre',
   'InsertLeave', 'MenuPopup', 'ModeChanged', 'OptionSet', 'QuickFixCmdPre',
   'QuickFixCmdPost', 'QuitPre', 'RemoteReply', 'SearchWrapped',
-  'RecordingEnter', 'RecordingLeave', 'SessionLoadPost',
-  'ShellCmdPost', 'Signal', 'ShellFilterPost', 'SourcePre', 'SourcePost',
-  'SourceCmd', 'SpellFileMissing', 'StdinReadPost', 'StdinReadPre',
-  'SwapExists', 'Syntax', 'TabEnter', 'TabLeave', 'TabNew', 'TabNewEntered',
-  'TabClosed', 'TermOpen', 'TermEnter', 'TermLeave', 'TermClose',
-  'TermResponse', 'TextChanged', 'TextChangedI', 'TextChangedP',
-  'TextChangedT', 'TextYankPost', 'User', 'VimEnter', 'VimLeave',
-  'VimLeavePre', 'VimResized', 'VimResume', 'VimSuspend', 'WinClosed',
-  'WinEnter', 'WinLeave', 'WinNew', 'WinScrolled', 'WinResized',
+  'RecordingEnter', 'RecordingLeave', 'SessionLoadPost', 'ShellCmdPost',
+  'Signal', 'ShellFilterPost', 'SourcePre', 'SourcePost', 'SpellFileMissing',
+  'StdinReadPost', 'StdinReadPre', 'SwapExists', 'Syntax', 'TabEnter',
+  'TabLeave', 'TabNew', 'TabNewEntered', 'TabClosed', 'TermOpen', 'TermEnter',
+  'TermLeave', 'TermClose', 'TermResponse', 'TextChanged', 'TextChangedI',
+  'TextChangedP', 'TextChangedT', 'TextYankPost', 'User', 'VimEnter',
+  'VimLeave', 'VimLeavePre', 'VimResized', 'VimResume', 'VimSuspend',
+  'WinClosed', 'WinEnter', 'WinLeave', 'WinNew', 'WinScrolled', 'WinResized',
 }
 -- stylua: ignore end
 
@@ -61,12 +61,21 @@ local function handler(bufnr, winid, ev)
 		'\tfile:  ' .. ev.file,
 		'\tdata:  ',
 	}
-	local text = vim.list_extend(head, data)
-	---@diagnostic disable-next-line: param-type-mismatch
-	vim.fn.appendbufline(bufnr, 0, text)
-	if vim.fn.win_getid() ~= winid then
-		pcall(vim.api.nvim_win_set_cursor, winid, { 1, 1 })
-	end
+	local long_text = vim.list_extend(head, data)
+	local short_text = string.format('(%s): %12s - %s', ev.id, ev.event, ev.file)
+	local timer = vim.uv.new_timer()
+	timer:start(100, 0, function()
+		-- why is this necessary? I don't know
+		-- dont rely on print inside this callback
+		vim.print(short_text)
+	end)
+	vim.schedule(function()
+		---@diagnostic disable-next-line: param-type-mismatch
+		vim.fn.appendbufline(bufnr, '$', long_text)
+		if vim.fn.win_getid() ~= winid then
+			pcall(vim.api.nvim_win_set_cursor, winid, { 1, 1 })
+		end
+	end)
 end
 
 ---@return boolean : whether the event stream buffer is open
@@ -99,15 +108,20 @@ local function add_autocmds(bufnr, winid, events)
 	local group = vim.api.nvim_create_augroup('event_stream', { clear = true })
 	for _, event in ipairs(events) do
 		vim.api.nvim_create_autocmd({ event }, {
+			nested = true,
 			desc = 'Event stream handler for ' .. event,
 			group = group,
 			pattern = { '*' },
-			callback = vim.schedule_wrap(function(ev)
+			callback = function(ev)
 				handler(bufnr, winid, ev)
-			end),
+			end,
+			-- callback = vim.schedule_wrap(function(ev)
+			-- 	handler(bufnr, winid, ev)
+			-- end),
 		})
 	end
 	vim.api.nvim_create_autocmd({ 'WinClosed' }, {
+		nested = true,
 		desc = 'Delete event stream buffer when window is closed',
 		group = group,
 		pattern = { tostring(winid) },
@@ -146,6 +160,10 @@ local function command(tbl)
 	local events = vim.tbl_filter(function(event)
 		return vim.list_contains(all_events, event)
 	end, vim.split(tbl.args, ' '))
+	if #events == 0 then
+		events = all_events
+	end
+	vim.notify('Events: ' .. vim.inspect(events))
 	eventstream(events)
 end
 

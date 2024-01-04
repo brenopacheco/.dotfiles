@@ -53,7 +53,6 @@ local function lf()
 	vim.cmd('silent! tunmap <buffer> kj')
 	vim.cmd('silent! tunmap <buffer> <Esc>')
 	vim.cmd('silent! tunmap <buffer> <C-[>')
-
 end
 
 vim.api.nvim_create_user_command('Lf', lf, {})

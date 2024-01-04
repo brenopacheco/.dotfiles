@@ -15,6 +15,7 @@ end
 local group = vim.api.nvim_create_augroup('ShadaRegisters', { clear = true })
 
 vim.api.nvim_create_autocmd('VimLeavePre', {
+	nested = true,
 	desc = 'Clear registers before saving shada file',
 	group = group,
 	callback = wipe_alpha,

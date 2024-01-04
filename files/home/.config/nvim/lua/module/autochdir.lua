@@ -5,7 +5,7 @@
 local blacklist = {
 	'^fugitive://',
 	'^term://',
-	'/tmp/nvim%.' .. vim.env.USER .. '/'
+	'/tmp/nvim%.' .. vim.env.USER .. '/',
 }
 
 local group = vim.api.nvim_create_augroup('autochdir', { clear = true })
@@ -37,4 +37,5 @@ vim.api.nvim_create_autocmd({ 'BufEnter' }, {
 		vim.cmd([[silent! tc %:p:h]])
 		table.insert(history, vim.fn.getcwd())
 	end,
+	nested = true,
 })

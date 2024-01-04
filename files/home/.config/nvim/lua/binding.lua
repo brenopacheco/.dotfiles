@@ -22,10 +22,6 @@ print
 
 ]]
 
-
-
-
-
 -- vim.diff({a}, {b}, {opts})                                        *vim.diff()*
 -- vim.json.decode({str}, {opts})                             *vim.json.decode()*
 -- vim.json.encode({obj})                                     *vim.json.encode()*
@@ -123,4 +119,3 @@ print
 -- vim.version.range({spec})                                *vim.version.range()*
 
 _G.v = M
-

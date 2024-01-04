@@ -15,7 +15,7 @@ local opt_scrolloff = function()
 				description = 'disable cursor centering',
 				callback = function()
 					vim.o.scrolloff = 0
-          vim.cmd('normal! zz')
+					vim.cmd('normal! zz')
 				end,
 			}
 		or {
@@ -64,7 +64,6 @@ local opt_bomb = function()
 			end,
 		}
 end
-
 
 ---@return Option[]
 local options = function()

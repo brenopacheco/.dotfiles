@@ -1,4 +1,4 @@
-﻿--- Arglistview
+--- Arglistview
 --
 -- Creates a window with the current argument list.
 -- Provides the :ArgNext, :ArgPrev, :ArgClear, :ArgDelete, :ArgAdd commands.
@@ -93,17 +93,18 @@ end
 
 local function update()
 	if #vim.fn.win_findbuf(buffer) < 1 then
-    pcall(vim.api.nvim_del_autocmd, autocmd)
+		pcall(vim.api.nvim_del_autocmd, autocmd)
 		setup()
 		autocmd = vim.api.nvim_create_autocmd({ 'WinClosed' }, {
 			desc = 'Refresh arg list window on close',
 			group = group,
-      pattern = { tostring(win) },
+			pattern = { tostring(win) },
 			callback = function()
 				if #vim.fn.argv() ~= 0 then
 					vim.schedule(update)
 				end
 			end,
+			nested = true,
 		})
 	end
 	local trim_width = 30
@@ -129,6 +130,7 @@ end
 group = vim.api.nvim_create_augroup('arglist_view', { clear = true })
 
 vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter' }, {
+	nested = true,
 	desc = 'Show arg list in floating window',
 	group = group,
 	callback = function()
@@ -143,6 +145,7 @@ vim.api.nvim_create_autocmd('User', {
 	pattern = 'ArgsChanged',
 	group = group,
 	callback = update,
+	nested = true,
 })
 
 local notify = function(msg)

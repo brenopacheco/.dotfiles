@@ -64,5 +64,6 @@ vim.z.modload({
 	'sniputil',
 	'telescope-select',
 	'yank-highlight',
-  'event-stream'
+	'event-stream',
+	'last-place',
 })

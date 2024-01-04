@@ -9,8 +9,7 @@
                              brenoleonhardt@gmail.com
 --]]
 
-_G.P = vim.print
-_G.log = vim.notify
+_G.log = vim.print
 
 vim.z = {}
 require('options')

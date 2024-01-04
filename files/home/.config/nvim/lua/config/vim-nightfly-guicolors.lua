@@ -17,6 +17,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 		vim.api.nvim_set_hl(0, 'Function', { fg = '#82aaff', bold = true })
 	end,
 	group = custom_highlight,
+	nested = true,
 })
 
 vim.cmd('colorscheme nightfly')

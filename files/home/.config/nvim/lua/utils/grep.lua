@@ -1,5 +1,5 @@
-local rootutils = require('utils.root')
 local qfutil = require('utils.qf')
+local rootutils = require('utils.root')
 
 local M = {}
 
@@ -43,7 +43,7 @@ M.grep_pattern = function(pattern)
 			},
 			function(choice)
 				local buffer = vim.fn.bufnr()
-        -- TODO: vim.cmd is not added to the cmd-line history
+				-- TODO: vim.cmd is not added to the cmd-line history
 				if choice == 'git' then
 					local root = rootutils.git_root()
 					if root == nil then

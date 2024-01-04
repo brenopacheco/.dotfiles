@@ -58,7 +58,8 @@ vim.api.nvim_create_autocmd('BufEnter', {
 	desc = 'Updates nvim-tree root',
 	group = group,
 	callback = function()
-		root = find_root()
+		local root = find_root()
 		api.tree.change_root(root)
 	end,
+	nested = true,
 })

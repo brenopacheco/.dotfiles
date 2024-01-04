@@ -78,7 +78,7 @@ cmp.setup({
 		},
 		{
 			name = 'luasnip',
-			keyword_length = 2,
+			keyword_length = 1,
 			group_index = 1,
 			priority = 250,
 			trigger_characters = { '#' },

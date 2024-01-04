@@ -4,9 +4,9 @@
 
 return function()
 	local targets = require('utils.make').targets()
-  if #targets == 0 then
-    return vim.notify('No targets found', vim.log.levels.WARN)
-  end
+	if #targets == 0 then
+		return vim.notify('No targets found', vim.log.levels.WARN)
+	end
 	local max_target_len = 0
 	for _, target in ipairs(targets) do
 		max_target_len = string.len(target.name) > max_target_len

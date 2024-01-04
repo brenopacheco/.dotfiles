@@ -1,4 +1,4 @@
-﻿--- Reloader
+--- Reloader
 --
 -- Attaches an autocmd to reload a lua module on config file save
 --
@@ -22,6 +22,7 @@ end
 
 -- setup
 vim.api.nvim_create_autocmd('BufWritePost', {
+	nested = true,
 	group = vim.api.nvim_create_augroup('Reloader', { clear = true }),
 	pattern = '*.lua',
 	desc = 'Reload nvim lua modules on save',

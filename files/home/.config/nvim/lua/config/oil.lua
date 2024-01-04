@@ -4,19 +4,19 @@ local oil = require('oil')
 oil.setup({
 	-- TODO: move this to keymap
 	keymaps = {
-		['-']     = 'actions.parent',
-		['e']     = 'actions.select',
-		['+']     = 'actions.select',
+		['-'] = 'actions.parent',
+		['e'] = 'actions.select',
+		['+'] = 'actions.select',
 
 		['<c-p>'] = 'actions.preview',
 		['<c-s>'] = 'actions.select_split',
 		['<c-t>'] = 'actions.select_tab',
 		['<c-v>'] = 'actions.select_vsplit',
 
-		['g?']    = 'actions.show_help',
-		['gx']    = 'actions.open_external',
-		['q']     = 'actions.close',
-		['zh']    = 'actions.toggle_hidden',
+		['g?'] = 'actions.show_help',
+		['gx'] = 'actions.open_external',
+		['q'] = 'actions.close',
+		['zh'] = 'actions.toggle_hidden',
 	},
 	buf_options = {
 		buflisted = false,
@@ -35,4 +35,5 @@ vim.api.nvim_create_autocmd({ 'BufEnter' }, {
 	callback = function()
 		vim.cmd('cd ' .. oil.get_current_dir())
 	end,
+	nested = true,
 })
