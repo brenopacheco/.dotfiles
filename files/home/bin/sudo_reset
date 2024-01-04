@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# If sudo is not suddenly rejecting the password, run this
+
+su
+faillock --reset

@@ -10,6 +10,7 @@ vim.opt.colorcolumn    = { 78 }                        -- draw column at positio
 vim.opt.conceallevel   = 0                             -- shows |hyperlinks|
 vim.opt.cursorline     = true                          -- highlights current line
 vim.opt.encoding       = 'utf-8'                       -- set default internal encoding
+vim.opt.fileformat     = 'unix'                        -- set default file format
 vim.opt.fileencoding   = 'utf-8'                       -- default buffer file encoding
 vim.opt.fileencodings  = {
 	'utf-8',

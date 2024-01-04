@@ -1,4 +1,5 @@
 local bufutil = require('utils.buf')
+local qfutil = require('utils.qf')
 
 local dap = require('dap')
 
@@ -69,7 +70,7 @@ end
 
 M.debug_bp_list = function()
 	dap.list_breakpoints()
-	vim.cmd('copen | wincmd p')
+	qfutil.qf()
 end
 
 M.debug_hover = function()

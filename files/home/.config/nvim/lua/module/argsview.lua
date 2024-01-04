@@ -27,6 +27,13 @@ local function trim_path(path, len)
 	return tpath, string.len(tpath)
 end
 
+---@param list string[]
+local function resolve_paths(list)
+	return vim.tbl_map(function(item)
+    return tostring(vim.fn.fnamemodify(item, ':p'))
+	end, list)
+end
+
 ---@param max_width number
 local function get_arglist(max_width)
 	local idx = vim.fn.argidx() + 1
@@ -36,9 +43,9 @@ local function get_arglist(max_width)
 	if arglist == nil or type(arglist) ~= 'table' or #arglist == 0 then
 		return {}, 0
 	end
-	for i, arg in ipairs(arglist) do
+	for i, arg in ipairs(resolve_paths(arglist)) do
 		local str, len = trim_path(arg, max_width - 3)
-		if arg == vim.fn.expand('%') then
+		if arg == vim.fn.expand('%:p') then
 			str = str .. ' ❰'
 			len = len + 2
 			if i ~= idx then

@@ -8,8 +8,8 @@ local M = {}
 local root_patterns = {
 	'^package%.json$',
 	'^project%.json$',
-	'^%.*%.sln$',
-	'^%.*%.csproj$',
+	'%.sln$',
+	'%.csproj$',
 	'^go%.mod$',
 	'^Makefile$',
 	'^Cargo.toml$',

@@ -15,14 +15,16 @@ function show_usage() {
 	echo "Usage: tasker [options]"
 	echo "Options:"
 	echo "  -h, Show help message"
-	echo "  -i, Run tasks interactively "
+	echo "  -i, Run tasks interactively"
 	echo "  -v, Run tasks verbosely"
+	echo "  -f, Fzf task and run"
 }
 
 HELP=false
 INTERACTIVE=false
+FZF=false
 
-while getopts "hiv" opt; do
+while getopts "hivf" opt; do
 	case $opt in
 	h)
 		HELP=true
@@ -32,6 +34,9 @@ while getopts "hiv" opt; do
 		;;
 	v)
 		VERBOSE=true
+		;;
+	f)
+		FZF=true
 		;;
 	\?)
 		exit 1
@@ -51,10 +56,22 @@ echo
 
 tasks=$(find ./tasks/ -type f -name "*.sh" | sort -n)
 
+if $FZF; then
+	# loop forever
+	while true; do
+		task=$(echo "$tasks" | fzf --reverse --prompt="Select task: ")
+		if [[ -n $task ]]; then
+			runner "$task" "$VERBOSE"
+			read -p "Press enter to continue or ctrl-c to exit\n" -r -s
+		else
+			exit 0
+		fi
+	done
+fi
+
 if $INTERACTIVE; then
 	PS3="Select task: "
-	select task in $tasks
-	do
+	select task in $tasks; do
 		echo "Selected: $task"
 		if [[ -n $task ]]; then
 			runner "$task" "$VERBOSE"

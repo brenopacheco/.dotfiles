@@ -43,12 +43,22 @@ lsp.jsonls.setup({
 lsp.marksman.setup({ capabilities = capabilities })
 lsp.omnisharp.setup({
 	cmd = {
-		'/bin/omnisharp',
+		'omnisharp',
 		'--languageserver',
 		'--hostPID',
 		tostring(vim.fn.getpid()),
 	},
 	capabilities = capabilities,
+	enable_editorconfig_support = true,
+	enable_ms_build_load_projects_on_demand = false,
+	enable_roslyn_analyzers = false,
+	organize_imports_on_format = false,
+	enable_import_completion = false, -- true is too slow
+	sdk_include_prereleases = true,
+	analyze_open_documents_only = false,
+	handlers = {
+		['textDocument/definition'] = require('omnisharp_extended').handler,
+	},
 })
 lsp.vimls.setup({ capabilities = capabilities })
 lsp.yamlls.setup({
@@ -59,7 +69,3 @@ lsp.yamlls.setup({
 	capabilities = capabilities,
 })
 lsp.zk.setup({ capabilities = capabilities })
-
---[[ ansiblels cmake dotls efm elixirls graphql helm_ls jdtls jqls ocamllsp
-prismals pylyzer quick_lint_js rust_analyzer serve_d solargraph sqlls svelte
-tailwindcss zls --]]

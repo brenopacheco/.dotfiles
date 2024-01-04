@@ -38,8 +38,12 @@ M.errors = function(opts)
 	local diagnostics = vim.diagnostic.get(bufnr)
 	local qfitems = vim.diagnostic.toqflist(diagnostics)
 	vim.fn.setqflist(qfitems)
-	vim.cmd('copen')
-	vim.cmd('wincmd p')
+	M.open()
+end
+
+---@param select 'cfirst' | 'clast' | nil
+M.open = function(select)
+	vim.cmd('botright copen | wincmd p ' .. (select or ''))
 end
 
 return M

@@ -116,6 +116,7 @@ end
 -- Find files in git directory using ripgrep
 M.find_grep = function()
 	require('telescope.builtin').live_grep({
+    default_text = vim.fn.expand('<cword>'),
 		search_dirs = { rootutil.git_root() },
 	})
 end
@@ -603,8 +604,7 @@ end
 
 -- Open lf file explorer
 M.toggle_lf = function()
-	P('lf')
-	-- vim.cmd('Lf')
+  vim.notify('not implemented', vim.log.levels.WARN)
 end
 
 -- Toggle side tree
@@ -631,7 +631,7 @@ end
 -- Toggle quickfix window
 M.toggle_quickfix = function()
 	bufutil.toggle('qf', function()
-		vim.cmd('copen | wincmd p')
+		qfutil.qf()
 	end)
 end
 

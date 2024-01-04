@@ -18,9 +18,13 @@ function caps-lock() {
 #}}}
 # tmux_fzf : fzf tmux sessions and attach {{{
 function tmux_fzf() {
-	session=$(tmux ls | sed 's/:.*//' | fzf --reverse --prompt="Attach: ")
-	if [ -n "$session" ]; then
-		tmux attach -t "$session"
+	if pgrep tmux; then
+		session=$(tmux ls | sed 's/:.*//' | fzf --reverse --prompt="Attach: ")
+		if [ -n "$session" ]; then
+			tmux attach -t "$session"
+		fi
+	else
+	    echo "No tmux sessions running" >&2
 	fi
 }
 # }}}
@@ -40,15 +44,4 @@ function gen-password() {
 	openssl rand -base64 32
 }
 #}}}
-# # cmus : start cmus in tmux session {{{
-# function cmus() {
-# 	if ! tmux has-session -t cmus 2>/dev/null; then
-# 		tmux new-session -s cmus -n cmus -c ~/Music
-# 	fi
-# 	if ! tmux list-windows -t cmus | grep -q cmus; then
-# 		tmux new-window -t cmus -n cmus -c ~/Music
-# 	fi
-# 	# tmux send-keys -t cmus:cmus C-c cmus C-m
-# }
-# # }}}
 # vim:tw=78:ts=8:noet:ft=sh:norl:

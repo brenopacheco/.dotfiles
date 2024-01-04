@@ -1,3 +1,5 @@
+local qfutil = require('utils.qf')
+
 local M = {}
 
 --- Check if any appropriate lsp client is attached to the current buffer.
@@ -77,7 +79,7 @@ M.on_list = function(opts)
 	end
 	if #result > 1 then
 		vim.fn.setqflist({}, ' ', { title = opts.title, items = result })
-		vim.api.nvim_command('copen | cfirst')
+    qfutil.open('cfirst')
 	else
 		vim.lsp.util.jump_to_location(
 			opts.items[1].user_data,
