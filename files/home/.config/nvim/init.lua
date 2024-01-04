@@ -10,6 +10,7 @@
 --]]
 
 _G.P = vim.print
+_G.log = vim.notify
 
 vim.z = {}
 require('options')

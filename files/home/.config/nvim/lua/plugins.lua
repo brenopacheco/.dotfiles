@@ -63,5 +63,6 @@ vim.z.modload({
 	'shada',
 	'sniputil',
 	'telescope-select',
-	'yank-highlight'
+	'yank-highlight',
+  'event-stream'
 })

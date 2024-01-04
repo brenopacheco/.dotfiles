@@ -16,6 +16,30 @@ local M = {}
 ---@field targets fun(dir: string, file: string, data: string[]): Target[]
 
 ---@type System
+local shell = {
+	name = 'shell',
+	patterns = { '%.sh$' },
+	targets = function(dir, file)
+		---@type Target[]
+		local targets = {}
+		local path = dir .. '/' .. file
+		if vim.fn.executable(path) ~= 1 then
+			return targets
+		end
+		---@type Target
+		local target = {
+			name = file,
+			cmd = './' .. file,
+			dir = dir,
+			file = file,
+			kind = 'bash',
+		}
+		table.insert(targets, target)
+		return targets
+	end,
+}
+
+---@type System
 local make = {
 	name = 'make',
 	patterns = { 'Makefile' },
@@ -79,10 +103,10 @@ local node = {
 	targets = function(dir, file, data)
 		---@type Target[]
 		local targets = {}
-    local status, decoded = pcall(vim.json.decode, vim.join(data, '\n'))
-    if not status then
-      return {}
-    end
+		local status, decoded = pcall(vim.json.decode, vim.join(data, '\n'))
+		if not status then
+			return {}
+		end
 		---@type table<string, string>
 		local scripts = decoded.scripts
 		local manager = fileutil.exists(dir .. '/yarn.lock') and 'yarn' or 'npm'
@@ -115,16 +139,103 @@ local dotnet = {
 	targets = function(dir, file)
 		---@type Target[]
 		local targets = {}
+
+		--[[
+--- get all projects from solutions
+fd sln | xargs -i bash -c 'cd $(dirname {}) >/dev/null; dotnet sln list | tail -n +3 | xargs realpath 2>/dev/null' | sort | uniq
+--- equivalent to
+fd '\.csproj$'
+
+
+dotnet sln list / dotnet sln <path to sol> list
+
+From solution .sln files we can run from there:
+- dotnet build
+- dotnet clean
+- dotnet restore
+- dotnet test
+- dotnet list (package/project)
+- dotnet format
+- dotnet sln list
+- dotnet sln add <input>
+- dotnet sln remove <input>
+
+From project .csproj files we can run from there:
+- dotnet build
+- dotnet clean
+- dotnet restore
+- dotnet run
+- dotnet watch
+- dotnet format
+- dotnet test
+- dotnet list (package/project)
+
+Tests can be
+- dotnet test
+- dotnet test --filter 'Category=Integration'
+- dotnet test --filter 'Category=Unit'
+
+To format
+- dotnet format
+
+Aditionally, we might want to run tools
+
+`dotnet tool list`
+Package Id                      Version      Commands                 Manifest
+----------------------------------------------------------------------------------------------------------------------
+swashbuckle.aspnetcore.cli      6.5.0        swagger                  /home/breno/fc/backend/.config/dotnet-tools.json
+dotnet-ef                       8.0.0        dotnet-ef                /home/breno/fc/backend/.config/dotnet-tools.json
+dotnet-sonarscanner             6.0.0        dotnet-sonarscanner      /home/breno/fc/backend/.config/dotnet-tools.json
+dotnet-coverage                 17.9.3       dotnet-coverage          /home/breno/fc/backend/.config/dotnet-tools.json
+
+
+  --info            Display .NET information.
+  --list-runtimes   Display the installed runtimes.
+  --list-sdks       Display the installed SDKs.
+  --version         Display .NET SDK version in use.
+
+SDK commands:
+  add               Add a package or reference to a .NET project.
+  build             Build a .NET project.
+  build-server      Interact with servers started by a build.
+  clean             Clean build outputs of a .NET project.
+  format            Apply style preferences to a project or solution.
+  help              Show command line help.
+  list              List project references of a .NET project.
+  msbuild           Run Microsoft Build Engine (MSBuild) commands.
+  new               Create a new .NET project or file.
+  nuget             Provides additional NuGet commands.
+  pack              Create a NuGet package.
+  publish           Publish a .NET project for deployment.
+  remove            Remove a package or reference from a .NET project.
+  restore           Restore dependencies specified in a .NET project.
+  run               Build and run a .NET project output.
+  sdk               Manage .NET SDK installation.
+  sln               Modify Visual Studio solution files.
+  store             Store the specified assemblies in the runtime package store.
+  test              Run unit tests using the test runner specified in a .NET project.
+  tool              Install or manage tools that extend the .NET experience.
+  vstest            Run Microsoft Test Engine (VSTest) commands.
+  workload          Manage optional workloads.
+
+
+
+
+
+dotnet test --filter 'Category=Integration'
+dotnet test --filter 'Category=Unit'
+        ]]
+
 		table.insert(targets, {
 			name = 'test Category=Unit',
-			cmd = [[dotnet test --filter 'Category=Unit']],
+			cmd = [[]],
 			dir = dir,
 			file = file,
 			kind = 'dotnet',
 		})
 		table.insert(targets, {
 			name = 'test Category=Integration',
-			cmd = [[dotnet test --filter 'Category=Integration']],
+			cmd = [[]],
 			dir = dir,
 			file = file,
 			kind = 'dotnet',
@@ -133,7 +244,7 @@ local dotnet = {
 	end,
 }
 
-local systems = { make, node, dotnet, go }
+local systems = { make, node, dotnet, go, shell }
 
 --- Get all run targets from all systems (make, go, rust, etc.)
 ---
@@ -141,16 +252,10 @@ local systems = { make, node, dotnet, go }
 M.targets = function()
 	---@type Target[]
 	local targets = {}
-	local all_roots = rootutil.all_roots()
+	local git_root = rootutil.git_root()
 	for _, system in ipairs(systems) do
-		local roots = vim.tbl_filter(function(root)
-			for _, pattern in ipairs(system.patterns) do
-				if string.match(root.file, pattern) then
-					return true
-				end
-			end
-			return false
-		end, all_roots)
+		local roots =
+			rootutil.downward_roots({ dir = git_root, patterns = system.patterns })
 		for _, root in ipairs(roots) do
 			local filepath = root.path .. '/' .. root.file
 			local data = fileutil.read(filepath)

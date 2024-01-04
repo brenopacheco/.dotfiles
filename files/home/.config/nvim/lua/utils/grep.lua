@@ -43,6 +43,7 @@ M.grep_pattern = function(pattern)
 			},
 			function(choice)
 				local buffer = vim.fn.bufnr()
+        -- TODO: vim.cmd is not added to the cmd-line history
 				if choice == 'git' then
 					local root = rootutils.git_root()
 					if root == nil then
