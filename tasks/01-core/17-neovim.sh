@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 
 function get_ver() {
-	curl -s https://api.github.com/repos/neovim/neovim/releases |
-		jq '.[] | select(.tag_name == "nightly")' |
-		jq '.body | capture("NVIM (?<version>.+)")' |
-		jq -r '.version | gsub("^v|-dev.*"; "")'
+	curl -s https://api.github.com/repos/neovim/neovim/releases | jq '.[] | select(.tag_name == "nightly")' | jq '.body | capture("NVIM (?<version>.+)")' | jq -r '.version | gsub("^v|-dev.*"; "")'
 }
 
 function get_rel() {
-	curl -s "https://api.github.com/repos/neovim/neovim/actions/runs?event=schedule&status=completed" |
-		jq '.workflow_runs | [.[] | select(.display_title == "Release")][0] | .run_number'
+	curl -s "https://api.github.com/repos/neovim/neovim/actions/runs?event=schedule&status=completed" | jq '.workflow_runs | [.[] | select(.display_title == "release")][0] | .run_number'
 }
 
 function should_run() {

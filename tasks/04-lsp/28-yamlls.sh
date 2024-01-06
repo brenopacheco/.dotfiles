@@ -5,5 +5,5 @@ function should_run() {
 }
 
 function task() {
-	npm i -g yaml-language-server && return "$OK"
+	yarn global add yaml-language-server && return "$OK"
 }

@@ -78,6 +78,7 @@ test -r /home/breno/.opam/opam-init/init.sh &&
 # if [ "$SHLVL" = 1 ]; then
 export PATH=$PATH:$HOME/bin
 export PATH=$PATH:$HOME/.npm/bin          # node
+export PATH=$PATH:$HOME/.yarn/bin         # node
 export PATH=$PATH:$HOME/.cargo/bin        # rust
 export PATH=$PATH:$HOME/.local/bin        # python
 export PATH=$PATH:$HOME/.pkgs/bin         # ngrok

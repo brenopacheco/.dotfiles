@@ -41,5 +41,7 @@ function task() {
 			gpg --pinentry-mode loopback --import "$key" || return
 		done
 	fi
+	rm $HOME/.netrc.gpg
+	ln -sn $HOME/.netrc.gpg-breno $HOME/.netrc.gpg
 	gpg --list-secret-keys brenoleonhardt@gmail.com && return "$OK"
 }
