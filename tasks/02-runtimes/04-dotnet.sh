@@ -1,16 +1,21 @@
 #!/usr/bin/env bash
 
-# TODO: create PKGBUILD
+packages=(
+	"dotnet-sdk"
+	"dotnet-sdk-6.0"
+	"dotnet-sdk-7.0"
+	"dotnet-runtime"
+	"dotnet-runtime-6.0"
+	"dotnet-runtime-7.0"
+	"aspnet-runtime"
+	"aspnet-runtime-6.0"
+	"aspnet-runtime-7.0"
+)
 
 function should_run() {
-	return $SKIP
-	which dotnet && return "$DONE" || return "$RUN"
+	has_packages "${packages[@]}" && return "$DONE" || return "$RUN"
 }
 
 function task() {
-	sudo pacman -S --noconfirm dotnet-runtime &&
-		curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh &&
-		chmod +x /tmp/dotnet-install.sh &&
-		sudo /tmp/dotnet-install.sh --install-dir /usr/share/dotnet -channel STS -version latest &&
-		return "$OK"
+	sudo pacman -S --noconfirm "${packages[@]}" && return "$OK"
 }
