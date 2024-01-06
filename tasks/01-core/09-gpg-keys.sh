@@ -16,6 +16,14 @@ function get_secrets_filename() {
 	return 1
 }
 
+function mount_devices() {
+	for disk in $(lsblk -l -b -o NAME,TYPE,TRAN,RO | awk '$2 == "disk" && $3 == "usb" && $4 == 0 {print $1}'); do
+		for partition in $(lsblk -l -b -o NAME,TYPE,MOUNTPOINTS | awk -v disk="^$disk" '$1 ~ disk && $2 == "part" && $3 == "" {print $1}'); do
+			udisksctl mount -b "/dev/$partition"
+		done
+	done
+}
+
 function should_run() {
 	gpg --list-secret-keys brenoleonhardt@gmail.com && return "$DONE"
 	if ! get_secrets_filename; then
@@ -25,6 +33,7 @@ function should_run() {
 }
 
 function task() {
+	mount_devices
 	local tmpdir=$(mktemp -d)
 	export GPG_TTY=$(tty)
 	gpgconf --reload gpg-agent

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# echo GETPIN | pinentry-qt
+
+err=$(mktemp)
+
+for pinentry in $(cd /usr/bin; fd pinentry); do
+	if $pinentry --help >/dev/null 2>$err; then
+		printf "%-20s - OK\n" $pinentry
+	else
+		printf "%-20s - FAILED\n" $pinentry
+		cat $err
+	fi
+done
+
