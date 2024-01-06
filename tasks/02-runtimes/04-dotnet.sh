@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+# TODO: create PKGBUILD
+
 function should_run() {
+	return $SKIP
 	which dotnet && return "$DONE" || return "$RUN"
 }
 
