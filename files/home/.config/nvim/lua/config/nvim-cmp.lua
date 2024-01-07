@@ -67,6 +67,23 @@ cmp.setup({
 		['<C-j>'] = cmp.mapping(function()
 			luasnip.jump(-1)
 		end, { 'i', 's' }),
+		['<C-d>'] = function()
+      ---@type number|nil
+      local docs_bufnr = nil
+      local winnrs = vim.api.nvim_tabpage_list_wins(0)
+      for _, winnr in ipairs(winnrs) do
+        local bufnr = vim.fn.winbufnr(winnr)
+        local ft  = vim.api.nvim_get_option_value( 'ft', { buf = bufnr })
+         if ft == 'cmp_docs' then
+          docs_bufnr = bufnr
+        end
+      end
+      if not docs_bufnr then
+				return vim.notify('No entry selected')
+      end
+      -- here we should copy the buffer contents, copy the window options
+      -- and duplicate both
+		end,
 	}),
 	sources = cmp.config.sources({
 		{

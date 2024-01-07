@@ -43,7 +43,7 @@ end
 
 ---@param select 'cfirst' | 'clast' | nil
 M.open = function(select)
-	vim.cmd('botright copen | wincmd p ' .. (select or ''))
+	vim.cmd('botright copen | wincmd p' .. (select and ' | ' .. select or ''))
 end
 
 return M

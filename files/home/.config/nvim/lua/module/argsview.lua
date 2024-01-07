@@ -3,7 +3,7 @@
 -- Creates a window with the current argument list.
 -- Provides the :ArgNext, :ArgPrev, :ArgClear, :ArgDelete, :ArgAdd commands.
 
-local group, ns, buffer, win, autocmd
+local group, ns, bufnr, winnr, autocmd
 
 local bufname = '__arglist__'
 
@@ -30,7 +30,7 @@ end
 ---@param list string[]
 local function resolve_paths(list)
 	return vim.tbl_map(function(item)
-    return tostring(vim.fn.fnamemodify(item, ':p'))
+		return tostring(vim.fn.fnamemodify(item, ':p'))
 	end, list)
 end
 
@@ -78,13 +78,14 @@ local function format_list(list, max_width)
 	return formatted_list
 end
 
-local function setup()
+---@param update fun():nil
+local function setup(update)
 	pcall(vim.api.nvim_buf_delete, vim.fn.bufnr(bufname), { force = true })
 	pcall(vim.api.nvim_del_augroup_by_name, group)
 	ns = vim.api.nvim_create_namespace('arglist')
-	buffer = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_buf_set_name(buffer, bufname)
-	win = vim.api.nvim_open_win(buffer, false, {
+	bufnr = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_buf_set_name(bufnr, bufname)
+	winnr = vim.api.nvim_open_win(bufnr, false, {
 		relative = 'editor',
 		row = 0,
 		col = 0,
@@ -96,23 +97,23 @@ local function setup()
 		style = 'minimal',
 		hide = true,
 	})
+	autocmd = vim.api.nvim_create_autocmd({ 'WinClosed' }, {
+		desc = 'Reset arg list window on close',
+		group = group,
+		pattern = { tostring(winnr) },
+		callback = function()
+			pcall(vim.api.nvim_del_autocmd, autocmd)
+			if #vim.fn.argv() ~= 0 then
+				vim.schedule(update)
+			end
+		end,
+		nested = true,
+	})
 end
 
 local function update()
-	if #vim.fn.win_findbuf(buffer) < 1 then
-		pcall(vim.api.nvim_del_autocmd, autocmd)
-		setup()
-		autocmd = vim.api.nvim_create_autocmd({ 'WinClosed' }, {
-			desc = 'Refresh arg list window on close',
-			group = group,
-			pattern = { tostring(win) },
-			callback = function()
-				if #vim.fn.argv() ~= 0 then
-					vim.schedule(update)
-				end
-			end,
-			nested = true,
-		})
+	if not vim.list_contains(vim.api.nvim_tabpage_list_wins(0), winnr) then
+		setup(update)
 	end
 	local trim_width = 30
 	local arglist, max_len = get_arglist(trim_width)
@@ -128,10 +129,10 @@ local function update()
 		hide = #arglist == 0,
 		focusable = false,
 	}
-	vim.api.nvim_win_set_config(win, opts)
-	vim.api.nvim_buf_set_lines(buffer, 0, #arglist - 1, false, list)
-	vim.highlight.range(buffer, ns, 'Cursor', { 0, 0 }, { 0, -1 })
-	vim.highlight.range(buffer, ns, 'Title', { 1, 0 }, { cols, -1 })
+	vim.api.nvim_win_set_config(winnr, opts)
+	vim.api.nvim_buf_set_lines(bufnr, 0, #arglist - 1, false, list)
+	vim.highlight.range(bufnr, ns, 'Cursor', { 0, 0 }, { 0, -1 })
+	vim.highlight.range(bufnr, ns, 'Title', { 1, 0 }, { cols, -1 })
 end
 
 group = vim.api.nvim_create_augroup('arglist_view', { clear = true })
