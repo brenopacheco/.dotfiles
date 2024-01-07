@@ -80,10 +80,10 @@ local register = function(settings)
 end
 
 local debuggers = {
-	go = 'delve',
-	node = 'vscode-js-debug',
+	-- c = 'lldb',
 	dotnet = 'netcoredbg',
-	c = 'lldb',
+	go = 'delve',
+	-- node = 'vscode-js-debug',
 }
 
 for lang, debugger in pairs(debuggers) do
@@ -95,7 +95,7 @@ for lang, debugger in pairs(debuggers) do
 	end
 end
 
-register(require('utils.dap.c'))
+-- register(require('utils.dap.c'))
 register(require('utils.dap.dotnet'))
 register(require('utils.dap.go'))
-register(require('utils.dap.node'))
+-- register(require('utils.dap.node'))

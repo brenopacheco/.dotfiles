@@ -1,0 +1,16 @@
+# shellcheck disable=all
+
+pkgname=gotop
+pkgver=4.2.0
+pkgrel=1
+pkgdesc='A terminal based graphical activity monitor inspired by gtop and vtop'
+arch=('x86_64')
+license=('MIT')
+url=https://github.com/xxxserxxx/gotop
+source=("https://github.com/xxxserxxx/gotop/releases/download/v4.2.0/gotop_v4.2.0_linux_amd64.tgz")
+
+md5sums=('f9e00f7ce42ab5cdc78fa5845898388f')
+
+package() {
+	install -Dm755 "$srcdir/$pkgname" "$pkgdir/usr/bin/$pkgname"
+}

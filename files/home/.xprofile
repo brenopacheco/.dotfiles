@@ -16,11 +16,16 @@ pasystray \
 	--key-grabbing \
 	--volume-inc=3 & disown # pulseaudio volume applet
 redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
+
+# currently there is no rule set. do I need this?
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
 
+dbus-update-activation-environment --all
+gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
+
 picomtray & disown # picom systray indicator
-agua      & disown # drink water notifier (TODO: make a systray indicator)
-dzen2_cal & disown # calendar widget (TODO: change the name of the script)
+agua      & disown # drink water notifier
+dzen2_cal & disown # calendar widget
 
 # TODO: fix this on twitch-notify
 (
@@ -33,5 +38,3 @@ dzen2_cal & disown # calendar widget (TODO: change the name of the script)
 ) & disown
 
 (sleep 1; xmodmap ~/.Xmodmap) & disown
-
-# TODO: control dbus launch (exec dbus-run-session dwm)

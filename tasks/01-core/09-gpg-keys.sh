@@ -26,6 +26,7 @@ function mount_devices() {
 
 function should_run() {
 	gpg --list-secret-keys brenoleonhardt@gmail.com && return "$DONE"
+	mount_devices
 	if ! get_secrets_filename; then
 		return "$SKIP"
 	fi
@@ -33,7 +34,6 @@ function should_run() {
 }
 
 function task() {
-	mount_devices
 	local tmpdir=$(mktemp -d)
 	export GPG_TTY=$(tty)
 	gpgconf --reload gpg-agent

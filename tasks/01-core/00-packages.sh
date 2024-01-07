@@ -34,6 +34,7 @@ packages=(
 	"linux-zen-headers"
 	"lldb"
 	"lsof"
+	"man-db"
 	"moreutils"
 	"ncdu"
 	"net-tools"
