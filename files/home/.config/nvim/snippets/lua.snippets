@@ -13,12 +13,12 @@ snippet fn > __anonymous function__
 	end
 
 snippet fort > __loop key-value pair table__
-	for key, value in pairs(${1}) do
+	for ${1:key}, ${2:value} in pairs(${3:tbl}) do
 	   ${0}
 	end
 
 snippet forl > __loop list table__
-	for idx, value in ipairs(${1}) do
+	for ${1:idx}, ${2:value} in ipairs(${3:list}) do
 	   ${0}
 	end
 
@@ -34,5 +34,13 @@ snippet M > __local module__
 	
 	return M
 
-snippet col
+snippet col > __print inspect__
 	  vim.print({ $0 })
+
+snippet stylua-ignore > __ignore__
+	-- stylua: ignore
+
+snippet stylua-ignore-block > __ignore block__
+	-- stylua: ignore start
+	${0}
+	-- stylua: ignore end

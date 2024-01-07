@@ -1,6 +1,7 @@
 --- Keymaps
 
 local maps = require('utils.maps')
+local treeutil = require('utils.treesitter')
 
 -- stylua: ignore
 local keyboard = {
@@ -168,25 +169,44 @@ local keyboard = {
       { { 's',     }, '<bs>',  '<bs>i'                                  },
       { { 'x',     }, '*',  [["zy/\V<C-r>=escape(@z, '\/')<cr><cr>]] },
     } -- ]]
+  },
+  abbreviations = {
+    go = {
+      ['eq']  = ':=',
+      ['ife'] = 'if err != nil {<cr><cr>}<up><tab>',
+      ['fn']  = 'func() {}<left><cr>.<cr><up><tab><del>',
+    }
   }
 }
-
-local function register(mappings)
-	vim.tbl_map(function(...)
-		local status, _ = pcall(vim.keymap.set, unpack(...))
-		if not status then
-			vim.notify(
-				'Failed to set keymap: ' .. vim.inspect({ ... }),
-				vim.log.levels.ERROR
-			)
-		end
-	end, mappings)
-end
 
 vim.g.mapleader = keyboard.leader
 vim.z.keyboard = keyboard
 
-vim.tbl_map(register, keyboard.mappings)
+for _, group in pairs(keyboard.mappings) do
+	for _, map in pairs(group) do
+		local status, _ = pcall(vim.keymap.set, unpack(map))
+		if not status then
+			vim.notify(
+				'Failed to set keymap: ' .. vim.inspect(map),
+				vim.log.levels.ERROR
+			)
+		end
+	end
+end
+
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'FileType' }, {
+	desc = 'Load buffer local abbreviations',
+	group = vim.api.nvim_create_augroup('abbreviations', { clear = true }),
+	pattern = vim.tbl_keys(keyboard.abbreviations),
+	callback = function(ev)
+		local ft = vim.api.nvim_get_option_value('ft', { buf = ev.buf })
+		for lhs, rhs in pairs(keyboard.abbreviations[ft]) do
+			vim.keymap.set('ia', lhs, function()
+				return treeutil.is_comment() and lhs or rhs
+			end, { buffer = ev.buf, expr = true })
+		end
+	end,
+})
 
 --[[ *:map-arguments*
 buffer: current buffer only                                   (default false)
