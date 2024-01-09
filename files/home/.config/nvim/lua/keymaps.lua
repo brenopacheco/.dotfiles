@@ -6,13 +6,13 @@ local treeutil = require('utils.treesitter')
 -- stylua: ignore
 local keyboard = {
   leader = ' ',
-  prefixes = {
+  prefixes = { -- [[
     d     = { name = ' debug'  },
     f     = { name = ' find'   },
     g     = { name = '󰊢 git'    },
     t     = { name = '󰙨 test'   },
     w     = { name = '󰖳 window' },
-  },
+  }, -- ]]
   mappings = {
     action = { -- [[
       { { 'n',     }, 'gr',             maps.goto_references,    { desc = ' references'           } },
@@ -34,7 +34,8 @@ local keyboard = {
       { { 'n', 'x' }, 'gx',             maps.run_gx,             { desc = ' browse',              } },
       { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
       { { 'n',     }, 'gl',             maps.lsp_info,           { desc = ' lsp-info'             } },
-      { { 'n', 'x' }, '<leader>r',      maps.run_replace,        { desc = ' replace'              } },
+      { { 'n', 'x' }, '<leader>r',      maps.run_rename,         { desc = ' rename'              } },
+      { { 'n', 'x' }, '<leader>s',      maps.run_replace,        { desc = ' replace'              } },
       { { 'n', 'x' }, '<leader>p',      maps.run_zknew,          { desc = ' zk-new',              } },
       { { 'n',     }, '<leader>m',      maps.run_make,           { desc = ' make',                } },
       { { 'n', 'x' }, '<leader>a',      maps.run_code,           { desc = ' code-action'          } },
@@ -171,13 +172,15 @@ local keyboard = {
     } -- ]]
   },
   abbreviations = {
-    go = {
+    go = { -- [[
       ['eq']  = ':=',
       ['ife'] = 'if err != nil {<cr><cr>}<up><tab>',
       ['fn']  = 'func() {}<left><cr>.<cr><up><tab><del>',
-    }
+    } -- ]]
   }
 }
+
+-- [[ setup
 
 vim.g.mapleader = keyboard.leader
 vim.z.keyboard = keyboard
@@ -207,6 +210,8 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'FileType' }, {
 		end
 	end,
 })
+
+-- ]]
 
 --[[ *:map-arguments*
 buffer: current buffer only                                   (default false)

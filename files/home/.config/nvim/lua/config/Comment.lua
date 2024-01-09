@@ -1,11 +1,7 @@
 ---@diagnostic disable: missing-fields
 require('Comment').setup({
 	ignore = '^$',
-	pre_hook = function()
-		if vim.z.enabled('JoosepAlviste/nvim-ts-context-commentstring') then
-			require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
-		end
-	end,
+	pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
 	mappings = {
 		basic = true, -- Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
 		extra = false, -- Extra mapping; `gco`, `gcO`, `gcA`

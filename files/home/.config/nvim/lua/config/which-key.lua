@@ -1,6 +1,6 @@
 local wk = require('which-key')
 vim.o.timeout = true
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 150
 wk.setup({
 	key_labels = {
 		['<space>'] = '␣',
@@ -36,7 +36,7 @@ wk.setup({
 	-- triggers = { '<leader>', '<c-w>', 'g', 'z', ']', '[' },
 	disable = {
 		-- buftypes = { 'nofile', 'fugitive' },
-		-- filetypes = { 'fugitive' },
+		filetypes = { 'fugitive', 'telescope', 'nvim-cmp', 'vim' },
 	},
 })
 

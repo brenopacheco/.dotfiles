@@ -103,12 +103,12 @@ local node = {
 	targets = function(dir, file, data)
 		---@type Target[]
 		local targets = {}
-		local status, decoded = pcall(vim.json.decode, vim.join(data, '\n'))
-		if not status then
+		local status, decoded = pcall(vim.json.decode, table.concat(data, '\n'))
+		---@type table<string, string>|nil
+		local scripts = decoded.scripts
+		if not status or not scripts then
 			return {}
 		end
-		---@type table<string, string>
-		local scripts = decoded.scripts
 		local manager = fileutil.exists(dir .. '/yarn.lock') and 'yarn' or 'npm'
 		for script, _ in pairs(scripts) do
 			---@type Target

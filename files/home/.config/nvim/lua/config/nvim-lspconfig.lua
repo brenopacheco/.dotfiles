@@ -41,6 +41,7 @@ lsp.jsonls.setup({
 	capabilities = capabilities,
 })
 lsp.marksman.setup({ capabilities = capabilities })
+-- lsp.csharp_ls.setup({ capabilities = capabilities })
 lsp.omnisharp.setup({
 	cmd = {
 		'omnisharp',

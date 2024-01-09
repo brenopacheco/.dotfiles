@@ -91,7 +91,9 @@ export PATH=$PATH:$HOME/.dotnet/tools
 test -e ~/.npmtoken && source ~/.npmtoken
 test -e ~/.twitch-notify.conf && source ~/.twitch-notify.conf
 
+export MSBuildSDKsPath="/usr/share/dotnet/sdk/$(dotnet --version)/Sdks"
+
 export ASPNETCORE_Kestrel__Certificates__Default__Password=""
-export ASPNETCORE_Kestrel__Certificates__Default__Path="$HOME/.aspnet/localhost.pfx"
+export ASPNETCORE_Kestrel__Certificates__Default__Path="$HOME/.aspnet/dotnet-devcert.pfx"
 
 # tmux_shell

@@ -116,7 +116,7 @@ end
 -- Find files in git directory using ripgrep
 M.find_grep = function()
 	require('telescope.builtin').live_grep({
-    default_text = vim.fn.expand('<cword>'),
+		default_text = vim.fn.expand('<cword>'),
 		search_dirs = { rootutil.git_root() },
 	})
 end
@@ -516,9 +516,28 @@ M.run_neogen = function()
 end
 
 -- Replace symbol under cursor
-M.run_replace = function()
+M.run_rename = function()
 	return lsputil.is_attached() and vim.lsp.buf.rename()
 		or vim.notify('not implemented', vim.log.levels.WARN)
+end
+
+-- Replace symbol under cursor (remember <c-w> to delete word)
+M.run_replace = function()
+	local text = tostring(vim.fn.expand('<cWORD>'))
+	if vim.fn.mode() == 'v' then
+		text = table.concat(bufutil.get_visual().text, '\\n')
+		text = string.gsub(text, '\r', '\\r')
+		text = string.gsub(text, '\t', '\\t')
+	end
+	local repl = string.gsub(text, '\\n', '\\r')
+	local cmd = ':s/'
+		.. text
+		.. '/'
+		.. repl
+		.. '/g<left><left><bs>'
+		.. string.sub(text, -1, -1)
+	cmd = vim.api.nvim_replace_termcodes(cmd, true, true, true)
+	vim.api.nvim_feedkeys(cmd, 'n', true)
 end
 
 -- Source buffer contents (vim/lua)
@@ -604,7 +623,7 @@ end
 
 -- Open lf file explorer
 M.toggle_lf = function()
-  vim.notify('not implemented', vim.log.levels.WARN)
+	vim.notify('not implemented', vim.log.levels.WARN)
 end
 
 -- Toggle side tree
@@ -650,16 +669,39 @@ M.toggle_zen = function()
 	vim.cmd('ZenMode')
 end
 
--- Open keyword under cursor
+-- Open keyword under cursor or selection. Tries to resolve cword and cWORD
+-- as such:
+--
+-- vim.o.keywordprg
+--     o.keywordprg
+--       keywordprg
+--
 -- This is required because of https://github.com/neovim/neovim/pull/24331
 M.keywordprg = function()
 	if not vim.o.keywordprg then
 		return vim.notify('info: keywordprg not set', vim.log.levels.WARN)
 	end
-	local word = bufutil.is_visual()
-			and table.concat(bufutil.get_visual().text, '')
-		or vim.fn.expand('<cword>')
-	vim.cmd(vim.o.keywordprg .. ' ' .. word)
+	local cword = tostring(vim.fn.expand('<cword>'))
+	local cWORD = tostring(vim.fn.expand('<cWORD>'))
+	local regex = '(%S*)' .. cword .. '%S*'
+	local prefix = cWORD:match(regex)
+	local text = prefix .. cword
+	if bufutil.is_visual() then
+		text = table.concat(bufutil.get_visual().text, '')
+	end
+	local patterns = {}
+	repeat
+		table.insert(patterns, text)
+		text = text:match('%w+[^%w](.*)')
+		vim.print({ text = text })
+	until not text or text:len() == 0
+	table.insert(patterns, text)
+	for _, pattern in ipairs(patterns) do
+		if pcall(vim.api.nvim_exec2, vim.o.keywordprg .. ' ' .. pattern, {}) then
+			return
+		end
+	end
+	vim.notify(vim.o.keywordprg .. ' not found', vim.log.levels.WARN)
 end
 
 return M
