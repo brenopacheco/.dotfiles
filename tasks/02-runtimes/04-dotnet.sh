@@ -7,6 +7,8 @@ packages=(
 	"dotnet-runtime"
 	"dotnet-runtime-6.0"
 	"dotnet-runtime-7.0"
+	"mono"
+	"nuget"
 	"aspnet-runtime"
 	"aspnet-runtime-6.0"
 	"aspnet-runtime-7.0"

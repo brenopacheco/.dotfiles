@@ -6,7 +6,7 @@ function get_version() {
 	#
 	# there is a regression error going above that
 	# https://github.com/OmniSharp/omnisharp-roslyn/issues/2574
-	echo "1.38.0"
+	echo "1.39.11"
 }
 
 function should_run() {

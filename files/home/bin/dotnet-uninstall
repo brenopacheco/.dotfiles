@@ -1,0 +1,16 @@
+#!/bin/bash
+
+PS3="Select a version to uninstall: "
+
+# Display the options in the menu
+select opt in $(dotnet --list-sdks | sed 's/ .*//g'); do
+	if [ -z "$opt" ]; then
+		echo "Invalid option, please select a number"
+		continue
+	fi
+	echo "Uninstalling $opt..."
+	SDK_VERSION="$opt"
+	DOTNET_UNINSTALL_PATH="/usr/share/dotnet"
+	sudo rm -rf "$DOTNET_UNINSTALL_PATH/sdk/$SDK_VERSION"
+	break
+done
