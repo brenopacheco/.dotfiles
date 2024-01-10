@@ -3,18 +3,21 @@ local qfutil = require('utils.qf')
 
 local dap = require('dap')
 
+local is_running = function()
+  return string.len(dap.status()) > 0
+end
+
 local M = {}
 
 M.debug_start = function()
-	dap.continue()
+  return dap.continue()
 end
 
 M.debug_restart = function()
-	dap.restart()
-end
-
-M.debug_last = function()
-	dap.run_last()
+  if is_running() then
+    dap.restart()
+  end
+  dap.run_last()
 end
 
 M.debug_terminate = function()
@@ -41,16 +44,6 @@ M.debug_step_over = function()
 	dap.step_over()
 end
 
-M.debug_repl = function()
-	local visible, winid = bufutil.is_visible('dap-repl')
-	if visible then
-		vim.api.nvim_set_current_win(winid)
-	else
-		require('dapui').toggle({ reset = true })
-		M.debug_repl()
-	end
-end
-
 M.debug_bp_toggle = function()
 	dap.toggle_breakpoint()
 end
@@ -70,7 +63,7 @@ end
 
 M.debug_bp_list = function()
 	dap.list_breakpoints()
-	qfutil.qf()
+	qfutil.open()
 end
 
 M.debug_hover = function()

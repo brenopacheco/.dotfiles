@@ -21,6 +21,7 @@ vim.z.packadd({
 	'folke/twilight.nvim',
 	'j-hui/fidget.nvim',
 	'nvim-lualine/lualine.nvim',
+  -- 'zbirenbaum/copilot-cmp',
 	'zbirenbaum/copilot.lua',
 	'L3MON4D3/LuaSnip',
 	'saadparwaiz1/cmp_luasnip',

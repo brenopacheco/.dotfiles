@@ -48,7 +48,9 @@ cmp.setup({
 		['<C-b>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
 		['<C-e>'] = cmp.mapping.abort(),
-		['<C-space>'] = cmp.mapping.abort(),
+		['<C-space>'] = cmp.mapping(function()
+			return cmp.visible() and cmp.close() or cmp.complete()
+		end, { 'i', 's' }),
 		['<Tab>'] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.confirm({ select = true })
@@ -61,6 +63,9 @@ cmp.setup({
 				fallback()
 			end
 		end, { 'i', 's' }),
+		['<S-Tab>'] = cmp.mapping(function()
+			vim.schedule(require('copilot.suggestion').accept)
+		end, { 'i', 's' }),
 		['<C-k>'] = cmp.mapping(function()
 			luasnip.jump(1)
 		end, { 'i', 's' }),
@@ -68,24 +73,31 @@ cmp.setup({
 			luasnip.jump(-1)
 		end, { 'i', 's' }),
 		['<C-d>'] = function()
-      ---@type number|nil
-      local docs_bufnr = nil
-      local winnrs = vim.api.nvim_tabpage_list_wins(0)
-      for _, winnr in ipairs(winnrs) do
-        local bufnr = vim.fn.winbufnr(winnr)
-        local ft  = vim.api.nvim_get_option_value( 'ft', { buf = bufnr })
-         if ft == 'cmp_docs' then
-          docs_bufnr = bufnr
-        end
-      end
-      if not docs_bufnr then
+			---@type number|nil
+			local docs_bufnr = nil
+			local winnrs = vim.api.nvim_tabpage_list_wins(0)
+			for _, winnr in ipairs(winnrs) do
+				local bufnr = vim.fn.winbufnr(winnr)
+				local ft = vim.api.nvim_get_option_value('ft', { buf = bufnr })
+				if ft == 'cmp_docs' then
+					docs_bufnr = bufnr
+				end
+			end
+			if not docs_bufnr then
 				return vim.notify('No entry selected')
-      end
-      -- here we should copy the buffer contents, copy the window options
-      -- and duplicate both
+			end
+			-- here we should copy the buffer contents, copy the window options
+			-- and duplicate both
 		end,
 	}),
 	sources = cmp.config.sources({
+		{
+			name = 'copilot',
+			group_index = 1,
+			keyword_length = 1,
+			priority = 500,
+			trigger_characters = { ' ', '^' },
+		},
 		{
 			name = 'nvim_lsp',
 			keyword_length = 1,
@@ -129,9 +141,9 @@ cmp.setup({
 		},
 	}),
 	experimental = {
-		ghost_text = {
+		ghost_text = vim.z.enabled('zbirenbaum/copilot-cmp') and {
 			hl_group = 'CmpGhostText',
-		},
+		} or false,
 	},
 	sorting = {
 		priority_weight = 2,
@@ -158,10 +170,14 @@ cmp.setup({
 	},
 })
 
-cmp.event:on('menu_opened', function()
-	vim.b['copilot_suggestion_hidden'] = true
-end)
+if vim.z.enabled('zbirenbaum/copilot-cmp') then
+	require('copilot_cmp').setup()
 
-cmp.event:on('menu_closed', function()
-	vim.b['copilot_suggestion_hidden'] = false
-end)
+	cmp.event:on('menu_opened', function()
+		vim.b['copilot_suggestion_hidden'] = true
+	end)
+
+	cmp.event:on('menu_closed', function()
+		vim.b['copilot_suggestion_hidden'] = false
+	end)
+end

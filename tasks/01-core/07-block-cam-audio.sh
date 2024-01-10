@@ -13,6 +13,7 @@ EOF
 )
 
 function should_run() {
+	return "$SKIP" # this makes the cam not be recognized
 	test -e /etc/udev/rules.d/90-block-webcam-sound.rules && return "$DONE" || return "$RUN"
 }
 

@@ -91,8 +91,5 @@ export PATH=$PATH:$HOME/.dotnet/tools
 test -e ~/.npmtoken && source ~/.npmtoken
 test -e ~/.twitch-notify.conf && source ~/.twitch-notify.conf
 
-# export MSBuildSDKsPath="/usr/share/dotnet/sdk/$(dotnet --version)/Sdks"
-# export FrameworkPathOverride=/lib/mono/4.8-api/
-
 export ASPNETCORE_Kestrel__Certificates__Default__Password=""
 export ASPNETCORE_Kestrel__Certificates__Default__Path="$HOME/.aspnet/dotnet-devcert.pfx"

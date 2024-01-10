@@ -44,7 +44,7 @@ lsp.marksman.setup({ capabilities = capabilities })
 lsp.omnisharp.setup({
 	cmd = {
 		'dotnet',
-    '/usr/lib/omnisharp/OmniSharp.dll',
+		'/usr/lib/omnisharp/OmniSharp.dll',
 		'--languageserver',
 		'--hostPID',
 		tostring(vim.fn.getpid()),
@@ -60,6 +60,9 @@ lsp.omnisharp.setup({
 	handlers = {
 		['textDocument/definition'] = require('omnisharp_extended').handler,
 	},
+	on_attach = function(client, bufnr)
+		vim.keymap.set({ 'n', 'x' }, '<leader>=', vim.lsp.buf.format, {})
+	end,
 })
 lsp.vimls.setup({ capabilities = capabilities })
 lsp.yamlls.setup({

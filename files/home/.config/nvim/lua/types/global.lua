@@ -7,3 +7,6 @@
 --- ```
 ---@type fun(...: any): nil
 _G.P = nil
+
+---@type string
+local x = nil

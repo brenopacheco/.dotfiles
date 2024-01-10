@@ -1,18 +1,8 @@
-require('copilot').setup({
+local opts = {
 	filetypes = {
 		['*'] = true,
 	},
-	panel = {
-		enabled = true,
-		auto_refresh = true,
-		keymap = {
-			jump_prev = '{',
-			jump_next = '}',
-			accept = '<CR>',
-			refresh = '<C-r>',
-			open = '<S-Tab>',
-		},
-	},
+	panel = { enabled = false },
 	suggestion = {
 		enabled = true,
 		auto_trigger = true,
@@ -21,9 +11,16 @@ require('copilot').setup({
 	server_opts_overrides = {
 		settings = {
 			advanced = {
-				listCount = 3, -- #completions for panel
+				listCount = 0, -- #completions for panel
 				inlineSuggestCount = 1, -- #completions for getCompletions
 			},
 		},
 	},
-})
+}
+
+if vim.z.enabled('zbirenbaum/copilot-cmp') then
+	opts.suggestion = { enabled = false , auto_trigger = false }
+	opts.panel = { enabled = false }
+end
+
+require('copilot').setup(opts)

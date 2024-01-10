@@ -82,7 +82,7 @@ end
 M.find_project = function()
 	local roots = rootutil.project_roots()
 	if #roots == 0 then
-		roots = { rootutil.git_root() }
+		roots = { { path = rootutil.git_root() } }
 		vim.notify(
 			'error: no project roots found - defaulting to git',
 			vim.log.levels.WARN
@@ -369,95 +369,23 @@ M.run_bd = function()
 	bufutil.delete()
 end
 
--- Start new debug session
-M.debug_start = function()
-	daputil.debug_start()
-end
-
--- Restart current debug session
-M.debug_restart = function()
-	daputil.debug_restart()
-end
-
--- Run last debug configuration
-M.debug_last = function()
-	daputil.debug_last()
-end
-
--- Terminate current debug session
-M.debug_terminate = function()
-	daputil.debug_terminate()
-end
-
--- Pause thread
-M.debug_pause = function()
-	daputil.debug_pause()
-end
-
--- Continue thread
-M.debug_continue = function()
-	daputil.debug_continue()
-end
-
--- Step into next function
-M.debug_step_into = function()
-	daputil.debug_step_into()
-end
-
--- Step out of current function
-M.debug_step_out = function()
-	daputil.debug_step_out()
-end
-
--- Step over to next line
-M.debug_step_over = function()
-	daputil.debug_step_over()
-end
-
--- Focus debug repl console
-M.debug_repl = function()
-	daputil.debug_repl()
-end
-
--- Toggle breakpoint on current line
-M.debug_bp_toggle = function()
-	daputil.debug_bp_toggle()
-end
-
--- Toggle breakpoint on current line - apply condition
-M.debug_bp_condition = function()
-	daputil.debug_bp_condition()
-end
-
--- Clear breakpoints
-M.debug_bp_clear = function()
-	daputil.debug_bp_clear()
-end
-
--- List breakpoints in qf list
-M.debug_bp_list = function()
-	daputil.debug_bp_list()
-end
-
--- Hover variable under cursor
-M.debug_hover = function()
-	daputil.debug_hover()
-end
-
--- Preview variable under cursor
-M.debug_preview = function()
-	daputil.debug_preview()
-end
-
--- Continues execution to the current cursor.
-M.debug_to_cursor = function()
-	daputil.to_cursor()
-end
-
--- Open dap log
-M.debug_open_log = function()
-	daputil.open_log()
-end
+-- stylua: ignore start
+M.debug_start        = daputil.debug_start
+M.debug_restart      = daputil.debug_restart
+M.debug_terminate    = daputil.debug_terminate
+M.debug_pause        = daputil.debug_pause
+M.debug_step_into    = daputil.debug_step_into
+M.debug_step_out     = daputil.debug_step_out
+M.debug_step_over    = daputil.debug_step_over
+M.debug_bp_toggle    = daputil.debug_bp_toggle
+M.debug_bp_condition = daputil.debug_bp_condition
+M.debug_bp_clear     = daputil.debug_bp_clear
+M.debug_bp_list      = daputil.debug_bp_list
+M.debug_hover        = daputil.debug_hover
+M.debug_preview      = daputil.debug_preview
+M.debug_to_cursor    = daputil.to_cursor
+M.debug_open_log     = daputil.open_log
+-- stylua: ignore end
 
 -- Run code action
 M.run_code = function()
@@ -650,7 +578,7 @@ end
 -- Toggle quickfix window
 M.toggle_quickfix = function()
 	bufutil.toggle('qf', function()
-		qfutil.qf()
+		qfutil.open()
 	end)
 end
 

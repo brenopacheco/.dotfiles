@@ -7,16 +7,16 @@
     ; helper = /usr/share/git/credential/netrc/git-credential-netrc.perl -dv
 [mergetool]
     prompt = false
-[merge]
-    tool = nvimmerge
-[mergetool "nvimmerge"]
-    cmd = "nvim -f -c \"Gvdiffsplit!\" \"$MERGED\""
+; [merge]
+;     tool = nvimmerge
+; [mergetool "nvimmerge"]
+;     cmd = "nvim -f -c \"Gvdiffsplit!\" \"$MERGED\""
 [difftool]
     prompt = false
-[diff]
-    tool = nvimdiff
-[difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+; [diff]
+;     tool = nvimdiff
+; [difftool "nvimdiff"]
+;     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [log]
     date = relative
 [alias]
