@@ -1,7 +1,9 @@
 local bufutil = require('utils.buf')
 local qfutil = require('utils.qf')
 
-local dap = require('dap')
+---@module 'dap'
+---@diagnostic disable-next-line: assign-type-mismatch
+local dap = pcall(require, 'dap')
 
 local is_running = function()
   return string.len(dap.status()) > 0

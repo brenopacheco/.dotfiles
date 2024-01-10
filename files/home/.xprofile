@@ -18,10 +18,10 @@ pasystray \
 redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 
 # currently there is no rule set. do I need this?
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
+# /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
 
-dbus-update-activation-environment --all
-gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
+# dbus-update-activation-environment --all
+# gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
 
 picomtray & disown # picom systray indicator
 agua      & disown # drink water notifier
