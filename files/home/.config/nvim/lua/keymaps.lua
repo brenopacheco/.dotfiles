@@ -32,9 +32,9 @@ local keyboard = {
       { { 'n',     }, '<leader>E',      maps.errors_workspace,   { desc = ' errors-ws'            } },
       { { 'n', 'x' }, 'ga',             maps.run_align,          { desc = ' align'                } },
       { { 'n', 'x' }, 'gx',             maps.run_gx,             { desc = ' browse',              } },
-      { { 'n',     }, 'g?',             maps.messages,           { desc = ' messages'             } },
+      { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
       { { 'n',     }, 'gl',             maps.lsp_info,           { desc = ' lsp-info'             } },
-      { { 'n', 'x' }, '<leader>r',      maps.run_rename,         { desc = ' rename'              } },
+      { { 'n', 'x' }, '<leader>r',      maps.run_rename,         { desc = ' rename'               } },
       { { 'n', 'x' }, '<leader>s',      maps.run_replace,        { desc = ' replace'              } },
       { { 'n', 'x' }, '<leader>p',      maps.run_zknew,          { desc = ' zk-new',              } },
       { { 'n',     }, '<leader>m',      maps.run_make,           { desc = ' make',                } },
@@ -62,7 +62,7 @@ local keyboard = {
       { {'n',      }, '<leader>dk',     maps.debug_hover,        { desc = '󱄑 info hover'           } },
       { {'n',      }, '<leader>dp',     maps.debug_preview,      { desc = '󰩣 info preview'         } },
       { {'n',      }, '<leader>d.',     maps.debug_to_cursor,    { desc = '󰇀 run to cursor'        } },
-      { {'n',      }, '<leader>d?',     maps.debug_open_log,     { desc = ' dap log'              } },
+      { {'n',      }, '<leader>dm',     maps.debug_open_log,     { desc = ' dap log'              } },
     }, -- ]]
     find = { -- [[
       { { 'n',     }, '<leader>fa',     maps.find_args,          { desc = ' arglist'              } },
@@ -146,25 +146,25 @@ local keyboard = {
       { { 'n',     }, '-',              maps.toggle_oil,        { desc = '󱓞 oil'                  } },
     }, -- ]]
     defaults = { -- [[
-      { { 'i',     }, 'jk',    '<c-[>l'                                 },
-      { { 'i',     }, 'kj',    '<c-[>l'                                 },
-      { { 's',     }, 'jk',    '<esc>'                                  },
-      { { 's',     }, 'kj',    '<esc>'                                  },
-      { { 'c',     }, 'jk',    '<esc>'                                  },
-      { { 'c',     }, 'kj',    '<esc>'                                  },
-      { { 't',     }, 'jk',    '<C-\\><C-n>'                            },
-      { { 't',     }, 'kj',    '<C-\\><C-n>'                            },
-      { { 'x',     }, '<',     '<gv'                                    },
-      { { 'x',     }, '>',     '>gv'                                    },
-      { { 'n',     }, '>',     '>>'                                     },
-      { { 'n',     }, '<',     '<<'                                     },
-      { { 'n',     }, '',    '<cmd>nohlsearch<cr>'                    },
-      { { 'n',     }, 'Y',     'v$hy'                                   },
-      { { 'n',     }, 'Q',     '<Nop>'                                  },
-      { { 'x',     }, 'p',     'pgvy'                                   },
-      { { 'n', 'x' }, 'K',      maps.keywordprg                         },
-      { { 's',     }, '<bs>',  '<bs>i'                                  },
-      { { 'x',     }, '*',  [["zy/\V<C-r>=escape(@z, '\/')<cr><cr>]] },
+      { { 'i',     }, 'jk',         '<c-[>l'                                 },
+      { { 'i',     }, 'kj',         '<c-[>l'                                 },
+      { { 's',     }, 'jk',         '<esc>'                                  },
+      { { 's',     }, 'kj',         '<esc>'                                  },
+      { { 'c',     }, 'jk',         '<esc>'                                  },
+      { { 'c',     }, 'kj',         '<esc>'                                  },
+      { { 't',     }, 'jk',         '<C-\\><C-n>'                            },
+      { { 't',     }, 'kj',         '<C-\\><C-n>'                            },
+      { { 'x',     }, '<',          '<gv'                                    },
+      { { 'x',     }, '>',          '>gv'                                    },
+      { { 'n',     }, '>',          '>>'                                     },
+      { { 'n',     }, '<',          '<<'                                     },
+      { { 'n',     }, '',         '<cmd>nohlsearch<cr>'                    },
+      { { 'n',     }, 'Y',          'v$hy'                                   },
+      { { 'n',     }, 'Q',          '<Nop>'                                  },
+      { { 'x',     }, 'p',          'pgvy'                                   },
+      { { 'n', 'x' }, 'K',           maps.keywordprg                         },
+      { { 's',     }, '<bs>',       '<bs>i'                                  },
+      { { 'x',     }, '*',  [["zy/\V<C-r>=escape(@z, '\/')<cr><cr>]]         },
     } -- ]]
   },
   abbreviations = {
@@ -218,5 +218,5 @@ script: use {rhs} mappings defined in the script - <SID>      (default false)
 expr:   evaluate {rhs} as an expression                       (default false)
 unique: don't remap if already mapped                         (default false)
 desc:   human-readable description                            (default '')
-vim:fdl=0:fdm=marker:fmr=[[,]]
+vim:fdl=0:tw=103:cc=103:fdm=marker:fmr=[[,]]
 --]]

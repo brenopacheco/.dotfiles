@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 packages=(
+	"bat"
 	"arandr"
 	"base"
 	"base-devel"

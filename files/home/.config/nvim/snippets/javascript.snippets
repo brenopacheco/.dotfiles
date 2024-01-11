@@ -21,7 +21,7 @@ snippet afn-async __async anonymous function__
 		$0
 	};
 
-snippet cafn > __const anonymous function__
+snippet cfn > __const anonymous function__
 	const ${1:fn} = (${2}) => {
 		$0
 	};
@@ -31,3 +31,12 @@ snippet cafn-async > __const async anonymous function__
 		$0
 	};
 
+snippet iife > __immediately invoked function expression__
+	  (() => {
+	    $0
+	  })()
+
+snippet ciife > __const immediately invoked function expression__
+	  const ${1:x} = (() => {
+	    $0
+	  })()

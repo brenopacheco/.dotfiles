@@ -18,7 +18,7 @@ vim.opt.fileencodings  = {
 	'ucs-bom',
 	'default'
 }
-vim.opt.fillchars      = 'fold:\\'                     -- make v:folddashes whitespace
+-- vim.opt.fillchars      = 'fold:\\'                     -- make v:folddashes whitespace
 vim.opt.foldcolumn     = 'auto:9'                      -- show fold level in gutter
 vim.opt.foldlevelstart = 99                            -- make folds open initially
 vim.opt.foldmethod     = 'marker'                      -- default fold method using {{{}}}

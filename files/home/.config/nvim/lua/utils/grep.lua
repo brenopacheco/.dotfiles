@@ -16,7 +16,7 @@ M.qf_filter = function(opts)
 		end
 		local filtered = {}
 		for _, item in ipairs(qf) do
-			local fname = vim.fn.fnamemodify(vim.fn.bufname(item.bufnr), ':t')
+			local fname = vim.fn.fnamemodify(vim.fn.bufname(item.bufnr), ':p')
 			local text = fname .. ':' .. item.text
 			local matches = string.match(text, input)
 			if matches and not opts.invert then

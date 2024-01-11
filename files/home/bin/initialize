@@ -11,7 +11,7 @@ function init_fc() {
 	# fc-backend/migrations
 	tmux new-window  -t    fc-backend  -n migrations     -c $FC_BACKEND
 	tmux send-keys -t fc-backend:migrations 'sleep 20' C-m
-	tmux send-keys -t fc-backend:migrations './updateAllDatabases.sh' C-m
+	tmux send-keys -t fc-backend:migrations 'dotnet ef database update -s "./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj" -p "./apps/API/src/FarmerConnect.Core.Storage/FarmerConnect.Core.Storage.csproj" -c "FarmerConnect.Core.Storage.ApplicationDbContext"' C-m
 
 	# fc-backend/server
 	tmux new-window  -t    fc-backend  -n server     -c $FC_BACKEND

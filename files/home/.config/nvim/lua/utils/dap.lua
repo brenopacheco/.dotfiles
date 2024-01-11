@@ -3,7 +3,9 @@ local qfutil = require('utils.qf')
 
 ---@module 'dap'
 ---@diagnostic disable-next-line: assign-type-mismatch
-local dap = pcall(require, 'dap')
+local status, dap = pcall(require, 'dap')
+
+-- vim.notify('DAP: ' .. (status and 'loaded' or 'not loaded'), vim.log.levels.INFO)
 
 local is_running = function()
   return string.len(dap.status()) > 0
