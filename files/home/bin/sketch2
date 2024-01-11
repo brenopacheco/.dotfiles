@@ -1,0 +1,209 @@
+#!/usr/bin/env lua
+
+--  TODO: read templates from a directory instead of this
+
+---@class Template
+---@field name string
+---@field files? { relpath: string, content: string[] }[]
+---@field setup? fun(dir: string): nil
+
+---@type table<string, Template>
+local templates = {
+	ml = { name = "OCaml" },
+	d = { name = "D Programming language" },
+	go = { name = "Golang" },
+	js = { name = "JavasSript (Node.js)" },
+	ts = { name = "TypeScript (Node.js)" },
+	["js-bun"] = { name = "JavasSript (Bun)" },
+	["ts-bun"] = { name = "TypeScript (Bun)" },
+	sh = {
+		name = "Bash",
+		files = {
+			{
+				relpath = "main.sh",
+				content = {
+					"#!/usr/bin/env bash",
+					"",
+				},
+			},
+			{
+				relpath = "Makefile",
+				content = {
+					"all:",
+					"\t./main.sh",
+					"",
+				},
+			},
+		},
+		setup = function() end,
+	},
+	c = { name = "C Programming language" },
+	lua = { name = "Lua" },
+	rust = { name = "Rust" },
+	zig = { name = "Zig" },
+}
+
+---@param error_message? string
+local function help(error_message)
+	local available_templates = ""
+	for key, _ in pairs(templates) do
+		if available_templates == "" then
+			available_templates = key
+		else
+			available_templates = available_templates .. ", " .. key
+		end
+	end
+
+	io.stdout:write([[
+Usage: sketch [OPTION] <template> [project name]
+
+Creates a sketch project for a given language template.
+The directory is created in $HOME/sketch with a random name, unless specified,
+in which case the random directory name is prefixed with the argument name.
+
+Options:
+  -d, --dmenu     Interactive mode using dmenu
+  -h, --help      Show this help message
+
+Available templates:
+
+]] .. available_templates .. "\n")
+
+	if error_message then
+		io.stderr:write("\n" .. error_message .. "\n")
+		os.exit(1)
+	end
+
+	os.exit(0)
+end
+
+local home = os.getenv("HOME")
+
+if home == nil then
+	help("$HOME could not be resolved")
+end
+
+---@class Opts
+---@field dmenu boolean
+---@field help boolean
+---@field template string|nil
+---@field name string|nil
+
+---@type Opts
+local opts = {
+	dmenu = false,
+	help = false,
+	template = nil,
+	name = nil,
+}
+
+for _, argument in ipairs(arg) do
+	if argument == "-d" or argument == "--dmenu" then
+		opts.dmenu = true
+	elseif argument == "-h" or argument == "--help" then
+		opts.help = true
+	elseif string.match(argument, "^-") then
+		help("Unknown option: " .. argument)
+	elseif opts.template == nil then
+		opts.template = argument
+	elseif opts.name == nil then
+		opts.name = argument
+	else
+		opts.name = opts.name .. " " .. argument
+	end
+end
+
+if opts.help then
+	help()
+end
+
+if not opts.dmenu then
+	if opts.template == nil then
+		help("No template specified")
+	elseif templates[opts.template] == nil then
+		help("Invalid template specified")
+	end
+end
+
+if opts.dmenu then
+	local list = ""
+	for key, template in pairs(templates) do
+		list = list .. string.format("%-10s%s", "(" .. key .. ")", template.name) .. ";" .. key .. "\n"
+	end
+	local dmenu = io.popen([[echo "]] .. list .. [[" | dmenu -d ';' -p 'Select template:']], "r")
+	if dmenu == nil then
+		help("dmenu executable not found")
+	else
+		local choice = dmenu:read("*l")
+		if choice == nil then
+			help("No template selected")
+		end
+		dmenu:close()
+		opts.template = string.gsub(choice, "\n", "")
+		if templates[opts.template] == nil then
+			help("Invalid template selected")
+		end
+	end
+end
+
+-- Here we already have everything we need selected
+local template = templates[opts.template]
+assert(template, "Template not found")
+
+local id = string.gsub("xxxxxxxxxx", "[xy]", function(c)
+	local v = (c == "x") and math.random(0, 0xf) or math.random(8, 0xb)
+	return string.format("%x", v)
+end)
+
+local name = (opts.name and (opts.name .. "-") or "") .. opts.template .. "-" .. id
+local dir = home .. "/sketch/" .. name
+
+print("Creating project...")
+print("\tname: " .. name)
+print("\tdirectory: " .. dir)
+print("\ttemplate: " .. template.name)
+
+local ok, err = os.execute("mkdir -p " .. dir)
+if not ok then
+	help("Could not create directory " .. dir .. ":" .. tostring(err))
+end
+
+print("Created directory " .. dir)
+
+-- 2. Create files from template
+for _, file in ipairs(template.files or {}) do
+	local path = dir .. "/" .. file.relpath
+	local file_dir = string.match(path, "^(.+)/[^/]+$")
+	ok, err = os.execute("mkdir -p " .. file_dir)
+	if not ok then
+		help("Could not create directory " .. file_dir .. ":" .. tostring(err))
+	end
+	local f, ferr = io.open(path, "w")
+	if f == nil then
+		return help("Could not create file " .. path .. ":" .. tostring(ferr))
+	end
+	for _, line in ipairs(file.content) do
+		f:write(line .. "\n")
+	end
+	f:close()
+	print("Created file " .. path)
+end
+
+if template.setup then
+	template.setup(dir)
+end
+
+print("Setup done!")
+
+local session = "sketch-" .. name
+
+local cmd = [[st -e 'cd ]] .. dir .. [[; tmux -s ]] .. session .. [[' & disown]]
+
+print(cmd)
+
+--  TODO: this is not working
+if os.execute(cmd) then
+	os.exit(0)
+end
+
+help("Could not execute command: " .. cmd)

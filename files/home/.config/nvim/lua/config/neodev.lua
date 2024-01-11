@@ -21,6 +21,7 @@ lsp.lua_ls.setup({
 	settings = {
 		Lua = {
 			workspace = {
+        checkThirdParty = false,
 				library = {
 					vim.fn.resolve(vim.fn.stdpath('config') .. '/lua/types'),
 				},
