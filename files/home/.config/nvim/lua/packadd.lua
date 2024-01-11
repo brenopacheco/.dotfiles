@@ -113,7 +113,16 @@ local function packcmd(cmd)
 	if cmd.bang then
 		vim.tbl_map(install, packages)
 	end
-	vim.print({ packages = packages, modules = { modules } })
+	if cmd.args:len() > 0 then
+		for _, package in pairs(packages) do
+			if string.match(package.name, cmd.args) then
+				vim.print(package)
+			end
+		end
+    vim.notify('Package not found', vim.log.levels.WARN)
+	else
+		vim.print({ packages = packages, modules = { modules } })
+	end
 end
 
 local function enabled(repo)
@@ -159,7 +168,11 @@ vim.opt.runtimepath = {
 	'/usr/lib/nvim',
 }
 vim.opt.packpath = { plugin_dir }
-vim.api.nvim_create_user_command('Packadd', packcmd, { bang = true })
+vim.api.nvim_create_user_command(
+	'Packadd',
+	packcmd,
+	{ bang = true, nargs = '?' }
+)
 
 vim.z.enabled = enabled
 vim.z.packadd = packadd
