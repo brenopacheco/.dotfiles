@@ -30,11 +30,12 @@ return function()
 				format,
 				'[' .. target.kind .. ']',
 				target.name,
-				vim.fn.fnamemodify(target.dir, ':t')
+				target.id
 			)
 		end,
 	}, function(choice)
 		if choice ~= nil then
+			vim.print({ choice = choice })
 			if vim.z.enabled('voldikss/vim-floaterm') then
 				vim.cmd([[let g:floaterm_autoclose = 0]])
 				vim.cmd('FloatermNew cd ' .. choice.dir .. '; ' .. choice.cmd)

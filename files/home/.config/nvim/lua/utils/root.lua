@@ -110,10 +110,12 @@ end
 --- Finds the path for the git root in current cwd. If not a git repository,
 --- uses the current directory.
 ---
+--- @param cwd string?
 --- @return string -- directory
-M.git_root = function()
+M.git_root = function(cwd)
+	cwd = cwd or vim.fn.getcwd()
 	local result = vim
-		.system({ 'git', 'rev-parse', '--show-toplevel' }, { text = true })
+		.system({ 'git', 'rev-parse', '--show-toplevel' }, { text = true, cwd = cwd })
 		:wait()
 	if result.code == 0 then
 		return vim.trim(result.stdout)

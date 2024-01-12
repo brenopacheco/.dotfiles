@@ -1,14 +1,15 @@
 local fileutil = require('utils.file')
 local rootutil = require('utils.root')
+local dotnetutil = require('utils.filetype.dotnet')
 
 local M = {}
 
----@class Target
+---@class Target : "[kind]  name      [id]"
 ---@field name string
 ---@field cmd string
 ---@field dir string
----@field file string
 ---@field kind string
+---@field id string
 
 ---@class System
 ---@field name string The system name
@@ -31,7 +32,7 @@ local shell = {
 			name = file,
 			cmd = './' .. file,
 			dir = dir,
-			file = file,
+      id = tostring(vim.fn.fnamemodify(dir, ':t')),
 			kind = 'bash',
 		}
 		table.insert(targets, target)
@@ -54,7 +55,7 @@ local make = {
 					name = rule,
 					cmd = 'make ' .. rule,
 					dir = dir,
-					file = file,
+          id = tostring(vim.fn.fnamemodify(dir, ':t')) .. '/Makefile',
 					kind = 'make',
 				}
 				table.insert(targets, target)
@@ -100,7 +101,7 @@ local go = {
 local node = {
 	name = 'node',
 	patterns = { 'package.json' },
-	targets = function(dir, file, data)
+	targets = function(dir, _, data)
 		---@type Target[]
 		local targets = {}
 		local status, decoded = pcall(vim.json.decode, table.concat(data, '\n'))
@@ -116,18 +117,11 @@ local node = {
 				name = script,
 				cmd = manager .. ' run ' .. script,
 				dir = dir,
-				file = file,
 				kind = manager,
+        id = tostring(vim.fn.fnamemodify(dir, ':t')) .. '/package.json',
 			}
 			table.insert(targets, target)
 		end
-		table.insert(targets, {
-			name = 'clear node_modules && install',
-			cmd = 'rm -rf node_modules && ' .. manager .. ' install',
-			dir = dir,
-			file = file,
-			kind = manager,
-		})
 		return targets
 	end,
 }
@@ -135,112 +129,15 @@ local node = {
 ---@type System
 local dotnet = {
 	name = 'dotnet',
-	patterns = { '.+%.sln' },
+	patterns = { '.+%.sln', '.+%.csproj' },
 	targets = function(dir, file)
-		---@type Target[]
-		local targets = {}
-
-		--[[
---- get all projects from solutions
-fd sln | xargs -i bash -c 'cd $(dirname {}) >/dev/null; dotnet sln list | tail -n +3 | xargs realpath 2>/dev/null' | sort | uniq
---- equivalent to
-fd '\.csproj$'
-
-
-dotnet sln list / dotnet sln <path to sol> list
-
-From solution .sln files we can run from there:
-- dotnet build
-- dotnet clean
-- dotnet restore
-- dotnet test
-- dotnet list (package/project)
-- dotnet format
-- dotnet sln list
-- dotnet sln add <input>
-- dotnet sln remove <input>
-
-From project .csproj files we can run from there:
-- dotnet build
-- dotnet clean
-- dotnet restore
-- dotnet run
-- dotnet watch
-- dotnet format
-- dotnet test
-- dotnet list (package/project)
-
-Tests can be
-- dotnet test
-- dotnet test --filter 'Category=Integration'
-- dotnet test --filter 'Category=Unit'
-
-To format
-- dotnet format
-
-Aditionally, we might want to run tools
-
-`dotnet tool list`
-Package Id                      Version      Commands                 Manifest
-----------------------------------------------------------------------------------------------------------------------
-swashbuckle.aspnetcore.cli      6.5.0        swagger                  /home/breno/fc/backend/.config/dotnet-tools.json
-dotnet-ef                       8.0.0        dotnet-ef                /home/breno/fc/backend/.config/dotnet-tools.json
-dotnet-sonarscanner             6.0.0        dotnet-sonarscanner      /home/breno/fc/backend/.config/dotnet-tools.json
-dotnet-coverage                 17.9.3       dotnet-coverage          /home/breno/fc/backend/.config/dotnet-tools.json
-
-
-  --info            Display .NET information.
-  --list-runtimes   Display the installed runtimes.
-  --list-sdks       Display the installed SDKs.
-  --version         Display .NET SDK version in use.
-
-SDK commands:
-  add               Add a package or reference to a .NET project.
-  build             Build a .NET project.
-  build-server      Interact with servers started by a build.
-  clean             Clean build outputs of a .NET project.
-  format            Apply style preferences to a project or solution.
-  help              Show command line help.
-  list              List project references of a .NET project.
-  msbuild           Run Microsoft Build Engine (MSBuild) commands.
-  new               Create a new .NET project or file.
-  nuget             Provides additional NuGet commands.
-  pack              Create a NuGet package.
-  publish           Publish a .NET project for deployment.
-  remove            Remove a package or reference from a .NET project.
-  restore           Restore dependencies specified in a .NET project.
-  run               Build and run a .NET project output.
-  sdk               Manage .NET SDK installation.
-  sln               Modify Visual Studio solution files.
-  store             Store the specified assemblies in the runtime package store.
-  test              Run unit tests using the test runner specified in a .NET project.
-  tool              Install or manage tools that extend the .NET experience.
-  vstest            Run Microsoft Test Engine (VSTest) commands.
-  workload          Manage optional workloads.
-
-
-
-
-
-dotnet test --filter 'Category=Integration'
-dotnet test --filter 'Category=Unit'
-        ]]
-
-		table.insert(targets, {
-			name = 'test Category=Unit',
-			cmd = [[]],
-			dir = dir,
-			file = file,
-			kind = 'dotnet',
-		})
-		table.insert(targets, {
-			name = 'test Category=Integration',
-			cmd = [[]],
-			dir = dir,
-			file = file,
-			kind = 'dotnet',
-		})
-		return targets
+    if file:match('%.sln$') then
+      return dotnetutil.sln_targets(dir, file)
+    end
+    if file:match('%.csproj$') then
+      return dotnetutil.csproj_targets(dir, file)
+    end
+    return {}
 	end,
 }
 
