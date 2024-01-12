@@ -42,6 +42,14 @@ local function get_pid()
 	return pid
 end
 
+local get_program = function() end
+
+local get_cwd = function() end
+
+local env = {
+	ASPNETCORE_ENVIRONMENT = 'Development',
+}
+
 M.configurations = {
 	cs = {
 		{
@@ -50,9 +58,7 @@ M.configurations = {
 			request = 'attach',
 			processId = get_pid,
 			args = {},
-			env = {
-				ASPNETCORE_ENVIRONMENT = 'Development',
-			},
+			env = env,
 		},
 		-- {
 		-- 	name = '  Debug program',

@@ -1,9 +1,12 @@
+# NOTES ON AUTOCOMMANDS
+
+I/A causes InsertEnter CursorMovedI
+i/a causes InsertEnter
+
 # BUGS
 
 - [ ] nvim-tree not working properly when I open an empty file and vsplit to a different directory
 - [ ] backup module is screwing up undo file? (not sure) - complains on which-key.lua open
-- [ ] sometimes the window from argsview gets a little fuzzy
-      add some logic to re-do the window if it gets fuzzy
 
 # TODO
 

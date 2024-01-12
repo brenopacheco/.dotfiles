@@ -53,6 +53,9 @@ cmp.setup({
 		end, { 'i', 's' }),
 		['<Tab>'] = cmp.mapping(function(fallback)
 			if cmp.visible() then
+				-- TODO: check if there is only one suggesion and if the suggestion
+				-- matches the current input, in which case we want to call copilot's
+				-- accept
 				cmp.confirm({ select = true })
 			elseif
 				vim.z.enabled('copilot.lua')

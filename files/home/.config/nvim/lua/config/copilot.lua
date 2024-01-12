@@ -7,6 +7,7 @@ local opts = {
 		enabled = true,
 		auto_trigger = true,
 		accept = false,
+    debounce = 50,
 	},
 	server_opts_overrides = {
 		settings = {

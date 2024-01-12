@@ -16,7 +16,4 @@ setlocal commentstring=//\ %s
 setlocal suffixesadd+=~,.mod,.go
 setlocal keywordprg=zeal\ go:\
 
-
-lua require('utils.ft.go').setup()
-
 let b:undo_ftplugin='setl mp< efm< ep< sw< ts< fdm< fde< fo< tw< com< cms< sua< kp<'

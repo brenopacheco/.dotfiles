@@ -3,7 +3,9 @@
 -- Provides the :Bufferize command, which takes a regular vim command
 -- and redirects it'so output to a scratch buffer.
 -- Provides the useful :Messages command
---
+-- NOTE: 
+-- `cmd` provides about 200 lines only
+-- we don't get messages highlights
 
 local bufname = 'bufferize:///'
 
