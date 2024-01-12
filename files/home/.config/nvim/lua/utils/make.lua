@@ -4,17 +4,20 @@ local dotnetutil = require('utils.filetype.dotnet')
 
 local M = {}
 
----@class Target : "[kind]  name      [id]"
----@field name string
----@field cmd string
----@field dir string
----@field kind string
----@field id string
+---@class Target       @ shows as "[kind]  name      [id]"
+---@field name string  @ the name of the target
+---@field cmd  string  @ the command to run
+---@field dir  string  @ the directory to run the command in
+---@field kind string  @ the kind of target (make, go, etc.)
+---@field id   string  @ the id of the target
 
 ---@class System
 ---@field name string The system name
 ---@field patterns string[] The patterns to match against the system file
 ---@field targets fun(dir: string, file: string, data: string[]): Target[]
+
+---@type table<string, Target[]> @dictionary of git root to targets
+local cache = {}
 
 ---@type System
 local shell = {
@@ -44,7 +47,7 @@ local shell = {
 local make = {
 	name = 'make',
 	patterns = { 'Makefile' },
-	targets = function(dir, file, data)
+	targets = function(dir, _, data)
 		---@type Target[]
 		local targets = {}
 		for _, line in ipairs(data) do
@@ -150,6 +153,9 @@ M.targets = function()
 	---@type Target[]
 	local targets = {}
 	local git_root = rootutil.git_root()
+  if cache[git_root] then
+    return cache[git_root]
+  end
 	for _, system in ipairs(systems) do
 		local roots =
 			rootutil.downward_roots({ dir = git_root, patterns = system.patterns })
@@ -163,6 +169,7 @@ M.targets = function()
 			end
 		end
 	end
+  cache[git_root] = targets
 	return targets
 end
 
