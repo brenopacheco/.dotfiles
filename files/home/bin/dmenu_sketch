@@ -197,11 +197,8 @@ print("Setup done!")
 
 local session = "sketch-" .. name
 
-local cmd = [[st -e 'cd ]] .. dir .. [[; tmux -s ]] .. session .. [[' & disown]]
+local cmd = [[(setsid nohup st -t ]] .. session .. [[ -e tmux new -s ]] .. session .. [[ -c ]] .. dir .. [[ >/dev/null 2>&1) & disown]]
 
-print(cmd)
-
---  TODO: this is not working
 if os.execute(cmd) then
 	os.exit(0)
 end
