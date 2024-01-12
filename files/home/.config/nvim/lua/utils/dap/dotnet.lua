@@ -34,21 +34,39 @@ local dotnet_version = function()
 	return major .. '.' .. minor
 end
 
+local function get_pid()
+	local pid = vim.fn.system(
+		[[netstat -tulpn 2>/dev/null | grep ::1:5001 |  awk '{print $7}' | cut -d'/' -f1]]
+	)
+	assert(pid ~= '', 'fc backend process not found')
+	return pid
+end
+
 M.configurations = {
 	cs = {
 		{
 			name = '  Debug program',
 			type = 'coreclr',
-			request = 'launch',
-			program = '/home/breno/fc/backend/apps/API/src/FarmerConnect.Api/bin/Debug/net8.0/FarmerConnect.Api.dll',
-			cwd = '/home/breno/fc/backend/apps/API/src/FarmerConnect.Api/bin/Debug/net8.0/FarmerConnect.Api.dll',
+			request = 'attach',
+			processId = get_pid,
 			args = {},
-			externalConsole = false,
-			stopAtEntry = false,
 			env = {
 				ASPNETCORE_ENVIRONMENT = 'Development',
 			},
 		},
+		-- {
+		-- 	name = '  Debug program',
+		-- 	type = 'coreclr',
+		-- 	request = 'launch',
+		-- 	program = '/home/breno/fc/backend/apps/API/src/FarmerConnect.Api/bin/Debug/net8.0/FarmerConnect.Api.dll',
+		-- 	cwd = '/home/breno/fc/backend/apps/API/src/FarmerConnect.Api/bin/Debug/net8.0/FarmerConnect.Api.dll',
+		-- 	args = {},
+		-- 	externalConsole = false,
+		-- 	stopAtEntry = false,
+		-- 	env = {
+		-- 		ASPNETCORE_ENVIRONMENT = 'Development',
+		-- 	},
+		-- },
 	},
 }
 

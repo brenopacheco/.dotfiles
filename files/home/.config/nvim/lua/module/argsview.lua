@@ -49,7 +49,7 @@ local function get_arglist(max_width)
 			str = str .. ' ❰'
 			len = len + 2
 			if i ~= idx then
-				vim.cmd('argu ' .. i)
+				vim.cmd('silent! argu ' .. i)
 			end
 		end
 		if len > max_len then
@@ -172,7 +172,7 @@ local args_add = function()
 	end
 	vim.cmd('$argadd')
 	vim.cmd('argdedupe')
-	vim.cmd('argu ' .. vim.fn.argc())
+  vim.cmd('silent! argu ' .. vim.fn.argc())
 	notify('info: "' .. vim.fn.expand('%') .. '" added to arglist')
 end
 
@@ -199,7 +199,7 @@ local args_next = function()
 	end
 	local idx = vim.fn.argidx() + 1 >= vim.fn.argc() and '1'
 		or tostring(vim.fn.argidx() + 2)
-	vim.cmd('argu ' .. idx)
+	vim.cmd('silent! argu ' .. idx)
 	notify('info: "' .. vim.fn.expand('%') .. '"')
 end
 
@@ -209,7 +209,7 @@ local args_prev = function()
 	end
 	local idx = vim.fn.argidx() == 0 and tostring(vim.fn.argc())
 		or tostring(vim.fn.argidx())
-	vim.cmd('argu ' .. idx)
+	vim.cmd('silent! argu ' .. idx)
 	notify('info: "' .. vim.fn.expand('%') .. '"')
 end
 

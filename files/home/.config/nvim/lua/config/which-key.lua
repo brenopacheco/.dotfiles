@@ -41,10 +41,6 @@ wk.setup({
 	},
 })
 
-
-
-
-
 wk.register({
 	['<space>w'] = {
 		s = 'split',

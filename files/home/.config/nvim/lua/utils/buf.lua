@@ -64,17 +64,17 @@ function M.set_visual(visual)
 	vim.fn.setpos("'>", visual.pos.start)
 end
 
----@param buftype string
+---@param filetype string
 ---@param command fun()
-function M.toggle(buftype, command)
-	if buftype == nil or command == nil then
+function M.toggle(filetype, command)
+	if filetype == nil or command == nil then
 		return vim.notify('Missing arguments', vim.log.levels.WARN)
 	end
 	for _, winnr in ipairs(vim.fn.range(1, vim.fn.winnr('$')) or {}) do
 		local bufnr = vim.fn.winbufnr(winnr)
 		if bufnr ~= nil then
 			local ft = vim.fn.getbufvar(bufnr, '&ft')
-			if ft == buftype then
+			if ft == filetype then
 				return vim.cmd(winnr .. 'close')
 			end
 		end
@@ -82,6 +82,24 @@ function M.toggle(buftype, command)
 	command()
 end
 
+---@param filetype string
+---@return boolean : is focused
+function M.focus(filetype)
+	for _, winnr in ipairs(vim.fn.range(1, vim.fn.winnr('$')) or {}) do
+		local bufnr = vim.fn.winbufnr(winnr)
+		if bufnr ~= nil then
+			local ft = vim.fn.getbufvar(bufnr, '&ft')
+			if ft == filetype then
+				local winid = vim.fn.win_getid(winnr)
+				if winid ~= nil then
+					vim.api.nvim_set_current_win(winid)
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
 ---@param bufnr number|nil
 function M.is_file(bufnr)
 	bufnr = bufnr or vim.fn.bufnr()

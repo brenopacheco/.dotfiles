@@ -1,5 +1,5 @@
 require('symbols-outline').setup({
-	autofold_depth = 0,
+	autofold_depth = 99,
 	auto_unfold_hover = false,
 	keymaps = {
 		focus_location = '<CR>',

@@ -5,23 +5,22 @@ local qfutil = require('utils.qf')
 ---@diagnostic disable-next-line: assign-type-mismatch
 local status, dap = pcall(require, 'dap')
 
--- vim.notify('DAP: ' .. (status and 'loaded' or 'not loaded'), vim.log.levels.INFO)
-
-local is_running = function()
-  return string.len(dap.status()) > 0
+if not status then
+  vim.notify('DAP not loaded', vim.log.levels.WARN)
 end
+
 
 local M = {}
 
 M.debug_start = function()
-  return dap.continue()
+	return dap.continue()
 end
 
 M.debug_restart = function()
-  if is_running() then
-    dap.restart()
-  end
-  dap.run_last()
+	if string.len(dap.status()) > 0 then
+		dap.restart()
+	end
+	dap.run_last()
 end
 
 M.debug_terminate = function()
@@ -89,6 +88,13 @@ end
 M.open_log = function()
 	local path = vim.fn.stdpath('cache') .. '/dap.log'
 	vim.cmd('vsp ' .. path)
+end
+
+M.toggle_repl = function()
+	bufutil.toggle('dap-repl', function()
+		require('dap').repl.open({height = 15})
+		bufutil.focus('dap-repl')
+	end)
 end
 
 M.show_configs = function()

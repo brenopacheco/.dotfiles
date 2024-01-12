@@ -385,6 +385,7 @@ M.debug_hover        = daputil.debug_hover
 M.debug_preview      = daputil.debug_preview
 M.debug_to_cursor    = daputil.to_cursor
 M.debug_open_log     = daputil.open_log
+M.debug_toggle_repl  = daputil.toggle_repl
 -- stylua: ignore end
 
 -- Run code action
