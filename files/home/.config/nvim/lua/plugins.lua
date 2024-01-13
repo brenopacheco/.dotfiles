@@ -48,10 +48,10 @@ vim.z.packadd({
 	'monkoose/matchparen.nvim',
 	'brenopacheco/zk-nvim',
 	-- TODO
-	'theHamsta/nvim-dap-virtual-text',
-	'rcarriga/nvim-dap-ui',
-	'mfussenegger/nvim-dap',
 	'vim-test/vim-test',
+  'tpope/vim-dadbod',
+  'kristijanhusak/vim-dadbod-ui',
+  'kristijanhusak/vim-dadbod-completion'
 })
 
 vim.z.modload({
@@ -69,4 +69,5 @@ vim.z.modload({
 	'event-stream',
 	'last-place',
 	'foldtext',
+  'timeout',
 })
