@@ -4,7 +4,7 @@ local dapui = require('dapui')
 dap.set_log_level('TRACE')
 
 ---@diagnostic disable-next-line: missing-fields
-require('dapui').setup({
+dapui.setup({
 	controls = {
 		element = 'repl',
 		enabled = true,
@@ -25,18 +25,18 @@ require('dapui').setup({
 require('nvim-dap-virtual-text').setup({})
 
 dap.listeners.after.event_initialized['dapui_config'] = function()
+  vim.notify('Dap session started', vim.log.level.WARN)
 	require('dap').repl.open({ height = 15 })
-	-- dapui.open()
 end
 
 dap.listeners.before.event_terminated['dapui_config'] = function()
-	require('dap').repl.close()
-	-- dapui.close()
+  vim.notify('Dap session terminated', vim.log.level.WARN)
+	-- require('dap').repl.close()
 end
 
 dap.listeners.before.event_exited['dapui_config'] = function()
-	require('dap').repl.close()
-	-- dapui.close()
+  vim.notify('Dap session exited', vim.log.level.WARN)
+	-- require('dap').repl.close()
 end
 
 vim.fn.sign_define(
@@ -86,9 +86,9 @@ end
 
 local debuggers = {
 	-- c = 'lldb',
-	dotnet = 'netcoredbg',
+	-- dotnet = 'netcoredbg',
 	go = 'delve',
-	-- node = 'vscode-js-debug',
+	node = 'vscode-js-debug',
 }
 
 for lang, debugger in pairs(debuggers) do

@@ -18,13 +18,14 @@ local notifier = function(level)
 		end
 		local text = table.concat(texts, ', ')
 		local trace = debug.traceback()
+		local print_trace = level == vim.log.levels.ERROR
 		local display = tostring(
 			ts
 				.. ' #'
 				.. count
 				.. ': '
 				.. text
-				.. (level == vim.log.levels.INFO and '' or '\n' .. debug.traceback())
+				.. (print_trace and '\n' .. debug.traceback() or '')
 		)
 		table.insert(messages, {
 			ts = ts,

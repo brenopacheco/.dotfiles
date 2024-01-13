@@ -155,9 +155,7 @@ end
 
 -- Git open fugitive window
 M.git_fugitive = function()
-	bufutil.toggle('fugitive', function()
-		vim.cmd('G')
-	end)
+	bufutil.toggle('fugitive', { cb = vim.cmd.G })
 end
 
 -- Open permalink to current line in browser and copy to clipboard
@@ -578,9 +576,7 @@ end
 
 -- Toggle quickfix window
 M.toggle_quickfix = function()
-	bufutil.toggle('qf', function()
-		qfutil.open()
-	end)
+	bufutil.toggle('qf', { cb = qfutil.open })
 end
 
 -- Toggle terminal window

@@ -65,41 +65,48 @@ function M.set_visual(visual)
 end
 
 ---@param filetype string
----@param command fun()
-function M.toggle(filetype, command)
-	if filetype == nil or command == nil then
-		return vim.notify('Missing arguments', vim.log.levels.WARN)
-	end
-	for _, winnr in ipairs(vim.fn.range(1, vim.fn.winnr('$')) or {}) do
-		local bufnr = vim.fn.winbufnr(winnr)
-		if bufnr ~= nil then
-			local ft = vim.fn.getbufvar(bufnr, '&ft')
-			if ft == filetype then
-				return vim.cmd(winnr .. 'close')
-			end
-		end
-	end
-	command()
-end
-
----@param filetype string
----@return boolean : is focused
-function M.focus(filetype)
-	for _, winnr in ipairs(vim.fn.range(1, vim.fn.winnr('$')) or {}) do
-		local bufnr = vim.fn.winbufnr(winnr)
-		if bufnr ~= nil then
-			local ft = vim.fn.getbufvar(bufnr, '&ft')
-			if ft == filetype then
-				local winid = vim.fn.win_getid(winnr)
-				if winid ~= nil then
-					vim.api.nvim_set_current_win(winid)
-					return true
+---@param opts? { mode?: 'toggle'|'open'|'close', focus?: boolean, cb?: fun() }
+function M.toggle(filetype, opts)
+	assert(filetype, 'Missing filetype')
+	opts = opts or {}
+	local mode = opts.mode or 'toggle'
+	local focus = opts.focus or false
+	local cb = opts.cb
+	---@param on_win fun(winnr: integer, winid: integer, bufnr: integer)
+	local function loop(on_win)
+		for _, winnr in ipairs(vim.fn.range(1, vim.fn.winnr('$')) or {}) do
+			local bufnr = vim.fn.winbufnr(winnr)
+			if bufnr ~= nil then
+				local ft = vim.fn.getbufvar(bufnr, '&ft')
+				if ft == filetype then
+					local winid = vim.fn.win_getid(winnr)
+					return on_win(winnr, winid --[[@as integer]], bufnr)
 				end
 			end
 		end
 	end
-	return false
+  local is_open = false
+	loop(function(winnr, winid, _)
+    is_open = true
+		if mode == 'close' or mode == 'toggle' then
+			return vim.cmd(winnr .. 'close')
+		end
+		if focus then
+			vim.api.nvim_set_current_win(winid)
+		end
+	end)
+  if cb ~= nil then
+    if (mode == 'toggle' and not is_open) or mode == 'open' then
+      cb()
+    end
+  end
+	if focus then
+		loop(function(_, winid, _)
+			vim.api.nvim_set_current_win(winid)
+		end)
+	end
 end
+
 ---@param bufnr number|nil
 function M.is_file(bufnr)
 	bufnr = bufnr or vim.fn.bufnr()

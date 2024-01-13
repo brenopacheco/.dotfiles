@@ -6,9 +6,21 @@ local qfutil = require('utils.qf')
 local status, dap = pcall(require, 'dap')
 
 if not status then
-  vim.notify('DAP not loaded', vim.log.levels.WARN)
+	vim.notify('DAP not loaded', vim.log.levels.WARN)
 end
 
+local function is_running()
+	return string.len(dap.status()) > 0
+end
+
+local function wrap(cb)
+	return function()
+		if not is_running() then
+			return vim.notify('Dap session not running', vim.log.levels.WARN)
+		end
+		cb()
+	end
+end
 
 local M = {}
 
@@ -17,35 +29,35 @@ M.debug_start = function()
 end
 
 M.debug_restart = function()
-	if string.len(dap.status()) > 0 then
+	if is_running() then
 		dap.restart()
 	end
 	dap.run_last()
 end
 
-M.debug_terminate = function()
+M.debug_terminate = wrap(function()
 	dap.terminate()
-end
+end)
 
-M.debug_pause = function()
+M.debug_pause = wrap(function()
 	dap.pause()
-end
+end)
 
-M.debug_continue = function()
+M.debug_continue = wrap(function()
 	dap.continue()
-end
+end)
 
-M.debug_step_into = function()
+M.debug_step_into = wrap(function()
 	dap.step_into()
-end
+end)
 
-M.debug_step_out = function()
+M.debug_step_out = wrap(function()
 	dap.step_out()
-end
+end)
 
-M.debug_step_over = function()
+M.debug_step_over = wrap(function()
 	dap.step_over()
-end
+end)
 
 M.debug_bp_toggle = function()
 	dap.toggle_breakpoint()
@@ -69,33 +81,35 @@ M.debug_bp_list = function()
 	qfutil.open()
 end
 
-M.debug_hover = function()
+M.debug_hover = wrap(function()
 	require('dap.ui.widgets').hover()
-end
+end)
 
-M.debug_preview = function()
+M.debug_preview = wrap(function()
 	require('dap.ui.widgets').preview()
-end
+end)
 
-M.to_cursor = function()
+M.to_cursor = wrap(function()
 	dap.run_to_cursor()
-end
+end)
 
-M.toggle_ui = function()
+M.toggle_ui = wrap(function()
 	require('dapui').toggle({ reset = true })
-end
+end)
 
 M.open_log = function()
 	local path = vim.fn.stdpath('cache') .. '/dap.log'
 	vim.cmd('vsp ' .. path)
 end
 
-M.toggle_repl = function()
-	bufutil.toggle('dap-repl', function()
-		require('dap').repl.open({height = 15})
-		bufutil.focus('dap-repl')
-	end)
-end
+M.toggle_repl = wrap(function()
+	bufutil.toggle('dap-repl', {
+		focus = true,
+		cb = function()
+			require('dap').repl.open({ height = 15 })
+		end,
+	})
+end)
 
 M.show_configs = function()
 	local configs = vim.inspect(dap.configurations)
