@@ -79,7 +79,7 @@ M.on_list = function(opts)
 	end
 	if #result > 1 then
 		vim.fn.setqflist({}, ' ', { title = opts.title, items = result })
-    qfutil.open('cfirst')
+		qfutil.open('cfirst')
 	else
 		vim.lsp.util.jump_to_location(
 			opts.items[1].user_data,
@@ -98,5 +98,25 @@ M.wrap = function(fn, ...)
 	end
 	return fn(unpack(args))
 end
+
+M.capabilities = vim.tbl_deep_extend(
+	'force',
+	vim.lsp.protocol.make_client_capabilities(),
+	require('cmp_nvim_lsp').default_capabilities(),
+	{
+		textDocument = {
+			completion = {
+				completionItem = {
+					snippetSupport = false,
+				},
+			},
+		},
+		workspace = {
+			didChangeWatchedFiles = {
+				dynamicRegistration = false,
+			},
+		},
+	}
+)
 
 return M

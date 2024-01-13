@@ -56,6 +56,8 @@ cmp.setup({
 				-- TODO: check if there is only one suggesion and if the suggestion
 				-- matches the current input, in which case we want to call copilot's
 				-- accept
+				-- use #cmp.get_entries() and check for 1
+				-- compare cmp.get_active_entry() with current input (how to get it?)
 				cmp.confirm({ select = true })
 			elseif
 				vim.z.enabled('copilot.lua')
@@ -144,9 +146,7 @@ cmp.setup({
 		},
 	}),
 	experimental = {
-		ghost_text = vim.z.enabled('zbirenbaum/copilot-cmp') and {
-			hl_group = 'CmpGhostText',
-		} or false,
+		ghost_text = false,
 	},
 	sorting = {
 		priority_weight = 2,
@@ -172,15 +172,3 @@ cmp.setup({
 		}),
 	},
 })
-
-if vim.z.enabled('zbirenbaum/copilot-cmp') then
-	require('copilot_cmp').setup()
-
-	cmp.event:on('menu_opened', function()
-		vim.b['copilot_suggestion_hidden'] = true
-	end)
-
-	cmp.event:on('menu_closed', function()
-		vim.b['copilot_suggestion_hidden'] = false
-	end)
-end

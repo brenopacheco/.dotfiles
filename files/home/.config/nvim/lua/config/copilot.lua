@@ -7,7 +7,7 @@ local opts = {
 		enabled = true,
 		auto_trigger = true,
 		accept = false,
-    debounce = 50,
+		debounce = 50,
 	},
 	server_opts_overrides = {
 		settings = {
@@ -19,9 +19,26 @@ local opts = {
 	},
 }
 
-if vim.z.enabled('zbirenbaum/copilot-cmp') then
-	opts.suggestion = { enabled = false , auto_trigger = false }
-	opts.panel = { enabled = false }
-end
-
 require('copilot').setup(opts)
+
+-- FIX: whenever entering insert mode, copilot won't show suggestions
+--      until a key is pressed, so we force it to show suggestions.
+--      the catch here is that time timer timeout must be greater than
+--      the copilot's debounce
+
+local feed2 = vim.schedule_wrap(function()
+	vim.api.nvim_exec_autocmds('CursorMovedI', {})
+end)
+
+local trigger = vim.schedule_wrap(function()
+	local timer = vim.uv.new_timer()
+	timer:start(75, 0, feed2)
+end)
+
+vim.api.nvim_create_autocmd({ 'ModeChanged' }, {
+	nested = true,
+	desc = 'Generate CompleteChanged on insert enter',
+	group = vim.api.nvim_create_augroup('alert-copilot', { clear = true }),
+	pattern = '*:i',
+	callback = trigger,
+})

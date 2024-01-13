@@ -1,4 +1,5 @@
 local lsp = require('lspconfig')
+local lsputil = require('utils.lsp')
 
 vim.lsp.set_log_level(vim.log.levels.ERROR)
 
@@ -20,8 +21,7 @@ vim.diagnostic.config({
 	severity_sort = true,
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = false
+local capabilities = lsputil.capabilities
 
 lsp.autotools_ls.setup({ capabilities = capabilities })
 lsp.bashls.setup({ capabilities = capabilities })

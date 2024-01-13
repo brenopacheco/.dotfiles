@@ -1,3 +1,5 @@
+local lsputil = require('utils.lsp')
+
 require('neodev').setup({
 	-- This makes any root trigger neodev's setup. Otherwise, only neovim files
 	-- will trigger it.
@@ -11,8 +13,7 @@ require('neodev').setup({
 	pathStrict = true,
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = false
+local capabilities = lsputil.capabilities
 
 local lsp = require('lspconfig')
 
@@ -21,7 +22,7 @@ lsp.lua_ls.setup({
 	settings = {
 		Lua = {
 			workspace = {
-        checkThirdParty = false,
+				checkThirdParty = false,
 				library = {
 					vim.fn.resolve(vim.fn.stdpath('config') .. '/lua/types'),
 				},
