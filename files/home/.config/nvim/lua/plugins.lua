@@ -55,19 +55,19 @@ vim.z.packadd({
 })
 
 vim.z.modload({
-	'argsview',
+	'args-view',
 	'autochdir',
 	'backup',
 	'bufferizer',
+	'event-stream',
+	'foldtext',
 	'gpg',
-	'winresize',
+	'last-place',
 	'reloader',
 	'shada',
 	'sniputil',
 	'telescope-select',
-	'yank-highlight',
-	'event-stream',
-	'last-place',
-	'foldtext',
   'timeout',
+	'win-resize',
+	'yank-highlight',
 })
