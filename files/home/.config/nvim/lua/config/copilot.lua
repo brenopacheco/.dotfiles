@@ -39,6 +39,6 @@ vim.api.nvim_create_autocmd({ 'ModeChanged' }, {
 	nested = true,
 	desc = 'Generate CompleteChanged on insert enter',
 	group = vim.api.nvim_create_augroup('alert-copilot', { clear = true }),
-	pattern = '*:i',
+	pattern = '[ns]:i',
 	callback = trigger,
 })

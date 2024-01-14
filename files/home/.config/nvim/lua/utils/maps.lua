@@ -621,6 +621,7 @@ M.keywordprg = function()
 		vim.print({ text = text })
 	until not text or text:len() == 0
 	table.insert(patterns, text)
+  table.insert(patterns, cword)
 	for _, pattern in ipairs(patterns) do
 		if pcall(vim.api.nvim_exec2, vim.o.keywordprg .. ' ' .. pattern, {}) then
 			return

@@ -1,5 +1,4 @@
 local buffer = require('completions.buffer')
-local events = require('completions.events')
 
 ---@class CompletionMatch
 ---@field word string
@@ -11,7 +10,9 @@ local events = require('completions.events')
 ---@field name string
 ---@field items CompletionSourceItem[]
 
----@alias CompletionSourceItem string
+---@class CompletionSourceItem
+---@field value string
+---@field source string
 
 ---@class CompletionSource
 ---@field public name string
@@ -21,39 +22,38 @@ local events = require('completions.events')
 ---@class CompletionOpts
 ---@field max_items number
 ---@field debounce_time number
----@field sources { buffer: { debounce_time: number }}
-
----@class CompletionContextSources
----@field buffer CompletionSource
+---@field sources { buffer: { debounce_time: number, min_length: number }}
 
 ---@class CompletionContext
----@field public  opts    CompletionOpts            : maximum number of matches to show
----@field private matches CompletionMatch[]         : the list of sources that match a keyword
----@field private keyword string                    : the keyword to match
----@field private sources CompletionContextSources  : source items
----@field public  evgroup integer                   : event group id
----@field private timer   uv_timer_t                : timer to debounce updates
-local ctx = {}
+---@field public  opts    CompletionOpts
+---@field private matches CompletionMatch[]
+---@field public  keyword string
+---@field private sources { [string]: CompletionSource }
+---@field public  evgroup integer
+---@field private timer   uv_timer_t
+local Context = {}
 
 ---@param opts CompletionOpts
 ---@return CompletionContext
-function ctx:new(opts)
+function Context:new(opts)
 	---@type CompletionContext
-	local obj = setmetatable({
+	local obj = {
 		opts = opts,
 		matches = {},
 		keyword = '',
-		sources = { buffer = {} },
+		sources = {},
 		evgroup = 0,
 		timer = vim.loop.new_timer(),
-	}, { __index = self })
-	obj.evgroup = events.init(obj)
-	obj.sources.buffer = buffer:new(obj)
+	}
+	setmetatable(obj, { __index = self })
+	obj:setup_autocmds()
+	obj:setup_sources()
 	return obj
 end
 
 ---@public
-function ctx:update()
+---@param opts { complete: boolean }
+function Context:update(opts)
 	if self.timer:is_active() then
 		self.timer:stop()
 	end
@@ -61,15 +61,25 @@ function ctx:update()
 		self.opts.debounce_time,
 		0,
 		vim.schedule_wrap(function()
-			self:refresh_keyword()
-			self:refresh_matches()
-			self:complete()
+			if self:should_update() then
+				self:refresh_keyword()
+				self:refresh_matches()
+				if opts and opts.complete then
+					self:complete()
+				end
+			end
 		end)
 	)
 end
 
 ---@private
-function ctx:refresh_keyword()
+function Context:should_update()
+	local mode = vim.api.nvim_get_mode().mode
+	return mode == 'ic' or mode == 'i'
+end
+
+---@private
+function Context:refresh_keyword()
 	local col = vim.fn.col('.')
 	local line = vim.api.nvim_get_current_line()
 	local word = line:sub(1, col - 1):match('%w+$') or ''
@@ -77,7 +87,7 @@ function ctx:refresh_keyword()
 end
 
 ---@private
-function ctx:refresh_matches()
+function Context:refresh_matches()
 	local items = {}
 	vim.list_extend(items, self.sources.buffer.items)
 	items = self:items_filter(items)
@@ -87,68 +97,93 @@ function ctx:refresh_matches()
 end
 
 ---@private
-function ctx:complete()
-  local mode = vim.api.nvim_get_mode().mode
-  pdebug('completing', self.keyword, #self.matches, mode)
-	if mode:match('i') then
-		vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
-	end
+function Context:complete()
+	pdebug('completing', self.keyword, #self.matches)
+	vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
 end
 
 ---@private
 ---@param items CompletionSourceItem[]
 ---@return CompletionSourceItem[]
-function ctx:items_filter(items)
-	if #self.keyword < 2 then
-		return {}
-	end
+function Context:items_filter(items)
 	---@param item CompletionSourceItem
 	return vim.tbl_filter(function(item)
-		return item:match(self.keyword)
+		if
+			item.source == 'buffer'
+			and #self.keyword < self.opts.sources.buffer.min_length
+		then
+			return false
+		end
+		return item.value:match(self.keyword)
 	end, items)
 end
 
 ---@private
 ---@param items CompletionSourceItem[]
 ---@return CompletionSourceItem[]
-function ctx:items_sort(items)
+function Context:items_sort(items)
 	return table.sort(items, function(a, b)
-    return #a < #b
+		return #a.value < #b.value
 	end) or items
 end
 
 ---@private
 ---@param items CompletionSourceItem[]
 ---@return CompletionSourceItem[]
-function ctx:items_limit(items)
+function Context:items_limit(items)
 	return vim.list_slice(items, 1, self.opts.max_items)
 end
 
 ---@private
 ---@param items CompletionSourceItem[]
 ---@return CompletionMatch[]
-function ctx:format_items(items)
+function Context:format_items(items)
 	---@param item CompletionSourceItem
 	return vim.tbl_map(function(item)
 		---@type CompletionMatch
 		return {
-			word = item,
+			word = item.value,
 			info = '',
-			kind = '[W]',
+			kind = string.format('[%s]', item.source),
 			menu = '',
 		}
 	end, items)
 end
 
 ---@public
-function ctx:accept()
+function Context:accept()
 	---@type { mode: string, pum_visible: number, selected: number }|nil
 	local info = vim.fn.complete_info({ 'mode', 'pum_visible', 'selected' })
 	if info == nil or info.mode ~= 'eval' or not info.pum_visible then
 		return
 	end
-	local accept_keys = vim.api.nvim_replace_termcodes('<c-y><space>', true, true, true)
+	local accept_keys =
+		vim.api.nvim_replace_termcodes('<c-y><space>', true, true, true)
 	vim.api.nvim_feedkeys(accept_keys, 'i', true)
 end
 
-return ctx
+---@private
+function Context:setup_autocmds()
+	self.evgroup = vim.api.nvim_create_augroup('completions', { clear = true })
+
+	vim.api.nvim_create_autocmd('CursorMovedI', {
+		group = self.evgroup,
+		callback = function()
+			self:update({ complete = false })
+		end,
+	})
+
+	vim.api.nvim_create_autocmd('CursorHoldI', {
+		group = self.evgroup,
+		callback = vim.schedule_wrap(function()
+			self:complete()
+		end),
+	})
+end
+
+function Context:setup_sources()
+	assert(self.evgroup, 'Context group not set')
+	self.sources.buffer = buffer:new(self)
+end
+
+return Context
