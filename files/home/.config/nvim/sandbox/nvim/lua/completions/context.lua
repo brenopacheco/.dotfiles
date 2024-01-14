@@ -1,157 +1,133 @@
+local buffer = require('completions.buffer')
+local events = require('completions.events')
+
 ---@class CompletionMatch
 ---@field word string
 ---@field kind string
 ---@field info? string
 ---@field menu? string
 
+---@class CompetionSource
+---@field name string
+---@field items CompletionSourceItem[]
+
 ---@alias CompletionSourceItem string
 
 ---@class CompletionSource
----@field name string
----@field items CompletionSourceItem[]
+---@field public name string
+---@field public items CompletionSourceItem[]
+---@field protected ctx CompletionContext
 
 ---@class CompletionOpts
 ---@field max_items number
 ---@field debounce_time number
+---@field sources { buffer: { debounce_time: number }}
 
----@type CompletionOpts
-local default_opts = {
-	max_items = 5,
-	debounce_time = 300,
-}
-
----@class CompletionCache
----@field matches { [string]: CompletionMatch[] }
----@field sources { buffer: string[] }
----@field stale boolean
+---@class CompletionContextSources
+---@field buffer CompletionSource
 
 ---@class CompletionContext
----@field opts CompletionOpts                                : maximum number of matches to show
----@field private cache CompletionCache                      : the cache of matches for a keyword
----@field private matches CompletionMatch[]                  : the list of sources that match a keyword
----@field private keyword string                             : the keyword to match
----@field private sources { buffer: CompletionSourceItem[] } : source items
----@field private tick integer                               : the keyword to match
-local ctx = {
-	opts = default_opts,
-	cache = {
-		matches = {
-      -- ['keyword'] = {...}
-    },
-    sources = {
-      buffer = {
-        -- 'word1', 'word2', 'word3'
-      },
-    },
-		stale = true,
-	},
-	matches = {},
-	keyword = '',
-	sources = {
-		buffer = {},
-	},
-}
+---@field public  opts    CompletionOpts            : maximum number of matches to show
+---@field private matches CompletionMatch[]         : the list of sources that match a keyword
+---@field private keyword string                    : the keyword to match
+---@field private sources CompletionContextSources  : source items
+---@field public  evgroup integer                   : event group id
+---@field private timer   uv_timer_t                : timer to debounce updates
+local ctx = {}
 
----@param opts? CompletionOpts
+---@param opts CompletionOpts
 ---@return CompletionContext
 function ctx:new(opts)
-	opts = vim.tbl_extend('force', default_opts, opts or {})
-	return setmetatable({ opts = opts }, { __index = self })
+	---@type CompletionContext
+	local obj = setmetatable({
+		opts = opts,
+		matches = {},
+		keyword = '',
+		sources = { buffer = {} },
+		evgroup = 0,
+		timer = vim.loop.new_timer(),
+	}, { __index = self })
+	obj.evgroup = events.init(obj)
+	obj.sources.buffer = buffer:new(obj)
+	return obj
 end
 
-function ctx:clear()
-	self.cache = {
-    matches = {},
-    sources = {
-      buffer = {},
-    },
-    stale = true,
-  }
-	self.keyword = ''
+---@public
+function ctx:update()
+	if self.timer:is_active() then
+		self.timer:stop()
+	end
+	self.timer:start(
+		self.opts.debounce_time,
+		0,
+		vim.schedule_wrap(function()
+			self:refresh_keyword()
+			self:refresh_matches()
+			self:complete()
+		end)
+	)
 end
 
----@param source CompletionSource
----@param keyword string
----@return boolean true if the source was refreshed, false otherwise
-function ctx:refresh_source(source, keyword)
-  if vim.list_contains(self.cache.sources[source.name], keyword) then
-    return false
-  end
-	self.sources[source.name] = source.items
-  table.insert(self.cache.sources[source.name], keyword)
-  self.cache.stale = true
-	return true
-end
-
+---@private
 function ctx:refresh_keyword()
 	local col = vim.fn.col('.')
 	local line = vim.api.nvim_get_current_line()
-	local word = line:sub(1, col - 1):match('%w+$')
-	if self.keyword == word then
-		return false
-	end
-	self.keyword = word or ''
-	return true
+	local word = line:sub(1, col - 1):match('%w+$') or ''
+	self.keyword = word
 end
 
----@return boolean true if the matches were refreshed, false otherwise
----we can only use the cache if none of the sources have been changed.
+---@private
 function ctx:refresh_matches()
-	if not self.cache.stale and self.cache.matches[self.keyword] then
-		self.matches = self.cache[self.keyword]
-		return false
-	end
 	local items = {}
-	vim.list_extend(items, self.sources.buffer)
-	items = self.filter_items(items, self)
-	items = self.sort_items(items, self)
-	items = self.cap_items(items, self)
-	self.matches = self.format_items(items, self)
-	self.cache.matches[self.keyword] = self.matches
-  self.cache.stale = false
-	return true
+	vim.list_extend(items, self.sources.buffer.items)
+	items = self:items_filter(items)
+	items = self:items_sort(items)
+	items = self:items_limit(items)
+	self.matches = self:format_items(items)
 end
 
+---@private
 function ctx:complete()
-	vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
+  local mode = vim.api.nvim_get_mode().mode
+  pdebug('completing', self.keyword, #self.matches, mode)
+	if mode:match('i') then
+		vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
+	end
 end
 
 ---@private
 ---@param items CompletionSourceItem[]
----@param _ctx CompletionContext
 ---@return CompletionSourceItem[]
-ctx.filter_items = function(items, _ctx)
-	local keyword = _ctx.keyword
-	if #keyword < 2 then
-		return items
+function ctx:items_filter(items)
+	if #self.keyword < 2 then
+		return {}
 	end
 	---@param item CompletionSourceItem
 	return vim.tbl_filter(function(item)
-		return item:match(keyword)
+		return item:match(self.keyword)
 	end, items)
 end
 
 ---@private
 ---@param items CompletionSourceItem[]
----@param _ CompletionContext
 ---@return CompletionSourceItem[]
-ctx.sort_items = function(items, _)
-	return table.sort(items) or items
+function ctx:items_sort(items)
+	return table.sort(items, function(a, b)
+    return #a < #b
+	end) or items
 end
 
 ---@private
 ---@param items CompletionSourceItem[]
----@param _ CompletionContext
 ---@return CompletionSourceItem[]
-ctx.cap_items = function(items, _)
-	return vim.list_slice(items, 1, ctx.opts.max_items)
+function ctx:items_limit(items)
+	return vim.list_slice(items, 1, self.opts.max_items)
 end
 
 ---@private
 ---@param items CompletionSourceItem[]
----@param _ CompletionContext
 ---@return CompletionMatch[]
-ctx.format_items = function(items, _)
+function ctx:format_items(items)
 	---@param item CompletionSourceItem
 	return vim.tbl_map(function(item)
 		---@type CompletionMatch
@@ -162,6 +138,17 @@ ctx.format_items = function(items, _)
 			menu = '',
 		}
 	end, items)
+end
+
+---@public
+function ctx:accept()
+	---@type { mode: string, pum_visible: number, selected: number }|nil
+	local info = vim.fn.complete_info({ 'mode', 'pum_visible', 'selected' })
+	if info == nil or info.mode ~= 'eval' or not info.pum_visible then
+		return
+	end
+	local accept_keys = vim.api.nvim_replace_termcodes('<c-y><space>', true, true, true)
+	vim.api.nvim_feedkeys(accept_keys, 'i', true)
 end
 
 return ctx
