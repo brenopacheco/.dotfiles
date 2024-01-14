@@ -44,3 +44,12 @@ snippet stylua-ignore-block > __ignore block__
 	-- stylua: ignore start
 	${0}
 	-- stylua: ignore end
+
+snippet autocmd > __create template autocmd__
+	vim.api.nvim_create_autocmd({ '$1' }, {
+		desc = '$2',
+		group = vim.api.nvim_create_augroup('$3', { clear = true }),
+		callback = function()
+			$0
+		end,
+	})
