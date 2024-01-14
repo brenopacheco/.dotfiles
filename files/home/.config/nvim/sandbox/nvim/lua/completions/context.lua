@@ -98,7 +98,7 @@ end
 
 ---@private
 function Context:complete()
-	pdebug('completing', self.keyword, #self.matches)
+	-- pdebug('completing', self.keyword, #self.matches)
 	vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
 end
 
@@ -176,14 +176,21 @@ function Context:setup_autocmds()
 	vim.api.nvim_create_autocmd('CursorHoldI', {
 		group = self.evgroup,
 		callback = vim.schedule_wrap(function()
+			pdebug('CursorHoldI')
 			self:complete()
 		end),
 	})
 end
 
 function Context:setup_sources()
-	assert(self.evgroup, 'Context group not set')
 	self.sources.buffer = buffer:new(self)
+end
+
+--- NOTE: this is not working
+function Context:enter()
+	local enter_keys =
+		vim.api.nvim_replace_termcodes('\r', true, true, true)
+	vim.api.nvim_feedkeys(enter_keys, 'i', true)
 end
 
 return Context

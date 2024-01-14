@@ -29,7 +29,7 @@ M.accept = function()
 end
 
 M.enter = function()
-	-- ctx:accept()
+	ctx:enter()
 end
 
 ---@private
