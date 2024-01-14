@@ -7,6 +7,10 @@ sources:
   5. snippets
 --]]
 
+local buffer_refresh_debounce_time = 500
+local text_change_debounce_time = 300
+
+
 local function debounce(delay, callback)
 	local timer = vim.loop.new_timer()
 	local wraped_callback = vim.schedule_wrap(function(...)
@@ -75,7 +79,7 @@ function completions:complete()
 	end
 end
 
-local on_text_changed = debounce(300, function()
+local on_text_changed = debounce(text_change_debounce_time, function()
 	completions.keyword = get_keyword()
 	completions.matches = get_matches()
 	completions:complete()
@@ -107,7 +111,7 @@ local get_buffer_words = function(bufnr)
 	return vim.tbl_keys(words)
 end
 
-local refresh_buffer_source = debounce(500, function()
+local refresh_buffer_source = debounce(buffer_refresh_debounce_time, function()
 	completions.sources.buffer = get_buffer_words(0)
 	vim.api.nvim_exec_autocmds('User', { pattern = 'CompletionSourcesUpdated' })
 end)
