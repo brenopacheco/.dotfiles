@@ -1,69 +1,80 @@
-local debounce = require('completions.debounce')
-
 ---@class CompletionBufferSource : CompletionSource
 ---@field name 'buffer'
-local source = {
-	name = 'buffer',
-	items = {},
-	stale = false,
-}
+---@field private timer uv_timer_t
+---@field private stale boolean
+local Source = {}
 
 ---@param ctx CompletionContext
-function source:new(ctx)
+function Source:new(ctx)
 	local obj = setmetatable({}, { __index = self })
 	obj.ctx = ctx
-	obj:init()
+	obj.name = 'buffer'
+	obj.items = {}
+	obj.stale = false
+	obj.timer = vim.loop.new_timer()
+	obj:setup_autocmds()
 	return obj
 end
 
-function source:should_update(bufnr)
-	local mode = vim.api.nvim_get_mode().mode
-	local is_current_buffer = vim.api.nvim_get_current_buf() == bufnr
-	local is_insert_mode = mode == 'i' or mode == 'ic'
-	local is_stale = self.stale
-	return is_current_buffer and is_insert_mode and is_stale
+---@private
+function Source:invalidate()
+	self.stale = true
 end
 
-function source:init()
-	local debounce_time = self.ctx.opts.sources.buffer.debounce_time
-	local debounced_update = debounce(debounce_time, function()
-		self.stale = false
-		self:update()
-	end)
+---@private
+function Source:should_update(bufnr)
+	return self.stale
+		and vim.api.nvim_get_current_buf() == bufnr
+		and vim.api.nvim_get_mode().mode:match('i')
+end
 
-	vim.api.nvim_create_autocmd('CursorMovedI', {
+---@private
+function Source:update()
+	if self.timer:is_active() then
+		self.timer:stop()
+	end
+	self.timer:start(
+		self.ctx.opts.sources.buffer.debounce_time,
+		0,
+		vim.schedule_wrap(function()
+			pdebug('updating buffer source')
+			local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+			local words = {}
+			for _, line in ipairs(lines) do
+				for match in line:gmatch('%w%w%w+') do
+					if match ~= self.ctx.keyword then
+						words[match] = true
+					end
+				end
+			end
+			self.items = vim.tbl_map(function(word)
+				return { value = word, source = 'buffer' }
+			end, vim.tbl_keys(words))
+			self.ctx:update({ complete = true })
+		end)
+	)
+end
+
+---@private
+function Source:setup_autocmds()
+	vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI' }, {
 		desc = 'Updates buffer source',
 		group = self.ctx.evgroup,
 		callback = function()
-			self.stale = true
+			-- pdebug('buffer source invalidated')
+			self:invalidate()
 		end,
 	})
-
 	vim.api.nvim_create_autocmd('CursorHoldI', {
-		desc = 'Updates buffer source',
+		desc = 'Try updating buffer source',
 		group = self.ctx.evgroup,
 		callback = function(ev)
 			if self:should_update(ev.buf) then
-				debounced_update()
+				pdebug('triggering buffer source update')
+				self:update()
 			end
 		end,
 	})
 end
 
-function source:update()
-	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-	local words = {}
-	for _, line in ipairs(lines) do
-		for match in line:gmatch('%w%w%w+') do
-			if match ~= self.ctx.keyword then
-				words[match] = true
-			end
-		end
-	end
-	self.items = vim.tbl_map(function(word)
-		return { value = word, source = 'buffer' }
-	end, vim.tbl_keys(words))
-	self.ctx:update({ complete = true })
-end
-
-return source
+return Source

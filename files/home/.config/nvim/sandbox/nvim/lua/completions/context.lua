@@ -23,7 +23,7 @@ local buffer = require('completions.buffer')
 ---@class CompletionOpts
 ---@field max_items number
 ---@field debounce_time number
----@field sources { buffer: { debounce_time: number, min_length: number }}
+---@field sources { buffer: { debounce_time: number, min_length: number, all_buffers: boolean }}
 
 ---@class CompletionContext
 ---@field public  opts    CompletionOpts

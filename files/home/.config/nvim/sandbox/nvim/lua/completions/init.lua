@@ -11,8 +11,9 @@ M.default_opts = {
 	debounce_time = 100,
 	sources = {
 		buffer = {
-			debounce_time = 500,
+			debounce_time = 1000,
 			min_length = 1,
+      all_buffers = false -- TODO: implement
 		},
 	},
 }
