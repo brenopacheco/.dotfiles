@@ -102,6 +102,7 @@ end
 ---@private
 function Context:complete()
 	if self.enabled then
+		-- pdebug('complete', self.keyword, #self.matches)
 		vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
 	end
 end
@@ -159,12 +160,14 @@ end
 function Context:setup_autocmds()
 	self.evgroup = vim.api.nvim_create_augroup('completions', { clear = true })
 	vim.api.nvim_create_autocmd('CursorMovedI', {
+		desc = 'Updates matches',
 		group = self.evgroup,
 		callback = function()
 			self:update({ complete = false })
 		end,
 	})
 	vim.api.nvim_create_autocmd('CursorHoldI', {
+		desc = 'Triggers completion',
 		group = self.evgroup,
 		callback = vim.schedule_wrap(function()
 			self:complete()
@@ -189,9 +192,8 @@ end
 ---@param fallback string
 function Context:accept(fallback)
 	assert(fallback, 'fallback keybinding is required')
-	self.enabled = not self.enabled
 	local index = vim.fn.complete_info({ 'selected' }).selected
-	if index < 0 then
+	if not self.enabled or index < 0 then
 		local fallback_keys =
 			vim.api.nvim_replace_termcodes(fallback, true, false, true)
 		vim.api.nvim_feedkeys(fallback_keys, 'i', true)
