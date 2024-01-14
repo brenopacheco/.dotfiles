@@ -5,6 +5,7 @@ local buffer = require('completions.buffer')
 ---@field kind string
 ---@field info? string
 ---@field menu? string
+---@field source string
 
 ---@class CompetionSource
 ---@field name string
@@ -31,6 +32,7 @@ local buffer = require('completions.buffer')
 ---@field private sources { [string]: CompletionSource }
 ---@field public  evgroup integer
 ---@field private timer   uv_timer_t
+---@field private enabled boolean
 local Context = {}
 
 ---@param opts CompletionOpts
@@ -44,6 +46,7 @@ function Context:new(opts)
 		sources = {},
 		evgroup = 0,
 		timer = vim.loop.new_timer(),
+		enabled = true,
 	}
 	setmetatable(obj, { __index = self })
 	obj:setup_autocmds()
@@ -98,8 +101,9 @@ end
 
 ---@private
 function Context:complete()
-	-- pdebug('completing', self.keyword, #self.matches)
-	vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
+	if self.enabled then
+		vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
+	end
 end
 
 ---@private
@@ -146,37 +150,23 @@ function Context:format_items(items)
 			info = '',
 			kind = string.format('[%s]', item.source),
 			menu = '',
+			source = item.source,
 		}
 	end, items)
-end
-
----@public
-function Context:accept()
-	---@type { mode: string, pum_visible: number, selected: number }|nil
-	local info = vim.fn.complete_info({ 'mode', 'pum_visible', 'selected' })
-	if info == nil or info.mode ~= 'eval' or not info.pum_visible then
-		return
-	end
-	local accept_keys =
-		vim.api.nvim_replace_termcodes('<c-y><space>', true, true, true)
-	vim.api.nvim_feedkeys(accept_keys, 'i', true)
 end
 
 ---@private
 function Context:setup_autocmds()
 	self.evgroup = vim.api.nvim_create_augroup('completions', { clear = true })
-
 	vim.api.nvim_create_autocmd('CursorMovedI', {
 		group = self.evgroup,
 		callback = function()
 			self:update({ complete = false })
 		end,
 	})
-
 	vim.api.nvim_create_autocmd('CursorHoldI', {
 		group = self.evgroup,
 		callback = vim.schedule_wrap(function()
-			pdebug('CursorHoldI')
 			self:complete()
 		end),
 	})
@@ -186,11 +176,33 @@ function Context:setup_sources()
 	self.sources.buffer = buffer:new(self)
 end
 
---- NOTE: this is not working
-function Context:enter()
-	local enter_keys =
-		vim.api.nvim_replace_termcodes('\r', true, true, true)
-	vim.api.nvim_feedkeys(enter_keys, 'i', true)
+function Context:toggle()
+	self.enabled = not self.enabled
+end
+
+function Context:on_complete(selected)
+	if selected.source == 'buffer' then
+		vim.api.nvim_feedkeys(' ', 'i', true)
+	end
+end
+
+---@param fallback string
+function Context:accept(fallback)
+	assert(fallback, 'fallback keybinding is required')
+	self.enabled = not self.enabled
+	local index = vim.fn.complete_info({ 'selected' }).selected
+	if index < 0 then
+		local fallback_keys =
+			vim.api.nvim_replace_termcodes(fallback, true, false, true)
+		vim.api.nvim_feedkeys(fallback_keys, 'i', true)
+		return
+	end
+	local selected = self.matches[index + 1]
+	local accept_keys = vim.api.nvim_replace_termcodes('<c-y>', true, false, true)
+	vim.api.nvim_feedkeys(accept_keys, 'i', true)
+	vim.schedule(function()
+		self:on_complete(selected)
+	end)
 end
 
 return Context

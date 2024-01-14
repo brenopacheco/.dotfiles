@@ -12,42 +12,24 @@ M.default_opts = {
 	sources = {
 		buffer = {
 			debounce_time = 500,
-      min_length = 1
+			min_length = 1,
 		},
 	},
 }
 
 ---@param opts? CompletionOpts
 M.setup = function(opts)
-  opts = vim.tbl_deep_extend('force', M.default_opts, opts or {}) ---@cast opts -nil
+	opts = vim.tbl_deep_extend('force', M.default_opts, opts or {}) ---@cast opts -nil
 	ctx = context:new(opts)
-  M.configure()
-end
-
-M.accept = function()
-	ctx:accept()
-end
-
-M.enter = function()
-	ctx:enter()
-end
-
----@private
-M.configure = function()
 	vim.o.completeopt = 'menu,menuone,noinsert'
-  vim.o.updatetime = 100
-	vim.keymap.set(
-		'i',
-		'<tab>',
-		M.accept,
-		{ noremap = true, silent = true }
-	)
-	vim.keymap.set(
-		'i',
-		'<cr>',
-		M.enter,
-		{ noremap = true, silent = true }
-	)
+	vim.o.updatetime = 100
+	vim.keymap.set('i', '<cr>', '<c-e><cr>', {})
+	vim.keymap.set('i', '<tab>', function() ctx:accept('<tab>') end)
+end
+
+M.toggle = function()
+	assert(ctx, 'completions not setup')
+	ctx:toggle()
 end
 
 return M
