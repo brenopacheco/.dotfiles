@@ -13,7 +13,10 @@ M.default_opts = {
 		buffer = {
 			debounce_time = 1000,
 			min_length = 1,
-      all_buffers = false -- TODO: implement
+			all_buffers = false, -- TODO: implement
+		},
+		snippet = {
+			min_length = 1,
 		},
 	},
 }
@@ -25,12 +28,19 @@ M.setup = function(opts)
 	vim.o.completeopt = 'menu,menuone,noinsert'
 	vim.o.updatetime = 100
 	vim.keymap.set('i', '<cr>', '<c-e><cr>', {})
-	vim.keymap.set('i', '<tab>', function() ctx:accept('<tab>') end)
+	vim.keymap.set('i', '<tab>', function()
+		ctx:accept('<tab>')
+	end)
+	vim.keymap.set('n', '<s-tab>', M.inspect, {})
 end
 
 M.toggle = function()
 	assert(ctx, 'completions not setup')
 	ctx:toggle()
+end
+
+M.inspect = function()
+  pdebug(ctx)
 end
 
 return M

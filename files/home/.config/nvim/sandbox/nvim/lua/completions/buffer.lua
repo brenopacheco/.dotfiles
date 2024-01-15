@@ -37,7 +37,7 @@ function Source:update()
 		self.ctx.opts.sources.buffer.debounce_time,
 		0,
 		vim.schedule_wrap(function()
-			pdebug('updating buffer source')
+			-- pdebug('updating buffer source')
 			local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 			local words = {}
 			for _, line in ipairs(lines) do
@@ -47,9 +47,17 @@ function Source:update()
 					end
 				end
 			end
-			self.items = vim.tbl_map(function(word)
-				return { value = word, source = 'buffer' }
-			end, vim.tbl_keys(words))
+			---@type CompletionMatch[]
+			local items = {}
+			for word in pairs(words) do
+				---@type CompletionMatch
+				local item = {
+					kind = 'buffer',
+					word = word,
+				}
+				table.insert(items, item)
+			end
+			self.items = items
 			self.ctx:update({ complete = true })
 		end)
 	)
@@ -70,7 +78,7 @@ function Source:setup_autocmds()
 		group = self.ctx.evgroup,
 		callback = function(ev)
 			if self:should_update(ev.buf) then
-				pdebug('triggering buffer source update')
+				-- pdebug('triggering buffer source update')
 				self:update()
 			end
 		end,

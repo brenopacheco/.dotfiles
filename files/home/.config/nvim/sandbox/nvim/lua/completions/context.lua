@@ -1,29 +1,37 @@
 local buffer = require('completions.buffer')
+local snippet = require('completions.snippet')
 
 ---@class CompletionMatch
 ---@field word string
 ---@field kind string
 ---@field info? string
 ---@field menu? string
----@field source string
 
 ---@class CompetionSource
 ---@field name string
----@field items CompletionSourceItem[]
-
----@class CompletionSourceItem
----@field value string
----@field source string
+---@field items CompletionMatch[]
 
 ---@class CompletionSource
 ---@field public name string
----@field public items CompletionSourceItem[]
+---@field public items CompletionMatch[]
 ---@field protected ctx CompletionContext
 
 ---@class CompletionOpts
 ---@field max_items number
 ---@field debounce_time number
----@field sources { buffer: { debounce_time: number, min_length: number, all_buffers: boolean }}
+---@field sources CompletionSourcesOpts
+
+---@class CompletionSourcesOpts
+---@field buffer CompletionBufferSourceOpts
+---@field snippet CompletionSnippetSourceOpts
+
+---@class CompletionBufferSourceOpts
+---@field debounce_time number
+---@field min_length number
+---@field all_buffers boolean
+
+---@class CompletionSnippetSourceOpts
+---@field min_length number
 
 ---@class CompletionContext
 ---@field public  opts    CompletionOpts
@@ -57,6 +65,7 @@ end
 ---@public
 ---@param opts { complete: boolean }
 function Context:update(opts)
+	local complete = opts and opts.complete
 	if self.timer:is_active() then
 		self.timer:stop()
 	end
@@ -65,10 +74,13 @@ function Context:update(opts)
 		0,
 		vim.schedule_wrap(function()
 			if self:should_update() then
-				self:refresh_keyword()
-				self:refresh_matches()
-				if opts and opts.complete then
+				if complete then
+					self:refresh_matches()
+					self:refresh_keyword()
 					self:complete()
+				else
+					self:refresh_keyword()
+					self:refresh_matches()
 				end
 			end
 		end)
@@ -83,84 +95,101 @@ end
 
 ---@private
 function Context:refresh_keyword()
+	self.keyword = Context.get_keyword()
+end
+
+---@private
+function Context.get_keyword()
 	local col = vim.fn.col('.')
 	local line = vim.api.nvim_get_current_line()
 	local word = line:sub(1, col - 1):match('%w+$') or ''
-	self.keyword = word
+  return word
 end
 
 ---@private
 function Context:refresh_matches()
 	local items = {}
 	vim.list_extend(items, self.sources.buffer.items)
+	vim.list_extend(items, self.sources.snippet.items)
 	items = self:items_filter(items)
 	items = self:items_sort(items)
 	items = self:items_limit(items)
-	self.matches = self:format_items(items)
+	items = self:items_preselect(items)
+	self.matches = items
 end
 
 ---@private
 function Context:complete()
 	if self.enabled then
-		-- pdebug('complete', self.keyword, #self.matches)
+		pdebug(
+			'completions',
+			self.keyword,
+			#self.matches,
+			#self.sources.buffer.items
+		)
+		--- TODO: this doesnt work when we have a selection and something triggers
+		---       an update
 		vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
 	end
 end
 
 ---@private
----@param items CompletionSourceItem[]
----@return CompletionSourceItem[]
+---@param items CompletionMatch[]
+---@return CompletionMatch[]
 function Context:items_filter(items)
-	---@param item CompletionSourceItem
+	---@param item CompletionMatch
 	return vim.tbl_filter(function(item)
-		if
-			item.source == 'buffer'
-			and #self.keyword < self.opts.sources.buffer.min_length
-		then
+		if #self.keyword < self.opts.sources[item.kind].min_length then
 			return false
 		end
-		return item.value:match(self.keyword)
+		return item.word:match(self.keyword)
 	end, items)
 end
 
 ---@private
----@param items CompletionSourceItem[]
----@return CompletionSourceItem[]
+---@param items CompletionMatch[]
+---@return CompletionMatch[]
 function Context:items_sort(items)
 	return table.sort(items, function(a, b)
-		return #a.value < #b.value
+		return #a.word < #b.word
 	end) or items
 end
 
 ---@private
----@param items CompletionSourceItem[]
----@return CompletionSourceItem[]
+---@param items CompletionMatch[]
+---@return CompletionMatch[]
 function Context:items_limit(items)
 	return vim.list_slice(items, 1, self.opts.max_items)
 end
 
+---If the puml is already opened and we have a selected match, we need to
+---push it into the 1st position.
 ---@private
----@param items CompletionSourceItem[]
+---@param items CompletionMatch[]
 ---@return CompletionMatch[]
-function Context:format_items(items)
-	---@param item CompletionSourceItem
-	return vim.tbl_map(function(item)
-		---@type CompletionMatch
-		return {
-			word = item.value,
-			info = '',
-			kind = string.format('[%s]', item.source),
-			menu = '',
-			source = item.source,
-		}
-	end, items)
+function Context:items_preselect(items)
+	local index = vim.fn.complete_info({ 'selected' }).selected
+	local selected = self.matches[index + 1]
+	if not selected then
+		return items
+	end
+	if selected.word == self.get_keyword() then
+		for i, item in ipairs(items) do
+			if item.word == selected.word then
+				table.remove(items, i)
+				table.insert(items, 1, item)
+				break
+			end
+		end
+	end
+	return items
 end
 
 ---@private
 function Context:setup_autocmds()
 	self.evgroup = vim.api.nvim_create_augroup('completions', { clear = true })
 	vim.api.nvim_create_autocmd('CursorMovedI', {
-		desc = 'Updates matches',
+		desc = 'Updates matches and keyword',
 		group = self.evgroup,
 		callback = function()
 			self:update({ complete = false })
@@ -177,6 +206,7 @@ end
 
 function Context:setup_sources()
 	self.sources.buffer = buffer:new(self)
+	self.sources.snippet = snippet:new(self)
 end
 
 function Context:toggle()
