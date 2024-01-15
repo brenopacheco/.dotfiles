@@ -103,7 +103,7 @@ function Context.get_keyword()
 	local col = vim.fn.col('.')
 	local line = vim.api.nvim_get_current_line()
 	local word = line:sub(1, col - 1):match('%w+$') or ''
-  return word
+	return word
 end
 
 ---@private
@@ -121,12 +121,12 @@ end
 ---@private
 function Context:complete()
 	if self.enabled then
-		pdebug(
-			'completions',
-			self.keyword,
-			#self.matches,
-			#self.sources.buffer.items
-		)
+		-- pdebug(
+		-- 	'completions',
+		-- 	self.keyword,
+		-- 	#self.matches,
+		-- 	#self.sources.buffer.items
+		-- )
 		--- TODO: this doesnt work when we have a selection and something triggers
 		---       an update
 		vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
@@ -142,7 +142,7 @@ function Context:items_filter(items)
 		if #self.keyword < self.opts.sources[item.kind].min_length then
 			return false
 		end
-		return item.word:match(self.keyword)
+		return item.word:match('^' .. self.keyword)
 	end, items)
 end
 
@@ -214,8 +214,11 @@ function Context:toggle()
 end
 
 function Context:on_complete(selected)
-	if selected.source == 'buffer' then
+	if selected.kind == 'buffer' then
 		vim.api.nvim_feedkeys(' ', 'i', true)
+	end
+	if selected.kind == 'snippet' then
+		require('luasnip').expand()
 	end
 end
 

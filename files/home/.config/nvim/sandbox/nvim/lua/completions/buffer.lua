@@ -37,6 +37,10 @@ function Source:update()
 		self.ctx.opts.sources.buffer.debounce_time,
 		0,
 		vim.schedule_wrap(function()
+      if vim.fn.pumvisible() == 1 then
+        self:update()
+        return
+      end
 			-- pdebug('updating buffer source')
 			local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 			local words = {}

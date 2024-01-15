@@ -8,10 +8,10 @@ local ctx = nil
 ---@type CompletionOpts
 M.default_opts = {
 	max_items = 5,
-	debounce_time = 100,
+	debounce_time = 50,
 	sources = {
 		buffer = {
-			debounce_time = 1000,
+			debounce_time = 200,
 			min_length = 1,
 			all_buffers = false, -- TODO: implement
 		},
