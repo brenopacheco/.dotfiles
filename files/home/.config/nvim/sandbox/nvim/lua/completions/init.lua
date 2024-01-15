@@ -15,9 +15,10 @@ M.default_opts = {
 			min_length = 1,
 			all_buffers = false, -- TODO: implement
 		},
-		snippet = {
-			min_length = 1,
-		},
+		snippet = { min_length = 1 },
+		lsp = { min_length = 1 },
+		path = { min_length = 1 },
+		treesitter = { min_length = 1 },
 	},
 }
 

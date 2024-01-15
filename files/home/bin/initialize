@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2016
 
 FC_BACKEND=~/fc/backend
 FC_FRONTEND=~/fc/frontend
@@ -8,15 +9,12 @@ function init_fc() {
 	tmux new-session -d -s fc-backend  -n docker     -c $FC_BACKEND
 	tmux send-keys -t fc-backend:docker 'docker-compose up' C-m
 
-	# fc-backend/migrations
-	tmux new-window  -t    fc-backend  -n migrations     -c $FC_BACKEND
-	tmux send-keys -t fc-backend:migrations 'sleep 20' C-m
-	tmux send-keys -t fc-backend:migrations 'dotnet ef database update -s "./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj" -p "./apps/API/src/FarmerConnect.Core.Storage/FarmerConnect.Core.Storage.csproj" -c "FarmerConnect.Core.Storage.ApplicationDbContext"' C-m
-
 	# fc-backend/server
 	tmux new-window  -t    fc-backend  -n server     -c $FC_BACKEND
-	tmux send-keys -t fc-backend:server 'sleep 60' C-m
-	tmux send-keys -t fc-backend:server 'dotnet watch run --project ./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj' C-m
+	tmux send-keys -t fc-backend:server 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-azurite-1)"   != '\''"healthy"'\'' ]; do sleep 1; done' C-m
+	tmux send-keys -t fc-backend:server 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-databases-1)" != '\''"healthy"'\'' ]; do sleep 1; done' C-m
+	tmux send-keys -t fc-backend:server 'dotnet ef database update -s "./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj" -p "./apps/API/src/FarmerConnect.Core.Storage/FarmerConnect.Core.Storage.csproj" -c "FarmerConnect.Core.Storage.ApplicationDbContext"' C-m
+	tmux send-keys -t fc-backend:server 'y | dotnet watch run --project ./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj' C-m
 
 	# fc-frontend/hub
 	tmux new-session -d -s fc-frontend  -n hub        -c $FC_FRONTEND

@@ -1,5 +1,8 @@
 local buffer = require('completions.buffer')
+local lsp = require('completions.lsp')
+local path = require('completions.path')
 local snippet = require('completions.snippet')
+local treesitter = require('completions.treesitter')
 
 ---@class CompletionMatch
 ---@field word string
@@ -24,6 +27,9 @@ local snippet = require('completions.snippet')
 ---@class CompletionSourcesOpts
 ---@field buffer CompletionBufferSourceOpts
 ---@field snippet CompletionSnippetSourceOpts
+---@field lsp CompletionSnippetSourceOpts
+---@field treesitter CompletionSnippetSourceOpts
+---@field path CompletionSnippetSourceOpts
 
 ---@class CompletionBufferSourceOpts
 ---@field debounce_time number
@@ -41,6 +47,7 @@ local snippet = require('completions.snippet')
 ---@field public  evgroup integer
 ---@field private timer   uv_timer_t
 ---@field private enabled boolean
+---@field private subscribers { keyword_changed: fun(keword: string)[], completion_done: fun(match: CompletionMatch)[] }
 local Context = {}
 
 ---@param opts CompletionOpts
@@ -55,6 +62,10 @@ function Context:new(opts)
 		evgroup = 0,
 		timer = vim.loop.new_timer(),
 		enabled = true,
+		subscribers = {
+			keyword_changed = {},
+			completion_done = {},
+		},
 	}
 	setmetatable(obj, { __index = self })
 	obj:setup_autocmds()
@@ -93,16 +104,31 @@ function Context:should_update()
 	return mode == 'ic' or mode == 'i'
 end
 
+---@public
+---@param sub { ev: 'keyword_changed', fn: fun(keword: string) } | { ev: 'completion_done', fn: fun(match: CompletionMatch) }
+function Context:subscribe(sub)
+	table.insert(self.subscribers[sub.ev], sub.fn)
+end
+
 ---@private
 function Context:refresh_keyword()
+  local keyword = Context.get_keyword()
+  if keyword == self.keyword then
+    return
+  end
 	self.keyword = Context.get_keyword()
+	for _, fn in ipairs(self.subscribers.keyword_changed) do
+		vim.schedule(function()
+			fn(self.keyword)
+		end)
+	end
 end
 
 ---@private
 function Context.get_keyword()
 	local col = vim.fn.col('.')
 	local line = vim.api.nvim_get_current_line()
-	local word = line:sub(1, col - 1):match('%w+$') or ''
+	local word = line:sub(1, col - 1):match('%S+$') or ''
 	return word
 end
 
@@ -111,6 +137,9 @@ function Context:refresh_matches()
 	local items = {}
 	vim.list_extend(items, self.sources.buffer.items)
 	vim.list_extend(items, self.sources.snippet.items)
+	vim.list_extend(items, self.sources.path.items)
+	vim.list_extend(items, self.sources.treesitter.items)
+	vim.list_extend(items, self.sources.lsp.items)
 	items = self:items_filter(items)
 	items = self:items_sort(items)
 	items = self:items_limit(items)
@@ -127,8 +156,6 @@ function Context:complete()
 		-- 	#self.matches,
 		-- 	#self.sources.buffer.items
 		-- )
-		--- TODO: this doesnt work when we have a selection and something triggers
-		---       an update
 		vim.fn.complete(vim.fn.col('.') - #self.keyword, self.matches)
 	end
 end
@@ -207,19 +234,13 @@ end
 function Context:setup_sources()
 	self.sources.buffer = buffer:new(self)
 	self.sources.snippet = snippet:new(self)
+	self.sources.treesitter = treesitter:new(self)
+	self.sources.lsp = lsp:new(self)
+	self.sources.path = path:new(self)
 end
 
 function Context:toggle()
 	self.enabled = not self.enabled
-end
-
-function Context:on_complete(selected)
-	if selected.kind == 'buffer' then
-		vim.api.nvim_feedkeys(' ', 'i', true)
-	end
-	if selected.kind == 'snippet' then
-		require('luasnip').expand()
-	end
 end
 
 ---@param fallback string
@@ -235,9 +256,11 @@ function Context:accept(fallback)
 	local selected = self.matches[index + 1]
 	local accept_keys = vim.api.nvim_replace_termcodes('<c-y>', true, false, true)
 	vim.api.nvim_feedkeys(accept_keys, 'i', true)
-	vim.schedule(function()
-		self:on_complete(selected)
-	end)
+	for _, fn in ipairs(self.subscribers.completion_done) do
+		vim.schedule(function()
+			fn(selected)
+		end)
+	end
 end
 
 return Context

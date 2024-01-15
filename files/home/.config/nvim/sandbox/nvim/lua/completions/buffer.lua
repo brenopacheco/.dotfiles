@@ -13,6 +13,14 @@ function Source:new(ctx)
 	obj.stale = false
 	obj.timer = vim.loop.new_timer()
 	obj:setup_autocmds()
+	obj.ctx:subscribe({
+		ev = 'completion_done',
+		fn = function(match)
+			if match.kind == 'buffer' then
+				vim.api.nvim_feedkeys(' ', 'i', true)
+			end
+		end,
+	})
 	return obj
 end
 
@@ -37,10 +45,10 @@ function Source:update()
 		self.ctx.opts.sources.buffer.debounce_time,
 		0,
 		vim.schedule_wrap(function()
-      if vim.fn.pumvisible() == 1 then
-        self:update()
-        return
-      end
+			if vim.fn.pumvisible() == 1 then
+				self:update()
+				return
+			end
 			-- pdebug('updating buffer source')
 			local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 			local words = {}
