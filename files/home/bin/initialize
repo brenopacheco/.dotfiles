@@ -1,28 +1,26 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2016
 
+FC=~/fc
 FC_BACKEND=~/fc/backend
 FC_FRONTEND=~/fc/frontend
 
 function init_fc() {
-	# fc-backend/docker
-	tmux new-session -d -s fc-backend  -n docker     -c $FC_BACKEND
-	tmux send-keys -t fc-backend:docker 'docker-compose up' C-m
+	tmux new-session -d -s fc -n nvim -c $FC
+	tmux new-window -t fc -n docker -c $FC_BACKEND
+	tmux new-window -t fc -n backend -c $FC_BACKEND
+	tmux new-window -t fc -n frontend -c $FC_FRONTEND
 
-	# fc-backend/server
-	tmux new-window  -t    fc-backend  -n server     -c $FC_BACKEND
-	tmux send-keys -t fc-backend:server 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-azurite-1)"   != '\''"healthy"'\'' ]; do sleep 1; done' C-m
-	tmux send-keys -t fc-backend:server 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-databases-1)" != '\''"healthy"'\'' ]; do sleep 1; done' C-m
-	tmux send-keys -t fc-backend:server 'dotnet ef database update -s "./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj" -p "./apps/API/src/FarmerConnect.Core.Storage/FarmerConnect.Core.Storage.csproj" -c "FarmerConnect.Core.Storage.ApplicationDbContext"' C-m
-	tmux send-keys -t fc-backend:server 'y | dotnet watch run --project ./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj' C-m
+	tmux send-keys -t fc:docker 'docker-compose up' C-m
 
-	# fc-frontend/hub
-	tmux new-session -d -s fc-frontend  -n hub        -c $FC_FRONTEND
-	tmux send-keys -t fc-frontend:hub  'yarn start:hub'    C-m
+	tmux send-keys -t fc:backend 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-azurite-1)"   != '\''"healthy"'\'' ]; do sleep 1; done' C-m
+	tmux send-keys -t fc:backend 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-databases-1)" != '\''"healthy"'\'' ]; do sleep 1; done' C-m
+	tmux send-keys -t fc:backend 'dotnet ef database update -s "./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj" -p "./apps/API/src/FarmerConnect.Core.Storage/FarmerConnect.Core.Storage.csproj" -c "FarmerConnect.Core.Storage.ApplicationDbContext"' C-m
+	tmux send-keys -t fc:backend 'yes | dotnet watch run --project ./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj' C-m
 
-	# fc-editor/editor
-	tmux new-session -d -s fc-editor    -n nvim       -c $FC_FRONTEND
-	tmux send-keys -t fc-editor:nvim  'nvim' C-m Space n
+	tmux send-keys -t fc:frontend 'yarn start:hub' C-m
+
+	tmux send-keys -t fc:nvim 'nvim' C-m Space n
 }
 
 init_fc

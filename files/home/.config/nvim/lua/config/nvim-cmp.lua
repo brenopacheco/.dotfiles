@@ -58,9 +58,9 @@ cmp.setup({
 				fallback()
 			end
 		end, { 'i', 's' }),
-		['<S-Tab>'] = cmp.mapping(function()
-			vim.schedule(require('copilot.suggestion').accept)
-		end, { 'i', 's' }),
+		-- ['<S-Tab>'] = cmp.mapping(function()
+		-- 	vim.schedule(require('copilot.suggestion').accept)
+		-- end, { 'i', 's' }),
 		['<C-k>'] = cmp.mapping(function()
 			luasnip.jump(1)
 		end, { 'i', 's' }),
@@ -162,3 +162,5 @@ cmp.setup({
 		}),
 	},
 })
+
+vim.keymap.set('i', '<S-Tab>', require('copilot.suggestion').accept, { silent = true })

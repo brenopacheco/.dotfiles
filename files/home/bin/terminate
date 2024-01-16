@@ -2,9 +2,7 @@
 
 FC_BACKEND=~/fc/backend
 
-tmux kill-session -t fc-backend
-tmux kill-session -t fc-frontend
-tmux kill-session -t fc-editor
+tmux kill-session -t fc
 
 cd $FC_BACKEND || exit
 docker-compose down

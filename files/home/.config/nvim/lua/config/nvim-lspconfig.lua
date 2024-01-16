@@ -28,7 +28,17 @@ lsp.bashls.setup({ capabilities = capabilities })
 lsp.clangd.setup({ capabilities = capabilities })
 lsp.cssls.setup({ capabilities = capabilities })
 lsp.dockerls.setup({ capabilities = capabilities })
-lsp.eslint.setup({ capabilities = capabilities })
+lsp.eslint.setup({
+	capabilities = capabilities,
+	on_attach = function(_, bufnr)
+		vim.keymap.set(
+			{ 'n', 'x' },
+			'<leader>=',
+			'<cmd>EslintFixAll<cr>',
+			{ buffer = bufnr }
+		)
+	end,
+})
 lsp.gopls.setup({ capabilities = capabilities })
 lsp.html.setup({ capabilities = capabilities })
 lsp.jsonls.setup({
