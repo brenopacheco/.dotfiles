@@ -47,11 +47,14 @@ vim.z.packadd({
 	'HiPhish/rainbow-delimiters.nvim',
 	'monkoose/matchparen.nvim',
 	'brenopacheco/zk-nvim',
+	'theHamsta/nvim-dap-virtual-text',
+	'rcarriga/nvim-dap-ui',
+	'mfussenegger/nvim-dap',
 	-- TODO
 	'vim-test/vim-test',
-  'tpope/vim-dadbod',
-  'kristijanhusak/vim-dadbod-ui',
-  'kristijanhusak/vim-dadbod-completion'
+	'tpope/vim-dadbod',
+	'kristijanhusak/vim-dadbod-ui',
+	'kristijanhusak/vim-dadbod-completion',
 })
 
 vim.z.modload({
@@ -67,7 +70,7 @@ vim.z.modload({
 	'shada',
 	'sniputil',
 	'telescope-select',
-  'timeout',
+	'timeout',
 	'win-resize',
 	'yank-highlight',
 })

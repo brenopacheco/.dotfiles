@@ -86,9 +86,9 @@ end
 
 local debuggers = {
 	-- c = 'lldb',
-	-- dotnet = 'netcoredbg',
+	dotnet = 'netcoredbg',
 	go = 'delve',
-	node = 'vscode-js-debug',
+	-- node = 'vscode-js-debug',
 }
 
 for lang, debugger in pairs(debuggers) do
