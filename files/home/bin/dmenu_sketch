@@ -144,6 +144,15 @@ if opts.dmenu then
 			help("Invalid template selected")
 		end
 	end
+	dmenu = io.popen([[echo "[No Name];" | dmenu -p "Project name:" -d ';']], "r")
+	if dmenu then
+		local choice = dmenu:read("*l")
+		if choice then
+			dmenu:close()
+			local name = string.gsub(choice, "\n", "")
+			opts.name = name:len() > 0 and name or nil
+		end
+	end
 end
 
 -- Here we already have everything we need selected
@@ -197,7 +206,13 @@ print("Setup done!")
 
 local session = "sketch-" .. name
 
-local cmd = [[(setsid nohup st -t ]] .. session .. [[ -e tmux new -s ]] .. session .. [[ -c ]] .. dir .. [[ >/dev/null 2>&1) & disown]]
+local cmd = [[(setsid nohup st -t ]]
+	.. session
+	.. [[ -e tmux new -s ]]
+	.. session
+	.. [[ -c ]]
+	.. dir
+	.. [[ >/dev/null 2>&1) & disown]]
 
 if os.execute(cmd) then
 	os.exit(0)
