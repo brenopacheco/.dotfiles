@@ -77,8 +77,6 @@ M.godoc = function(tbl)
 	vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
 end
 
-plevel(vim.log.levels.DEBUG)
-
 M.setup = function()
 	vim.api.nvim_create_user_command('GoDoc', M.godoc, { nargs = 1 })
 end
