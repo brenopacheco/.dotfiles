@@ -39,7 +39,17 @@ lsp.eslint.setup({
 		)
 	end,
 })
-lsp.gopls.setup({ capabilities = capabilities })
+lsp.gopls.setup({
+	capabilities = vim.tbl_extend('force', capabilities, {
+		textDocument = {
+			completion = {
+				completionItem = {
+					snippetSupport = true,
+				},
+			},
+		},
+	}),
+})
 lsp.html.setup({ capabilities = capabilities })
 lsp.jsonls.setup({
 	settings = {

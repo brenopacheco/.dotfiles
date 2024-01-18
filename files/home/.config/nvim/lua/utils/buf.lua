@@ -85,9 +85,9 @@ function M.toggle(filetype, opts)
 			end
 		end
 	end
-  local is_open = false
+	local is_open = false
 	loop(function(winnr, winid, _)
-    is_open = true
+		is_open = true
 		if mode == 'close' or mode == 'toggle' then
 			return vim.cmd(winnr .. 'close')
 		end
@@ -95,11 +95,11 @@ function M.toggle(filetype, opts)
 			vim.api.nvim_set_current_win(winid)
 		end
 	end)
-  if cb ~= nil then
-    if (mode == 'toggle' and not is_open) or mode == 'open' then
-      cb()
-    end
-  end
+	if cb ~= nil then
+		if (mode == 'toggle' and not is_open) or mode == 'open' then
+			cb()
+		end
+	end
 	if focus then
 		loop(function(_, winid, _)
 			vim.api.nvim_set_current_win(winid)
@@ -144,13 +144,65 @@ end
 ---Create a new buffer throwaway buffer with the given content
 ---
 ---@param content string[]
-M.throwaway = function(content)
+---@param opts? { orientation?: 'vsplit' | 'split', filetype?: string, bufname?: string }
+M.throwaway = function(content, opts)
+	opts = opts or {}
+	local split = opts.orientation or 'vsplit'
+	local filetype = opts.filetype or ''
+	local bufname = opts.bufname or ('throwaway:///' .. M.uuid())
+	pcall(vim.api.nvim_buf_delete, vim.fn.bufnr(bufname), { force = true })
 	local bufnr = vim.api.nvim_create_buf(false, true)
-	vim.cmd('vsplit')
+	vim.cmd(split)
 	local winnr = vim.api.nvim_get_current_win()
 	vim.api.nvim_win_set_buf(winnr, bufnr)
 	vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, content)
 	vim.api.nvim_set_current_win(winnr)
+	vim.api.nvim_set_option_value('filetype', filetype, { buf = bufnr })
+	vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+	vim.api.nvim_set_option_value('readonly', true, { buf = bufnr })
+	vim.api.nvim_buf_set_name(bufnr, bufname)
+end
+
+M.uuid = function()
+	local template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+	return string.gsub(template, '[xy]', function(c)
+		local v = (c == 'x') and math.random(0, 0xf) or math.random(8, 0xb)
+		return string.format('%x', v)
+	end)
+end
+
+---@param opts? { reverse?: boolean }
+---@return string[]
+M.get_cexprs = function(opts)
+	opts = opts or {}
+	local reverse = opts.reverse or false
+	local line = vim.fn.getline('.')
+	local cword = vim.fn.expand('<cword>'):gsub('[^%w%.%_%-]', '')
+	local pat = '[%w%.%_%-%>]*' .. cword
+	local cexpr = line:match(pat)
+	if not cexpr then
+		return {}
+	end
+	local matches = vim.split(cexpr, '%.')
+	local words = {}
+	local word = ''
+	for i in ipairs(matches) do
+		local match = matches[#matches - i + 1]
+		word = word == '' and match or match .. '.' .. word
+		table.insert(words, word)
+	end
+	if reverse then
+		local reversed = {}
+		for i in ipairs(words) do
+			table.insert(reversed, words[#words - i + 1])
+		end
+		words = reversed
+	end
+	if M.is_visual() then
+		local visual = table.concat(M.get_visual().text, '')
+		table.insert(words, 1, visual)
+	end
+	return words
 end
 
 return M

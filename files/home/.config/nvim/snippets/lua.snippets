@@ -7,8 +7,14 @@ snippet fun > __named function__
 		${0}
 	end
 
+
+snippet lfun > __local function__
+	local function ${1:fn}(${2})
+	  $0
+	end
+
 snippet fn > __anonymous function__
-	function()
+	function($1)
 	  ${0}
 	end
 

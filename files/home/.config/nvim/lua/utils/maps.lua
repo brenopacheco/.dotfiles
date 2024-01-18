@@ -606,26 +606,16 @@ M.keywordprg = function()
 	if not vim.o.keywordprg then
 		return vim.notify('info: keywordprg not set', vim.log.levels.WARN)
 	end
-	local cword = tostring(vim.fn.expand('<cword>'))
-	local cWORD = tostring(vim.fn.expand('<cWORD>'))
-	local regex = '(%S*)' .. cword .. '%S*'
-	local prefix = cWORD:match(regex)
-	local text = prefix .. cword
-	if bufutil.is_visual() then
-		text = table.concat(bufutil.get_visual().text, '')
-	end
-	local patterns = {}
-	repeat
-		table.insert(patterns, text)
-		text = text:match('%w+[^%w](.*)')
-		vim.print({ text = text })
-	until not text or text:len() == 0
-	table.insert(patterns, text)
-  table.insert(patterns, cword)
-	for _, pattern in ipairs(patterns) do
-		if pcall(vim.api.nvim_exec2, vim.o.keywordprg .. ' ' .. pattern, {}) then
+	local cexprs = {}
+	vim.list_extend(cexprs, bufutil.get_cexprs({ reverse = true }))
+	vim.list_extend(cexprs, bufutil.get_cexprs({ reverse = false }))
+	for _, pattern in ipairs(cexprs) do
+		local status, err =
+			pcall(vim.api.nvim_exec2, vim.o.keywordprg .. ' ' .. pattern, {})
+		if status then
 			return
 		end
+		ptrace(err)
 	end
 	vim.notify(vim.o.keywordprg .. ' not found', vim.log.levels.WARN)
 end

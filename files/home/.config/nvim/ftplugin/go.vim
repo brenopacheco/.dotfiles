@@ -14,6 +14,9 @@ setlocal textwidth=80
 setlocal comments=s1:/*,mb:*,ex:*/,://
 setlocal commentstring=//\ %s
 setlocal suffixesadd+=~,.mod,.go
-setlocal keywordprg=zeal\ go:\
+" setlocal keywordprg=zeal\ go:\
+setlocal keywordprg=:GoDoc
+
+lua require('utils.filetype.go').setup()
 
 let b:undo_ftplugin='setl mp< efm< ep< sw< ts< fdm< fde< fo< tw< com< cms< sua< kp<'

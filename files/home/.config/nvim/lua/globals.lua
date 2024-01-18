@@ -4,6 +4,7 @@
 
 local count = 0
 local messages = {}
+local log_level = vim.log.levels.INFO
 
 ---@param level integer
 local notifier = function(level)
@@ -34,7 +35,9 @@ local notifier = function(level)
 			trace = trace,
 			display = display,
 		})
-		vim.notify(display, level)
+    if level >= log_level then
+      vim.notify(display, level)
+    end
 		debug.traceback()
 	end
 end
@@ -46,3 +49,8 @@ _G.pwarn = notifier(vim.log.levels.WARN)
 _G.perror = notifier(vim.log.levels.ERROR)
 
 _G.log = notifier(vim.log.levels.INFO)
+
+---@param level 0|1|2|3|4|5 : vim.log.levels
+_G.plevel = function(level)
+  log_level = level
+end

@@ -25,17 +25,17 @@ dapui.setup({
 require('nvim-dap-virtual-text').setup({})
 
 dap.listeners.after.event_initialized['dapui_config'] = function()
-  vim.notify('Dap session started', vim.log.level.WARN)
+  vim.notify('Dap session started', vim.log.levels.WARN)
 	require('dap').repl.open({ height = 15 })
 end
 
 dap.listeners.before.event_terminated['dapui_config'] = function()
-  vim.notify('Dap session terminated', vim.log.level.WARN)
+  vim.notify('Dap session terminated', vim.log.levels.WARN)
 	-- require('dap').repl.close()
 end
 
 dap.listeners.before.event_exited['dapui_config'] = function()
-  vim.notify('Dap session exited', vim.log.level.WARN)
+  vim.notify('Dap session exited', vim.log.levels.WARN)
 	-- require('dap').repl.close()
 end
 
