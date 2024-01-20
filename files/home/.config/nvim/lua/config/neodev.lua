@@ -19,6 +19,7 @@ local lsp = require('lspconfig')
 
 lsp.lua_ls.setup({
 	capabilities = capabilities,
+  -- https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json
 	settings = {
 		Lua = {
 			workspace = {

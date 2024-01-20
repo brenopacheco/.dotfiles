@@ -19,6 +19,8 @@ local M = {}
 ---@type table<string, Target[]> @dictionary of git root to targets
 local cache = {}
 
+local cache_enabled = false
+
 ---@type System
 local shell = {
 	name = 'shell',
@@ -153,7 +155,7 @@ M.targets = function()
 	---@type Target[]
 	local targets = {}
 	local git_root = rootutil.git_root()
-  if cache[git_root] then
+  if cache_enabled and cache[git_root] then
     return cache[git_root]
   end
 	for _, system in ipairs(systems) do

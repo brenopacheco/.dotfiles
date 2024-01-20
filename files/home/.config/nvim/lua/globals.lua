@@ -9,7 +9,7 @@ local log_level = vim.log.levels.INFO
 ---@param level integer
 local notifier = function(level)
 	---@vararg any
-	return function(...)
+	return vim.schedule_wrap(function(...)
 		local args = { ... }
 		count = count + 1
 		local ts = vim.fn.strftime('%T')
@@ -38,8 +38,7 @@ local notifier = function(level)
     if level >= log_level then
       vim.notify(display, level)
     end
-		debug.traceback()
-	end
+	end)
 end
 
 _G.ptrace = notifier(vim.log.levels.TRACE)
@@ -51,6 +50,4 @@ _G.perror = notifier(vim.log.levels.ERROR)
 _G.log = notifier(vim.log.levels.INFO)
 
 ---@param level 0|1|2|3|4|5 : vim.log.levels
-_G.plevel = function(level)
-  log_level = level
-end
+_G.plevel = function(level) log_level = level end

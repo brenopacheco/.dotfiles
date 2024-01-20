@@ -19,5 +19,6 @@ setlocal commentstring=--%s
 setlocal suffixesadd=.lua
 setlocal keywordprg=:help
 setlocal isfname+=.,/
+setlocal formatexpr=
 
-let b:undo_ftplugin='setl mp< sw< ts< efm< ep< fdm< fde< fo< tw< com< cms< sua< kp< isf<'
+let b:undo_ftplugin='setl mp< sw< ts< efm< ep< fdm< fde< fo< tw< com< cms< sua< kp< isf< fex<'

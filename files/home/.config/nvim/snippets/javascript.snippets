@@ -1,8 +1,13 @@
 snippet col console.log object
 	  console.log($0);
 
-snippet fn > __named function__
+snippet fun > __named function__
 	function ${1:fn}(${2}) {
+		$0
+	}
+
+snippet fn > __named function__
+	function(${1}) {
 		$0
 	}
 
@@ -40,3 +45,23 @@ snippet ciife > __const immediately invoked function expression__
 	  const ${1:x} = (() => {
 	    $0
 	  })()
+
+snippet describe > __jest describe template__
+	describe('$1', () => {
+		$2
+	})
+
+snippet test > __jest test, it template__
+	test('$1', () => {
+		$0
+	});
+
+snippet it > __jest test, it template__
+	it('$1', () => {
+		$0
+	});
+
+snippet ctor > __constructor__
+	constructor($1) {
+		$0
+	}
