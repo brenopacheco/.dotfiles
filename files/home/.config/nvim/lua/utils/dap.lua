@@ -30,7 +30,7 @@ end
 
 M.debug_restart = function()
 	if is_running() then
-		dap.restart()
+		return dap.restart()
 	end
 	dap.run_last()
 end

@@ -34,6 +34,19 @@ buffer returns `any`?
 
 local M = {}
 
+local function foo()
+  print('hi')
+  print('there')
+end
+
+print('heeey')
+foo()
+
+
+vim.api.nvim_create_user_command('Test', foo, { nargs = '*' })
+
+
+
 -- vim.system({ 'ls', '-l', '/' }, { text = true }, function(out)
 -- 	if out.code ~= 0 or not out.stdout then return end
 -- 	local x = vim

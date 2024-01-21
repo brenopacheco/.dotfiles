@@ -24,19 +24,19 @@ dapui.setup({
 
 require('nvim-dap-virtual-text').setup({})
 
-dap.listeners.after.event_initialized['dapui_config'] = function()
-  vim.notify('Dap session started', vim.log.levels.WARN)
+dap.listeners.after.event_initialized['repl'] = function()
+	vim.notify('Dap session started', vim.log.levels.WARN)
 	require('dap').repl.open({ height = 15 })
 end
 
-dap.listeners.before.event_terminated['dapui_config'] = function()
-  vim.notify('Dap session terminated', vim.log.levels.WARN)
-	-- require('dap').repl.close()
+dap.listeners.before.event_terminated['repl'] = function()
+	vim.notify('Dap session terminated', vim.log.levels.WARN)
+	require('dap').repl.close()
 end
 
-dap.listeners.before.event_exited['dapui_config'] = function()
-  vim.notify('Dap session exited', vim.log.levels.WARN)
-	-- require('dap').repl.close()
+dap.listeners.before.event_exited['repl'] = function()
+	vim.notify('Dap session exited', vim.log.levels.WARN)
+	require('dap').repl.close()
 end
 
 vim.fn.sign_define(
@@ -85,22 +85,31 @@ local register = function(settings)
 end
 
 local debuggers = {
-	-- c = 'lldb',
+	c = 'lldb',
 	dotnet = 'netcoredbg',
 	go = 'delve',
-	-- node = 'vscode-js-debug',
+	node = 'vscode-js-debug',
 }
 
-for lang, debugger in pairs(debuggers) do
-	if not installed(debugger) then
-		vim.notify(
-			'Install ' .. debugger .. ' to use dap with ' .. lang,
-			vim.log.levels.WARN
-		)
-	end
+---@param debugger string
+---@param lang string
+local warn_missing = function(debugger, lang)
+	vim.notify(
+		'Install ' .. debugger .. ' to use dap with ' .. lang,
+		vim.log.levels.WARN
+	)
 end
 
--- register(require('utils.dap.c'))
+for lang, debugger in pairs(debuggers) do
+	if not installed(debugger) then warn_missing(debugger, lang) end
+end
+
+if not vim.z.enabled('jbyuki/one-small-step-for-vimkind') then
+	warn_missing('osv', 'lua')
+end
+
+register(require('utils.dap.c'))
 register(require('utils.dap.dotnet'))
 register(require('utils.dap.go'))
--- register(require('utils.dap.node'))
+register(require('utils.dap.node'))
+register(require('utils.dap.lua'))
