@@ -457,7 +457,7 @@ M.run_replace = function()
 		text = string.gsub(text, '\t', '\\t')
 	end
 	local repl = string.gsub(text, '\\n', '\\r')
-	local cmd = ':s/'
+	local cmd = '%:s/'
 		.. text
 		.. '/'
 		.. repl

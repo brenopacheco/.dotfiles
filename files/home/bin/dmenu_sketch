@@ -6,16 +6,17 @@
 ---@field name string
 ---@field files? { relpath: string, content: string[] }[]
 ---@field setup? fun(dir: string): nil
+---@field gitignore string|nil
 
 ---@type table<string, Template>
 local templates = {
-	ml = { name = "OCaml" },
-	d = { name = "D Programming language" },
-	go = { name = "Golang" },
-	js = { name = "JavasSript (Node.js)" },
-	ts = { name = "TypeScript (Node.js)" },
-	["js-bun"] = { name = "JavasSript (Bun)" },
-	["ts-bun"] = { name = "TypeScript (Bun)" },
+	ml = { name = "OCaml", gitignore = "OCaml" },
+	d = { name = "D Programming language", gitignore = "D" },
+	go = { name = "Golang", gitignore = "Go" },
+	js = { name = "JavasSript (Node.js)", gitignore = "Node" },
+	ts = { name = "TypeScript (Node.js)", gitignore = "Node" },
+	["js-bun"] = { name = "JavasSript (Bun)", gitignore = "Node" },
+	["ts-bun"] = { name = "TypeScript (Bun)", gitignore = "Node" },
 	sh = {
 		name = "Bash",
 		files = {
@@ -37,10 +38,10 @@ local templates = {
 		},
 		setup = function() end,
 	},
-	c = { name = "C Programming language" },
-	lua = { name = "Lua" },
-	rust = { name = "Rust" },
-	zig = { name = "Zig" },
+	c = { name = "C Programming language", gitignore = "C" },
+	lua = { name = "Lua", gitignore = "Lua" },
+	rust = { name = "Rust", gitignore = "Rust" },
+	zig = { name = "Zig", gitignore = "Zig" },
 }
 
 ---@param error_message? string
@@ -78,6 +79,63 @@ Available templates:
 end
 
 local home = os.getenv("HOME")
+local ignore_dir = home .. "/.ignores"
+
+local setup_ignores = function()
+  local cmd = string.format('test -d %s && test -n "$(find %s)"', ignore_dir, ignore_dir)
+  local _, _, code = os.execute(cmd)
+	if code == 0 then
+		return
+	end
+  print('...setting up gitignore templates')
+  local ok, err = os.execute("mkdir -p " .. ignore_dir)
+  if not ok then
+    help("Failed creating directory " .. ignore_dir .. ":" .. tostring(err))
+  end
+  local tmp_dir = os.tmpname()
+  os.execute('rm ' .. tmp_dir)
+  print(tmp_dir)
+  local repo = 'https://github.com/toptal/gitignore'
+  cmd = string.format('git clone %s %s', repo, tmp_dir)
+  ok, err = os.execute(cmd)
+  if not ok then
+    os.execute('rmdir ' .. ignore_dir)
+    help('Failed cloning toptal/gitignore: ' .. tostring(err))
+  end
+  cmd = string.format('cp %s/templates/* %s', tmp_dir, ignore_dir)
+  ok, err = os.execute(cmd)
+  if not ok then
+    os.execute('rmdir ' .. ignore_dir)
+    help('Failed copying template files: ' .. tostring(err))
+  end
+  print('...gitignore templates cloned')
+end
+
+---@params gitignore string
+---@params dir string
+local add_gitignore = function(gitignore, dir)
+	setup_ignores()
+	local cmd = string.format("cp %s/%s.gitignore %s/.gitignore", ignore_dir, gitignore, dir)
+	local ok, err = os.execute(cmd)
+	if not ok then
+		help("Failed to create .gitignore: " .. tostring(err))
+	end
+end
+
+local git_init = function(dir)
+	local cmd = string.format("cd %s && git init", dir)
+	local ok, err = os.execute(cmd)
+	if not ok then
+		help("Failed to initialize git repository: " .. tostring(err))
+	end
+end
+
+local add_makefile = function(make, dir)
+  --1. create Makefile
+  --2. write template.make command
+end
+
+
 
 if home == nil then
 	help("$HOME could not be resolved")
@@ -148,10 +206,10 @@ if opts.dmenu then
 	if dmenu then
 		local choice = dmenu:read("*l")
 		if choice then
-			dmenu:close()
 			local name = string.gsub(choice, "\n", "")
 			opts.name = name:len() > 0 and name or nil
 		end
+    dmenu:close()
 	end
 end
 
@@ -177,9 +235,16 @@ if not ok then
 	help("Could not create directory " .. dir .. ":" .. tostring(err))
 end
 
-print("Created directory " .. dir)
+print("...created directory " .. dir)
 
--- 2. Create files from template
+git_init(dir)
+
+print("...initialized repository")
+
+add_gitignore(template.gitignore, dir)
+
+print("...added .gitignore")
+
 for _, file in ipairs(template.files or {}) do
 	local path = dir .. "/" .. file.relpath
 	local file_dir = string.match(path, "^(.+)/[^/]+$")
@@ -195,10 +260,11 @@ for _, file in ipairs(template.files or {}) do
 		f:write(line .. "\n")
 	end
 	f:close()
-	print("Created file " .. path)
+	print("...created file " .. path)
 end
 
 if template.setup then
+	print("...running setup")
 	template.setup(dir)
 end
 

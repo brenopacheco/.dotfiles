@@ -3,13 +3,13 @@
 
 ## Check weather a list of packages are installed
 # Parameters
-#  - $1: list of packages (array of strings)
+#  - $@: list of packages (array of strings)
 # Returns:
 #  - 0: all packages are installed
 #  - 1: at least one package is not installed
 function has_packages() {
-	local packages=$1
-	for package in "${packages[@]}"; do
+	for package in "$@"; do
+		echo "$package"
 		if ! pacman -Q "$package" >/dev/null 2>&1; then
 			return 1
 		fi

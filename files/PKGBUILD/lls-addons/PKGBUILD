@@ -1,0 +1,50 @@
+# shellcheck disable=all
+
+pkgname=lls-addons
+_pkgname=LLS-Addons
+pkgver=1.0.r276.6a64c74
+pkgrel=1
+pkgdesc="Addons for use with Sumneko's Lua Language Server"
+url="https://github.com/LuaLS/LLS-Addons"
+arch=(x86_64)
+license=('MIT')
+depends=('lua-language-server')
+
+source=("git+https://github.com/LuaLS/${_pkgname}.git#commit=HEAD")
+
+md5sums=('SKIP')
+
+pkgver() {
+	cd $_pkgname
+	printf "1.0.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+	cd "$srcdir/$_pkgname"
+	# fix for broken yue module
+	if test -d addons/yue; then
+		git rm -r --cached addons/yue
+		rm -rf addons/yue/
+		git submodule deinit -f -- addons/yue/module || true
+	fi
+	git submodule update --init --recursive
+}
+
+build() {
+	cd "$srcdir/$_pkgname"
+	mkdir -p build
+	for addon in addons/*; do
+		name=${addon#addons/}
+		cp -r "$addon/module" "build/$name"
+		rm -rf "build/$name/.git"
+	done
+}
+
+package() {
+	cd "$srcdir/$_pkgname"
+	mkdir -p "$pkgdir/usr/lib/$pkgname"
+	mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
+	cp -r build/* "$pkgdir/usr/lib/$pkgname/"
+	install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+

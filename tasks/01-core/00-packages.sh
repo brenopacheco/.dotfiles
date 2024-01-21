@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 packages=(
-	"bat"
 	"arandr"
 	"base"
 	"base-devel"
 	"bash-completion"
+	"bat"
 	"bear"
 	"blueman"
 	"bluez"
@@ -76,6 +76,7 @@ packages=(
 	"xorg-xmodmap"
 	"xorg-xsetroot"
 	"xorg-xwininfo"
+	"yq"
 	"zathura"
 	"zathura-pdf-mupdf"
 	"zip"
