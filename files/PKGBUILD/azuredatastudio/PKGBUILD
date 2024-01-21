@@ -1,6 +1,6 @@
 # shellcheck disable=all
 
-pkgname=azuredatastudio-bin
+pkgname=azuredatastudio
 _pkgname=azuredatastudio
 pkgver=1.47.0
 pkgrel=1

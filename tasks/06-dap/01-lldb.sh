@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function should_run() {
-	return "$SKIP"
+	has_packages lldb && return "$DONE" || return "$RUN"
 }
 
 function task() {
-	return "$OK"
+	sudo pacman -S --noconfirm lldb && return "$OK"
 }
