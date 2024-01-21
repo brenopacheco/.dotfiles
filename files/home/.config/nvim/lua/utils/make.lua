@@ -1,6 +1,6 @@
+local dotnetutil = require('utils.filetype.dotnet')
 local fileutil = require('utils.file')
 local rootutil = require('utils.root')
-local dotnetutil = require('utils.filetype.dotnet')
 
 local M = {}
 
@@ -29,15 +29,13 @@ local shell = {
 		---@type Target[]
 		local targets = {}
 		local path = dir .. '/' .. file
-		if vim.fn.executable(path) ~= 1 then
-			return targets
-		end
+		if vim.fn.executable(path) ~= 1 then return targets end
 		---@type Target
 		local target = {
 			name = file,
 			cmd = './' .. file,
 			dir = dir,
-      id = tostring(vim.fn.fnamemodify(dir, ':t')),
+			id = tostring(vim.fn.fnamemodify(dir, ':t')),
 			kind = 'bash',
 		}
 		table.insert(targets, target)
@@ -60,7 +58,7 @@ local make = {
 					name = rule,
 					cmd = 'make ' .. rule,
 					dir = dir,
-          id = tostring(vim.fn.fnamemodify(dir, ':t')) .. '/Makefile',
+					id = tostring(vim.fn.fnamemodify(dir, ':t')) .. '/Makefile',
 					kind = 'make',
 				}
 				table.insert(targets, target)
@@ -89,15 +87,18 @@ local go = {
 			'clean',
 		}
 		---@type Target[]
-		local targets = vim.tbl_map(function(cmd)
-			return {
-				name = cmd,
-				cmd = 'go ' .. cmd .. ' .',
-				dir = dir,
-				file = file,
-				kind = 'go',
-			}
-		end, cmds)
+		local targets = vim.tbl_map(
+			function(cmd)
+				return {
+					name = cmd,
+					cmd = 'go ' .. cmd .. ' .',
+					dir = dir,
+					file = file,
+					kind = 'go',
+				}
+			end,
+			cmds
+		)
 		return targets
 	end,
 }
@@ -112,9 +113,7 @@ local node = {
 		local status, decoded = pcall(vim.json.decode, table.concat(data, '\n'))
 		---@type table<string, string>|nil
 		local scripts = decoded.scripts
-		if not status or not scripts then
-			return {}
-		end
+		if not status or not scripts then return {} end
 		local manager = fileutil.exists(dir .. '/yarn.lock') and 'yarn' or 'npm'
 		for script, _ in pairs(scripts) do
 			---@type Target
@@ -123,7 +122,7 @@ local node = {
 				cmd = manager .. ' run ' .. script,
 				dir = dir,
 				kind = manager,
-        id = tostring(vim.fn.fnamemodify(dir, ':t')) .. '/package.json',
+				id = tostring(vim.fn.fnamemodify(dir, ':t')) .. '/package.json',
 			}
 			table.insert(targets, target)
 		end
@@ -136,13 +135,11 @@ local dotnet = {
 	name = 'dotnet',
 	patterns = { '.+%.sln', '.+%.csproj' },
 	targets = function(dir, file)
-    if file:match('%.sln$') then
-      return dotnetutil.sln_targets(dir, file)
-    end
-    if file:match('%.csproj$') then
-      return dotnetutil.csproj_targets(dir, file)
-    end
-    return {}
+		if file:match('%.sln$') then return dotnetutil.sln_targets(dir, file) end
+		if file:match('%.csproj$') then
+			return dotnetutil.csproj_targets(dir, file)
+		end
+		return {}
 	end,
 }
 
@@ -155,9 +152,7 @@ M.targets = function()
 	---@type Target[]
 	local targets = {}
 	local git_root = rootutil.git_root()
-  if cache_enabled and cache[git_root] then
-    return cache[git_root]
-  end
+	if cache_enabled and cache[git_root] then return cache[git_root] end
 	for _, system in ipairs(systems) do
 		local roots =
 			rootutil.downward_roots({ dir = git_root, patterns = system.patterns })
@@ -171,7 +166,7 @@ M.targets = function()
 			end
 		end
 	end
-  cache[git_root] = targets
+	cache[git_root] = targets
 	return targets
 end
 
