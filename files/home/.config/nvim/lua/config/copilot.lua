@@ -26,19 +26,19 @@ require('copilot').setup(opts)
 --      the catch here is that time timer timeout must be greater than
 --      the copilot's debounce
 
--- local feed = vim.schedule_wrap(function()
--- 	vim.api.nvim_exec_autocmds('CursorMovedI', {})
--- end)
+local feed = vim.schedule_wrap(function()
+	vim.api.nvim_exec_autocmds('CursorMovedI', {})
+end)
 
--- local trigger = vim.schedule_wrap(function()
--- 	local timer = vim.uv.new_timer()
--- 	timer:start(75, 0, feed)
--- end)
+local trigger = vim.schedule_wrap(function()
+	local timer = vim.uv.new_timer()
+	timer:start(75, 0, feed)
+end)
 
--- vim.api.nvim_create_autocmd({ 'ModeChanged' }, {
--- 	nested = true,
--- 	desc = 'Generate CompleteChanged on insert enter',
--- 	group = vim.api.nvim_create_augroup('alert-copilot', { clear = true }),
--- 	pattern = '[ns]:i',
--- 	callback = trigger,
--- })
+vim.api.nvim_create_autocmd({ 'ModeChanged' }, {
+	nested = true,
+	desc = 'Generate CompleteChanged on insert enter',
+	group = vim.api.nvim_create_augroup('alert-copilot', { clear = true }),
+	pattern = '[ns]:i',
+	callback = trigger,
+})
