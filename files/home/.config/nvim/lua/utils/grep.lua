@@ -11,9 +11,7 @@ M.qf_filter = function(opts)
 	end
 	local letter = opts.invert and 'v' or 'g'
 	vim.ui.input({ prompt = '>Quickfix: ' .. letter .. '/' }, function(input)
-		if input == nil or input == '' then
-			return
-		end
+		if input == nil or input == '' then return end
 		local filtered = {}
 		for _, item in ipairs(qf) do
 			local fname = vim.fn.fnamemodify(vim.fn.bufname(item.bufnr), ':p')
@@ -33,9 +31,7 @@ end
 ---@param pattern string | nil
 M.grep_pattern = function(pattern)
 	local handler = function(input)
-		if input == nil or input == '' then
-			return
-		end
+		if input == nil or input == '' then return end
 		vim.ui.select(
 			{ 'git', 'project', 'curdir', 'buffer', 'buflist', 'arglist' },
 			{
@@ -43,8 +39,8 @@ M.grep_pattern = function(pattern)
 			},
 			function(choice)
 				local buffer = vim.fn.bufnr()
-        ---@type string | nil
-        local cmd = nil
+				---@type string | nil
+				local cmd = nil
 				if choice == 'git' then
 					local root = rootutils.git_root()
 					if root == nil then
@@ -62,25 +58,19 @@ M.grep_pattern = function(pattern)
 				elseif choice == 'buffer' then
 					cmd = 'silent vimgrep /' .. input .. '/j %'
 				elseif choice == 'buflist' then
-					cmd = 
-						'silent cexpr [] | bufdo vimgrepadd /'
-							.. input
-							.. '/j % | '
-							.. buffer
-							.. 'b'
-					
+					cmd = 'silent cexpr [] | bufdo vimgrepadd /'
+						.. input
+						.. '/j % | '
+						.. buffer
+						.. 'b'
 				elseif choice == 'arglist' then
 					cmd = 'silent vimgrep /' .. input .. '/j ## | ' .. buffer .. 'b'
 				end
-        if cmd == nil then
-          return
-        end
-        vim.cmd(cmd)
-        vim.fn.histadd('cmd', cmd)
+				if cmd == nil then return end
+				vim.cmd(cmd)
+				vim.fn.histadd('cmd', cmd)
 				local _, empty = qfutil.qf()
-				if not empty then
-					qfutil.open()
-				end
+				if not empty then qfutil.open() end
 			end
 		)
 	end

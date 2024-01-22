@@ -27,9 +27,7 @@ local cache = {}
 M.resolve = function(cwd)
 	cwd = cwd or vim.fn.getcwd()
 	local root = rootutils.git_root(cwd)
-	if cache[root] then
-		return cache[root]
-	end
+	if cache[root] then return cache[root] end
 	---@type DotnetResolve
 	local data = {
 		solutions = {},
@@ -41,16 +39,12 @@ M.resolve = function(cwd)
 	})
 	for _, csproj in ipairs(csprojs) do
 		local type = 'lib'
-		if csproj.file:match('Test') then
-			type = 'test'
-		end
+		if csproj.file:match('Test') then type = 'test' end
 		local programs = rootutils.downward_roots({
 			dir = csproj.path,
 			patterns = { '^Program.cs$' },
 		})
-		if #programs > 0 then
-			type = 'app'
-		end
+		if #programs > 0 then type = 'app' end
 		---@type DotnetProject
 		local project = {
 			name = csproj.file:match('(.*)%.csproj$'),
@@ -96,9 +90,7 @@ M.csproj_targets = function(dir, file)
 	local resolve = M.resolve(dir)
 	local name = file:match('(.*)%.csproj$')
 	local project = resolve.projects[name]
-	if not project or project.type == 'lib' then
-		return {}
-	end
+	if not project or project.type == 'lib' then return {} end
 	if project.type == 'test' then
 		return {
 			name = 'test',
@@ -132,12 +124,11 @@ end
 M.sln_targets = function(dir, file)
 	local resolve = M.resolve(dir)
 	local name = file:match('(.*)%.sln$')
-	local solution = vim.tbl_filter(function(sln)
-		return sln.name == name
-	end, resolve.solutions)[1]
-	if not solution then
-		return {}
-	end
+	local solution = vim.tbl_filter(
+		function(sln) return sln.name == name end,
+		resolve.solutions
+	)[1]
+	if not solution then return {} end
 	local cmds = { 'build', 'clean', 'format', 'test' }
 	---@type Target[]
 	local targets = {}

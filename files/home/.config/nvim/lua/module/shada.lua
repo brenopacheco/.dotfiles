@@ -6,9 +6,7 @@
 local chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
 local function wipe_alpha()
-	local _ = chars:gsub('.', function(v)
-		vim.fn.setreg(v, '')
-	end)
+	local _ = chars:gsub('.', function(v) vim.fn.setreg(v, '') end)
 end
 
 -- setup

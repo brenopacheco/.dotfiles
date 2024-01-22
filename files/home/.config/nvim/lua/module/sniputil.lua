@@ -27,19 +27,19 @@ local open = function()
 	return bufnr
 end
 
-vim.api.nvim_create_user_command('Sniplist', function()
-	require('luasnip.extras.snippet_list').open()
-end, {
-	nargs = 0,
-})
+vim.api.nvim_create_user_command(
+	'Sniplist',
+	function() require('luasnip.extras.snippet_list').open() end,
+	{
+		nargs = 0,
+	}
+)
 
 vim.api.nvim_create_user_command('Snipyank', function(cmd)
 	local line1 = cmd.line1
 	local line2 = cmd.line2
 	local lines = vim.api.nvim_buf_get_lines(0, line1 - 1, line2, false)
-	local text = vim.tbl_map(function(line)
-		return '\t' .. line
-	end, lines)
+	local text = vim.tbl_map(function(line) return '\t' .. line end, lines)
 	local template = vim.list_extend({
 		'',
 		[[snippet name description]],

@@ -77,9 +77,7 @@ end
 ---@param opts { complete: boolean }
 function Context:update(opts)
 	local complete = opts and opts.complete
-	if self.timer:is_active() then
-		self.timer:stop()
-	end
+	if self.timer:is_active() then self.timer:stop() end
 	self.timer:start(
 		self.opts.debounce_time,
 		0,
@@ -106,21 +104,15 @@ end
 
 ---@public
 ---@param sub { ev: 'keyword_changed', fn: fun(keword: string) } | { ev: 'completion_done', fn: fun(match: CompletionMatch) }
-function Context:subscribe(sub)
-	table.insert(self.subscribers[sub.ev], sub.fn)
-end
+function Context:subscribe(sub) table.insert(self.subscribers[sub.ev], sub.fn) end
 
 ---@private
 function Context:refresh_keyword()
-  local keyword = Context.get_keyword()
-  if keyword == self.keyword then
-    return
-  end
+	local keyword = Context.get_keyword()
+	if keyword == self.keyword then return end
 	self.keyword = Context.get_keyword()
 	for _, fn in ipairs(self.subscribers.keyword_changed) do
-		vim.schedule(function()
-			fn(self.keyword)
-		end)
+		vim.schedule(function() fn(self.keyword) end)
 	end
 end
 
@@ -177,9 +169,7 @@ end
 ---@param items CompletionMatch[]
 ---@return CompletionMatch[]
 function Context:items_sort(items)
-	return table.sort(items, function(a, b)
-		return #a.word < #b.word
-	end) or items
+	return table.sort(items, function(a, b) return #a.word < #b.word end) or items
 end
 
 ---@private
@@ -197,9 +187,7 @@ end
 function Context:items_preselect(items)
 	local index = vim.fn.complete_info({ 'selected' }).selected
 	local selected = self.matches[index + 1]
-	if not selected then
-		return items
-	end
+	if not selected then return items end
 	if selected.word == self.get_keyword() then
 		for i, item in ipairs(items) do
 			if item.word == selected.word then
@@ -218,16 +206,12 @@ function Context:setup_autocmds()
 	vim.api.nvim_create_autocmd('CursorMovedI', {
 		desc = 'Updates matches and keyword',
 		group = self.evgroup,
-		callback = function()
-			self:update({ complete = false })
-		end,
+		callback = function() self:update({ complete = false }) end,
 	})
 	vim.api.nvim_create_autocmd('CursorHoldI', {
 		desc = 'Triggers completion',
 		group = self.evgroup,
-		callback = vim.schedule_wrap(function()
-			self:complete()
-		end),
+		callback = vim.schedule_wrap(function() self:complete() end),
 	})
 end
 
@@ -239,9 +223,7 @@ function Context:setup_sources()
 	self.sources.path = path:new(self)
 end
 
-function Context:toggle()
-	self.enabled = not self.enabled
-end
+function Context:toggle() self.enabled = not self.enabled end
 
 ---@param fallback string
 function Context:accept(fallback)
@@ -257,9 +239,7 @@ function Context:accept(fallback)
 	local accept_keys = vim.api.nvim_replace_termcodes('<c-y>', true, false, true)
 	vim.api.nvim_feedkeys(accept_keys, 'i', true)
 	for _, fn in ipairs(self.subscribers.completion_done) do
-		vim.schedule(function()
-			fn(selected)
-		end)
+		vim.schedule(function() fn(selected) end)
 	end
 end
 

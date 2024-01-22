@@ -10,9 +10,7 @@ local function reload(module)
 	local key = (package.loaded[dkey] and dkey)
 		or (package.loaded[skey] and skey)
 		or nil
-	if key ~= nil then
-		package.loaded[key] = nil
-	end
+	if key ~= nil then package.loaded[key] = nil end
 	package.loaded['keymaps'] = nil
 	package.loaded['utils.maps'] = nil
 	require('keymaps')
@@ -30,9 +28,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 		vim.schedule(function()
 			local regex = '(.*)/%.config/nvim/lua/(.*)%.lua'
 			local module, matches = string.gsub(context.match, regex, '%2')
-			if matches == 1 then
-				reload(module)
-			end
+			if matches == 1 then reload(module) end
 		end)
 	end,
 })

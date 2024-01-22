@@ -18,9 +18,7 @@ M.get_captures = function()
 		extmarks = false,
 		semantic_tokens = false,
 	}).treesitter
-	return vim.tbl_map(function(group)
-		return group.capture
-	end, data)
+	return vim.tbl_map(function(group) return group.capture end, data)
 end
 
 --- Checks if cursor is in a comment.
@@ -31,9 +29,7 @@ M.is_comment = function()
 	for _, capture in ipairs(captures) do
 		local str = string.lower(capture)
 		local match = string.match(str, 'comment')
-		if match then
-			return true
-		end
+		if match then return true end
 	end
 	return false
 end

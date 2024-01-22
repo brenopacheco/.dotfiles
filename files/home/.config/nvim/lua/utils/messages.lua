@@ -30,15 +30,11 @@ end
 ---@param message any
 function M:echo(message)
 	assert(self, 'Messages:echo() must be called on an instance')
-	if type(message) == 'table' then
-		message = vim.inspect(message)
-	end
+	if type(message) == 'table' then message = vim.inspect(message) end
 	table.insert(self.messages, message)
 	--- update if window is open
 	local winid = vim.fn.bufwinid(self.bufnr)
-	if winid == -1 then
-		return
-	end
+	if winid == -1 then return end
 	vim.fn.appendbufline(self.bufnr, 0, message)
 	if vim.fn.win_getid() ~= winid then
 		pcall(vim.api.nvim_win_set_cursor, winid, { 1, 1 })

@@ -29,9 +29,7 @@ M.setup = function(opts)
 	vim.o.completeopt = 'menu,menuone,noinsert'
 	vim.o.updatetime = 100
 	vim.keymap.set('i', '<cr>', '<c-e><cr>', {})
-	vim.keymap.set('i', '<tab>', function()
-		ctx:accept('<tab>')
-	end)
+	vim.keymap.set('i', '<tab>', function() ctx:accept('<tab>') end)
 	vim.keymap.set('n', '<s-tab>', M.inspect, {})
 end
 
@@ -40,8 +38,6 @@ M.toggle = function()
 	ctx:toggle()
 end
 
-M.inspect = function()
-  pdebug(ctx)
-end
+M.inspect = function() pdebug(ctx) end
 
 return M

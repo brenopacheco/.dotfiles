@@ -33,8 +33,6 @@ vim.api.nvim_create_autocmd({ 'BufEnter' }, {
 	desc = 'Autochdir in oil',
 	pattern = { 'oil://*' },
 	group = vim.api.nvim_create_augroup('oil-custom', { clear = true }),
-	callback = function()
-		vim.cmd('cd ' .. oil.get_current_dir())
-	end,
+	callback = function() vim.cmd('cd ' .. oil.get_current_dir()) end,
 	nested = true,
 })

@@ -12,10 +12,8 @@ function Source:new(ctx)
 	return obj
 end
 
-function Source:update()
-end
+function Source:update() end
 
-function Source:setup_autocmds()
-end
+function Source:setup_autocmds() end
 
 return Source

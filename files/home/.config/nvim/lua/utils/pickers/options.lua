@@ -21,9 +21,7 @@ local opt_scrolloff = function()
 		or {
 			name = 'scrolloff - max',
 			description = 'enable cursor centering',
-			callback = function()
-				vim.o.scrolloff = 999
-			end,
+			callback = function() vim.o.scrolloff = 999 end,
 		}
 end
 
@@ -33,16 +31,12 @@ local opt_relnumber = function()
 			and {
 				name = 'norelativenumber',
 				description = 'disable relative line numbers',
-				callback = function()
-					vim.o.relativenumber = false
-				end,
+				callback = function() vim.o.relativenumber = false end,
 			}
 		or {
 			name = 'relativenumber',
 			description = 'enable relative line numbers',
-			callback = function()
-				vim.o.relativenumber = true
-			end,
+			callback = function() vim.o.relativenumber = true end,
 		}
 end
 
@@ -52,16 +46,12 @@ local opt_bomb = function()
 			and {
 				name = 'nobomb',
 				description = 'BOM (Byte Order Mark) is not written',
-				callback = function()
-					vim.o.bomb = false
-				end,
+				callback = function() vim.o.bomb = false end,
 			}
 		or {
 			name = 'bomb',
 			description = 'BOM (Byte Order Mark) is written',
-			callback = function()
-				vim.o.bomb = true
-			end,
+			callback = function() vim.o.bomb = true end,
 		}
 end
 

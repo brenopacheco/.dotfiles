@@ -48,9 +48,7 @@ local find_root = function()
 	local result = vim
 		.system({ 'git', 'rev-parse', '--show-toplevel' }, { text = true })
 		:wait()
-	if result.code == 0 then
-		return vim.trim(result.stdout)
-	end
+	if result.code == 0 then return vim.trim(result.stdout) end
 	return vim.fn.getcwd()
 end
 

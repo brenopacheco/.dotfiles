@@ -22,9 +22,7 @@ vim.api.nvim_create_autocmd({ 'WinEnter' }, {
 			if win_height < min.height then
 				vim.api.nvim_win_set_height(0, min.height)
 			end
-			if win_width < min.width then
-				vim.api.nvim_win_set_width(0, min.width)
-			end
+			if win_width < min.width then vim.api.nvim_win_set_width(0, min.width) end
 		end
 	end),
 })

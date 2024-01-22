@@ -1,16 +1,12 @@
 -- Lualine configuration
 
 local ok, devicons = pcall(require, 'nvim-web-devicons')
-if not ok then
-	devicons = nil
-end
+if not ok then devicons = nil end
 
 local mode = { 'mode' }
 
 local foldlevel = {
-	function()
-		return ' ' .. vim.o.foldlevel
-	end,
+	function() return ' ' .. vim.o.foldlevel end,
 }
 
 local branch = { 'branch', icon = { '' } }
@@ -18,13 +14,9 @@ local branch = { 'branch', icon = { '' } }
 local dap = {
 	function()
 		local loaded = pcall(require, 'dap')
-		if not loaded then
-			return ''
-		end
+		if not loaded then return '' end
 		local status = require('dap').status()
-		if string.len(status) == 0 then
-			return ''
-		end
+		if string.len(status) == 0 then return '' end
 		return ' [' .. status .. ']'
 	end,
 }
@@ -45,9 +37,7 @@ local filename = {
 		unnamed = '[No Name]',
 		newfile = '[New]',
 	},
-	fmt = function(name)
-		return name .. ' '
-	end,
+	fmt = function(name) return name .. ' ' end,
 }
 
 local directory = {
@@ -61,13 +51,9 @@ local directory = {
 				break
 			end
 			tpath, match = string.gsub(tpath, '^/[^/]+', '')
-			if match == 0 then
-				break
-			end
+			if match == 0 then break end
 		end
-		if string.len(path) > string.len(tpath) then
-			return '…' .. tpath
-		end
+		if string.len(path) > string.len(tpath) then return '…' .. tpath end
 		return tpath
 	end,
 }
@@ -75,13 +61,9 @@ local directory = {
 local filetype = {
 	function()
 		local ft = vim.bo.filetype
-		if not devicons then
-			return ft
-		end
+		if not devicons then return ft end
 		local icon = devicons.get_icon(ft)
-		if icon == nil then
-			return ft
-		end
+		if icon == nil then return ft end
 		return string.format('%s %s', icon, ft)
 	end,
 }
@@ -97,9 +79,7 @@ local fileformat = {
 
 local bomb = {
 	function()
-		if vim.bo.bomb then
-			return 'BOM'
-		end
+		if vim.bo.bomb then return 'BOM' end
 		return ''
 	end,
 }

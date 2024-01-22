@@ -34,9 +34,7 @@ local get_docs = function(patterns)
 			break
 		end
 	end
-	if not content or not match then
-		return nil
-	end
+	if not content or not match then return nil end
 	return { content = content, package = match }
 end
 
@@ -45,9 +43,7 @@ end
 local get_docs_buffer = function(docs)
 	local bufname = 'godoc:///' .. docs.package
 	local bufnr = vim.fn.bufnr('^' .. bufname .. '$') or -1
-	if bufnr > 0 then
-		return bufnr
-	end
+	if bufnr > 0 then return bufnr end
 	bufnr = vim.api.nvim_create_buf(false, true)
 	vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, docs.content)
 	vim.api.nvim_set_option_value('buftype', 'nofile', { buf = bufnr })
@@ -72,8 +68,8 @@ M.godoc = function(tbl)
 		vim.cmd('split')
 	end
 	vim.api.nvim_win_set_buf(0, bufnr)
-  -- for some reason, I need to add this here, otherwise the buffer is set
-  -- as listed (probably by nvim_win_set_buf)
+	-- for some reason, I need to add this here, otherwise the buffer is set
+	-- as listed (probably by nvim_win_set_buf)
 	vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
 end
 

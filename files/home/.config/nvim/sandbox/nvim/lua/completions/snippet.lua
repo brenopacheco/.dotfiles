@@ -19,9 +19,7 @@ function Source:new(ctx)
 	obj.ctx:subscribe({
 		ev = 'completion_done',
 		fn = function(match)
-			if match.kind == 'snippet' then
-				require('luasnip').expand()
-			end
+			if match.kind == 'snippet' then require('luasnip').expand() end
 		end,
 	})
 	obj:update()
@@ -62,9 +60,7 @@ function Source:setup_autocmds()
 	vim.api.nvim_create_autocmd({ 'FileType' }, {
 		desc = 'Updates snippet source',
 		group = self.ctx.evgroup,
-		callback = function()
-			self:update()
-		end,
+		callback = function() self:update() end,
 	})
 end
 

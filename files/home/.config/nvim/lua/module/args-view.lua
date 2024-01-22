@@ -17,9 +17,7 @@ local function trim_path(path, len)
 			break
 		end
 		tpath, match = string.gsub(tpath, '^/[^/]+', '')
-		if match == 0 then
-			break
-		end
+		if match == 0 then break end
 	end
 	if string.len(path) > string.len(tpath) then
 		return '…' .. tpath, string.len(tpath) + 1
@@ -29,9 +27,10 @@ end
 
 ---@param list string[]
 local function resolve_paths(list)
-	return vim.tbl_map(function(item)
-		return tostring(vim.fn.fnamemodify(item, ':p'))
-	end, list)
+	return vim.tbl_map(
+		function(item) return tostring(vim.fn.fnamemodify(item, ':p')) end,
+		list
+	)
 end
 
 ---@param max_width number
@@ -48,13 +47,9 @@ local function get_arglist(max_width)
 		if arg == vim.fn.expand('%:p') then
 			str = str .. ' ❰'
 			len = len + 2
-			if i ~= idx then
-				vim.cmd('silent! argu ' .. i)
-			end
+			if i ~= idx then vim.cmd('silent! argu ' .. i) end
 		end
-		if len > max_len then
-			max_len = len
-		end
+		if len > max_len then max_len = len end
 		table.insert(list, str)
 	end
 	return list, max_len
@@ -67,12 +62,8 @@ local function format_list(list, max_width)
 		local path_special = string.match(item, '…')
 		local sel_special = string.match(item, '❰')
 		local width = max_width
-		if path_special then
-			width = width + 2
-		end
-		if sel_special then
-			width = width + 2
-		end
+		if path_special then width = width + 2 end
+		if sel_special then width = width + 2 end
 		table.insert(formatted_list, string.format('%' .. width .. 's', item))
 	end
 	return formatted_list
@@ -103,9 +94,7 @@ local function setup(update)
 		pattern = { tostring(winnr) },
 		callback = function()
 			pcall(vim.api.nvim_del_autocmd, autocmd)
-			if #vim.fn.argv() ~= 0 then
-				vim.schedule(update)
-			end
+			if #vim.fn.argv() ~= 0 then vim.schedule(update) end
 		end,
 		nested = true,
 	})
@@ -142,9 +131,7 @@ vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter' }, {
 	desc = 'Show arg list in floating window',
 	group = group,
 	callback = function()
-		if #vim.fn.argv() ~= 0 then
-			update()
-		end
+		if #vim.fn.argv() ~= 0 then update() end
 	end,
 })
 
@@ -161,9 +148,7 @@ local notify = function(msg)
 	vim.notify(msg, vim.log.levels.INFO)
 end
 
-local err = function(msg)
-	vim.notify(msg, vim.log.levels.WARN)
-end
+local err = function(msg) vim.notify(msg, vim.log.levels.WARN) end
 
 -- Add buffer to arglist
 local args_add = function()
@@ -172,7 +157,7 @@ local args_add = function()
 	end
 	vim.cmd('$argadd')
 	vim.cmd('argdedupe')
-  vim.cmd('silent! argu ' .. vim.fn.argc())
+	vim.cmd('silent! argu ' .. vim.fn.argc())
 	notify('info: "' .. vim.fn.expand('%') .. '" added to arglist')
 end
 
@@ -183,9 +168,7 @@ end
 
 local args_delete = function()
 	local args = vim.fn.argv() or {}
-	if type(args) ~= 'table' then
-		return err('error: arglist is empty')
-	end
+	if type(args) ~= 'table' then return err('error: arglist is empty') end
 	if not vim.list_contains(args, tostring(vim.fn.bufname())) then
 		return err('error: buffer is not in arglist')
 	end
@@ -194,9 +177,7 @@ local args_delete = function()
 end
 
 local args_next = function()
-	if vim.fn.argc() == 0 then
-		return err('error: arglist is empty')
-	end
+	if vim.fn.argc() == 0 then return err('error: arglist is empty') end
 	local idx = vim.fn.argidx() + 1 >= vim.fn.argc() and '1'
 		or tostring(vim.fn.argidx() + 2)
 	vim.cmd('silent! argu ' .. idx)
@@ -204,9 +185,7 @@ local args_next = function()
 end
 
 local args_prev = function()
-	if vim.fn.argc() == 0 then
-		return err('error: arglist is empty')
-	end
+	if vim.fn.argc() == 0 then return err('error: arglist is empty') end
 	local idx = vim.fn.argidx() == 0 and tostring(vim.fn.argc())
 		or tostring(vim.fn.argidx())
 	vim.cmd('silent! argu ' .. idx)

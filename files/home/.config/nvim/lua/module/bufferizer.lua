@@ -3,7 +3,7 @@
 -- Provides the :Bufferize command, which takes a regular vim command
 -- and redirects it'so output to a scratch buffer.
 -- Provides the useful :Messages command
--- NOTE: 
+-- NOTE:
 -- `cmd` provides about 200 lines only
 -- we don't get messages highlights
 
@@ -40,9 +40,7 @@ local function bufferize(tbl)
 	})
 end
 
-local function messages()
-	bufferize({ fargs = { 'messages' } })
-end
+local function messages() bufferize({ fargs = { 'messages' } }) end
 
 -- setup
 vim.api.nvim_create_user_command('Bufferize', bufferize, { nargs = '*' })

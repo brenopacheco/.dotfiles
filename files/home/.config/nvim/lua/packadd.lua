@@ -81,9 +81,7 @@ end
 local function packadd(repos)
 	for _, repo in ipairs(repos) do
 		local pkg = register(repo)
-		if not pkg.installed then
-			install(pkg)
-		end
+		if not pkg.installed then install(pkg) end
 		if not pkg.loaded then
 			pkg.loaded = true
 			vim.cmd('packadd ' .. pkg.name)
@@ -110,16 +108,12 @@ local function packadd(repos)
 end
 
 local function packcmd(cmd)
-	if cmd.bang then
-		vim.tbl_map(install, packages)
-	end
+	if cmd.bang then vim.tbl_map(install, packages) end
 	if cmd.args:len() > 0 then
 		for _, package in pairs(packages) do
-			if string.match(package.name, cmd.args) then
-				vim.print(package)
-			end
+			if string.match(package.name, cmd.args) then vim.print(package) end
 		end
-    vim.notify('Package not found', vim.log.levels.WARN)
+		vim.notify('Package not found', vim.log.levels.WARN)
 	else
 		vim.print({ packages = packages, modules = { modules } })
 	end
@@ -128,9 +122,7 @@ end
 local function enabled(repo)
 	local name = string.gsub(repo, '^.*/', '')
 	local pkg = packages[name]
-	if pkg ~= nil then
-		return pkg.installed and pkg.loaded
-	end
+	if pkg ~= nil then return pkg.installed and pkg.loaded end
 	local mod = modules[name]
 	return mod ~= nil and mod.loaded
 end

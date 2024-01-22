@@ -9,7 +9,6 @@
 
 --]]
 
-
 local lsputil = require('utils.lsp')
 local rootutil = require('utils.root')
 
@@ -51,14 +50,14 @@ local function extend_rockspec_config(new_config, new_root_dir)
 		'lua_modules/share/lua/' .. ver .. '/',
 		'/usr/share/lua/' .. ver .. '/',
 	}
-  -- NOTE:With `Apply` lua_ls will create a .luarc.json file in the project root
-  -- directory and automatically fill the workspace.library. For instance:
-  --  {
-  --      "workspace.library": [
-  --          "${3rd}/luassert/library"
-  --      ]
-  --  }
-  -- We need to manually add `busted`
+	-- NOTE:With `Apply` lua_ls will create a .luarc.json file in the project root
+	-- directory and automatically fill the workspace.library. For instance:
+	--  {
+	--      "workspace.library": [
+	--          "${3rd}/luassert/library"
+	--      ]
+	--  }
+	-- We need to manually add `busted`
 	c.workspace.checkThirdParty = 'Apply' -- 'Disable', 'ApplyInMemory', 'Ask', 'Apply'
 end
 

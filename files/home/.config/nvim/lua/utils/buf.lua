@@ -91,19 +91,13 @@ function M.toggle(filetype, opts)
 		if mode == 'close' or mode == 'toggle' then
 			return vim.cmd(winnr .. 'close')
 		end
-		if focus then
-			vim.api.nvim_set_current_win(winid)
-		end
+		if focus then vim.api.nvim_set_current_win(winid) end
 	end)
 	if cb ~= nil then
-		if (mode == 'toggle' and not is_open) or mode == 'open' then
-			cb()
-		end
+		if (mode == 'toggle' and not is_open) or mode == 'open' then cb() end
 	end
 	if focus then
-		loop(function(_, winid, _)
-			vim.api.nvim_set_current_win(winid)
-		end)
+		loop(function(_, winid, _) vim.api.nvim_set_current_win(winid) end)
 	end
 end
 
@@ -118,9 +112,7 @@ M.delete = function()
 	local status, _ = pcall(vim.api.nvim_buf_delete, 0, {})
 	if not status then
 		local x = vim.fn.confirm('buffer has been modified', '&qCancel\n&xDelete')
-		if x == 2 then
-			return vim.cmd('bd!')
-		end
+		if x == 2 then return vim.cmd('bd!') end
 	end
 end
 
@@ -133,9 +125,7 @@ M.is_visible = function(filetype)
 		local bufnr = vim.fn.winbufnr(winnr)
 		if bufnr ~= nil then
 			local ft = vim.fn.getbufvar(bufnr, '&ft')
-			if ft == filetype then
-				return true, winid, bufnr
-			end
+			if ft == filetype then return true, winid, bufnr end
 		end
 	end
 	return false, -1, -1
@@ -180,9 +170,7 @@ M.get_cexprs = function(opts)
 	local cword = vim.fn.expand('<cword>'):gsub('[^%w%.%_%-]', '')
 	local pat = '[%w%.%_%-%>]*' .. cword
 	local cexpr = line:match(pat)
-	if not cexpr then
-		return {}
-	end
+	if not cexpr then return {} end
 	local matches = vim.split(cexpr, '%.')
 	local words = {}
 	local word = ''

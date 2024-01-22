@@ -33,9 +33,7 @@ local function makedirs()
 		vim.g.tagsdir,
 	}
 	for _, dir in ipairs(dirs) do
-		if vim.fn.isdirectory(dir) == 0 then
-			vim.fn.mkdir(dir, 'p')
-		end
+		if vim.fn.isdirectory(dir) == 0 then vim.fn.mkdir(dir, 'p') end
 	end
 end
 
@@ -49,9 +47,7 @@ local function addautocmd(debug)
 		pattern = { '*' },
 		callback = function(ev)
 			-- check that buffer is not of type protocol:///
-			if string.find(ev.match, ':///') ~= nil then
-				return
-			end
+			if string.find(ev.match, ':///') ~= nil then return end
 			local ts = os.date('%Y-%m-%d-%Hh%Mm%Ss')
 			local obj = vim
 				.system({ 'base64' }, { text = true, stdin = ev.match })
@@ -113,18 +109,12 @@ local function backups()
 		backups = entries[choice]
 		vim.ui.select(backups, {
 			prompt = 'Backup entry:',
-			format_item = function(item)
-				return 'Timestamp: ' .. item.ts
-			end,
-		}, function(backup)
-			vim.cmd('e ' .. backup.path)
-		end)
+			format_item = function(item) return 'Timestamp: ' .. item.ts end,
+		}, function(backup) vim.cmd('e ' .. backup.path) end)
 	end)
 end
 
-local function addcmd()
-	vim.api.nvim_create_user_command('Backups', backups, {})
-end
+local function addcmd() vim.api.nvim_create_user_command('Backups', backups, {}) end
 
 -- setup
 setopts()

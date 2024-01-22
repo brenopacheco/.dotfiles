@@ -22,9 +22,7 @@ cmp.setup({
 	},
 	preselect = cmp.PreselectMode.None,
 	snippet = {
-		expand = function(args)
-			require('luasnip').lsp_expand(args.body)
-		end,
+		expand = function(args) require('luasnip').lsp_expand(args.body) end,
 	},
 	mapping = cmp.mapping.preset.insert({
 		['<C-n>'] = cmp.mapping(function()
@@ -48,9 +46,10 @@ cmp.setup({
 		['<C-b>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
 		['<C-e>'] = cmp.mapping.abort(),
-		['<C-space>'] = cmp.mapping(function()
-			return cmp.visible() and cmp.close() or cmp.complete()
-		end, { 'i', 's' }),
+		['<C-space>'] = cmp.mapping(
+			function() return cmp.visible() and cmp.close() or cmp.complete() end,
+			{ 'i', 's' }
+		),
 		['<Tab>'] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.confirm({ select = true })
@@ -58,15 +57,8 @@ cmp.setup({
 				fallback()
 			end
 		end, { 'i', 's' }),
-		-- ['<S-Tab>'] = cmp.mapping(function()
-		-- 	vim.schedule(require('copilot.suggestion').accept)
-		-- end, { 'i', 's' }),
-		['<C-k>'] = cmp.mapping(function()
-			luasnip.jump(1)
-		end, { 'i', 's' }),
-		['<C-j>'] = cmp.mapping(function()
-			luasnip.jump(-1)
-		end, { 'i', 's' }),
+		['<C-k>'] = cmp.mapping(function() luasnip.jump(1) end, { 'i', 's' }),
+		['<C-j>'] = cmp.mapping(function() luasnip.jump(-1) end, { 'i', 's' }),
 		['<C-d>'] = function()
 			---@type number|nil
 			local docs_bufnr = nil
@@ -74,13 +66,9 @@ cmp.setup({
 			for _, winnr in ipairs(winnrs) do
 				local bufnr = vim.fn.winbufnr(winnr)
 				local ft = vim.api.nvim_get_option_value('ft', { buf = bufnr })
-				if ft == 'cmp_docs' then
-					docs_bufnr = bufnr
-				end
+				if ft == 'cmp_docs' then docs_bufnr = bufnr end
 			end
-			if not docs_bufnr then
-				return vim.notify('No entry selected')
-			end
+			if not docs_bufnr then return vim.notify('No entry selected') end
 			-- here we should copy the buffer contents, copy the window options
 			-- and duplicate both
 		end,
@@ -163,4 +151,9 @@ cmp.setup({
 	},
 })
 
-vim.keymap.set('i', '<S-Tab>', require('copilot.suggestion').accept, { silent = true })
+vim.keymap.set(
+	'i',
+	'<S-Tab>',
+	require('copilot.suggestion').accept,
+	{ silent = true }
+)

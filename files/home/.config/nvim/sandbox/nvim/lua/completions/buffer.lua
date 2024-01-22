@@ -16,18 +16,14 @@ function Source:new(ctx)
 	obj.ctx:subscribe({
 		ev = 'completion_done',
 		fn = function(match)
-			if match.kind == 'buffer' then
-				vim.api.nvim_feedkeys(' ', 'i', true)
-			end
+			if match.kind == 'buffer' then vim.api.nvim_feedkeys(' ', 'i', true) end
 		end,
 	})
 	return obj
 end
 
 ---@private
-function Source:invalidate()
-	self.stale = true
-end
+function Source:invalidate() self.stale = true end
 
 ---@private
 function Source:should_update(bufnr)
@@ -38,9 +34,7 @@ end
 
 ---@private
 function Source:update()
-	if self.timer:is_active() then
-		self.timer:stop()
-	end
+	if self.timer:is_active() then self.timer:stop() end
 	self.timer:start(
 		self.ctx.opts.sources.buffer.debounce_time,
 		0,
@@ -54,9 +48,7 @@ function Source:update()
 			local words = {}
 			for _, line in ipairs(lines) do
 				for match in line:gmatch('%w%w%w+') do
-					if match ~= self.ctx.keyword then
-						words[match] = true
-					end
+					if match ~= self.ctx.keyword then words[match] = true end
 				end
 			end
 			---@type CompletionMatch[]

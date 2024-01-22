@@ -7,5 +7,23 @@ snippet env
 snippet modeline
 	vi:ft=sh:tw=80
 
-snippet todo
-	`printf(&commentstring, ' TODO: ')`$0
+snippet FIX
+	`printf(&commentstring, 'FIX: ')`$0
+
+snippet TODO
+	`printf(&commentstring, 'TODO: ')`$0
+
+snippet HACK
+	`printf(&commentstring, 'HACK: ')`$0
+
+snippet WARN
+	`printf(&commentstring, 'WARN: ')`$0
+
+snippet PERF
+	`printf(&commentstring, 'PERF: ')`$0
+
+snippet NOTE
+	`printf(&commentstring, 'NOTE: ')`$0
+
+snippet TEST
+	`printf(&commentstring, 'TEST: ')`$0

@@ -8,37 +8,25 @@ local rootutil = require('utils.root')
 local M = {}
 
 -- Add buffer to arglist
-M.args_add = function()
-	vim.cmd('ArgAdd')
-end
+M.args_add = function() vim.cmd('ArgAdd') end
 
 -- Clear arglist
-M.args_clear = function()
-	vim.cmd('ArgClear')
-end
+M.args_clear = function() vim.cmd('ArgClear') end
 
 -- Remove buffer from arglist
-M.args_delete = function()
-	vim.cmd('ArgDelete')
-end
+M.args_delete = function() vim.cmd('ArgDelete') end
 
 -- Open buffer diagnostics in quickfix
-M.errors_buffer = function()
-	qfutil.errors({ workspace = false })
-end
+M.errors_buffer = function() qfutil.errors({ workspace = false }) end
 
 -- Open workspace diagnostics in quickfix
-M.errors_workspace = function()
-	qfutil.errors({ workspace = true })
-end
+M.errors_workspace = function() qfutil.errors({ workspace = true }) end
 
 -- Find file in arglist
 M.find_args = require('utils.pickers.arglist')
 
 -- Find buffer in buffer list
-M.find_buffers = function()
-	require('telescope.builtin').buffers({})
-end
+M.find_buffers = function() require('telescope.builtin').buffers({}) end
 
 -- Find files in current directory
 M.find_curdir = function()
@@ -59,24 +47,16 @@ M.find_files = function()
 end
 
 -- Find git files modified or staged
-M.find_gitstatus = function()
-	require('telescope.builtin').git_status({})
-end
+M.find_gitstatus = function() require('telescope.builtin').git_status({}) end
 
 -- Find helptags
-M.find_helptag = function()
-	require('telescope.builtin').help_tags({})
-end
+M.find_helptag = function() require('telescope.builtin').help_tags({}) end
 
 -- Find files in nvim configuration directory
-M.find_config = function()
-	require('utils.pickers.configs')()
-end
+M.find_config = function() require('utils.pickers.configs')() end
 
 -- Run project target from Makefile, Go, Rust, etc.
-M.find_make = function()
-	require('utils.pickers.make')()
-end
+M.find_make = function() require('utils.pickers.make')() end
 
 -- Find file in current project (nearest project file directory)
 M.find_project = function()
@@ -99,19 +79,13 @@ M.find_project = function()
 end
 
 -- Find quickfix entry
-M.find_quickfix = function()
-	require('telescope.builtin').quickfix({})
-end
+M.find_quickfix = function() require('telescope.builtin').quickfix({}) end
 
 -- Find recent files
-M.find_recent = function()
-	require('telescope.builtin').oldfiles({})
-end
+M.find_recent = function() require('telescope.builtin').oldfiles({}) end
 
 -- Finds roots in current git project
-M.find_roots = function()
-	require('utils.pickers.roots')()
-end
+M.find_roots = function() require('utils.pickers.roots')() end
 
 -- Find files in git directory using ripgrep
 M.find_grep = function()
@@ -129,14 +103,10 @@ M.find_star = function()
 end
 
 -- Find zk notes
-M.find_zk = function()
-	vim.cmd([[ZkNotes { sort = { 'modified' } }]])
-end
+M.find_zk = function() vim.cmd([[ZkNotes { sort = { 'modified' } }]]) end
 
 -- Find marks
-M.find_mark = function()
-	require('telescope.builtin').marks({})
-end
+M.find_mark = function() require('telescope.builtin').marks({}) end
 
 -- Find symbol in buffer
 M.find_doc_symbol = function()
@@ -149,14 +119,10 @@ M.find_ws_symbol = function()
 end
 
 -- Git show blame lines
-M.git_blame = function()
-	vim.cmd([[Git blame]])
-end
+M.git_blame = function() vim.cmd([[Git blame]]) end
 
 -- Git open fugitive window
-M.git_fugitive = function()
-	bufutil.toggle('fugitive', { cb = vim.cmd.G })
-end
+M.git_fugitive = function() bufutil.toggle('fugitive', { cb = vim.cmd.G }) end
 
 -- Open permalink to current line in browser and copy to clipboard
 M.git_link = function()
@@ -167,29 +133,19 @@ M.git_link = function()
 end
 
 -- Git open log
-M.git_log = function()
-	vim.cmd([[G log]])
-end
+M.git_log = function() vim.cmd([[G log]]) end
 
 -- Git preview hunk under cursor
-M.git_preview = function()
-	require('gitsigns').preview_hunk()
-end
+M.git_preview = function() require('gitsigns').preview_hunk() end
 
 -- Reset git hunk under cursor
-M.git_reset = function()
-	require('gitsigns').reset_hunk()
-end
+M.git_reset = function() require('gitsigns').reset_hunk() end
 
 -- Stage git hunk under cursor
-M.git_stage = function()
-	require('gitsigns').stage_hunk()
-end
+M.git_stage = function() require('gitsigns').stage_hunk() end
 
 -- Unstage git hunk under cursor
-M.git_unstage = function()
-	require('gitsigns').undo_stage_hunk()
-end
+M.git_unstage = function() require('gitsigns').undo_stage_hunk() end
 
 -- Goto symbol declaration
 M.goto_declaration = function()
@@ -211,14 +167,10 @@ M.goto_implementation = function()
 end
 
 -- Goto symbol incoming calls
-M.goto_incoming = function()
-	vim.lsp.buf.incoming_calls()
-end
+M.goto_incoming = function() vim.lsp.buf.incoming_calls() end
 
 -- Goto symbol outgoing calls
-M.goto_outgoing = function()
-	vim.lsp.buf.outgoing_calls()
-end
+M.goto_outgoing = function() vim.lsp.buf.outgoing_calls() end
 
 -- Goto symbol references
 M.goto_references = function()
@@ -231,130 +183,85 @@ M.goto_typedef = function()
 end
 
 -- Jump to next arg in arglist
-M.jump_argnext = function()
-	vim.cmd('ArgNext')
-end
+M.jump_argnext = function() vim.cmd('ArgNext') end
 
 -- Jump to previous arg in arglist
-M.jump_argprev = function()
-	vim.cmd('ArgPrev')
-end
+M.jump_argprev = function() vim.cmd('ArgPrev') end
 
 -- Jump to next buffer in buffer list
-M.jump_bufnext = function()
-	vim.cmd('bnext')
-end
+M.jump_bufnext = function() vim.cmd('bnext') end
 
 -- Jump to previous buffer in buffer list
-M.jump_bufprev = function()
-	vim.cmd('bprevious')
-end
+M.jump_bufprev = function() vim.cmd('bprevious') end
 
 -- Jump to next git hunk or diff chunk
-M.jump_chunknext = function()
-	require('gitsigns').next_hunk()
-end
+M.jump_chunknext = function() require('gitsigns').next_hunk() end
 
 -- Jump to prev git hunk or diff chunk
-M.jump_chunkprev = function()
-	require('gitsigns').prev_hunk()
-end
+M.jump_chunkprev = function() require('gitsigns').prev_hunk() end
 
 -- Jump to the next diagnostic
-M.jump_errornext = function()
-	vim.diagnostic.goto_next()
-end
+M.jump_errornext = function() vim.diagnostic.goto_next() end
 
 -- Jump to the previous diagnostic
-M.jump_errorprev = function()
-	vim.diagnostic.goto_prev()
-end
+M.jump_errorprev = function() vim.diagnostic.goto_prev() end
 
 -- Jump to next file in file tree
 M.jump_filenext = function()
 	local api = require('nvim-tree.api')
-	if not api.tree.is_visible() then
-		api.tree.open()
-	end
+	if not api.tree.is_visible() then api.tree.open() end
 	api.node.navigate.sibling.next()
 	local path = api.tree.get_node_under_cursor().absolute_path
-	if path ~= nil then
-		vim.cmd('edit ' .. path)
-	end
+	if path ~= nil then vim.cmd('edit ' .. path) end
 end
 
 -- Jump to previous file in file tree
 M.jump_fileprev = function()
 	local api = require('nvim-tree.api')
-	if not api.tree.is_visible() then
-		api.tree.open()
-	end
+	if not api.tree.is_visible() then api.tree.open() end
 	api.node.navigate.sibling.prev()
 	local path = api.tree.get_node_under_cursor().absolute_path
-	if path ~= nil then
-		vim.cmd('edit ' .. path)
-	end
+	if path ~= nil then vim.cmd('edit ' .. path) end
 end
 
 -- Jump to next entry in location list
 M.jump_locnext = function()
-	vim.fn.lnext()
+	-- TODO: wrap around
+	vim.cmd.lnext()
 end
 
 -- Jump to previous entry in location list
-M.jump_locprev = function()
-	vim.fn.lprev()
-end
+M.jump_locprev = function() vim.cmd.lprevious() end
 
 -- Jump to next quickfix entry
-M.jump_qfnext = function()
-	qfutil.next_entry()
-end
+M.jump_qfnext = function() qfutil.next_entry() end
 
 -- Jump to previous quickfix entry
-M.jump_qfprev = function()
-	qfutil.prev_entry()
-end
+M.jump_qfprev = function() qfutil.prev_entry() end
 
 -- Jump to next tab
-M.jump_tabnext = function()
-	vim.cmd('tabnext')
-end
+M.jump_tabnext = function() vim.cmd('tabnext') end
 
 -- Jump to previous tab
-M.jump_tabprev = function()
-	vim.cmd('tabprevious')
-end
+M.jump_tabprev = function() vim.cmd('tabprevious') end
 
 -- Jump to next terminal
-M.jump_termnext = function()
-	vim.cmd('FloatermNext')
-end
+M.jump_termnext = function() vim.cmd('FloatermNext') end
 
 -- Jump to previous terminal
-M.jump_termprev = function()
-	vim.cmd('FloatermPrev')
-end
+M.jump_termprev = function() vim.cmd('FloatermPrev') end
 
 -- Replace qf with newer error list
-M.qf_cnewer = function()
-	vim.cmd('cnewer')
-end
+M.qf_cnewer = function() vim.cmd('cnewer') end
 
 -- Replace qf with previous error list
-M.qf_colder = function()
-	vim.cmd('colder')
-end
+M.qf_colder = function() vim.cmd('colder') end
 
 -- Filter quickfix list by pattern
-M.qf_global = function()
-	greputils.qf_filter({ invert = false })
-end
+M.qf_global = function() greputils.qf_filter({ invert = false }) end
 
 -- Filter quickfix list by exclude pattern
-M.qf_vglobal = function()
-	greputils.qf_filter({ invert = false })
-end
+M.qf_vglobal = function() greputils.qf_filter({ invert = false }) end
 
 -- Run align
 M.run_align = function()
@@ -363,9 +270,7 @@ M.run_align = function()
 end
 
 -- Delete buffer
-M.run_bd = function()
-	bufutil.delete()
-end
+M.run_bd = function() bufutil.delete() end
 
 -- stylua: ignore start
 M.debug_start        = daputil.debug_start
@@ -387,14 +292,10 @@ M.debug_toggle_repl  = daputil.toggle_repl
 -- stylua: ignore end
 
 -- Run code action
-M.run_code = function()
-	vim.lsp.buf.code_action()
-end
+M.run_code = function() vim.lsp.buf.code_action() end
 
 -- Create new unnamed buffer
-M.run_enew = function()
-	vim.cmd('enew')
-end
+M.run_enew = function() vim.cmd('enew') end
 
 -- Run formatter
 M.run_format = function()
@@ -407,24 +308,16 @@ M.run_format = function()
 end
 
 -- Run grep on buffer, directory, git root, or project root
-M.run_grep = function()
-	greputils.grep_pattern(nil)
-end
+M.run_grep = function() greputils.grep_pattern(nil) end
 
 -- xdg-open
-M.run_gx = function()
-	require('gx').search_for_url()
-end
+M.run_gx = function() require('gx').search_for_url() end
 
 -- Open messages
-M.messages = function()
-	vim.cmd('Messages')
-end
+M.messages = function() vim.cmd('Messages') end
 
 -- Open lsp info
-M.lsp_info = function()
-	lsputil.open_config()
-end
+M.lsp_info = function() lsputil.open_config() end
 
 -- Run make command
 M.run_make = function()
@@ -433,14 +326,10 @@ M.run_make = function()
 end
 
 -- Maximize window
-M.run_maximize = function()
-	vim.cmd([[resize +999 | vertical resize +999]])
-end
+M.run_maximize = function() vim.cmd([[resize +999 | vertical resize +999]]) end
 
 -- Generate documentation
-M.run_neogen = function()
-	vim.cmd('Neogen')
-end
+M.run_neogen = function() vim.cmd('Neogen') end
 
 -- Replace symbol under cursor
 M.run_rename = function()
@@ -478,9 +367,7 @@ M.run_source = function()
 end
 
 -- Spawn new terminal window in current dir
-M.run_spawn = function()
-	vim.fn.system('st >/dev/null 2>&1 & disown $!')
-end
+M.run_spawn = function() vim.fn.system('st >/dev/null 2>&1 & disown $!') end
 
 -- Run star search on buffer, directory, git root, or project root
 M.run_star = function()
@@ -491,9 +378,7 @@ M.run_star = function()
 end
 
 -- Open new tab
-M.run_tabnew = function()
-	vim.cmd('tabnew')
-end
+M.run_tabnew = function() vim.cmd('tabnew') end
 
 -- Create new zk entry
 M.run_zknew = function()
@@ -504,54 +389,34 @@ M.run_zknew = function()
 end
 
 -- Highlight symbol under cursor
-M.show_highlight = function()
-	lsputil.wrap(vim.lsp.buf.document_highlight)
-end
+M.show_highlight = function() lsputil.wrap(vim.lsp.buf.document_highlight) end
 
 -- Show hover information
-M.show_hover = function()
-	lsputil.wrap(vim.lsp.buf.hover)
-end
+M.show_hover = function() lsputil.wrap(vim.lsp.buf.hover) end
 
 -- Show function signature help
-M.show_signature = function()
-	lsputil.wrap(vim.lsp.buf.signature_help)
-end
+M.show_signature = function() lsputil.wrap(vim.lsp.buf.signature_help) end
 
 -- Visit file where last test was run
-M.test_visit = function()
-	vim.cmd('TestVisit')
-end
+M.test_visit = function() vim.cmd('TestVisit') end
 
 -- Runs all tests in the current file
-M.test_file = function()
-	vim.cmd('TestFile')
-end
+M.test_file = function() vim.cmd('TestFile') end
 
 -- Runs the test nearest to the cursor
-M.test_nearest = function()
-	vim.cmd('TestNearest')
-end
+M.test_nearest = function() vim.cmd('TestNearest') end
 
 -- Runs the last test run
-M.test_previous = function()
-	vim.cmd('TestLast')
-end
+M.test_previous = function() vim.cmd('TestLast') end
 
 -- Runs the whole test suite
-M.test_suite = function()
-	vim.cmd('TestSuite')
-end
+M.test_suite = function() vim.cmd('TestSuite') end
 
 -- Toggle dap ui
-M.toggle_dapui = function()
-	daputil.toggle_ui()
-end
+M.toggle_dapui = function() daputil.toggle_ui() end
 
 -- Open lf file explorer
-M.toggle_lf = function()
-	vim.notify('not implemented', vim.log.levels.WARN)
-end
+M.toggle_lf = function() vim.notify('not implemented', vim.log.levels.WARN) end
 
 -- Toggle side tree
 M.toggle_ntree = function()
@@ -559,14 +424,10 @@ M.toggle_ntree = function()
 end
 
 -- Open oil
-M.toggle_oil = function()
-	vim.cmd([[Oil]])
-end
+M.toggle_oil = function() vim.cmd([[Oil]]) end
 
 -- Toggle global option
-M.toggle_option = function()
-	require('utils.pickers.options')()
-end
+M.toggle_option = function() require('utils.pickers.options')() end
 
 -- Toggle symbols outline window
 M.toggle_outline = function()
@@ -575,24 +436,16 @@ M.toggle_outline = function()
 end
 
 -- Toggle quickfix window
-M.toggle_quickfix = function()
-	bufutil.toggle('qf', { cb = qfutil.open })
-end
+M.toggle_quickfix = function() bufutil.toggle('qf', { cb = qfutil.open }) end
 
 -- Toggle terminal window
-M.toggle_term = function()
-	vim.cmd('FloatermToggle')
-end
+M.toggle_term = function() vim.cmd('FloatermToggle') end
 
 -- Open new terminal
-M.newterm = function()
-	vim.cmd('FloatermNew')
-end
+M.newterm = function() vim.cmd('FloatermNew') end
 
 -- Toggle zen mode
-M.toggle_zen = function()
-	vim.cmd('ZenMode')
-end
+M.toggle_zen = function() vim.cmd('ZenMode') end
 
 -- Open keyword under cursor or selection. Tries to resolve cword and cWORD
 -- as such:
@@ -612,9 +465,7 @@ M.keywordprg = function()
 	for _, pattern in ipairs(cexprs) do
 		local status, err =
 			pcall(vim.api.nvim_exec2, vim.o.keywordprg .. ' ' .. pattern, {})
-		if status then
-			return
-		end
+		if status then return end
 		ptrace(err)
 	end
 	vim.notify(vim.o.keywordprg .. ' not found', vim.log.levels.WARN)

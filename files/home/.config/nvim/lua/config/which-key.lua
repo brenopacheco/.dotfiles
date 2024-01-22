@@ -34,7 +34,7 @@ wk.setup({
 	},
 	-- somewhy this bugs out fugitive `cc`
 	-- triggers = { '<leader>', '<c-w>', 'g', 'z', ']', '[' },
-	triggers = { },
+	triggers = {},
 	disable = {
 		-- buftypes = { 'nofile', 'fugitive' },
 		-- filetypes = { 'fugitive', 'telescope', 'nvim-cmp', 'vim' },

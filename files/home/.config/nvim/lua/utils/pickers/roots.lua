@@ -17,9 +17,7 @@ return function()
 	end
 
 	---@type string[]
-	local dirs = vim.tbl_map(function(r)
-		return r.path
-	end, roots)
+	local dirs = vim.tbl_map(function(r) return r.path end, roots)
 
 	---@type string[]
 	---@diagnostic disable-next-line: assign-type-mismatch
@@ -32,8 +30,6 @@ return function()
 				or './' .. string.sub(item, string.len(root) + 2)
 		end,
 	}, function(choice)
-		if choice ~= nil then
-			vim.cmd('e ' .. choice)
-		end
+		if choice ~= nil then vim.cmd('e ' .. choice) end
 	end)
 end

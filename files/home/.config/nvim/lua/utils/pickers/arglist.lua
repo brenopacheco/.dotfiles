@@ -1,8 +1,6 @@
 local function get_arglist()
 	local arglist = vim.fn.argv()
-	if type(arglist) ~= 'table' then
-		return
-	end
+	if type(arglist) ~= 'table' then return end
 	if vim.tbl_isempty(arglist) then
 		vim.notify('error: argument list is empty', vim.log.levels.WARN)
 		return
@@ -49,9 +47,7 @@ return function()
 	local conf = require('telescope.config').values
 	local Path = require('plenary.path')
 	local results = get_arglist()
-	if not results then
-		return
-	end
+	if not results then return end
 	local cwd = vim.fn.getcwd()
 	pickers
 		.new({}, {

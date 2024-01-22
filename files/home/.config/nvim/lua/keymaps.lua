@@ -201,9 +201,12 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'FileType' }, {
 	callback = function(ev)
 		local ft = vim.api.nvim_get_option_value('ft', { buf = ev.buf })
 		for lhs, rhs in pairs(keyboard.abbreviations[ft]) do
-			vim.keymap.set('ia', lhs, function()
-				return treeutil.is_comment() and lhs or rhs
-			end, { buffer = ev.buf, expr = true })
+			vim.keymap.set(
+				'ia',
+				lhs,
+				function() return treeutil.is_comment() and lhs or rhs end,
+				{ buffer = ev.buf, expr = true }
+			)
 		end
 	end,
 })

@@ -4,8 +4,8 @@ endif
 let b:did_ftplugin = 1
 
 setlocal equalprg=
-setlocal shiftwidth=4
-setlocal tabstop=4
+setlocal shiftwidth=2
+setlocal tabstop=2
 setlocal expandtab
 setlocal foldmethod=expr
 setlocal foldexpr=nvim_treesitter#foldexpr()

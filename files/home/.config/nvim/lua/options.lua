@@ -22,7 +22,7 @@ vim.opt.fileencodings  = {
 vim.opt.foldcolumn     = 'auto:9'                      -- show fold level in gutter
 vim.opt.foldlevelstart = 99                            -- make folds open initially
 vim.opt.foldmethod     = 'marker'                      -- default fold method using {{{}}}
-vim.opt.foldminlines   = 0
+vim.opt.foldminlines   = 1
 vim.opt.foldnestmax    = 6
 vim.opt.foldopen       = {                             -- movements to open closed folds
   'insert',

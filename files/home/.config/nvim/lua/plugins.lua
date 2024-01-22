@@ -47,7 +47,7 @@ vim.z.packadd({
 	'HiPhish/rainbow-delimiters.nvim',
 	'monkoose/matchparen.nvim',
 	'brenopacheco/zk-nvim',
-  'jbyuki/one-small-step-for-vimkind',
+	'jbyuki/one-small-step-for-vimkind',
 	'theHamsta/nvim-dap-virtual-text',
 	'rcarriga/nvim-dap-ui',
 	'mfussenegger/nvim-dap',

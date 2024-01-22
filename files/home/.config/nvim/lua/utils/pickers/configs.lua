@@ -9,12 +9,8 @@ return function()
 	assert(files ~= nil and #files > 0, 'No files found')
 	vim.ui.select(files, {
 		prompt = 'Lua configurations:',
-		format_item = function(item)
-			return string.sub(item, cwd_len)
-		end,
+		format_item = function(item) return string.sub(item, cwd_len) end,
 	}, function(choice)
-		if choice ~= nil then
-			vim.cmd('e ' .. choice)
-		end
+		if choice ~= nil then vim.cmd('e ' .. choice) end
 	end)
 end

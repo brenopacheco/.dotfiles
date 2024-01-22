@@ -61,9 +61,7 @@ local function resolve_test_file()
 	if not string.match(path, '_test%.go$') then
 		path = vim.fn.expand('%:p:r') .. '_test.go'
 	end
-	if fileutil.exists(path) then
-		return path
-	end
+	if fileutil.exists(path) then return path end
 	return nil
 end
 
@@ -78,9 +76,10 @@ local function resolve_file_tests(path)
      (#match? @name "^Test[A-Z].+$"))
   ]]
 	local captures = treeutil.apply_query(content, 'go', query)
-	local tests = vim.tbl_map(function(capture)
-		return capture.value
-	end, captures)
+	local tests = vim.tbl_map(
+		function(capture) return capture.value end,
+		captures
+	)
 	return tests
 end
 
@@ -94,9 +93,7 @@ local function resolve_nearest_test()
 			if name_field then
 				local function_name = vim.treesitter.get_node_text(name_field, 0)
 				local matches = string.match(function_name, '^Test[A-Z].+$')
-				if matches then
-					return function_name
-				end
+				if matches then return function_name end
 			end
 		end
 		node = node:parent()
@@ -164,15 +161,14 @@ T.test_pick_args = function()
 		dir = T.go_root(),
 		patterns = { '_test%.go$' },
 	})
-	local files = vim.tbl_map(function(item)
-		return item.path .. '/' .. item.file
-	end, matches)
+	local files = vim.tbl_map(
+		function(item) return item.path .. '/' .. item.file end,
+		matches
+	)
 	for _, file in ipairs(files) do
 		local file_tests = resolve_file_tests(file)
 		for _, test in ipairs(file_tests) do
-			if not vim.list_contains(tests, test) then
-				table.insert(tests, test)
-			end
+			if not vim.list_contains(tests, test) then table.insert(tests, test) end
 		end
 	end
 	assert(#tests, 'no tests found')

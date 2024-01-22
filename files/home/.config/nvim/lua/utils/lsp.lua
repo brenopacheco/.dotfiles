@@ -16,9 +16,7 @@ M.is_attached = function()
 	local clients = vim.lsp.get_clients({ bufnr = vim.fn.bufnr() })
 	for _, client in pairs(clients) do
 		local can_hover = not blacklist[client.name]
-		if can_hover then
-			return true, client
-		end
+		if can_hover then return true, client end
 	end
 	return false, nil
 end
@@ -43,9 +41,7 @@ M.open_config = function(bufnr)
 	local _, configs = M.clients(bufnr)
 	vim.ui.select(configs, {
 		prompt = 'Open lsp configuration for:',
-		format_item = function(item)
-			return item.name
-		end,
+		format_item = function(item) return item.name end,
 	}, function(choice)
 		if choice ~= nil then
 			vim.print(choice)

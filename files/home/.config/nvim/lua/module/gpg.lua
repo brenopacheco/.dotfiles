@@ -38,15 +38,11 @@ end
 
 ---@param buf? integer
 ---@param cb? fun(result: boolean)
-local function encrypt(buf, cb)
-	run_gpg(buf, 'encrypt', cb)
-end
+local function encrypt(buf, cb) run_gpg(buf, 'encrypt', cb) end
 
 ---@param buf? integer
 ---@param cb? fun(result: boolean)
-local function decrypt(buf, cb)
-	run_gpg(buf, 'decrypt', cb)
-end
+local function decrypt(buf, cb) run_gpg(buf, 'decrypt', cb) end
 
 -- setup
 local group = vim.api.nvim_create_augroup('gpg_helper', { clear = true })
@@ -55,9 +51,7 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost' }, {
 	desc = 'Decrypts GPG file when buffer loads',
 	group = group,
 	pattern = { '*.gpg', '*.asc' },
-	callback = function(ev)
-		decrypt(ev.buf)
-	end,
+	callback = function(ev) decrypt(ev.buf) end,
 	nested = true,
 })
 
@@ -65,9 +59,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 	desc = 'Encrypts GPG file before saving',
 	group = group,
 	pattern = { '*.gpg', '*.asc' },
-	callback = function(ev)
-		encrypt(ev.buf)
-	end,
+	callback = function(ev) encrypt(ev.buf) end,
 	nested = true,
 })
 
@@ -81,7 +73,5 @@ vim.api.nvim_create_user_command('GPG', function(cmd)
 	end
 end, {
 	nargs = 1,
-	complete = function()
-		return { 'encrypt', 'decrypt' }
-	end,
+	complete = function() return { 'encrypt', 'decrypt' } end,
 })

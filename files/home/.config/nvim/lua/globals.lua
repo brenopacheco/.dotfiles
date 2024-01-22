@@ -35,9 +35,7 @@ local notifier = function(level)
 			trace = trace,
 			display = display,
 		})
-    if level >= log_level then
-      vim.notify(display, level)
-    end
+		if level >= log_level then vim.notify(display, level) end
 	end)
 end
 

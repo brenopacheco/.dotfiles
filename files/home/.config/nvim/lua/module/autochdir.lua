@@ -28,9 +28,7 @@ vim.api.nvim_create_autocmd({ 'BufEnter' }, {
 			return
 		end
 		for _, pat in ipairs(blacklist) do
-			if string.match(ev.file, pat) then
-				return
-			end
+			if string.match(ev.file, pat) then return end
 		end
 		vim.cmd([[silent! lcd %:p:h]])
 		vim.cmd([[silent! cd %:p:h]])

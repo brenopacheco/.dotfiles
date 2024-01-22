@@ -50,9 +50,7 @@ local all_events = {
 ---@param winid number
 ---@param ev VimEvent
 local function handler(bufnr, winid, ev)
-	if ev.buf == bufnr then
-		return
-	end
+	if ev.buf == bufnr then return end
 	local data = vim.split(vim.inspect(ev.data), '\n')
 	local head = {
 		ev.id .. ': ' .. ev.event,
@@ -83,9 +81,7 @@ local function is_open()
 	---@type number[]
 	local buffers = vim.fn.tabpagebuflist()
 	for _, bufnr in ipairs(buffers) do
-		if vim.fn.bufname(bufnr) == bufname then
-			return true
-		end
+		if vim.fn.bufname(bufnr) == bufname then return true end
 	end
 	return false
 end
@@ -112,9 +108,7 @@ local function add_autocmds(bufnr, winid, events)
 			desc = 'Event stream handler for ' .. event,
 			group = group,
 			pattern = { '*' },
-			callback = function(ev)
-				handler(bufnr, winid, ev)
-			end,
+			callback = function(ev) handler(bufnr, winid, ev) end,
 			-- callback = vim.schedule_wrap(function(ev)
 			-- 	handler(bufnr, winid, ev)
 			-- end),
@@ -145,24 +139,27 @@ end
 ---@param full string
 ---@return string[]
 local function complete(word, full)
-	local cur_list = vim.tbl_filter(function(event)
-		return vim.list_contains(all_events, event)
-	end, vim.fn.split(full, ' '))
-	local remaining_list = vim.tbl_filter(function(event)
-		return vim.startswith(event, word)
-			and not vim.list_contains(cur_list, event)
-	end, all_events)
+	local cur_list = vim.tbl_filter(
+		function(event) return vim.list_contains(all_events, event) end,
+		vim.fn.split(full, ' ')
+	)
+	local remaining_list = vim.tbl_filter(
+		function(event)
+			return vim.startswith(event, word)
+				and not vim.list_contains(cur_list, event)
+		end,
+		all_events
+	)
 	return remaining_list
 end
 
 ---@param tbl { args: string }
 local function command(tbl)
-	local events = vim.tbl_filter(function(event)
-		return vim.list_contains(all_events, event)
-	end, vim.split(tbl.args, ' '))
-	if #events == 0 then
-		events = all_events
-	end
+	local events = vim.tbl_filter(
+		function(event) return vim.list_contains(all_events, event) end,
+		vim.split(tbl.args, ' ')
+	)
+	if #events == 0 then events = all_events end
 	vim.notify('Events: ' .. vim.inspect(events))
 	eventstream(events)
 end

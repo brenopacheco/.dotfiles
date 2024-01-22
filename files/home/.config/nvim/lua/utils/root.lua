@@ -28,9 +28,7 @@ local function dir_files(dir)
 	if req then
 		repeat
 			local name, _ = vim.loop.fs_scandir_next(req)
-			if name then
-				table.insert(files, name)
-			end
+			if name then table.insert(files, name) end
 		until not name
 	end
 	return files
@@ -45,9 +43,7 @@ local function has_file(dir, pattern)
 	local files = dir_files(dir)
 	for _, file in ipairs(files) do
 		local matches = string.match(file, pattern)
-		if matches then
-			return file
-		end
+		if matches then return file end
 	end
 end
 
@@ -117,9 +113,7 @@ M.git_root = function(cwd)
 	local result = vim
 		.system({ 'git', 'rev-parse', '--show-toplevel' }, { text = true, cwd = cwd })
 		:wait()
-	if result.code == 0 then
-		return vim.trim(result.stdout)
-	end
+	if result.code == 0 then return vim.trim(result.stdout) end
 	return tostring(vim.fn.getcwd())
 end
 
@@ -131,12 +125,11 @@ M.project_roots = function()
 		patterns = root_patterns,
 		dir = tostring(vim.fn.getcwd()),
 	})
-	if #roots == 0 then
-		return {}
-	end
-	table.sort(roots, function(a, b)
-		return string.len(a.path) > string.len(b.path)
-	end)
+	if #roots == 0 then return {} end
+	table.sort(
+		roots,
+		function(a, b) return string.len(a.path) > string.len(b.path) end
+	)
 	return roots
 end
 
