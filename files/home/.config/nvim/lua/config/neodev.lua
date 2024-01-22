@@ -37,21 +37,36 @@ lsp.lua_ls.setup({
 	),
 	on_new_config = function(new_config, new_root_dir)
 		if not is_rockspec_project(new_root_dir) then return end
-		local ver = '5.4'
-		new_config.settings.Lua.runtime.version = string.format('Lua %s', ver)
-		new_config.settings.Lua.runtime.path = {
-			new_root_dir .. '/?.lua',
-			new_root_dir .. '/?/init.lua',
-			new_root_dir .. '/lua/?.lua',
-			new_root_dir .. '/lua/?/init.lua',
-			new_root_dir .. '/lua_modules/share/lua/' .. ver .. '/?.lua',
-			new_root_dir .. '/lua_modules/share/lua/' .. ver .. '/?/init.lua',
-		}
-		new_config.settings.Lua.workspace.library = {
-			[new_root_dir .. '/lua_modules/share/lua/' .. ver .. '/'] = true,
-			['/usr/share/lua/' .. ver .. '/'] = true,
-		}
-		pdebug(new_config)
+		local ver = vim.fn
+			.glob(new_root_dir .. '/lua_modules/lib/luarocks/rocks-*')
+			:match('(%d%.%d)$')
+		if not ver then
+			vim.notify(
+				'Error getting lua version: check luarocks/rocks-*',
+				vim.log.level.ERROR
+			)
+			return
+		end
+		vim.tbl_extend('force', new_config.settings.Lua, {
+			runtime = {
+				version = string.format('Lua %s', ver),
+				path = {
+					new_root_dir .. '?.lua',
+					new_root_dir .. '?/init.lua',
+					new_root_dir .. 'lua_modules/share/lua/' .. ver .. '/?.lua',
+					new_root_dir .. 'lua_modules/share/lua/' .. ver .. '/?/init.lua',
+				},
+			},
+			workspace = {
+				library = {
+					new_root_dir .. '/lua_modules/share/lua/' .. ver .. '/',
+					'/usr/share/lua/' .. ver .. '/',
+				},
+				checkThirdParty = 'Ask', -- 'ApplyInMemory', 'Disable'
+				-- NOTE: even though this is setup, I still don't get completion in luassert for assert.True
+				userThirdParty = { '/usr/lib/lls-addons' },
+			},
+		})
 	end,
 	-- https://luals.github.io/wiki/settings/
 	-- https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json
@@ -59,16 +74,8 @@ lsp.lua_ls.setup({
 		Lua = {
 			runtime = {
 				version = 'LuaJIT',
-				path = {
-					vim.fn.stdpath('config') .. '/lua/?.lua',
-					vim.fn.stdpath('config') .. '/lua/?/init.lua',
-				},
 			},
-			workspace = {
-				-- checkThirdParty = 'ApplyInMemory',
-				checkThirdParty = 'Ask',
-				userThirdParty = { '/usr/lib/lls-addons' },
-			},
+			workspace = {},
 			completion = {
 				keywordSnippet = 'Disable',
 			},
