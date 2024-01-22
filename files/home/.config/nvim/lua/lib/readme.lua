@@ -34,37 +34,6 @@ buffer returns `any`?
 
 local M = {}
 
-local function foo()
-  print('hi')
-  print('there')
-end
-
-print('heeey')
-foo()
-
-
-vim.api.nvim_create_user_command('Test', foo, { nargs = '*' })
-
-
-
--- vim.system({ 'ls', '-l', '/' }, { text = true }, function(out)
--- 	if out.code ~= 0 or not out.stdout then return end
--- 	local x = vim
--- 		.iter(vim.split(out.stdout, '\n'))
--- 		:skip(1)
---     :filter(function(v)
---       return v:match('^l')
---     end)
---     :map(function(v)
---       return vim.iter(v:split(' ')):skip(8):join(' '):split('% %-%>% ')
---     end)
---     :map(function(v)
---       return { from = v[1], to = v[2] }
---     end)
--- 		:totable()
--- 	vim.schedule(function() pinfo(x) end)
--- end)
-
 return M
 
 --[[ OLD 
