@@ -64,6 +64,22 @@ function M.set_visual(visual)
 	vim.fn.setpos("'>", visual.pos.start)
 end
 
+local function reset_dapui()
+	if not vim.z.enabled('rcarriga/nvim-dap-ui') then return end
+	local dapui = require('dapui')
+	local is_open = false
+	for _, winnr in ipairs(vim.fn.range(1, vim.fn.winnr('$')) or {}) do
+		local bufnr = vim.fn.winbufnr(winnr)
+		if bufnr ~= nil then
+			local ft = vim.fn.getbufvar(bufnr, '&ft')
+			if ft:match('dapui_.*') then is_open = true end
+		end
+	end
+	if not is_open then return end
+	dapui.close()
+	dapui.open({ reset = true })
+end
+
 ---@param filetype string
 ---@param opts? { mode?: 'toggle'|'open'|'close', focus?: boolean, cb?: fun() }
 function M.toggle(filetype, opts)
@@ -89,12 +105,17 @@ function M.toggle(filetype, opts)
 	loop(function(winnr, winid, _)
 		is_open = true
 		if mode == 'close' or mode == 'toggle' then
-			return vim.cmd(winnr .. 'close')
+			vim.cmd(winnr .. 'close')
+			reset_dapui()
+			return
 		end
 		if focus then vim.api.nvim_set_current_win(winid) end
 	end)
 	if cb ~= nil then
-		if (mode == 'toggle' and not is_open) or mode == 'open' then cb() end
+		if (mode == 'toggle' and not is_open) or mode == 'open' then
+			cb()
+			reset_dapui()
+		end
 	end
 	if focus then
 		loop(function(_, winid, _) vim.api.nvim_set_current_win(winid) end)

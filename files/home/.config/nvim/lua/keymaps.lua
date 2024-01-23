@@ -63,7 +63,7 @@ local keyboard = {
       { {'n',      }, '<leader>dp',     maps.debug_preview,      { desc = '󰩣 info preview'         } },
       { {'n',      }, '<leader>d.',     maps.debug_to_cursor,    { desc = '󰇀 run to cursor'        } },
       { {'n',      }, '<leader>dm',     maps.debug_open_log,     { desc = ' dap log'              } },
-      { {'n',      }, '<leader>du',     maps.debug_toggle_repl,  { desc = ' toggle repl'          } },
+      -- { {'n',      }, '<leader>du',     maps.debug_toggle_repl,  { desc = ' toggle repl'          } },
     }, -- ]]
     find = { -- [[
       { { 'n',     }, '<leader>fa',     maps.find_args,          { desc = ' arglist'              } },

@@ -72,6 +72,6 @@ vim.z.modload({
 	'sniputil',
 	'telescope-select',
 	'timeout',
-	'win-resize',
+	-- 'win-resize',
 	'yank-highlight',
 })

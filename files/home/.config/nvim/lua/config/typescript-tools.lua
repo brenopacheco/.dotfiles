@@ -1,3 +1,4 @@
+local api = require("typescript-tools.api")
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require('typescript-tools').setup({
@@ -14,5 +15,11 @@ require('typescript-tools').setup({
 			enable = false,
 			filetypes = { 'javascriptreact', 'typescriptreact' },
 		},
+	},
+	handlers = {
+		['textDocument/publishDiagnostics'] = api.filter_diagnostics(
+			-- Ignore 'File is a CommonJS module; it may be converted to an ES module.' diagnostics.
+			{ 80001 }
+		),
 	},
 })

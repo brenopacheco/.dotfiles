@@ -89,3 +89,37 @@ snippet @ts-check > __@ts-check annotation__
 
 snippet @ts-nocheck > __@ts-check annotation__
 	// @ts-nocheck
+
+snippet fori > __for i__
+	for (let i = ${1:1}; i <= ${2:100}; i++) {
+		$0
+	}
+
+snippet forl > __for of__
+	for (const ${1:item} of ${2:array}) {
+		${0}
+	}
+
+snippet fort > __for in__
+	for (const ${1:prop} in ${2:object}) {
+		${0}
+	}
+
+snippet throw > __throw not implemented__
+			throw new Error('Not implemented');
+
+snippet require > __const ... require(...)__
+	const ${1:default} = require("${2:module}");
+
+snippet module > __module.exports = ...__
+	module.exports = ${1:module};
+
+snippet jest > __jest template__
+	const ${1:imports} = require("./${2:module}");
+	
+	describe("${2}", () => {
+	  it("${3:test}", () => {
+	    expect(1).toBe(1);
+			$0
+	  });
+	});

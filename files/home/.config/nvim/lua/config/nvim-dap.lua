@@ -1,5 +1,6 @@
 local dap = require('dap')
 local dapui = require('dapui')
+local daputil = require('utils.dap')
 
 dap.set_log_level('TRACE')
 
@@ -20,23 +21,41 @@ dapui.setup({
 			terminate = ' ',
 		},
 	},
+	layouts = {
+		{
+			elements = {
+				-- { id = 'breakpoints', size = 0.25 },
+				{ id = 'stacks', size = 0.25 },
+				{ id = 'scopes', size = 0.50 },
+				{ id = 'watches', size = 0.25 },
+			},
+			position = 'right',
+			size = 50,
+		},
+		{
+			elements = {
+				{ id = 'repl', size = 1 },
+			},
+			position = 'bottom',
+			size = 11,
+		},
+	},
 })
 
 require('nvim-dap-virtual-text').setup({})
 
 dap.listeners.after.event_initialized['repl'] = function()
-	vim.notify('Dap session started', vim.log.levels.WARN)
-	require('dap').repl.open({ height = 15 })
+	vim.notify('Dap session started', vim.log.levels.INFO)
+  dapui.open()
+	-- daputil.toggle_repl({ focus = false, mode = 'open' })
 end
 
 dap.listeners.before.event_terminated['repl'] = function()
 	vim.notify('Dap session terminated', vim.log.levels.WARN)
-	require('dap').repl.close()
 end
 
 dap.listeners.before.event_exited['repl'] = function()
 	vim.notify('Dap session exited', vim.log.levels.WARN)
-	require('dap').repl.close()
 end
 
 vim.fn.sign_define(
