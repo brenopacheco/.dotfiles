@@ -339,14 +339,14 @@ end
 
 -- Replace symbol under cursor (remember <c-w> to delete word)
 M.run_replace = function()
-	local text = tostring(vim.fn.expand('<cWORD>'))
+	local text = tostring(vim.fn.expand('<cword>'))
 	if vim.fn.mode() == 'v' then
 		text = table.concat(bufutil.get_visual().text, '\\n')
 		text = string.gsub(text, '\r', '\\r')
 		text = string.gsub(text, '\t', '\\t')
 	end
 	local repl = string.gsub(text, '\\n', '\\r')
-	local cmd = '%:s/'
+	local cmd = ':%s/'
 		.. text
 		.. '/'
 		.. repl

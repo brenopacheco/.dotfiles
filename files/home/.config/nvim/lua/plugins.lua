@@ -4,7 +4,7 @@ vim.z.packadd({
 	'nvim-lua/plenary.nvim',
 	'tpope/vim-fugitive',
 	'lewis6991/gitsigns.nvim',
-	'bluz71/vim-nightfly-guicolors',
+	-- 'bluz71/vim-nightfly-guicolors',
 	-- 'brenopacheco/catppuccin.nvim',
 	'kyazdani42/nvim-web-devicons',
 	'norcalli/nvim-colorizer.lua',
@@ -74,4 +74,6 @@ vim.z.modload({
 	'timeout',
 	-- 'win-resize',
 	'yank-highlight',
+	'trim',
+	'pdf',
 })

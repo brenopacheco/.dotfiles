@@ -5,6 +5,9 @@ snippet use-effect
 	    $0
 	  }, []);
 
+snippet use-state  > __React.useState()__
+	  const [${1:state}, ${2:setState}] = useState(${3:initialValue});
+
 snippet component
 	function ${1:Component}() {
 	  return (
@@ -13,3 +16,4 @@ snippet component
 	    </>
 	  );
 	}
+

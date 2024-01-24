@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 packages=(
+	"sqlitebrowser"
 	"arandr"
 	"base"
 	"base-devel"
