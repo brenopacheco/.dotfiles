@@ -35,7 +35,7 @@ vim.z.packadd({
 	'Hoffs/omnisharp-extended-lsp.nvim',
 	'neovim/nvim-lspconfig',
 	'ray-x/lsp_signature.nvim',
-	'folke/neodev.nvim',
+	'brenopacheco/neodev.nvim',
 	'pmizio/typescript-tools.nvim',
 	'nvim-treesitter/nvim-treesitter',
 	'nvim-treesitter/nvim-treesitter-textobjects',
@@ -51,11 +51,12 @@ vim.z.packadd({
 	'theHamsta/nvim-dap-virtual-text',
 	'rcarriga/nvim-dap-ui',
 	'mfussenegger/nvim-dap',
-	-- TODO
-	'vim-test/vim-test',
 	'tpope/vim-dadbod',
 	'kristijanhusak/vim-dadbod-ui',
 	'kristijanhusak/vim-dadbod-completion',
+	'brenopacheco/fennel-runtime.nvim',
+	-- TODO
+	'vim-test/vim-test',
 })
 
 vim.z.modload({
@@ -76,4 +77,5 @@ vim.z.modload({
 	'yank-highlight',
 	'trim',
 	'pdf',
+	'format-on-save',
 })

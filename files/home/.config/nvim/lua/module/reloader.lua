@@ -22,11 +22,11 @@ end
 vim.api.nvim_create_autocmd('BufWritePost', {
 	nested = true,
 	group = vim.api.nvim_create_augroup('Reloader', { clear = true }),
-	pattern = '*.lua',
+	pattern = { '*.lua', '*.fnl' },
 	desc = 'Reload nvim lua modules on save',
 	callback = function(context)
 		vim.schedule(function()
-			local regex = '(.*)/%.config/nvim/lua/(.*)%.lua'
+			local regex = '(.*)/%.config/nvim/[lf][un][al]/(.*)%.[lf][un][al]'
 			local module, matches = string.gsub(context.match, regex, '%2')
 			if matches == 1 then reload(module) end
 		end)

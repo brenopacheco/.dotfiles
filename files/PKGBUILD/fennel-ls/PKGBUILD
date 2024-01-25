@@ -1,0 +1,30 @@
+# shellcheck disable=all
+
+pkgname=('fennel-ls')
+pkgver=0.1.0.r130.297f6c4
+pkgrel=1
+pkgdesc="Language Server for Fennel"
+arch=('x86_64')
+url="https://git.sr.ht/~xerool/fennel-ls"
+license=("MIT")
+
+source=("git+https://git.sr.ht/~xerool/fennel-ls#commit=HEAD")
+
+md5sums=('SKIP')
+
+pkgver() {
+	cd $pkgname
+	printf "0.1.0.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd $pkgname
+	make
+}
+
+package() {
+	cd $pkgname
+	install -Dm755 "./$pkgname" "${pkgdir}/usr/bin/$pkgname"
+	mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
+    install -Dm644 "LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

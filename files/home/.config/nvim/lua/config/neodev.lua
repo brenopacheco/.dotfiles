@@ -72,6 +72,11 @@ require('neodev').setup({
 	end,
 	lspconfig = true,
 	pathStrict = true,
+	---@param config lsp.ClientConfig
+	on_config = function(config)
+		-- config.settings.Lua.runtime.path =
+		-- 	{ '?.lua', '?/init.lua', '?.fnl', '?/init.fnl' }
+	end,
 })
 
 local capabilities = lsputil.capabilities
@@ -96,6 +101,7 @@ lsp.lua_ls.setup({
 		Lua = {
 			runtime = {
 				version = 'LuaJIT',
+				-- path = { '?.lua', '?/init.lua', '?.fnl', '?/init.fnl' },
 				path = { '?.lua', '?/init.lua' },
 			},
 			workspace = {
@@ -105,7 +111,7 @@ lsp.lua_ls.setup({
 				checkThirdParty = 'Disable',
 				-- userThirdParty = { '/usr/lib/lls-addons' },
 				library = {
-					'${3rd}/busted/library',
+					-- '${3rd}/busted/library',
 					'${3rd}/luassert/library',
 					'${3rd}/mirai/library',
 					'${3rd}/REFramework-LLS/library',

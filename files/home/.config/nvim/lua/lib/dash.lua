@@ -1,3 +1,16 @@
+--[[ NOTE:
+  1. transform lynx-dump into vimdoc format
+  2. doc ends up being a help file
+  3. we need to generate tags for the help file
+  4. for each link we still don't have docs for, we need to generate
+     the docs for it
+
+
+NOTE: post-process/pre-process the output for specific file types (e.g: C)
+]]
+--
+--
+--
 --- Dash docs functions
 --
 
@@ -16,19 +29,27 @@
 ---@field name string
 ---@field type string
 ---@field file string
----@field path string
+---@field anchor? string
 
 ---@class dash.Document
 ---@field html string[]
 ---@field lynx string[]
 ---@field result dash.QueryResult
+---@field line number
 
 local M = {}
 
 local cache_dir = vim.fn.stdpath('data') .. '/docsets'
+local docsets_file = cache_dir .. '/docsets.json'
 
+---TODO: write/read this to/from file cache_dir/docsets.json
 ---@type { [string]: dash.DocsetInfo }:nil
 local cache = nil
+
+local offsets = {
+	['Go'] = 2,
+	['Ruby'] = 1,
+}
 
 ---@type { [string]: dash.Docset }:nil
 M.enabled_docsets = {}
@@ -181,14 +202,57 @@ local function query_dash(name, pattern)
 			local iter = vim.iter(row:split('|'))
 			local _, match, type = iter:next(), iter:next(), iter:next()
 			local path = iter:join('|')
-			local file, anchor = path:gsub('^.*>', ''):match('(.*)#(.*)')
+			path = path:gsub('^.*>', '')
+			local file = path:gsub('#[^#]*$', '')
+			local anchor = path:match('#([^#]*)$')
+			assert(file, 'Could not parse path ' .. path)
 			return {
 				match = match,
 				name = name,
 				type = type,
-				file = get_docset_path(name) .. '/Contents/Resources/Documents/' .. file,
+				file = get_docset_path(name)
+					.. '/Contents/Resources/Documents/'
+					.. file,
 				anchor = anchor,
-				path = path,
+			}
+		end)
+		:totable()
+end
+
+---@param name string
+---@param pattern string
+---@return dash.QueryResult[]
+local function query_zdash(name, pattern)
+	pattern = pattern:gsub([[']], [['']])
+	local query = [[
+    SELECT ty.ZTYPENAME, t.ZTOKENNAME, f.ZPATH, m.ZANCHOR 
+    FROM ZTOKEN t, ZTOKENTYPE ty, ZFILEPATH f, ZTOKENMETAINFORMATION m
+    WHERE ty.Z_PK = t.ZTOKENTYPE AND f.Z_PK = m.ZFILE AND m.ZTOKEN = t.Z_PK
+      AND t.ZTOKENNAME REGEXP ']] .. pattern .. [['
+    ORDER BY LENGTH(t.ZTOKENNAME), LOWER(t.ZTOKENNAME)
+    LIMIT 100
+  ]]
+	local rows = query_db(name, query)
+	return vim
+		.iter(rows)
+		:map(function(row)
+			local type, match, file, anchor = unpack(row:split('|'))
+			log(file)
+			file = file:gsub('^.*>', '')
+			log({
+				type = type,
+				match = match,
+				file = file,
+				anchor = anchor,
+			})
+			return {
+				match = match,
+				name = name,
+				type = type,
+				file = get_docset_path(name)
+					.. '/Contents/Resources/Documents/'
+					.. file,
+				anchor = anchor,
 			}
 		end)
 		:totable()
@@ -206,92 +270,221 @@ local function pick_result(results, cb)
 	}, function(choice) cb(choice) end)
 end
 
+---@param path string
+---@param content string|string[]
+local function file_write(path, content)
+	if type(content) == 'string' then content = { content } end
+	content = table.concat(content, '\n')
+	local file = io.open(path, 'w')
+	assert(file, 'Could not open file ' .. path)
+	local _, err = file:write(content)
+	assert(not err, 'Could not write to file ' .. path)
+	file:close()
+end
+
+local function mark_html_placeholder(html, anchor)
+	local bufnr = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, html)
+	local lang = vim.treesitter.language.get_lang('html')
+	assert(lang ~= nil, 'treesitter html parser missing')
+	local parser = vim.treesitter.get_parser(bufnr, lang)
+	local query = [[
+    ((element
+       (start_tag
+       (attribute
+         (attribute_name) @attr_name
+         (#eq? @attr_name "name")
+         (quoted_attribute_value
+         (attribute_value) @attr_value
+         (#eq? @attr_value "]] .. anchor .. [[")))) @start
+       (end_tag) @end))
+  ]]
+	local parsed_query = vim.treesitter.query.parse('html', query)
+	local tree = parser:parse()[1]
+	local root = tree:root()
+	local first, _, last, _ = root:range()
+	---@type { node_start: { row: number, col: number }|nil, node_end: { row: number, col: number }|nil }
+	local capture = {}
+	for _, match, _ in parsed_query:iter_matches(root, bufnr, first, last) do
+		for id, node in pairs(match) do
+			local name = parsed_query.captures[id]
+			if name == 'start' then
+				local _, _, end_row, end_col = (node):range()
+				capture.node_start = { row = end_row, col = end_col }
+			end
+			if name == 'end' then
+				local start_row, start_col, _, _ = (node):range()
+				capture.node_end = { row = start_row, col = start_col }
+			end
+		end
+	end
+	assert(
+		capture.node_start and capture.node_end,
+		'Could not find anchor ' .. anchor
+	)
+	vim.api.nvim_buf_set_text(
+		bufnr,
+		capture.node_start.row,
+		capture.node_start.col,
+		capture.node_end.row,
+		capture.node_end.col,
+		{ 'DASH_LINE_PLACEHOLDER' }
+	)
+	local copy = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+	pcall(vim.api.nvim_buf_delete, bufnr, { force = true })
+	return copy
+end
+
 ---@param result dash.QueryResult
 ---@return dash.Document
 local function get_result_contents(result)
 	local status, html = pcall(vim.fn.readfile, result.file)
 	assert(status, html)
-
-	---1. here we'll need to inject the placeholder DASH_LINE_PLACEHOLDER into
-	---the <a> tag with id -matching result.anchor
-  -- cat fmt@go1.21.html | htmlq 'a[name="//dash_ref_Println/Function/Println/0"]'
-
-
-  ---
-	---2. we'll need to write the modified html into a temporary file
-	local tmpfile = os.tmpname()
-	local file = io.open(tmpfile, 'w')
-	assert(file, 'Could not open file ' .. tmpfile)
-	file:write(table.concat(html, '\n'))
-	file:close()
-
-	---3. generate the text output with lynx
+	if result.anchor then html = mark_html_placeholder(html, result.anchor) end
+	local tmpfile = os.tmpname() .. '.html'
+	file_write(tmpfile, html)
 	local out = vim
-		.system({ 'lynx', '-dump', '-hiddenlinks=merge', result.file }, { text = true })
+		.system({ 'lynx', '-dump', '-hiddenlinks=merge', tmpfile }, { text = true })
 		:wait()
 	local lynx = vim.split(vim.trim(out.stdout), '\n')
 	assert(out.code == 0, out.stderr)
-
-	---4. find the current line number matching the placeholder and remove the
-	---text from the lynx output
 	local line = vim.iter(lynx):enumerate():find(
 		function(_, line) return line:match('DASH_LINE_PLACEHOLDER') end
-	) or nil
-	-- if line then lynx[line] = lynx[line]:gsub('DASH_LINE_PLACEHOLDER', '') end
+	) or 1
+	if line then lynx[line] = lynx[line]:gsub('DASH_LINE_PLACEHOLDER', '') end
+	if offsets[result.name] then line = line + offsets[result.name] end
 	return { html = html, lynx = lynx, line = line, result = result }
 end
 
 ---@param result dash.QueryResult
 local function open_result(result)
+	log(result)
+	assert(false, 'stop')
 	local content = get_result_contents(result)
 	vim.cmd('vsp')
 	local buf = vim.api.nvim_create_buf(false, true)
 	vim.api.nvim_win_set_buf(0, buf)
 	vim.api.nvim_buf_set_lines(buf, 0, -1, false, content.lynx)
+	vim.api.nvim_win_set_cursor(0, { content.line, 0 })
+	vim.cmd('norm! zt')
 end
 
 M.query = function(name, pattern)
 	local docset = M.enabled_docsets[name]
 	assert(docset, 'Docset ' .. name .. ' is not enabled')
-	if docset.type == 'dash' then
-		local results = query_dash(name, pattern)
-		if #results == 0 then
-			vim.notify('No results found for ' .. pattern, vim.log.levels.WARN)
-			return
-		end
-		log(results)
-    -- log(get_result_contents(results[1]))
-		if #results == 1 then
-			open_result(results[1])
-			return
-		end
-		-- pick_result(results, function(choice)
-		-- 	if choice ~= nil then open_result(choice) end
-		-- end)
-	else
-		vim.notify('zdash not implemented yet', vim.log.levels.ERROR)
+	local results = docset.type == 'dash' and query_dash(name, pattern)
+		or query_zdash(name, pattern)
+	return results
+end
+
+M.open = function(name, pattern)
+	local results = M.query(name, pattern)
+	if #results == 0 then
+		vim.notify('No results found for ' .. pattern, vim.log.levels.WARN)
+		return
 	end
+	if #results == 1 then
+		open_result(results[1])
+		return
+	end
+	pick_result(results, function(choice)
+		if choice ~= nil then open_result(choice) end
+	end)
+end
+
+---@param reset boolean
+local function load_docsets(reset)
+	---@type string|string[]|nil
+	local file = nil
+	local exists = vim.fn.filereadable(docsets_file) == 1
+	if exists then
+		---@type string[]
+		file = vim.fn.readfile(docsets_file)
+		assert(file, 'Invalid docsets file')
+	end
+	if not exists or reset then
+		local content = M.list_docsets()
+		---@type string
+		file = vim.fn.json_encode(content)
+		file_write(docsets_file, file)
+	end
+	---@type { [string]: dash.DocsetInfo }
+	cache = vim.fn.json_decode(file)
+end
+
+M.docset_names = function()
+	local docsets = M.list_docsets()
+	local installed = vim
+		.iter(docsets)
+		:filter(is_docset_installed)
+		:map(function(key) return key end)
+		:totable()
+	local uninstalled = vim
+		.iter(docsets)
+		:filter(function(key) return not is_docset_installed(key) end)
+		:map(function(key) return key end)
+		:totable()
+	table.sort(installed)
+	table.sort(uninstalled)
+	local output = {}
+	local function format(key)
+		local docset = docsets[key]
+		local enabled = M.enabled_docsets[key]
+		return string.format(
+			'\t[%s] %-35s %38s',
+			enabled and 'x' or ' ',
+			docset.title,
+			'(' .. docset.name .. ')'
+		)
+	end
+	local function insert(line) table.insert(output, line) end
+	table.insert(output, 'Installed docsets:')
+	table.insert(output, '')
+	vim.iter(installed):map(format):each(insert)
+	table.insert(output, '')
+	table.insert(output, 'Available docsets:')
+	table.insert(output, '')
+	vim.iter(uninstalled):map(format):each(insert)
+	local text = table.concat(output, '\n')
+	vim.notify(text)
 end
 
 ---@class dash.SetupOpts
 ---@field docsets string[]
+---@field reset? boolean
 
 ---@param opts dash.SetupOpts
 M.setup = function(opts)
+	local reset = opts.reset or false
+	load_docsets(reset)
 	if vim.fn.executable('sqlite3') == 0 then
 		vim.notify('sqlite3 is not installed', vim.log.levels.ERROR)
 		return
 	end
 	register_docsets(opts.docsets)
-	-- log(M.list_docsets())
+	-- M.docset_names()
+	M.open('C', 'stdin')
+	-- M.open('Ruby', 'StringIO.set_encoding')
 	-- log(M.enabled_docsets)
-	M.query('Go', 'fmt.Println')
+	-- M.open('Go', 'fmt.Println')
+	-- log(M.open('Lua_5.4', 'io'))
 	-- M.query('Vim', [['foldlevel']])
 	-- M.query('NodeJS', [[^assert.AssertionError]])
 end
 
 M.setup({
-	docsets = { 'Vim', 'Lua_5.4', 'Go', 'NodeJS', 'OCaml' },
+	reset = false,
+	docsets = {
+		'Vim',
+		'Lua_5.4',
+		'Go',
+		'NodeJS',
+		'OCaml',
+		'Ruby',
+		'Rust',
+		'TypeScript',
+		'C',
+	},
 })
 
 return M

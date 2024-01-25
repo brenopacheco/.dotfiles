@@ -39,6 +39,14 @@ lsp.eslint.setup({
 		)
 	end,
 })
+lsp.fennel_ls.setup({
+	capabilities = capabilities,
+	settings = {
+		['fennel-ls'] = {
+			['extra-globals'] = table.concat(vim.tbl_keys(_G), ' '),
+		},
+	},
+})
 lsp.gopls.setup({
 	capabilities = vim.tbl_extend('force', capabilities, {
 		textDocument = {

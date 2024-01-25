@@ -5,6 +5,7 @@ packages=(
 	"lua51" # Lua 5.1
 	"luajit"
 	"luarocks"
+	"fennel"
 )
 
 function should_run() {

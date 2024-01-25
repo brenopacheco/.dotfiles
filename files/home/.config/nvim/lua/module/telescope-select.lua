@@ -61,6 +61,10 @@ local function select(items, opts, on_choice)
 					actions.close(prompt_bufnr)
 					local selection = action_state.get_selected_entry()
 					if on_choice ~= nil then
+						if selection == nil then
+							vim.notify('No matching entry', vim.log.levels.WARN)
+							return
+						end
 						on_choice(selection.value, selection.index)
 					end
 				end)

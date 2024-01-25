@@ -358,11 +358,16 @@ end
 
 -- Source buffer contents (vim/lua)
 M.run_source = function()
+	local ft = vim.bo.filetype
+	if ft ~= 'vim' and ft ~= 'lua' == nil then
+		return vim.notify('cannot source: run make instead', vim.log.levels.WARN)
+	end
 	if vim.fn.mode() == 'n' then
 		vim.cmd([[source]])
 	else
-		bufutil.set_visual(bufutil.get_visual())
-		vim.cmd([['<,'>source]])
+		log(assert(loadstring(table.concat(bufutil.get_visual().text, '\n')))())
+		-- bufutil.set_visual(bufutil.get_visual())
+		-- vim.cmd([['<,'>source]])
 	end
 end
 

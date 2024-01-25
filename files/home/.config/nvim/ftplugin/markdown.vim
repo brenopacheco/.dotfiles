@@ -9,7 +9,8 @@ setlocal tabstop=2
 setlocal expandtab
 setlocal foldmethod=expr
 setlocal foldexpr=nvim_treesitter#foldexpr()
-setlocal formatoptions=croqlj
+" setlocal formatoptions=croqlj
+setlocal formatoptions=cqj
 setlocal textwidth=80
 setlocal comments=fb:*,fb:-,fb:+,n:>
 setlocal commentstring=<!--%s-->

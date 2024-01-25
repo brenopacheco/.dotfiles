@@ -1,12 +1,12 @@
 # TODO
 
 - [ ] make (dotnet)
-- [ ] dap (dotnet, node, lua)
-- [ ] bugs
-- [ ] zeal/doc integration
-- [ ] test conf
+- [ ] dap (dotnet)
+- [ ] dash module
+- [ ] test module
 - [ ] org mode / agenda + notes w/ zk
 - [ ] # 2.0 release
+- [ ] learn fennel
 - [ ] refactor modules, lib, configs, plugins
 - [ ] # 3.0 release
 
