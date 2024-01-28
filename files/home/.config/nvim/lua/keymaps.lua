@@ -173,6 +173,9 @@ local keyboard = {
       ['eq']  = ':=',
       ['ife'] = 'if err != nil {<cr><cr>}<up><tab>',
       ['fn']  = 'func() {}<left><cr>.<cr><up><tab><del>',
+    }, -- ]]
+    fennel = { -- [[
+      ['lambda']  = 'λ',
     } -- ]]
   }
 }

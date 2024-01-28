@@ -1,7 +1,7 @@
 --- Format on save
 --
 
-local fts = { '*.lua' }
+local fts = { '*.lua', '*.fnl' }
 
 local enabled = true
 
