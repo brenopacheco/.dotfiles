@@ -44,4 +44,24 @@ function gen-password() {
 	openssl rand -base64 32
 }
 #}}}
+
+function bold() {
+	echo -e "\e[1m$*\e[0m"
+}
+
+function italic() {
+	echo -e "\e[3m$*\e[0m"
+}
+
+function bolditalic() {
+	echo -e "\e[3m\e[1m$*\e[0m"
+}
+
+function underline() {
+	echo -e "\e[4m$*\e[0m"
+}
+
+function strikethrough() {
+	echo -e "\e[9m$*\e[0m"
+}
 # vim:tw=78:ts=8:noet:ft=sh:norl:
