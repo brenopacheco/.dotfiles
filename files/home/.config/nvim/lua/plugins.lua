@@ -78,4 +78,5 @@ vim.z.modload({
 	'trim',
 	'pdf',
 	'format-on-save',
+	'file-url',
 })

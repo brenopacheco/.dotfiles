@@ -12,10 +12,11 @@ local M = {}
 ---@field pos {start: Pos, finish: Pos}
 ---@field text string[]
 
----@return boolean
+---@return boolean, string : is visual, mode
 function M.is_visual()
-	local mode = vim.fn.mode()
-	return mode == 'v' or mode == 'V'
+	local mode = vim.api.nvim_get_mode().mode
+	local match = mode:find('^[vV\22]') -- v, V, <C-v>
+	return match ~= nil, mode
 end
 
 ---@return Visual
@@ -56,6 +57,15 @@ function M.get_visual()
 		},
 		text = text,
 	}
+end
+
+---@return string[]
+function M.get_visual2()
+	local is_visual = M.is_visual()
+	assert(is_visual, 'Not in visual mode')
+	vim.cmd('normal! "zygv')
+	local text = vim.split(vim.fn.getreg('z') or '', '\n')
+	return text
 end
 
 ---@param visual Visual

@@ -5,7 +5,7 @@ local M = {}
 ---@field pattern string
 ---@field file string
 
-local root_patterns = {
+M.root_patterns = {
 	'^package%.json$',
 	'^project%.json$',
 	'%.sln$',
@@ -100,7 +100,19 @@ end
 --
 ---@return Root[]
 M.all_roots = function()
-	return M.downward_roots({ patterns = root_patterns, dir = M.git_root() })
+	return M.downward_roots({ patterns = M.root_patterns, dir = M.git_root() })
+end
+
+---Find the shortest root
+M.shortest_root = function()
+	local curdir = tostring(vim.fn.getcwd())
+	local roots = M.upward_roots({
+		patterns = M.root_patterns,
+		dir = curdir,
+	})
+	table.sort(roots, function(a, b) return a.path:len() < b.path:len() end)
+	if #roots == 0 then return curdir, false end
+	return roots[1].path, true
 end
 
 --- Finds the path for the git root in current cwd. If not a git repository,
@@ -122,7 +134,7 @@ end
 ---@return Root[] The project roots
 M.project_roots = function()
 	local roots = M.upward_roots({
-		patterns = root_patterns,
+		patterns = M.root_patterns,
 		dir = tostring(vim.fn.getcwd()),
 	})
 	if #roots == 0 then return {} end

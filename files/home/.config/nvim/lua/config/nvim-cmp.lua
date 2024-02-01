@@ -151,9 +151,9 @@ cmp.setup({
 	},
 })
 
-vim.keymap.set(
-	'i',
-	'<S-Tab>',
-	require('copilot.suggestion').accept,
-	{ silent = true }
-)
+vim.keymap.set('i', '<S-Tab>', function()
+	local ok, autopairs = pcall(require, 'nvim-autopairs')
+	if ok then autopairs.disable() end
+	require('copilot.suggestion').accept()
+	if ok then autopairs.enable() end
+end, { silent = true })

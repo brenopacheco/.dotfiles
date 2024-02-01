@@ -20,7 +20,7 @@ function init_fc() {
 
 	tmux send-keys -t fc:frontend 'yarn start:hub' C-m
 
-	tmux send-keys -t fc:nvim 'nvim' C-m Space n
+	tmux send-keys -t fc:nvim 'nvim oil:///home/breno/fc/frontend/ oil:///home/breno/fc/backend/apps/API/' C-m Space n
 }
 
 init_fc

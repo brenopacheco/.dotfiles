@@ -5,8 +5,10 @@
 local rootutil = require('utils.root')
 
 return function()
-	local root = rootutil.git_root()
-	local roots = rootutil.all_roots({ dir = root })
+	local root = rootutil.shortest_root()
+	local roots =
+		rootutil.downward_roots({ dir = root, patterns = rootutil.root_patterns })
+	roots = vim.tbl_filter(function(r) return r.path ~= root end, roots)
 
 	if not root then
 		return vim.notify('Not in a git repository', vim.log.levels.WARN)

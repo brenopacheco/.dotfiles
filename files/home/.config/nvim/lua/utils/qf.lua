@@ -1,3 +1,5 @@
+-- local bufutil = require('utils.buf')
+
 local M = {}
 
 -- Returns the current quickfix list and whether it is empty
@@ -14,7 +16,7 @@ local pcmd = function(cmd)
 end
 
 M.prev_entry = function()
-	if not pcmd('clast') then vim.cmd('clast') end
+	if not pcmd('cprevious') then vim.cmd('clast') end
 end
 
 -- Jump to next quickfix entry
@@ -29,6 +31,7 @@ M.errors = function(opts)
 	local qfitems = vim.diagnostic.toqflist(diagnostics)
 	vim.fn.setqflist(qfitems)
 	M.open()
+	-- bufutil.toggle('qf', { cb = M.open })
 end
 
 ---@param select 'cfirst' | 'clast' | nil

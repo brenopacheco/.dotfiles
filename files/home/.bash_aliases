@@ -1,3 +1,8 @@
+# rlwrap
+alias fennel='rlwrap fennel'
+# alias lua='rlwrap lua'
+
+# tmux
 alias ts='tmux new -s'
 alias ta="tmux_fzf"
 alias tl='tmux list-sessions -F "#{session_id}: #{session_name} (group: #{session_group}) - #{?session_attached,attached,detached}"'
