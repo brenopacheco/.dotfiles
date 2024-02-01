@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 	desc = 'Format filetypes on save',
 	group = vim.api.nvim_create_augroup('format_on_save', { clear = true }),
 	pattern = fts,
-	callback = format,
+	callback = function() pcall(format) end,
 	nested = false,
 })
 

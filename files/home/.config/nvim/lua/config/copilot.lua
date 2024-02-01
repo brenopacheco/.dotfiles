@@ -1,5 +1,6 @@
 local opts = {
 	filetypes = {
+		-- ['fennel'] = false,
 		['*'] = true,
 	},
 	panel = { enabled = false },
@@ -26,9 +27,9 @@ require('copilot').setup(opts)
 --      the catch here is that time timer timeout must be greater than
 --      the copilot's debounce
 
-local feed = vim.schedule_wrap(function()
-	vim.api.nvim_exec_autocmds('CursorMovedI', {})
-end)
+local feed = vim.schedule_wrap(
+	function() vim.api.nvim_exec_autocmds('CursorMovedI', {}) end
+)
 
 local trigger = vim.schedule_wrap(function()
 	local timer = vim.uv.new_timer()
