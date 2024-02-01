@@ -436,7 +436,28 @@ M.toggle_option = function() require('utils.pickers.options')() end
 
 -- Toggle symbols outline window
 M.toggle_outline = function()
-	return lsputil.is_attached() and vim.cmd('SymbolsOutline')
+	return lsputil.is_attached()
+			and bufutil.toggle('Outline', {
+				focus = false,
+				cb = function()
+					vim.cmd('SymbolsOutlineOpen')
+					local group = vim.api.nvim_create_augroup(
+						'toggle-symbols-outline',
+						{ clear = true }
+					)
+					local winid = vim.api.nvim_get_current_win()
+					vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+						group = group,
+						callback = vim.schedule_wrap(function()
+							local ft = vim.bo.filetype
+							if ft == 'Outline' then
+								vim.api.nvim_del_augroup_by_id(group)
+								vim.api.nvim_set_current_win(winid)
+							end
+						end),
+					})
+				end,
+			})
 		or vim.notify('lsp not attached or not ready', vim.log.levels.WARN)
 end
 

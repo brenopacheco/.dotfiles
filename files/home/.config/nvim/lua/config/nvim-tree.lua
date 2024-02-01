@@ -40,6 +40,12 @@ require('nvim-tree').setup({
 	hijack_directories = {
 		enable = false,
 	},
+	view = {
+		side = 'right',
+		width = 50,
+		-- side = "left",
+		-- width = 40,
+	},
 })
 
 local group = vim.api.nvim_create_augroup('nvim_tree_reload', { clear = true })

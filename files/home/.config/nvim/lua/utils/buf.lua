@@ -179,8 +179,10 @@ M.throwaway = function(content, opts)
 	vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, content)
 	vim.api.nvim_set_current_win(winnr)
 	vim.api.nvim_set_option_value('filetype', filetype, { buf = bufnr })
-	vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
-	vim.api.nvim_set_option_value('readonly', true, { buf = bufnr })
+	-- vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+	vim.api.nvim_set_option_value('modifiable', true, { buf = bufnr })
+	-- vim.api.nvim_set_option_value('readonly', true, { buf = bufnr })
+	vim.api.nvim_set_option_value('readonly', false, { buf = bufnr })
 	vim.api.nvim_buf_set_name(bufnr, bufname)
 end
 
