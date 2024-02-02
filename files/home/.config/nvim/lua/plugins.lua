@@ -55,7 +55,6 @@ vim.z.packadd({
 	'kristijanhusak/vim-dadbod-ui',
 	'kristijanhusak/vim-dadbod-completion',
 	'brenopacheco/fennel-runtime.nvim',
-	'gpanders/fennel-repl.nvim',
 	-- TODO
 	'vim-test/vim-test',
 })
