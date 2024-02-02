@@ -1,5 +1,14 @@
 # TODO
 
+- [ ] finish fennel repl
+- [ ] finish fennel runtime
+- [ ] add fnl list macros (find, filter, map, flatten, each, any, all, join, slice, skip, take, fold/reduce)
+- [ ] add fnl table fns (in?, ???)
+
+
+
+
+
 - [ ] make (dotnet)
 - [ ] dap (dotnet)
 - [ ] dash module
