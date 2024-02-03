@@ -1,14 +1,14 @@
-(macro find [[x lst] & expr]
-  `(foo)
-  `(do
-     (local res# [])
-     (icollect [_# ,x (ipairs ,lst) :into res#]
-       (when (do
-               ,(unpack expr))
-         ,x))
-     (. res# 1)))
+; (macro find [[x lst] & expr]
+;   `(foo)
+;   `(do
+;      (local res# [])
+;      (icollect [_# ,x (ipairs ,lst) :into res#]
+;        (when (do
+;                ,(unpack expr))
+;          ,x))
+;      (. res# 1)))
 
-(find [x [1 2 3]] (local y 2) (> x y))
+; (find [x [1 2 3]] (local y 2) (> x y))
 
 
 
