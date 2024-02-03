@@ -27,6 +27,7 @@
 ; https://github.com/gpanders/fennel-repl.nvim/blob/master/fnl/fennel-repl.fnl
 ; https://wiki.fennel-lang.org/Repl
 
+; TODO: [ ] - pre-load macros (require-macros :macros)
 ; TODO: [ ] - fix io.write WARNING that happens on start ( in require :fennel)
 ; TODO: [ ] - fix repl not capturing stdout - e.g: (fn x [ ] (print "hi")) (x)
 ; TODO: [ ] - add history to prompt
@@ -187,5 +188,8 @@
   (if opts.help? (repl-send! ",help")))
 
 (vim.api.nvim_create_user_command :FennelRepl open! {:nargs 0})
+
+; (open!)
+; (close!)
 
 {: open! : close!}
