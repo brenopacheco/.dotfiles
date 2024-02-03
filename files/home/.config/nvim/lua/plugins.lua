@@ -79,4 +79,5 @@ vim.z.modload({
 	'pdf',
 	'format-on-save',
 	'file-url',
+  'macro-recording-unmap',
 })

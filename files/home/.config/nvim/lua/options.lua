@@ -120,4 +120,5 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_spellfile_plugin = 1
 vim.g.loaded_2html_plugin = 1
 vim.g.loaded_tutor_mode_plugin = 1
+-- package.path = package.path .. ";/usr/local/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?/init.lua"
 -- stylua: ignore end

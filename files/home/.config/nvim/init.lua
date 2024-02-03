@@ -10,10 +10,10 @@
 --]]
 
 vim.z = {}
-require('fennel').setup()
 require('globals')
 require('options')
 require('packadd')
 require('plugins')
 require('keymaps')
+-- require('fennel')
 -- vim.z.packadd({ 'folke/which-key.nvim' })
