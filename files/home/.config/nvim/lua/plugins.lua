@@ -1,5 +1,7 @@
 --- Plugins
 
+vim.z.modload({ 'fennel' })
+
 vim.z.packadd({
 	'nvim-lua/plenary.nvim',
 	'tpope/vim-fugitive',
@@ -79,5 +81,5 @@ vim.z.modload({
 	'pdf',
 	'format-on-save',
 	'file-url',
-  'macro-recording-unmap',
+	'macro-recording-unmap',
 })

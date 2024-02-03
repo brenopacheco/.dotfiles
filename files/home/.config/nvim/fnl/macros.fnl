@@ -1,3 +1,4 @@
+;; fennel-ls: macro-file
 (lambda find [x lst cond]
   ;; (print (find x [1 2 3] (= x 2)))
   `(do

@@ -1,7 +1,8 @@
 local lsp = require('lspconfig')
 local lsputil = require('utils.lsp')
 
-vim.lsp.set_log_level(vim.log.levels.ERROR)
+-- vim.lsp.set_log_level(vim.log.levels.ERROR)
+vim.lsp.set_log_level(vim.log.levels.INFO)
 
 for type, icon in pairs({
 	Error = '󰅚 ',
@@ -39,23 +40,29 @@ lsp.eslint.setup({
 		)
 	end,
 })
+-- lsp.fennel_language_server.setup({
+-- 	single_file_support = true,
+-- 	root_dir = function() return vim.fn.resolve(vim.fn.stdpath('config')) end,
+-- 	settings = {
+-- 		fennel = {
+-- 			workspace = {
+-- 				library = vim.api.nvim_list_runtime_paths(),
+-- 			},
+-- 			diagnostics = {
+-- 				globals = { 'vim' },
+-- 			},
+-- 		},
+-- 	},
+-- })
 lsp.fennel_ls.setup({
+  root_dir = function() return vim.fn.resolve(vim.fn.stdpath('config')) end,
 	capabilities = capabilities,
 	settings = {
 		['fennel-ls'] = {
-      -- ["fennel-path"] = table.concat({
-      --   vim.fn.stdpath('config') .. '/fnl/?.fnl',
-      --   vim.fn.stdpath('config') .. '/fnl/?/init.fnl',
-      --   vim.fn.stdpath('config') .. '/lua/?.lua',
-      --   vim.fn.stdpath('config') .. '/lua/?/init.lua'
-      -- }, ';'),
-      -- ["macro-path"] = table.concat({
-      --   vim.fn.stdpath('config') .. '/fnl/?.fnl',
-      --   vim.fn.stdpath('config') .. '/fnl/?/init.fnl',
-      --   vim.fn.stdpath('config') .. '/lua/?.lua',
-      --   vim.fn.stdpath('config') .. '/lua/?/init.lua'
-      -- }, ';'),
-      ['extra-globals'] = table.concat(vim.tbl_keys(_G), ' '),
+			['fennel-path'] = fennel['path'],
+			['macro-path'] = fennel['macro-path'],
+			['macro-file'] = fennel['macro-path'],
+			['extra-globals'] = table.concat(vim.tbl_keys(_G), ' '),
 		},
 	},
 })
