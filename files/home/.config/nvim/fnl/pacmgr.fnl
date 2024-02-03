@@ -19,7 +19,7 @@
 ;;     + setup()
 ;;     + init()
 ;;
-;; USAGE: 
+;; USAGE:
 ;;   (ensure :plugin-name              ; plugin name
 ;;     :url ...                        ; allows defining a plugin as a file, a directory,
 ;;                                     ; a tarball/zip/etc, a git repository. e.g:
@@ -43,8 +43,52 @@
 ;;     ]
 ;;
 ;; How to bootstrap this plugin manager?
-;; - we need to bootstrap fennel?
-;;   maybe we can transpile everything from fnl/ on save to lua/?
-;;   maybe fnl/foo.fnl -> lua/.fnl/foo.lua
-;;   we can add lua/.fnl/ into loaders path
-;;   this way we ensure 'fennel' is loaded
+;;   + lua/
+;;   +   fennel.lua
+;;   + fnl/
+;;   +   pacmgr.fnl
+;;   + init.lua -> require('fennel') -> require('pacmgr')
+
+(macro ensure [name & opts]
+  (assert-compile name "expected plugin name" name)
+
+  (fn parse-opts []
+    (faccumulate [args {} i 1 (length opts) 2]
+      (let [key (. opts i)
+            value (. opts (+ i 1))]
+        (tset args key value)
+        args)))
+
+  (local {: url : setup} (parse-opts opts))
+  (assert-compile url "expected :url in" opts)
+  (assert-compile setup "expected :setup in" opts)
+  `(print {:url ,url :setup ,setup}))
+
+(macro ensure2 [name opts]
+  (assert-compile name "expected plugin name" name)
+  (assert-compile opts.url "expected :url in" opts)
+  (assert-compile opts.setup "expected :setup in" opts)
+  `(print {:url ,opts.url :setup ,opts.setup}))
+
+(fn ensure3 [name opts]
+  (vim.print {: name})
+  (assert name "expected plugin name")
+  (assert opts.url "expected :url in opts")
+  (assert opts.setup "expected :setup in opts")
+  (print {:url opts.url :setup opts.setup}))
+
+; worst option
+(macrodebug (ensure :foo :url "https://foo.git" :setup (+ 1 2) :init (+ 1 2 3 4)
+                    :build :make))
+
+; not so good option
+(macrodebug (ensure2 :foo {:url "https://foo.git"
+                          :setup (+ 1 2)
+                          :init (+ 1 2 3 4)
+                          :build :make}))
+
+; best option (easiest, with access to surrounding)
+(ensure3 :foo {:url "https://foo.git"
+              :setup (fn [] (+ 1 2))
+              :init (fn [] (+ 1 2 3 4))
+              :build :make})

@@ -10,6 +10,7 @@
 --]]
 
 vim.z = {}
+require('fennel').setup()
 require('globals')
 require('options')
 require('packadd')
