@@ -1,42 +1,74 @@
-; (macro find [[x lst] & expr]
-;   `(foo)
-;   `(do
-;      (local res# [])
-;      (icollect [_# ,x (ipairs ,lst) :into res#]
-;        (when (do
-;                ,(unpack expr))
-;          ,x))
-;      (. res# 1)))
+(lambda find [x lst cond]
+  ;; (print (find x [1 2 3] (= x 2)))
+  `(do
+     (var item# nil)
+     (each [_# ,x (ipairs ,lst) &until item#]
+       (when ,cond (set item# ,x)))
+     item#))
 
-; (find [x [1 2 3]] (local y 2) (> x y))
+(lambda map [x lst cond]
+  ;; (vim.print (map* x [1 2 3] (* x x)))
+  `(icollect [_# ,x (ipairs ,lst)]
+     ,cond))
 
+(lambda filter [x lst cond]
+  ;; (vim.print (filter* x [1 2 3] (> x 1)))
+  `(icollect [_# ,x (ipairs ,lst)]
+     (when ,cond ,x)))
 
+(lambda each* [x lst cond]
+  ;; (each* x [1 2 3] (print (.. "x = " x)))
+  `(each [_# ,x (ipairs ,lst) &until item#]
+     ,cond))
 
-; (macro list [& expr]
-;   "usage: (list 1 2 (unpack [3 4]) (unpack [4 5]))"
-;   `(icollect [_# arg# (ipairs ,expr)]
-;      arg#))
+(lambda any? [x lst cond]
+  ;; (print (any? x [1 2 3] (= x 4)))
+  `(accumulate [match?# false _# ,x (ipairs ,lst) &until match?#]
+     ,cond))
 
-; (find x :in [1 2 3] :where (= x 1))
+(lambda all? [x lst cond]
+  ;; (print (all? x [1 2 3] (> x 1)))
+  `(accumulate [match?# true _# ,x (ipairs ,lst) &until (not match?#)]
+     ,cond))
 
-; (macro find [& expr]
-;   (match expr
-;     (where (or [needle :in haystack :where clause]
-;                [needle :where clause :in haystack])) `(do
-;                                                             (var elem# nil)
-;                                                             (each [_# ,needle (ipairs ,haystack)
-;                                                                    :until elem#]
-;                                                               (if ,clause
-;                                                                   (set elem#
-;                                                                        ,needle)))
-;                                                             elem#)
-;     _ nil))
+(fn in? [elem list]
+  ;; (vim.print (in? 1 [0 2 2 3]))
+  (accumulate [match? false _ x (ipairs list) &until match?]
+    (= x elem)))
 
-; (macrodebug (find x :in [1 2 3] :where (= x 1)))
-; (vim.print (find x :in [1 2 3] :where (= x 1)))
-; (vim.print (find x :where (> x 4) :in [0 -1 2 6 3]))
+(fn flatten [list depth buf]
+  ;; (vim.print (flatten [1 [2 3] [[4]] 5 nil] 3))
+  (local depth (or depth 1))
+  (local buf (or buf []))
+  (if (or (< depth 0) (not= :table (type list)))
+      (do
+        (table.insert buf list)
+        buf)
+      (each [_ item (ipairs list)]
+        (flatten item (- depth 1) buf)))
+  buf)
 
-; (icollect [key value iterator] expr)
-; (find [var list] expr)
+(fn extend [list1 list2 ...]
+  ;; (vim.print (extend [1 [2] 3] [4 5 6] [7]))
+  (flatten [list1 list2 ...] 1))
 
+(fn take [n list]
+  ;; (vim.print (take 2 [1 2 3 4 5]))
+  (fcollect [i 1 n 1]
+    (. list i)))
 
+(fn skip [n list]
+  ;; (vim.print (skip 3 [1 2 3 4 5 6]))
+  (select (+ n 1) (unpack list)))
+
+{: find
+ : map
+ : filter
+ : each*
+ : any?
+ : all?
+ : in?
+ : flatten
+ : extend
+ : take
+ : skip}

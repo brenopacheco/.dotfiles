@@ -43,7 +43,19 @@ lsp.fennel_ls.setup({
 	capabilities = capabilities,
 	settings = {
 		['fennel-ls'] = {
-			['extra-globals'] = table.concat(vim.tbl_keys(_G), ' '),
+      -- ["fennel-path"] = table.concat({
+      --   vim.fn.stdpath('config') .. '/fnl/?.fnl',
+      --   vim.fn.stdpath('config') .. '/fnl/?/init.fnl',
+      --   vim.fn.stdpath('config') .. '/lua/?.lua',
+      --   vim.fn.stdpath('config') .. '/lua/?/init.lua'
+      -- }, ';'),
+      -- ["macro-path"] = table.concat({
+      --   vim.fn.stdpath('config') .. '/fnl/?.fnl',
+      --   vim.fn.stdpath('config') .. '/fnl/?/init.fnl',
+      --   vim.fn.stdpath('config') .. '/lua/?.lua',
+      --   vim.fn.stdpath('config') .. '/lua/?/init.lua'
+      -- }, ';'),
+      ['extra-globals'] = table.concat(vim.tbl_keys(_G), ' '),
 		},
 	},
 })

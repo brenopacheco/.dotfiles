@@ -42,8 +42,8 @@ local M = {}
 ---@type fennel.SetupOpts
 local defaults = {
 	install = {
-		allowedGlobals = false,
-		compilerEnv = _G,
+		allowedGlobals = false, -- disables compiler sandboxing
+		-- compilerEnv = _G,
 		env = _G,
 		requireAsInclude = false,
 		correlate = false,
@@ -52,11 +52,15 @@ local defaults = {
 	path = table.concat({
 		vim.fn.stdpath('config') .. '/fnl/?.fnl',
 		vim.fn.stdpath('config') .. '/fnl/?/init.fnl',
-		vim.fn.stdpath('config') .. '/lua/?.fnl',
-		vim.fn.stdpath('config') .. '/lua/?/init.fnl',
 		vim.fn.stdpath('config') .. '/lua/?.lua',
 		vim.fn.stdpath('config') .. '/lua/?/init.lua',
 	}, ';'),
+  ['macro-path'] = table.concat({
+		vim.fn.stdpath('config') .. '/fnl/?.fnl',
+		vim.fn.stdpath('config') .. '/fnl/?/init.fnl',
+		vim.fn.stdpath('config') .. '/lua/?.lua',
+		vim.fn.stdpath('config') .. '/lua/?/init.lua',
+	}, ';')
 }
 
 ---@param opts? fennel.SetupOpts
@@ -67,10 +71,13 @@ M.setup = function(opts)
   assert(vim.fn.filereadable(bin) == 1, 'fennel not found')
 	local fennel = dofile(bin).install(opts.install)
 	fennel.path = opts.path
+	fennel['macro-path'] = opts['macro-path']
 	table.insert(package.loaders, fennel.searcher)
 	debug.traceback = fennel.traceback
 	setmetatable(M, { __index = fennel })
   _G.fennel = fennel
+  fennel.eval('(require-macros :macros)') -- loads lib macros / check fennel['macro-loaded']
+  require('repl') -- sets up repl
 	return M
 end
 

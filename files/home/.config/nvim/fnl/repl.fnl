@@ -12,9 +12,7 @@
 ;; - setup!          configures the repl, optionally creating commands
 ;;   + help?         boolean - if true, starts repl with the ,help message (default: true)
 ;;   + cmds?         boolean - if true, creates commands (default: true)
-;;   + mappings      list    - mappings to add to the repl buffer (default: see *mappings*)
-;;   + prompts       list    - complete and incomplete prompt strings
-;;   + 
+;;   + mappings      boolean - apply default prompt mappings (default: see *mappings*)
 ;; - exit-prompt!    leaves the prompt
 ;; - cancel-prompt!  leaves prompt and clears it
 ;; - clear-prompt!   clears prompt
@@ -31,8 +29,9 @@
 
 ; TODO: [ ] - fix io.write WARNING that happens on start ( in require :fennel)
 ; TODO: [ ] - fix repl not capturing stdout - e.g: (fn x [ ] (print "hi")) (x)
+; TODO: [ ] - add history to prompt
 ; TODO: [ ] - fix escape sequences not rendering in prompt buffer
-; TODO: [x] - add command to open repl
+; TODO: [ ] - add command to open repl
 ; TODO: [ ] - toggle instead of resetting
 ; TODO: [ ] - add functions to send to repl (eval expr)
 ; TODO: [ ] - add mappings for evaling, reloading/toggling repl, etc
@@ -43,6 +42,8 @@
 (local bufname "fennel:///repl")
 (local complete-prompt ">> ")
 (local incomplete-prompt ".. ")
+
+(local opts {:help? true :cmds? true :mappings true})
 
 (var group nil)
 (var repl nil)
@@ -126,7 +127,12 @@
                           :onValues repl-on-out!
                           :onError repl-on-err!
                           :pp fennel.view
-                          :env _G}))
+                          :env _G
+                          ;; disables compiler sandboxing
+                          :allowedGlobals false}))
+
+; :compilerEnv fennel
+; :compiler-env fennel}))
 
 (fn repl-reset! []
   (let [winid (get-window)
@@ -173,14 +179,13 @@
   (let [winid (get-window)]
     (vim.api.nvim_set_current_win winid)))
 
-(fn open! [help?]
+(fn open! []
   (repl-reset!)
   (or (get-buffer) (make-buffer!))
   (or (get-window) (make-window!))
   (focus!)
-  (if help? (repl-send! ",help")))
+  (if opts.help? (repl-send! ",help")))
 
-; (vim.api.nvim_create_user_command :FennelRepl open {:nargs 0})
+(vim.api.nvim_create_user_command :FennelRepl open! {:nargs 0})
 
-;; export module
 {: open! : close!}
