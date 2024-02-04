@@ -44,7 +44,19 @@
 (local complete-prompt ">> ")
 (local incomplete-prompt ".. ")
 
-(local opts {:help? true :cmds? true :mappings? true :macro-files [":macros"]})
+(local config {:help? true
+               :cmds? true
+               :mappings? true
+               :macro-files [":macros"]
+               :plugins [:repl.plugins]
+               :on-out (λ [ok out-or-err] nil)})
+
+(local options {:useMetadata true
+                :compiler-env _G
+                :compilerEnv _G
+                :env _G
+                :allowedGlobals false
+                :error-pinpoint false})
 
 (var group nil)
 (var repl nil)
@@ -54,6 +66,12 @@
 
 (λ wrap [body]
   (vim.schedule_wrap body))
+
+(λ extend [orig tbl]
+  "extend original table"
+  (icollect [k v (pairs tbl)]
+    (tset orig k v))
+  orig)
 
 (λ accept-line? [text]
   (let [is-empty? (text:match "^%s*$")
@@ -76,7 +94,6 @@
 
 (λ set-mapping [modes lhs rhs]
   (let [desc (fennel.doc rhs)]
-    ;;(vim.print {: lhs : desc})
     (vim.keymap.set modes lhs rhs {:buffer (assert (get-buffer)) : desc})))
 
 (fn make-augroup []
@@ -148,12 +165,14 @@
   (icollect [_ str (ipairs output)]
     (icollect [_ line (ipairs (vim.split str "\n")) :into lines]
       line))
+  (config.on-out true lines)
   (append-prompt lines))
 
 (λ repl-on-err [err-type msg] ; msg is a single string with \n inside it
   (local lines [])
   (icollect [_ line (ipairs (vim.split msg "\n")) :into lines]
     line)
+  (config.on-out false [err-type lines])
   (append-prompt lines))
 
 (fn repl-send [input]
@@ -213,21 +232,17 @@
     (vim.fn.prompt_setprompt bufnr complete-prompt)
     (vim.fn.prompt_setcallback bufnr prompt-callback)
     (autocmd [:LspAttach] (wrap detach-copilot))
-    (when opts.mappings?
+    (when config.mappings?
       (each [_ [mode lhs rhs] (ipairs mappings)]
         (set-mapping mode lhs rhs)))
     (set repl (coroutine.create fennel.repl))
-    (coroutine.resume repl {:readChunk coroutine.yield
-                            :onValues repl-on-out
-                            :onError repl-on-err
-                            :useMetadata true
-                            :compiler-env _G
-                            :compilerEnv _G
-                            :env _G
-                            :allowedGlobals false
-                            :error-pinpoint false})
-    (when opts.help? (repl-send ",help"))
-    (send (icollect [_ module (ipairs opts.macro-files)]
+    (let [options (extend options
+                          {:readChunk coroutine.yield
+                           :onValues repl-on-out
+                           :onError repl-on-err})]
+      (coroutine.resume repl options))
+    (when config.help? (repl-send ",help"))
+    (send (icollect [_ module (ipairs config.macro-files)]
             (.. "(require-macros " module ")")))
     bufnr))
 
@@ -295,19 +310,10 @@
   (each [_ [name] (ipairs cmds)]
     (pcall vim.api.nvim_del_user_command name)))
 
-(fn cmds-config []
-  (if opts.cmds?
-      (cmds-add)
-      (cmds-del)))
-
-(λ setup [?opts]
-  (if ?opts
-      (each [k v (pairs ?opts)]
-        (tset opts k v)))
-  (cmds-config))
-
-;; initial setup
-(setup)
+(λ setup [?config ?options]
+  (extend config (or ?config {}))
+  (extend options (or ?options {}))
+  (if config.cmds? (cmds-add) (cmds-del)))
 
 ;; export
 {: start
