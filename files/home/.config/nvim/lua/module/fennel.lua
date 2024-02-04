@@ -32,4 +32,4 @@ debug.traceback = fennel.traceback
 
 _G.fennel = fennel
 
-require('repl').setup()
+require('fnl.repl').setup()
