@@ -1,6 +1,6 @@
-(import-macros {: any?} :macros)
+; (import-macros {: any?} :macros)
 
-(local buf (require :utils.buf) )
+; (local buf (require :utils.buf) )
 
 ; (vim.notify (vim.inspect buf))
 
@@ -10,3 +10,12 @@
 ; (vim.notify (buf.uuid))
 
 ; (vim.print (any? x [1 2 3] (= x 2)))
+
+(fn foo []
+  :foo??
+  1)
+
+
+(foo)
+
+; {: foo}

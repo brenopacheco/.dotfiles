@@ -12,7 +12,8 @@ setlocal foldexpr=nvim_treesitter#foldexpr()
 " setlocal formatoptions=croqlj
 setlocal formatoptions=cqj
 setlocal textwidth=80
+setlocal colorcolumn=80
 setlocal comments=fb:*,fb:-,fb:+,n:>
 setlocal commentstring=<!--%s-->
 
-let b:undo_ftplugin='setl ep< sw< ts< et< fdm< fde< fo< tw< com< cms<'
+let b:undo_ftplugin='setl ep< sw< ts< et< fdm< fde< fo< tw< cc< com< cms<'

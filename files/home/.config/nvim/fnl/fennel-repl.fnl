@@ -1,41 +1,41 @@
 ;;; Fennel repl module
 ;;
-;; This module provides a repl for fennel. 
+;; This module provides a repl for fennel.
 ;; A special prompt buffer is used to capture input and output.
 ;;
 ;; Functions:
-;; - open!           starts the repl and open window
-;; - close!          closes the repl window
-;; - reset!          resets the repl, closing the window
-;; - toggle!         toggle the repl open or closed
-;; - send!           sends a string to the repl
-;; - setup!          configures the repl, optionally creating commands
+;; - start          starts the repl
+;; - reset          restarts the repl
+;; - teardown       terminate the repl
+;; - open           open window (starts repl if not started)
+;; - close          closes the repl window
+;; - toggle         toggle the repl window
+;; - send           sends a string to the repl
+;; - setup          configures the repl, optionally creating commands
 ;;   + help?         boolean - if true, starts repl with the ,help message (default: true)
-;;   + cmds?         boolean - if true, creates commands (default: true)
-;;   + mappings      boolean - apply default prompt mappings (default: see *mappings*)
-;; - exit-prompt!    leaves the prompt
-;; - cancel-prompt!  leaves prompt and clears it
-;; - clear-prompt!   clears prompt
-;; - clear-repl!     clears the repl buffer
+;;   + cmds         boolean - if true, creates commands (default: true)
+;;   + mappings     boolean - apply default prompt mappings (default: see *mappings*)
+;; - exit-prompt    leaves the prompt
+;; - cancel-prompt  leaves prompt and clears it
+;; - clear-prompt   clears prompt
+;; - clear-repl     clears the repl buffer
 ;;
 ;; Commands provided (optionally):
-;; - :FennelReplOpen:   opens the repl window
-;; - :FennelReplClose:  closes the repl window
-;; - :FennelReplToggle: toggles repl window open or closed
-;; - :FennelReplSend    <range> sends the range content to the repl
+;; - :FennelReplOpen    opens the repl window (starts repl if not started)
+;; - :FennelReplClose   closes the repl window
+;; - :FennelReplToggle  toggles repl window open or closed
+;; - :FennelReplReset   restarts repl (open window)
+;; - :FennelReplEvalExpr    sends expression under cursor to repl
+;; - :FennelReplEvalRange   sends range to repl
+;; - :FennelReplEvalBuffer  sends buffer to repl
 
 ; https://github.com/gpanders/fennel-repl.nvim/blob/master/fnl/fennel-repl.fnl
 ; https://wiki.fennel-lang.org/Repl
 
-; TODO: [ ] - pre-load macros (require-macros :macros)
+; TODO: [ ] - document functions
 ; TODO: [ ] - fix io.write WARNING that happens on start ( in require :fennel)
 ; TODO: [ ] - fix repl not capturing stdout - e.g: (fn x [ ] (print "hi")) (x)
-; TODO: [ ] - add history to prompt
 ; TODO: [ ] - fix escape sequences not rendering in prompt buffer
-; TODO: [ ] - add command to open repl
-; TODO: [ ] - toggle instead of resetting
-; TODO: [ ] - add functions to send to repl (eval expr)
-; TODO: [ ] - add mappings for evaling, reloading/toggling repl, etc
 ; TODO: [ ] - move locals into the open function
 
 (local fennel (require :fennel))
@@ -44,14 +44,21 @@
 (local complete-prompt ">> ")
 (local incomplete-prompt ".. ")
 
-(local opts {:help? true :cmds? true :mappings true})
+(local opts {:help? true :cmds? true :mappings? true :macro-files [":macros"]})
 
 (var group nil)
 (var repl nil)
 (var incomplete? false)
+(var history [])
+(var history-index 0)
 
 (λ wrap [body]
   (vim.schedule_wrap body))
+
+(λ accept-line? [text]
+  (let [is-empty? (text:match "^%s*$")
+        is-comment? (text:match "^%s*;")]
+    (not (or is-empty? is-comment?))))
 
 (fn get-buffer []
   (let [bufnr (vim.fn.bufnr bufname)]
@@ -60,17 +67,17 @@
 (fn get-window []
   (select 1 (unpack (vim.fn.win_findbuf (get-buffer)))))
 
-(λ set-option! [name value]
-  (vim.api.nvim_set_option_value name value {:buf (get-buffer)}))
+(λ set-option [name value]
+  (vim.api.nvim_set_option_value name value {:buf (assert (get-buffer))}))
 
-(λ autocmd! [events callback]
-  (let [opts {: group : callback :buffer (get-buffer) :nested false}]
+(λ autocmd [events callback]
+  (let [opts {: group : callback :buffer (assert (get-buffer)) :nested false}]
     (vim.api.nvim_create_autocmd events opts)))
 
-(λ set-mapping! [modes lhs rhs desc]
-  (vim.keymap.set modes lhs rhs {:buffer (get-buffer) : desc}))
+(λ set-mapping [modes lhs rhs desc]
+  (vim.keymap.set modes lhs rhs {:buffer (assert (get-buffer)) : desc}))
 
-(fn make-augroup! []
+(fn make-augroup []
   (vim.api.nvim_create_augroup :fennel-repl {:clear true}))
 
 (fn get-copilot []
@@ -79,117 +86,232 @@
       (if (= client.name :copilot)
           client))))
 
-(fn detach-copilot! []
-  (let [bufnr (get-buffer)
+(fn detach-copilot []
+  (let [bufnr (assert (get-buffer))
         copilot (get-copilot)]
     (if (and bufnr copilot)
         (if (vim.lsp.buf_is_attached bufnr copilot.id)
             (vim.lsp.buf_detach_client bufnr copilot.id)))))
 
-(fn clear-prompt! []
-  (vim.print :clear-prompt)
-  (vim.api.nvim_buf_set_lines (get-buffer) 0 -1 false [complete-prompt]))
+(fn clear-repl []
+  (vim.api.nvim_buf_set_lines (assert (get-buffer)) 0 -1 false
+                              [complete-prompt]))
 
-(fn cancel-prompt! []
-  (vim.print :cancel-prompt)
+(fn clear-prompt []
   (vim.cmd :stopinsert)
-  (vim.fn.setline "$" complete-prompt))
+  (set history-index 0)
+  (vim.fn.setbufline (assert (get-buffer)) "$" complete-prompt))
 
-(fn exit-prompt! []
-  (vim.print :exit-prompt)
+(fn exit-prompt []
   (vim.cmd :stopinsert))
 
-(local mappings [[[:i] :<C-l> clear-prompt! "Clear fennel prompt"]
-                 [[:i] :<C-c> cancel-prompt! "Clear fennel prompt"]
-                 [[:i] :<esc> exit-prompt! "Exit fennel prompt"]
-                 [[:i] :jk exit-prompt! "Exit fennel prompt"]
-                 [[:i] :kj exit-prompt! "Exit fennel prompt"]])
+(λ history-jump [direction]
+  (let [index (match direction
+                :next (+ history-index 1)
+                :prev (- history-index 1))
+        elem (. history index)]
+    (when elem
+      (do
+        (set history-index index)
+        (vim.fn.setline "$" (.. complete-prompt elem))))))
 
-(λ repl-on-out! [output] ; output is a list of strings with \n inside them
+(fn history-next []
+  (history-jump :next))
+
+(fn history-prev []
+  (history-jump :prev))
+
+(local mappings
+       [[[:i] :<c-l> clear-repl "Clear fennel repl"]
+        [[:i] :<c-c> clear-prompt "Clear fennel prompt"]
+        [[:i] :<esc> exit-prompt "Exit fennel prompt"]
+        [[:i] :jk exit-prompt "Exit fennel prompt"]
+        [[:i] :kj exit-prompt "Exit fennel prompt"]
+        [[:i] :<up> history-next "Jump to next history entry"]
+        [[:i] :<c-p> history-next "Jump to next history entry"]
+        [[:i] :<down> history-prev "Jump to prev history entry"]
+        [[:i] :<c-n> history-prev "Jump to prev history entry"]])
+
+(λ append-prompt [lines]
+  (let [buf (assert (get-buffer))
+        lnum (- (vim.api.nvim_buf_line_count buf) 1)]
+    (vim.fn.appendbufline buf lnum lines)))
+
+(λ repl-on-out [output] ; output is a list of strings with \n inside them
   (local lines [])
   (icollect [_ str (ipairs output)]
     (icollect [_ line (ipairs (vim.split str "\n")) :into lines]
       line))
-  (vim.fn.append (- (vim.fn.line "$") 1) lines))
+  (append-prompt lines))
 
-(λ repl-on-err! [err-type msg] ; msg is a single string with \n inside it
+(λ repl-on-err [err-type msg] ; msg is a single string with \n inside it
   (local lines [])
   (icollect [_ line (ipairs (vim.split msg "\n")) :into lines]
     line)
-  (vim.fn.append (- (vim.fn.line "$") 1) lines))
+  (append-prompt lines))
 
-(fn repl-send! [input]
+(fn repl-send [input]
   (let [(_ {: stack-size}) (coroutine.resume repl (.. input "\n"))]
     (set incomplete? (not= 0 stack-size))))
 
-(λ repl-start! []
-  (set repl (coroutine.create fennel.repl))
-  (coroutine.resume repl {:readChunk coroutine.yield
-                          :onValues repl-on-out!
-                          :onError repl-on-err!
-                          :pp fennel.view
-                          :env _G
-                          ;; disables compiler sandboxing
-                          :allowedGlobals false}))
-
-; :compilerEnv fennel
-; :compiler-env fennel}))
-
-(fn repl-reset! []
+(fn teardown []
   (let [winid (get-window)
         bufnr (get-buffer)]
-    (if winid (vim.api.nvim_win_close winid true))
-    (if bufnr (vim.api.nvim_buf_delete bufnr {:force true})))
-  (set group (make-augroup!))
+    (when winid (vim.api.nvim_win_close winid true))
+    (when bufnr (vim.api.nvim_buf_delete bufnr {:force true})))
+  (set group (make-augroup))
   (set repl nil)
-  (set incomplete? false))
+  (set incomplete? false)
+  (set history-index 0)
+  (set history []))
 
-(fn close! []
-  (repl-reset!))
+(λ history-update [was-completing? incomplete? text]
+  (local current-history (or (. history 1) ""))
+  (local add-entry (fn []
+                     (table.insert history 1 text)
+                     (set history-index 0)))
+  (local update-entry
+         (fn []
+           (tset history 1 (.. current-history " " text))))
+  (if (accept-line? text)
+      (match [was-completing? incomplete?]
+        [false false] (add-entry)
+        [true false] (update-entry)
+        [false true] (add-entry)
+        [true true] (update-entry))))
 
 (λ prompt-callback [text]
-  (repl-send! text)
+  (local was-completing? incomplete?)
+  (repl-send text)
+  (history-update was-completing? incomplete? text)
   (let [prompt (if incomplete? incomplete-prompt complete-prompt)]
-    (vim.fn.prompt_setprompt (get-buffer) prompt))
+    (vim.fn.prompt_setprompt (assert (get-buffer)) prompt))
   (if (= text ",exit")
-      (close!)))
+      (teardown)))
 
-(fn make-buffer! []
+(λ send [lines]
+  (each [_ line (ipairs lines)]
+    (let [prefix (if incomplete? incomplete-prompt complete-prompt)]
+      (if (accept-line? line)
+          (do
+            (append-prompt [(.. prefix line)])
+            (prompt-callback line))))))
+
+(fn make-buffer []
   (let [bufnr (vim.api.nvim_create_buf true true)]
     (vim.api.nvim_buf_set_name bufnr bufname)
-    (set-option! :filetype :fennel)
-    (set-option! :buftype :prompt)
-    (set-option! :complete ".,w")
+    (set-option :filetype :fennel)
+    (set-option :buftype :prompt)
+    (set-option :complete ".,w")
     (vim.fn.prompt_setprompt bufnr complete-prompt)
     (vim.fn.prompt_setcallback bufnr prompt-callback)
-    (autocmd! [:BufEnter] (fn [] (vim.cmd :startinsert)))
-    (autocmd! [:LspAttach] (wrap detach-copilot!))
-    (each [_ map (ipairs mappings)]
-      (set-mapping! (unpack map)))
-    (repl-start!)
+    ;;(autocmd [:BufEnter] (fn [] (vim.cmd :startinsert)))
+    (autocmd [:LspAttach] (wrap detach-copilot))
+    (when opts.mappings?
+      (each [_ map (ipairs mappings)]
+        (set-mapping (unpack map))))
+    (set repl (coroutine.create fennel.repl))
+    (coroutine.resume repl {:readChunk coroutine.yield
+                            :onValues repl-on-out
+                            :onError repl-on-err
+                            :env _G
+                            :allowedGlobals false})
+    (when opts.help? (repl-send ",help"))
+    (send (icollect [_ module (ipairs opts.macro-files)]
+            (.. "(require-macros " module ")")))
     bufnr))
 
-(fn make-window! []
+(fn make-window []
   (vim.cmd :vsplit)
-  (let [bufnr (get-buffer)
+  (let [bufnr (assert (get-buffer))
         winid (vim.api.nvim_get_current_win)]
     (vim.api.nvim_win_set_buf winid bufnr)
     winid))
 
-(fn focus! []
+(fn focus []
   (let [winid (get-window)]
-    (vim.api.nvim_set_current_win winid)))
+    (vim.api.nvim_set_current_win winid)
+    (vim.cmd :startinsert)))
 
-(fn open! []
-  (repl-reset!)
-  (or (get-buffer) (make-buffer!))
-  (or (get-window) (make-window!))
-  (focus!)
-  (if opts.help? (repl-send! ",help")))
+(fn close []
+  (let [win (get-window)]
+    (when win (vim.api.nvim_win_close win true))))
 
-(vim.api.nvim_create_user_command :FennelRepl open! {:nargs 0})
+(fn start []
+  (or (get-buffer) (make-buffer)))
 
-; (open!)
-; (close!)
+(fn open []
+  (or (get-buffer) (make-buffer))
+  (or (get-window) (make-window))
+  (focus))
 
-{: open! : close!}
+(fn toggle []
+  (if (get-window) (close) (open)))
+
+(fn reset []
+  (teardown)
+  (open))
+
+(fn eval-expr []
+  (local bufnr (vim.api.nvim_get_current_buf))
+  (: (vim.treesitter.get_parser bufnr) :parse)
+  (var text "")
+  (var node (vim.treesitter.get_node))
+  (while (node:parent)
+    (set text (vim.treesitter.get_node_text node bufnr))
+    (set node (node:parent)))
+  (send (vim.split text "\n")))
+
+(fn eval-range []
+  (error "Not implemented"))
+
+(fn eval-buffer []
+  (local buf (vim.api.nvim_buf_get_lines 0 0 -1 true))
+  (send buf))
+
+(local cmds [[:FennelReplOpen open]
+             [:FennelReplClose close]
+             [:FennelReplToggle toggle]
+             [:FennelReplReset reset]
+             [:FennelReplEvalExpr eval-expr]
+             [:FennelReplEvalRange eval-range]
+             [:FennelReplEvalBuffer eval-buffer]])
+
+(fn cmds-add []
+  (each [_ [name fun] (ipairs cmds)]
+    (vim.api.nvim_create_user_command name fun {})))
+
+(fn cmds-del []
+  (each [_ [name] (ipairs cmds)]
+    (pcall vim.api.nvim_del_user_command name)))
+
+(fn cmds-config []
+  (if opts.cmds?
+      (cmds-add)
+      (cmds-del)))
+
+(λ setup [?opts]
+  (if ?opts
+      (each [k v (pairs ?opts)]
+        (tset opts k v)))
+  (cmds-config))
+
+(setup)
+(teardown)
+(open)
+
+{: start
+ : reset
+ : teardown
+ : open
+ : close
+ : toggle
+ : send
+ : eval-expr
+ : eval-buffer
+ : setup
+ : clear-repl
+ : clear-prompt
+ : exit-prompt
+ : history-next
+ : history-prev}

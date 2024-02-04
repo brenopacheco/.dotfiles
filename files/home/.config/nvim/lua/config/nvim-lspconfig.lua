@@ -40,20 +40,6 @@ lsp.eslint.setup({
 		)
 	end,
 })
--- lsp.fennel_language_server.setup({
--- 	single_file_support = true,
--- 	root_dir = function() return vim.fn.resolve(vim.fn.stdpath('config')) end,
--- 	settings = {
--- 		fennel = {
--- 			workspace = {
--- 				library = vim.api.nvim_list_runtime_paths(),
--- 			},
--- 			diagnostics = {
--- 				globals = { 'vim' },
--- 			},
--- 		},
--- 	},
--- })
 lsp.fennel_ls.setup({
   root_dir = function() return vim.fn.resolve(vim.fn.stdpath('config')) end,
 	capabilities = capabilities,
