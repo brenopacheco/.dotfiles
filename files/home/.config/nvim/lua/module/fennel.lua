@@ -16,9 +16,20 @@ fennel['macro-path'] = table.concat({
 	root .. 'fnl/?/macros.fnl',
 }, ';')
 
-table.insert(package.loaders, fennel.searcher)
+table.insert(
+	package.loaders,
+	fennel.makeSearcher({
+		['useMetadata'] = true,
+		['compiler-env'] = _G,
+		['compilerEnv'] = _G,
+		['env'] = _G,
+		['allowedGlobals'] = false,
+		['error-pinpoint'] = false,
+	})
+)
+
 debug.traceback = fennel.traceback
 
 _G.fennel = fennel
 
--- require('fennel-repl').setup()
+require('repl').setup()

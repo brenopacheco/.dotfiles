@@ -15,13 +15,11 @@
       (each [_ v (ipairs arg)] (table.insert list v)))
     list))
 
-(fn map [list fun]
-  "usage: (map [1 2] (fn [v] v)) -> [(fn 1) (fn 2)]"
-  (icollect [_ v (ipairs list)] (fun v)))
-
 (λ fmt [prefix_bytes suffix_bytes]
-  (let [prefix_str (map prefix_bytes string.char)
-        suffix_str (map prefix_bytes string.char)]
+  (local map* (fn [list fun]
+                (icollect [_ v (ipairs list)] (fun v))))
+  (let [prefix_str (map* prefix_bytes string.char)
+        suffix_str (map* prefix_bytes string.char)]
     (fn [msg]
       (table.concat (merge prefix_str [msg] suffix_str) ""))))
 
@@ -31,5 +29,7 @@
   (tset M :italic (fmt [ 0x1b 0x5b 0x33 0x6d ] [ 0x1b 0x5b 0x30 0x6d ]))
   (tset M :underscore (fmt [ 0x1b 0x5b 0x34 0x6d ] [ 0x1b 0x5b 0x30 0x6d ]))
   (tset M :strikethrough (fmt [ 0x1b 0x5b 0x39 0x6d ] [ 0x1b 0x5b 0x30 0x6d ])))
+
+; see: /usr/share/nvim/runtime/lua/vim/_editor.lua:605
 
 M

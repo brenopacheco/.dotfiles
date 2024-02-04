@@ -3,7 +3,12 @@
 ;; This module provides a repl for fennel.
 ;; A special prompt buffer is used to capture input and output.
 ;;
-;; Functions:
+;; References:
+;; https://wiki.fennel-lang.org/Repl
+;; https://github.com/gpanders/fennel-repl.nvim/blob/master/fnl/fennel-repl.fnl
+;;
+;; WARN: OUTDATED
+;; Functions: 
 ;; - start          starts the repl
 ;; - reset          restarts the repl
 ;; - teardown       terminate the repl
@@ -20,6 +25,7 @@
 ;; - clear-prompt   clears prompt
 ;; - clear-repl     clears the repl buffer
 ;;
+;; WARN: OUTDATED
 ;; Commands provided (optionally):
 ;; - :FennelReplOpen    opens the repl window (starts repl if not started)
 ;; - :FennelReplClose   closes the repl window
@@ -29,14 +35,8 @@
 ;; - :FennelReplEvalRange   sends range to repl
 ;; - :FennelReplEvalBuffer  sends buffer to repl
 
-; https://github.com/gpanders/fennel-repl.nvim/blob/master/fnl/fennel-repl.fnl
-; https://wiki.fennel-lang.org/Repl
-
 ; TODO: [ ] - document functions
-; TODO: [ ] - fix io.write WARNING that happens on start ( in require :fennel)
-; TODO: [ ] - fix repl not capturing stdout - e.g: (fn x [ ] (print "hi")) (x)
-; TODO: [ ] - fix escape sequences not rendering in prompt buffer
-; TODO: [ ] - move locals into the open function
+; TODO  [ ] - make docs
 
 (local fennel (require :fennel))
 
@@ -74,8 +74,10 @@
   (let [opts {: group : callback :buffer (assert (get-buffer)) :nested false}]
     (vim.api.nvim_create_autocmd events opts)))
 
-(λ set-mapping [modes lhs rhs desc]
-  (vim.keymap.set modes lhs rhs {:buffer (assert (get-buffer)) : desc}))
+(λ set-mapping [modes lhs rhs]
+  (let [desc (fennel.doc rhs)]
+    ;;(vim.print {: lhs : desc})
+    (vim.keymap.set modes lhs rhs {:buffer (assert (get-buffer)) : desc})))
 
 (fn make-augroup []
   (vim.api.nvim_create_augroup :fennel-repl {:clear true}))
@@ -94,15 +96,18 @@
             (vim.lsp.buf_detach_client bufnr copilot.id)))))
 
 (fn clear-repl []
+  "Clear fennel repl"
   (vim.api.nvim_buf_set_lines (assert (get-buffer)) 0 -1 false
                               [complete-prompt]))
 
 (fn clear-prompt []
+  "Clear fennel prompt"
   (vim.cmd :stopinsert)
   (set history-index 0)
   (vim.fn.setbufline (assert (get-buffer)) "$" complete-prompt))
 
 (fn exit-prompt []
+  "Exit fennel prompt"
   (vim.cmd :stopinsert))
 
 (λ history-jump [direction]
@@ -116,21 +121,22 @@
         (vim.fn.setline "$" (.. complete-prompt elem))))))
 
 (fn history-next []
+  "Jump to next history entry"
   (history-jump :next))
 
 (fn history-prev []
+  "Jump to prev history entry"
   (history-jump :prev))
 
-(local mappings
-       [[[:i] :<c-l> clear-repl "Clear fennel repl"]
-        [[:i] :<c-c> clear-prompt "Clear fennel prompt"]
-        [[:i] :<esc> exit-prompt "Exit fennel prompt"]
-        [[:i] :jk exit-prompt "Exit fennel prompt"]
-        [[:i] :kj exit-prompt "Exit fennel prompt"]
-        [[:i] :<up> history-next "Jump to next history entry"]
-        [[:i] :<c-p> history-next "Jump to next history entry"]
-        [[:i] :<down> history-prev "Jump to prev history entry"]
-        [[:i] :<c-n> history-prev "Jump to prev history entry"]])
+(local mappings [[[:i] :<c-l> clear-repl]
+                 [[:i] :<c-c> clear-prompt]
+                 [[:i] :<esc> exit-prompt]
+                 [[:i] :jk exit-prompt]
+                 [[:i] :kj exit-prompt]
+                 [[:i] :<up> history-next]
+                 [[:i] :<c-p> history-next]
+                 [[:i] :<down> history-prev]
+                 [[:i] :<c-n> history-prev]])
 
 (λ append-prompt [lines]
   (let [buf (assert (get-buffer))
@@ -151,6 +157,7 @@
   (append-prompt lines))
 
 (fn repl-send [input]
+  (assert repl "Repl not started")
   (let [(_ {: stack-size}) (coroutine.resume repl (.. input "\n"))]
     (set incomplete? (not= 0 stack-size))))
 
@@ -205,17 +212,20 @@
     (set-option :complete ".,w")
     (vim.fn.prompt_setprompt bufnr complete-prompt)
     (vim.fn.prompt_setcallback bufnr prompt-callback)
-    ;;(autocmd [:BufEnter] (fn [] (vim.cmd :startinsert)))
     (autocmd [:LspAttach] (wrap detach-copilot))
     (when opts.mappings?
-      (each [_ map (ipairs mappings)]
-        (set-mapping (unpack map))))
+      (each [_ [mode lhs rhs] (ipairs mappings)]
+        (set-mapping mode lhs rhs)))
     (set repl (coroutine.create fennel.repl))
     (coroutine.resume repl {:readChunk coroutine.yield
                             :onValues repl-on-out
                             :onError repl-on-err
+                            :useMetadata true
+                            :compiler-env _G
+                            :compilerEnv _G
                             :env _G
-                            :allowedGlobals false})
+                            :allowedGlobals false
+                            :error-pinpoint false})
     (when opts.help? (repl-send ",help"))
     (send (icollect [_ module (ipairs opts.macro-files)]
             (.. "(require-macros " module ")")))
@@ -296,10 +306,10 @@
         (tset opts k v)))
   (cmds-config))
 
+;; initial setup
 (setup)
-(teardown)
-(open)
 
+;; export
 {: start
  : reset
  : teardown
@@ -310,6 +320,7 @@
  : eval-expr
  : eval-buffer
  : setup
+ : focus
  : clear-repl
  : clear-prompt
  : exit-prompt
