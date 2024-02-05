@@ -110,6 +110,7 @@ local tabs = {
 	right_padding = 0,
 	mode = 1,
 	path = 0,
+	max_length = vim.o.columns,
 	symbols = {
 		modified = '',
 	},

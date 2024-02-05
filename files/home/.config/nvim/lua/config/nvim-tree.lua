@@ -41,10 +41,10 @@ require('nvim-tree').setup({
 		enable = false,
 	},
 	view = {
-		side = 'right',
-		width = 50,
-		-- side = "left",
-		-- width = 40,
+		-- side = 'right',
+		-- width = 50,
+		side = 'left',
+		width = 40,
 	},
 })
 

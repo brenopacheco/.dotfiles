@@ -131,8 +131,8 @@ local keyboard = {
       { { 'n',     }, '[l',             maps.jump_locprev,      { desc = '󰒮 loc-entry'            } },
       { { 'n',     }, ']t',             maps.jump_tabnext,      { desc = '󰒭 tab'                  } },
       { { 'n',     }, '[t',             maps.jump_tabprev,      { desc = '󰒮 tab'                  } },
-      { { 'n',     }, ']\'',            maps.jump_termnext,     { desc = '󰒭 terminal'             } },
-      { { 'n',     }, '[\'',            maps.jump_termprev,     { desc = '󰒮 terminal'             } },
+      { { 'n',     }, ']`',             maps.jump_termnext,     { desc = '󰒭 terminal'             } },
+      { { 'n',     }, '[`',             maps.jump_termprev,     { desc = '󰒮 terminal'             } },
     }, -- ]]
     toggles = { -- [[
       { { 'n',     }, '<leader><tab>',  maps.toggle_outline,    { desc = ' outline'              } },
