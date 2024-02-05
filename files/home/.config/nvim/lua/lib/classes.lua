@@ -100,7 +100,7 @@ function Buf:attach(win) table.insert(self.wins, win) end
 -- find({ win = { id = {1000, 1001 }}})
 
 ---@class lib.BufQuery
----@field id? number|number[]
+---@field ids?        number[]
 ---@field bufname?    string
 ---@field filetype?   string
 ---@field buftype?    string
@@ -113,10 +113,10 @@ function Buf:attach(win) table.insert(self.wins, win) end
 ----@field terminal?   lib.BufTerminal
 
 ---@class lib.TabQuery
----@field id? integer|integer[]
+---@field ids? integer[]
 
 ---@class lib.WinQuery
----@field id? integer|integer[]
+---@field ids? integer[]
 ---@field wintype? lib.WinType
 
 ---@class lib.Query
