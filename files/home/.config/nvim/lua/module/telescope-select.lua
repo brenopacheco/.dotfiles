@@ -57,6 +57,19 @@ local function select(items, opts, on_choice)
 				map('i', '<tab>', actions.move_selection_next)
 				map('i', '<s-tab>', actions.move_selection_previous)
 				-- map('i', '<tab>', actions.select_default)
+
+				if opts.on_next then
+					local enhance = {
+						post = function()
+							local selection = action_state.get_selected_entry()
+							if not selection then return end
+							opts.on_next(selection)
+						end,
+					}
+					actions.move_selection_next:enhance(enhance)
+					actions.move_selection_previous:enhance(enhance)
+				end
+
 				actions.select_default:replace(function()
 					actions.close(prompt_bufnr)
 					local selection = action_state.get_selected_entry()
