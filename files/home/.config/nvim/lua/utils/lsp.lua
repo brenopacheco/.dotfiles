@@ -60,11 +60,20 @@ end
 -- *lsp-on-list-handler*
 ---@param opts {items: table[], title: string, context: table|nil}
 M.on_list = function(opts)
+	local ignore = { 'styled%-components/index%.d%.ts' }
 	local seen = {}
 	local result = {}
+	local function should_ignore(key)
+		for _, pattern in ipairs(ignore) do
+			if key:match(pattern) then return true end
+		end
+		return false
+	end
 	for _, entry in ipairs(opts.items) do
 		local key = entry.filename .. ':' .. entry.lnum
-		if not seen[key] then
+		local has_seen = seen[key] ~= nil
+		local will_ignore = should_ignore(key)
+		if not has_seen and not will_ignore then
 			table.insert(result, entry)
 			seen[key] = true
 		else

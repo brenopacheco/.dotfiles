@@ -37,13 +37,17 @@ local function select(items, opts, on_choice)
 	local action_state = require('telescope.actions.state')
 	local actions = require('telescope.actions')
 	local themes = require('telescope.themes')
+	local theme = themes.get_dropdown()
+	theme.layout_config.width = opts.width or 0.35
 	pickers
-		.new(themes.get_dropdown({}), {
+		.new(theme, {
 			prompt_title = opts and opts.prompt or 'Select:',
 			finder = finders.new_table({
 				results = items or {},
 				entry_maker = function(item)
-					local text = opts and opts.format_item and opts.format_item(item)
+					local text = opts
+							and opts.format_item
+							and opts.format_item(item, width)
 						or item
 					return {
 						value = item,

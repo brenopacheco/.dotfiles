@@ -16,6 +16,10 @@ M.args_clear = function() vim.cmd('ArgClear') end
 -- Remove buffer from arglist
 M.args_delete = function() vim.cmd('ArgDelete') end
 
+M.args_next = function() vim.cmd('ArgNext') end
+
+M.args_prev = function() vim.cmd('ArgPrev') end
+
 -- Open buffer diagnostics in quickfix
 M.errors_buffer = function() qfutil.errors({ workspace = false }) end
 
@@ -271,6 +275,8 @@ end
 
 -- Delete buffer
 M.run_bd = function() bufutil.delete() end
+
+M.switch_project = require('utils.pickers.project')
 
 -- stylua: ignore start
 M.debug_start        = daputil.debug_start

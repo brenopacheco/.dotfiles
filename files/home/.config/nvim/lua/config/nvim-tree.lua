@@ -14,7 +14,7 @@ local function on_attach(bufnr)
 	vim.keymap.set("n", "e",     api.node.open.edit,             opts("Edit"))
 	vim.keymap.set('n', '+',     api.tree.change_root_to_node,   opts('Down'))
 
-	vim.keymap.set('n', '<c-p>', api.node.open.preview,          opts('Open:  Preview'))
+	-- vim.keymap.set('n', '<c-p>', api.node.open.preview,          opts('Open:  Preview'))
 	vim.keymap.set('n', '<c-s>', api.node.open.horizontal,       opts('Open:  Horizontal Split'))
 	vim.keymap.set('n', '<c-t>', api.node.open.tab,              opts('Open:  New Tab'))
 	vim.keymap.set('n', '<c-v>', api.node.open.vertical,         opts('Open:  Vertical Split'))
