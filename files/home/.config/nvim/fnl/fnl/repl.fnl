@@ -47,7 +47,7 @@
 (local config {:help? true
                :cmds? true
                :mappings? true
-               :macro-files [":macros"]
+               :macro-files [":list" ":trace"]
                :plugins [:repl.plugins]
                :on-out (λ [ok out-or-err] nil)})
 
@@ -122,6 +122,9 @@
   (vim.cmd :stopinsert)
   (set history-index 0)
   (vim.fn.setbufline (assert (get-buffer)) "$" complete-prompt))
+
+(fn say-hi []
+  :Hi)
 
 (fn exit-prompt []
   "Exit fennel prompt"

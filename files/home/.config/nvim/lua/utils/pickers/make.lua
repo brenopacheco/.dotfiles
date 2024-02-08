@@ -7,24 +7,26 @@ return function()
 	if #targets == 0 then
 		return vim.notify('No targets found', vim.log.levels.WARN)
 	end
-	local max_target_len = 0
+	local lens = { target = 0, kind = 0, id = 0 }
 	for _, target in ipairs(targets) do
-		max_target_len = string.len(target.name) > max_target_len
-				and string.len(target.name)
-			or max_target_len
+		lens.target = math.max(lens.target, #target.name)
+		lens.kind = math.max(lens.kind, #target.kind)
+		lens.id = math.max(lens.id, #target.id)
 	end
-	if #targets == 0 then
-		return vim.notify('No targets found', vim.log.levels.WARN)
-	end
+	local width = lens.target + lens.kind + lens.id + 10
 	vim.ui.select(targets, {
 		prompt = 'Run:',
+		width = width,
 		format_item = function(item)
 			---@type Target
 			local target = item
-			local format = '󱓞 %-8s %-'
-				.. tostring(max_target_len) + 4
+			local offset = width - lens.kind - target.name:len() + 6
+			local format = '󱓞  %-'
+				.. tostring(lens.kind + 4)
+				.. 's %-'
+				.. tostring(target.name:len())
 				.. 's %'
-				.. 59 - max_target_len
+				.. tostring(offset)
 				.. 's'
 			return string.format(
 				format,
@@ -35,7 +37,6 @@ return function()
 		end,
 	}, function(choice)
 		if choice ~= nil then
-			vim.print({ choice = choice })
 			if vim.z.enabled('voldikss/vim-floaterm') then
 				vim.cmd([[let g:floaterm_autoclose = 0]])
 				vim.cmd('FloatermNew cd ' .. choice.dir .. '; ' .. choice.cmd)

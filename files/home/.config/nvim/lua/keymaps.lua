@@ -25,8 +25,8 @@ local keyboard = {
       { { 'n',     }, 'g=',             maps.args_add,           { desc = ' argsadd',             } },
       { { 'n',     }, 'g-',             maps.args_delete,        { desc = ' argsdel',             } },
       { { 'n',     }, 'g0',             maps.args_clear,         { desc = ' argsclr',             } },
-      { { 'n',     }, '<c-n>',          maps.args_next,          { desc = ' argsnext'             } },
-      { { 'n',     }, '<c-p>',          maps.args_prev,          { desc = ' argsprev'             } },
+      -- { { 'n',     }, '<c-n>',          maps.args_next,          { desc = ' argsnext'             } },
+      -- { { 'n',     }, '<c-p>',          maps.args_prev,          { desc = ' argsprev'             } },
       -- { { 'n',     }, '<c-p>',          maps.show_signature,     { desc = ' signature'            } },
       { { 'n',     }, '<c-h>',          maps.show_highlight,     { desc = ' highlight'            } },
       { { 'n',     }, '<c-k>',          maps.show_hover,         { desc = ' hover'                } },
@@ -90,6 +90,7 @@ local keyboard = {
     }, -- ]]
     git = { -- [[
       { { 'n',     }, '<leader>gg',     maps.git_fugitive,       { desc = ' fugitive'             } },
+      { { 'n',     }, '<leader>gt',     maps.git_twiggy,         { desc = ' twiggy'               } },
       { { 'n',     }, '<leader>gl',     maps.git_log,            { desc = ' logs'                 } },
       { { 'n',     }, '<leader>gs',     maps.git_stage,          { desc = ' stage'                } },
       { { 'n',     }, '<leader>gu',     maps.git_unstage,        { desc = ' unstage'              } },
@@ -180,6 +181,11 @@ local keyboard = {
     fennel = { -- [[
       ['lambda']  = 'λ',
     } -- ]]
+  },
+  filetypes = {
+    fennel = { -- [[
+      { { 'n' }, '<c-p>', '<cmd>FennelReplEvalExpr<cr>',  { desc = ' eval at cursor'           } },
+    }, -- ]]
   }
 }
 
@@ -213,6 +219,26 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'FileType' }, {
 				function() return treeutil.is_comment() and lhs or rhs end,
 				{ buffer = ev.buf, expr = true }
 			)
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'FileType' }, {
+	desc = 'Load buffer local mappings',
+	group = vim.api.nvim_create_augroup('filetype-mappings', { clear = true }),
+	pattern = vim.tbl_keys(keyboard.filetypes),
+	callback = function(ev)
+		local ft = vim.api.nvim_get_option_value('ft', { buf = ev.buf })
+		for _, map in pairs(keyboard.filetypes[ft]) do
+			map[4] = map[4] or {}
+			map[4].buffer = ev.buf
+			local status, _ = pcall(vim.keymap.set, unpack(map))
+			if not status then
+				vim.notify(
+					'Failed to set buffer local keymap: ' .. vim.inspect(map),
+					vim.log.levels.ERROR
+				)
+			end
 		end
 	end,
 })

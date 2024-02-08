@@ -4,7 +4,8 @@ local telescope = require('telescope')
 
 local defaults = {}
 
-defaults.layout_strategy = 'horizontal'
+-- defaults.layout_strategy = 'horizontal'
+defaults.layout_strategy = 'vertical'
 
 defaults.layout_config = {
 	height = 0.9,
@@ -16,7 +17,7 @@ defaults.layout_config = {
 		width = 0.8,
 	},
 	vertical = {
-		mirror = true,
+		mirror = false,
 		height = 0.9,
 		preview_cutoff = 40,
 		prompt_position = 'bottom',

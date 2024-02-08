@@ -122,7 +122,7 @@ local node = {
 				cmd = manager .. ' run ' .. script,
 				dir = dir,
 				kind = manager,
-				id = tostring(vim.fn.fnamemodify(dir, ':t')) .. '/package.json',
+				id = tostring(vim.fn.fnamemodify(dir, ':t')),
 			}
 			table.insert(targets, target)
 		end

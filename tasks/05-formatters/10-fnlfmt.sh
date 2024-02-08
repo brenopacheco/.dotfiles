@@ -5,5 +5,5 @@ function should_run() {
 }
 
 function task() {
-	makepkg_task fnlfmt && return "$OK"
+	sudo pacman -S --noconfirm fnlfmt && return "$OK"
 }

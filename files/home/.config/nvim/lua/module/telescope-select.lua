@@ -38,16 +38,20 @@ local function select(items, opts, on_choice)
 	local actions = require('telescope.actions')
 	local themes = require('telescope.themes')
 	local theme = themes.get_dropdown()
-	theme.layout_config.width = opts.width or 0.35
+	assert(theme, 'telescope-select: theme not found')
+	local ratio = (opts.cols or 75) / vim.o.columns
+	if ratio > 1 then ratio = 0.9 end
+	theme.layout_config.width = ratio
 	pickers
 		.new(theme, {
 			prompt_title = opts and opts.prompt or 'Select:',
 			finder = finders.new_table({
 				results = items or {},
 				entry_maker = function(item)
+					local picker_width = math.floor((ratio * vim.o.columns))
 					local text = opts
 							and opts.format_item
-							and opts.format_item(item, width)
+							and opts.format_item(item, picker_width)
 						or item
 					return {
 						value = item,

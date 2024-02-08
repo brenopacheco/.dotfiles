@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 			local regex = '(.*)/%.config/nvim/[lf][un][al]/(.*)%.[lf][un][al]'
 			local module, matches = string.gsub(context.match, regex, '%2')
 			if matches ~= 1 then return end
-      if module:match("macros?$") then return end
+			if module:match('^macros[%/%.]') then return end
 			reload(module)
 		end)
 	end,

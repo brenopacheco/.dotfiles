@@ -77,6 +77,13 @@ local function install(pkg)
 	vim.notify('Packadd: installed ' .. pkg.repo, vim.log.levels.INFO)
 end
 
+local function update()
+	for name, pkg in pairs(packages) do
+		vim.notify('Packadd: updating ' .. name)
+		install(pkg)
+	end
+end
+
 ---@param repos string[]
 local function packadd(repos)
 	for _, repo in ipairs(repos) do
@@ -107,11 +114,15 @@ local function packadd(repos)
 	vim.cmd('helptags ALL')
 end
 
-local function packcmd(cmd)
-	if cmd.bang then vim.tbl_map(install, packages) end
+local function packinstall(cmd) packadd(vim.split(cmd.args, '\n')) end
+
+local function packlist(cmd)
 	if cmd.args:len() > 0 then
 		for _, package in pairs(packages) do
-			if string.match(package.name, cmd.args) then vim.print(package) end
+			if string.match(package.name, cmd.args) then
+				vim.print(package)
+				return
+			end
 		end
 		vim.notify('Package not found', vim.log.levels.WARN)
 	else
@@ -160,11 +171,9 @@ vim.opt.runtimepath = {
 	'/usr/lib/nvim',
 }
 vim.opt.packpath = { plugin_dir }
-vim.api.nvim_create_user_command(
-	'Packadd',
-	packcmd,
-	{ bang = true, nargs = '?' }
-)
+vim.api.nvim_create_user_command('Packinstall', packinstall, { nargs = '?' })
+vim.api.nvim_create_user_command('Packlist', packlist, { nargs = '?' })
+vim.api.nvim_create_user_command('Packupdate', update, { nargs = 0 })
 
 vim.z.enabled = enabled
 vim.z.packadd = packadd

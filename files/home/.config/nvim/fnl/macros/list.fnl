@@ -1,4 +1,21 @@
 ;; fennel-ls: macro-file
+
+;;; list macros
+;;
+;; Provides facilities for interacting with lists
+;;
+;;   find    [x lst cond]
+;;   map     [x lst cond]
+;;   filter  [x lst cond]
+;;   each*   [x lst cond]
+;;   any?    [x lst cond]
+;;   all?    [x lst cond]
+;;   in?     [elem list]
+;;   flatten [list depth buf]
+;;   extend  [list1 list2 ...]
+;;   take    [n list]
+;;   skip    [n list]
+
 (lambda find [x lst cond]
   ;; (print (find x [1 2 3] (= x 2)))
   `(do
@@ -32,12 +49,12 @@
   `(accumulate [match?# true _# ,x (ipairs ,lst) &until (not match?#)]
      ,cond))
 
-(fn in? [elem list]
+(lambda in? [elem list]
   ;; (vim.print (in? 1 [0 2 2 3]))
   (accumulate [match? false _ x (ipairs list) &until match?]
     (= x elem)))
 
-(fn flatten [list depth buf]
+(lambda flatten [list depth buf]
   ;; (vim.print (flatten [1 [2 3] [[4]] 5 nil] 3))
   (local depth (or depth 1))
   (local buf (or buf []))
@@ -49,16 +66,16 @@
         (flatten item (- depth 1) buf)))
   buf)
 
-(fn extend [list1 list2 ...]
+(lambda extend [list1 list2 ...]
   ;; (vim.print (extend [1 [2] 3] [4 5 6] [7]))
   (flatten [list1 list2 ...] 1))
 
-(fn take [n list]
+(lambda take [n list]
   ;; (vim.print (take 2 [1 2 3 4 5]))
   (fcollect [i 1 n 1]
     (. list i)))
 
-(fn skip [n list]
+(lambda skip [n list]
   ;; (vim.print (skip 3 [1 2 3 4 5 6]))
   (select (+ n 1) (unpack list)))
 

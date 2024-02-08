@@ -128,6 +128,8 @@ M.git_blame = function() vim.cmd([[Git blame]]) end
 -- Git open fugitive window
 M.git_fugitive = function() bufutil.toggle('fugitive', { cb = vim.cmd.G }) end
 
+M.git_twiggy = function() bufutil.toggle('twiggy', { cb = vim.cmd.Twiggy }) end
+
 -- Open permalink to current line in browser and copy to clipboard
 M.git_link = function()
 	require('gitlinker').get_buf_range_url(

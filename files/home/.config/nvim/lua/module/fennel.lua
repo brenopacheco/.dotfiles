@@ -10,10 +10,8 @@ fennel.path = table.concat({
 }, ';')
 
 fennel['macro-path'] = table.concat({
-	'./fnl/macros.fnl',
-	'./fnl/?/macros.fnl',
-	root .. 'fnl/macros.fnl',
-	root .. 'fnl/?/macros.fnl',
+	'./fnl/macros/?.fnl',
+	root .. 'fnl/macros/?.fnl',
 }, ';')
 
 table.insert(

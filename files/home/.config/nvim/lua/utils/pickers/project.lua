@@ -20,8 +20,6 @@ local M = function()
 		table.insert(cmd, vim.fn.expand(root))
 	end
 
-	log(cmd)
-
 	local out = vim.system(cmd, { text = true }):wait()
 	assert(out.code == 0, out.stderr)
 	assert(out.stdout ~= '', 'No projects found.')
@@ -36,21 +34,12 @@ local M = function()
 		end)
 		:totable()
 
-	local width = tonumber(string.format('%.0f', 0.3 * vim.o.columns))
-
 	vim.ui.select(projects, {
 		prompt = 'Switch to project',
-		format_item = function(project, _width)
-			log(_width)
-			local padding = width - string.len(project.name) + 1
+		format_item = function(project, cols)
+			local padding = cols - string.len(project.name) - 9
 			local pat = '  %s %' .. tostring(padding) .. 's'
-			log(pat)
-			return string.format(
-				pat,
-				-- '[' .. project.name .. ']',
-				project.name,
-				'[' .. project.dir .. ']'
-			)
+			return string.format(pat, project.name, '[' .. project.dir .. ']')
 		end,
 	}, function(choice)
 		-- TODO: if does not exist, prompt to create
