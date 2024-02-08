@@ -41,7 +41,7 @@ lsp.eslint.setup({
 	end,
 })
 lsp.fennel_ls.setup({
-  root_dir = function() return vim.fn.resolve(vim.fn.stdpath('config')) end,
+	root_dir = function() return vim.fn.resolve(vim.fn.stdpath('config')) end,
 	capabilities = capabilities,
 	settings = {
 		['fennel-ls'] = {

@@ -87,6 +87,17 @@ cmp.setup({
 			group_index = 1,
 			priority = 100,
 			trigger_characters = { '.', '>', '-' },
+			entry_filter = function(entry, ctx)
+				if ctx.filetype == 'go' then
+					-- kinds: /home/breno/.dotfiles/files/home/.config/nvim/pack/site/opt/nvim-cmp/lua/cmp/types/lsp.lua:178
+					local kind = entry:get_kind()
+					local text = entry:get_filter_text()
+					-- skip methods like time.D|December.String or time.N|Now().Add
+					if kind == 2 and text:match('[^%.]+%.[^%.]+') then return false end
+					log(text, kind)
+				end
+				return true
+			end,
 		},
 		{
 			name = 'luasnip',
