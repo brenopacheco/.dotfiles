@@ -8,7 +8,7 @@ vim.z.packadd({
 	'sodapopcan/vim-twiggy',
 	'lewis6991/gitsigns.nvim',
 	-- 'bluz71/vim-nightfly-guicolors',
-	'brenopacheco/catppuccin.nvim',
+	-- 'brenopacheco/catppuccin.nvim',
 	'kyazdani42/nvim-web-devicons',
 	'norcalli/nvim-colorizer.lua',
 	'shellRaining/hlchunk.nvim',
@@ -57,9 +57,10 @@ vim.z.packadd({
 	'tpope/vim-dadbod',
 	'kristijanhusak/vim-dadbod-ui',
 	'kristijanhusak/vim-dadbod-completion',
+	'brenopacheco/libfzy.nvim',
 	-- 'brenopacheco/fennel-runtime.nvim',
 	-- TODO
-	'vim-test/vim-test',
+	-- 'vim-test/vim-test',
 })
 
 vim.z.modload({

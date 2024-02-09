@@ -26,7 +26,14 @@ local capabilities = lsputil.capabilities
 
 lsp.autotools_ls.setup({ capabilities = capabilities })
 lsp.bashls.setup({ capabilities = capabilities })
-lsp.clangd.setup({ capabilities = capabilities })
+lsp.clangd.setup({
+	capabilities = capabilities,
+	offset_encoding = 'utf-16',
+	cmd = {
+		'clangd',
+		'--offset-encoding=utf-16',
+	},
+})
 lsp.cssls.setup({ capabilities = capabilities })
 lsp.dockerls.setup({ capabilities = capabilities })
 lsp.eslint.setup({

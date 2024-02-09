@@ -1,4 +1,5 @@
 local plugin_dir = vim.fn.simplify(vim.fn.stdpath('config') .. '/../../')
+log(plugin_dir)
 vim.opt.runtimepath = {
 	vim.fn.stdpath('config'),
 	vim.fn.stdpath('config') .. '/after',

@@ -1,2 +1,11 @@
 snippet link > __Link__
 	[$1](${2:$TM_SELECTED_TEXT})
+
+snippet temp
+	<details>
+	  <summary>${1:$TM_SELECTED_TEXT}</summary>
+	\`\`\`lua
+	local fzy = require('libfzy')
+	fzy.${1}
+	\`\`\`
+	</details>
