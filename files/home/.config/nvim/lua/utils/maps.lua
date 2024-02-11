@@ -267,7 +267,7 @@ M.qf_colder = function() vim.cmd('colder') end
 M.qf_global = function() greputils.qf_filter({ invert = false }) end
 
 -- Filter quickfix list by exclude pattern
-M.qf_vglobal = function() greputils.qf_filter({ invert = false }) end
+M.qf_vglobal = function() greputils.qf_filter({ invert = true }) end
 
 -- Run align
 M.run_align = function()
@@ -366,17 +366,18 @@ end
 
 -- Source buffer contents (vim/lua)
 M.run_source = function()
-	local ft = vim.bo.filetype
-	if ft ~= 'vim' and ft ~= 'lua' == nil then
-		return vim.notify('cannot source: run make instead', vim.log.levels.WARN)
-	end
-	if vim.fn.mode() == 'n' then
-		vim.cmd([[source]])
-	else
-		log(assert(loadstring(table.concat(bufutil.get_visual().text, '\n')))())
-		-- bufutil.set_visual(bufutil.get_visual())
-		-- vim.cmd([['<,'>source]])
-	end
+	vim.cmd.source('%')
+	-- local ft = vim.bo.filetype
+	-- if ft ~= 'vim' and ft ~= 'lua' == nil then
+	-- 	return vim.notify('cannot source: run make instead', vim.log.levels.WARN)
+	-- end
+	-- if vim.fn.mode() == 'n' then
+	-- 	vim.cmd([[source]])
+	-- else
+	-- 	log(assert(loadstring(table.concat(bufutil.get_visual().text, '\n')))())
+	-- 	-- bufutil.set_visual(bufutil.get_visual())
+	-- 	-- vim.cmd([['<,'>source]])
+	-- end
 end
 
 -- Spawn new terminal window in current dir

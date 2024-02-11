@@ -4,17 +4,17 @@
 ;;
 ;; Provides facilities for interacting with lists
 ;;
-;;   find    [x lst cond]
-;;   map     [x lst cond]
-;;   filter  [x lst cond]
-;;   each*   [x lst cond]
-;;   any?    [x lst cond]
-;;   all?    [x lst cond]
-;;   in?     [elem list]
-;;   flatten [list depth buf]
-;;   extend  [list1 list2 ...]
-;;   take    [n list]
-;;   skip    [n list]
+;;   find    x lst cond
+;;   map     x lst cond
+;;   filter  x lst cond
+;;   each*   x lst cond
+;;   any?    x lst cond
+;;   all?    x lst cond
+;;   in?     elem list
+;;   flatten list depth buf
+;;   extend  list1 list2 ...
+;;   take    n list
+;;   skip    n list
 
 (lambda find [x lst cond]
   ;; (print (find x [1 2 3] (= x 2)))

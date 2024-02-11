@@ -9,32 +9,39 @@
 ;; e.g
 ;;  (fn x [a b] (values (+ a b) :hi))
 ;;  (trace x)
-;;  (x 3 4 nil 4) => called (x 3 4 nil 4) => 7 hi
+;;  (x 3 4) => called (x 3 4) => 7 hi
 ;;
 ;; TODO: (untrace name)
 
-(lambda trace [fun]
-  (local fun# (sym (.. "_" (. fun 1))))
-  `(values (local ,fun# ,fun)))
+(fn trace [fun]
+  (local fname (. fun 1))
+  `(values ;;
+           (when (not (. _G :traced)) (tset _G :traced {})) ;;
+           (tset (. _G :traced) ,fname ,fun) ;;
+           (fn ,fun
+             [& args#]
+             (let [fun# (. (. _G :traced) ,fname)
+                   res# [(fun# (unpack args#))]
+                   tostr# (fn [pargs#]
+                            (var str# "")
+                            (for [i# 1 (length pargs#) 1]
+                              (local parg# (. pargs# i#))
+                              (if (= parg# nil)
+                                  (set str# (string.format "%s nil" str#))
+                                  (set str# (string.format "%s %s" str# parg#))))
+                            str#)]
+               (print (string.format "(%s%s) => %s" ,fname (tostr# args#)
+                                     (tostr# res#)))
+               (unpack res#)))))
 
-;;          (fn ,fun
-;;                               [...]
-;;                               (let [z# (fn [...]
-;;                                          (var sarg# "")
-;;                                          (local args# [...])
-;;                                          (for [i# 1 (select "#" ...)]
-;;                                            (set sarg#
-;;                                                 (.. sarg# " "
-;;                                                     (vim.inspect (. args# i#)))))
-;;                                          (values sarg# [...]))
-;;                                     (sarg#) (z# ...)
-;;                                     (sres# res#) (z# (,fun# ...))]
-;;                                 (print (string.format "called (x%s) => %s"
-;;                                                       sarg# sres#))
-;;                                 (unpack res#)))))
+(fn untrace [fun]
+  (assert-compile (. _G :traced) "No functions are traced")
+  (local fname (. fun 1))
+  (assert-compile fun "Function is not traced")
+  `(values ;;
+           (fn ,fun
+             [& args#]
+             (let [fun# (. (. _G :traced) ,fname)]
+               (fun# (unpack args#))))))
 
-(fn trace2 [fun]
-  (local fun# (sym (.. "_" (. fun 1))))
-  `(values (local ,fun# (fn [] :hi))))
-
-{: trace : trace2}
+{: trace : untrace}

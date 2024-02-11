@@ -10,22 +10,25 @@ M.qf_filter = function(opts)
 		return vim.notify('No quickfix list found', vim.log.levels.WARN)
 	end
 	local letter = opts.invert and 'v' or 'g'
-	vim.ui.input({ prompt = '>Quickfix: ' .. letter .. '/' }, function(input)
-		if input == nil or input == '' then return end
-		local filtered = {}
-		for _, item in ipairs(qf) do
-			local fname = vim.fn.fnamemodify(vim.fn.bufname(item.bufnr), ':p')
-			local text = fname .. ':' .. item.text
-			local matches = string.match(text, input)
-			if matches and not opts.invert then
-				table.insert(filtered, item)
-			elseif not matches and opts.invert then
-				table.insert(filtered, item)
+	vim.ui.input(
+		{ prompt = '>Quickfix (lua regex): ' .. letter .. '/' },
+		function(input)
+			if input == nil or input == '' then return end
+			local filtered = {}
+			for _, item in ipairs(qf) do
+				local fname = vim.fn.fnamemodify(vim.fn.bufname(item.bufnr), ':p')
+				local text = fname .. ':' .. item.text
+				local matches = string.match(text, input)
+				if matches and not opts.invert then
+					table.insert(filtered, item)
+				elseif not matches and opts.invert then
+					table.insert(filtered, item)
+				end
 			end
+			vim.fn.setqflist(filtered)
+			qfutil.open()
 		end
-		vim.fn.setqflist(filtered)
-		qfutil.open()
-	end)
+	)
 end
 
 ---@param pattern string | nil

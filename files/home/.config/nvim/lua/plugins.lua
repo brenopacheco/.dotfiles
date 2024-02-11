@@ -84,4 +84,5 @@ vim.z.modload({
 	'format-on-save',
 	'file-url',
 	'macro-recording-unmap',
+	-- 'messages',
 })

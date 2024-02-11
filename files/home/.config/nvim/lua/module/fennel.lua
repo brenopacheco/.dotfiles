@@ -14,20 +14,25 @@ fennel['macro-path'] = table.concat({
 	root .. 'fnl/macros/?.fnl',
 }, ';')
 
-table.insert(
-	package.loaders,
-	fennel.makeSearcher({
-		['useMetadata'] = true,
-		['compiler-env'] = _G,
-		['compilerEnv'] = _G,
-		['env'] = _G,
-		['allowedGlobals'] = false,
-		['error-pinpoint'] = false,
-	})
-)
+local options = {
+	['useMetadata'] = true,
+	['compiler-env'] = _G,
+	['compilerEnv'] = _G,
+	['env'] = _G,
+	['allowedGlobals'] = false,
+	['error-pinpoint'] = false,
+}
+
+table.insert(package.loaders, fennel.makeSearcher(options))
 
 debug.traceback = fennel.traceback
 
 _G.fennel = fennel
 
 require('fnl.repl').setup()
+
+vim.api.nvim_create_autocmd({ 'SourceCmd' }, {
+	pattern = '*.fnl',
+	group = vim.api.nvim_create_augroup('', { clear = true }),
+	callback = function(ev) fennel.dofile(ev.file, options) end,
+})

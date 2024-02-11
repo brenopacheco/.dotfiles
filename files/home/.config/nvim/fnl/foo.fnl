@@ -1,9 +1,4 @@
-(import-macros {: trace : trace2} :trace)
+(import-macros {: trace} :trace)
+(import-macros {: each* : map} :list)
 
-(fn x [] 1)
-
-(macrodebug (trace2 xxx))
-(trace2 xxx)
-
-(macrodebug (trace x))
-(trace x)
+(vim.print (map x [1 2 3] (+ x 1)))
