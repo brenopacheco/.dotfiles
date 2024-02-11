@@ -85,4 +85,5 @@ vim.z.modload({
 	'file-url',
 	'macro-recording-unmap',
 	-- 'messages',
+	'luarocks',
 })
