@@ -56,7 +56,8 @@
                 :compilerEnv _G
                 :env _G
                 :allowedGlobals false
-                :error-pinpoint false})
+                :error-pinpoint true})
+                ;; :error-pinpoint false})
 
 (var group nil)
 (var repl nil)
@@ -123,9 +124,6 @@
   (set history-index 0)
   (vim.fn.setbufline (assert (get-buffer)) "$" complete-prompt))
 
-(fn say-hi []
-  :Hi)
-
 (fn exit-prompt []
   "Exit fennel prompt"
   (vim.cmd :stopinsert))
@@ -161,7 +159,8 @@
 (λ append-prompt [lines]
   (let [buf (assert (get-buffer))
         lnum (- (vim.api.nvim_buf_line_count buf) 1)]
-    (vim.fn.appendbufline buf lnum lines)))
+    (vim.fn.appendbufline buf lnum
+                          (icollect [_ line (ipairs lines)] (.. ";; " line)))))
 
 (λ repl-on-out [output] ; output is a list of strings with \n inside them
   (local lines [])

@@ -497,10 +497,9 @@ M.keywordprg = function()
 	vim.list_extend(cexprs, bufutil.get_cexprs({ reverse = true }))
 	vim.list_extend(cexprs, bufutil.get_cexprs({ reverse = false }))
 	for _, pattern in ipairs(cexprs) do
-		local status, err =
+		local status =
 			pcall(vim.api.nvim_exec2, vim.o.keywordprg .. ' ' .. pattern, {})
 		if status then return end
-		ptrace(err)
 	end
 	vim.notify(vim.o.keywordprg .. ' not found', vim.log.levels.WARN)
 end
