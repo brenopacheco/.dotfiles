@@ -1,5 +1,4 @@
 local plugin_dir = vim.fn.simplify(vim.fn.stdpath('config') .. '/../../')
-log(plugin_dir)
 vim.opt.runtimepath = {
 	vim.fn.stdpath('config'),
 	vim.fn.stdpath('config') .. '/after',
@@ -8,6 +7,7 @@ vim.opt.runtimepath = {
 }
 vim.opt.packpath = { plugin_dir }
 vim.cmd('packadd LuaSnip')
+vim.cmd('packadd libfzy.nvim')
 
 require('luasnip').setup({
 	history = true,
