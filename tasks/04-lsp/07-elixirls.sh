@@ -2,11 +2,10 @@
 
 function get_version() {
 	curl -s https://api.github.com/repos/elixir-lsp/elixir-ls/releases |
-		jq -r '.[0] | .tag_name' | sed 's/^v//'
+		jq -r '.[0] | .tag_name | sub ("^v"; "")'
 }
 
 function should_run() {
-	return "$SKIP"
 	local VERSION
 	VERSION=$(get_version)
 	is_version_newer elixir-ls "$VERSION" &&

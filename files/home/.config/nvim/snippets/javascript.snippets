@@ -19,22 +19,22 @@ snippet fn-async > __async named function__
 snippet afn > __anonymous function__
 	(${2}) => {
 		$0
-	};
+	}
 
 snippet afn-async __async anonymous function__
 	(${2}) => {
 		$0
-	};
+	}
 
 snippet cfn > __const anonymous function__
 	const ${1:fn} = (${2}) => {
 		$0
-	};
+	}
 
 snippet cafn-async > __const async anonymous function__
 	const ${1:fn} = async (${2}) => {
 		$0
-	};
+	}
 
 snippet iife > __immediately invoked function expression__
 	  (() => {
@@ -112,7 +112,7 @@ snippet require > __const ... require(...)__
 	const ${1:default} = require("${2:module}");
 
 snippet module > __module.exports = ...__
-	module.exports = ${1:module};
+	module.exports = ${1:module}
 
 snippet jest > __jest template__
 	const ${1:imports} = require("./${2:module}");

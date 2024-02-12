@@ -8,5 +8,6 @@ function should_run() {
 
 function task() {
 	test -f ~/.bashrc && rm ~/.bashrc
+	test -f ~/.config/mimeapps.list && rm ~/.config/mimeapps.list
 	cd files && stow -t ~/ home && return "$OK"
 }

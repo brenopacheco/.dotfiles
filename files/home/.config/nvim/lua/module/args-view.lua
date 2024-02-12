@@ -162,7 +162,7 @@ local args_add = function()
 end
 
 local args_clear = function()
-	vim.cmd('argdelete *')
+	if #vim.fn.argv() ~= 0 then vim.cmd('argdelete *') end
 	notify('info: arglist cleared')
 end
 

@@ -47,6 +47,10 @@ lsp.eslint.setup({
 		)
 	end,
 })
+lsp.elixirls.setup({
+	capabilities = capabilities,
+	cmd = { '/usr/bin/elixir-ls' },
+})
 lsp.fennel_ls.setup({
 	root_dir = function() return vim.fn.resolve(vim.fn.stdpath('config')) end,
 	capabilities = capabilities,

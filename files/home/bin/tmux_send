@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# send command to tmux pane
+# $1 - <tmux session id>:<tmux window id>.<tmux pane id>
+# $2... - command
+
+help() {
+	echo "usage: $(basename "$0") <session>:<window>.<pane> <command...>"
+	echo "$@" >&2
+	exit 1
+}
+
+TARGET="$1"
+
+# 1. check if tmux is running
+if ! tmux has-session 2>/dev/null; then
+	help "tmux is not running"
+fi
+
+# 2. check if target is given
+if [ -z "$TARGET" ]; then
+	help "no target given"
+fi
+
+# 3. check if target is valid
+if ! tmux list-panes -t "$TARGET" >/dev/null 2>&1 ; then
+	help "invalid target"
+fi
+
+# 4. check if command is given
+declare -a COMMAND
+for i in $(seq 2 $#); do
+	COMMAND+=("${!i}")
+done
+
+if [ ${#COMMAND[@]} -eq 0 ]; then
+	help "no command given" >&2
+fi
+
+tmux set-buffer -t "$TARGET" "${COMMAND[@]}"
+tmux paste-buffer -t "$TARGET"
+tmux send-keys -t "$TARGET" C-m
+
+exit 0

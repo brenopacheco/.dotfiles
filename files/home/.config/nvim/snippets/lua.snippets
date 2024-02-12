@@ -62,3 +62,6 @@ snippet autocmd > __create template autocmd__
 
 snippet command > __create template command__
 	vim.api.nvim_create_user_command('$1', $2, { nargs = '*' })
+
+snippet docommand > __exec autocmd__
+	vim.api.nvim_exec_autocmds('$1', {})

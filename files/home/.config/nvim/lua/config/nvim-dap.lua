@@ -46,7 +46,7 @@ require('nvim-dap-virtual-text').setup({})
 
 dap.listeners.after.event_initialized['repl'] = function()
 	vim.notify('Dap session started', vim.log.levels.INFO)
-  dapui.open()
+	-- dapui.open()
 	-- daputil.toggle_repl({ focus = false, mode = 'open' })
 end
 
@@ -132,3 +132,4 @@ register(require('utils.dap.dotnet'))
 register(require('utils.dap.go'))
 register(require('utils.dap.node'))
 register(require('utils.dap.lua'))
+register(require('utils.dap.elixir'))

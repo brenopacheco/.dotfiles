@@ -1,32 +1,43 @@
+# shellcheck disable=all
+
 pkgname=elixir-ls
 pkgver={{PKGVER}}
 pkgrel=1
 pkgdesc='A frontend-independent Language Server Protocol for Elixir'
 url='https://github.com/elixir-lsp/elixir-ls'
-license=('Apache')
-arch=(x86_64)
-
-source=("https://github.com/elixir-lsp/elixir-ls/archive/refs/tags/v$pkgver.tar.gz")
-
-md5sums=('SKIP')
+license=('Apache-2.0')
+arch=('any')
+makedepends=('git')
+source=("elixir-ls-$pkgver.tar.gz::https://github.com/elixir-lsp/elixir-ls/archive/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+b2sums=('SKIP')
 
 build() {
-  cd "$srcdir/elixir-ls-$pkgver"
+  cd "$pkgname-$pkgver"
+
+  export MIX_ENV=prod
+  export MIX_HOME="$srcdir/mix-cache"
+
+  # Fetch hex+rebar for deps.get to work
+  mix local.hex --force
+  mix local.rebar
+
   mix deps.get
-  MIX_ENV=prod mix compile
+  mix compile
 }
 
 package() {
-  cd "$srcdir/elixir-ls-$pkgver"
+  cd "$pkgname-$pkgver"
 
-  install -dm0755 "$pkgdir"/usr/lib/elixir-ls
+  export MIX_ENV=prod
 
-  MIX_ENV=prod mix elixir_ls.release -o "$pkgdir"/usr/lib/elixir-ls
+  install -dm0755 "$pkgdir"/usr/lib/$pkgname
+  mix elixir_ls.release2 -o "$pkgdir"/usr/lib/$pkgname
 
   install -dm0755 "$pkgdir"/usr/bin
 
-  echo -e "#!/bin/sh\nexec /usr/lib/elixir-ls/language_server.sh" > "$pkgdir"/usr/bin/elixir-ls
-  echo -e "#!/bin/sh\nexec /usr/lib/elixir-ls/debugger.sh" > "$pkgdir"/usr/bin/elixir-ls-debug
+  echo -e "#!/bin/sh\nexec /usr/lib/$pkgname/language_server.sh" > "$pkgdir"/usr/bin/elixir-ls
+  echo -e "#!/bin/sh\nexec /usr/lib/$pkgname/debugger.sh" > "$pkgdir"/usr/bin/elixir-ls-debug
 
   chmod +x "$pkgdir"/usr/bin/*
 }
