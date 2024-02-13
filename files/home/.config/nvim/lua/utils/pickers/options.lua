@@ -11,16 +11,16 @@
 local opt_scrolloff = function()
 	return vim.o.scrolloff == 999
 			and {
-				name = 'scrolloff - min',
-				description = 'disable cursor centering',
+				name = '󰘢 scrolloff - min',
+				description = ' disable cursor centering',
 				callback = function()
 					vim.o.scrolloff = 0
 					vim.cmd('normal! zz')
 				end,
 			}
 		or {
-			name = 'scrolloff - max',
-			description = 'enable cursor centering',
+			name = '󰘢 scrolloff - max',
+			description = ' enable cursor centering',
 			callback = function() vim.o.scrolloff = 999 end,
 		}
 end
@@ -29,12 +29,12 @@ end
 local opt_relnumber = function()
 	return vim.o.relativenumber
 			and {
-				name = 'norelativenumber',
+				name = ' norelativenumber',
 				description = 'disable relative line numbers',
 				callback = function() vim.o.relativenumber = false end,
 			}
 		or {
-			name = 'relativenumber',
+			name = ' relativenumber',
 			description = 'enable relative line numbers',
 			callback = function() vim.o.relativenumber = true end,
 		}
@@ -44,14 +44,30 @@ end
 local opt_bomb = function()
 	return vim.o.bomb
 			and {
-				name = 'nobomb',
-				description = 'BOM (Byte Order Mark) is not written',
+				name = '󰛅 nobomb',
+				description = ' BOM (Byte Order Mark) is not written',
 				callback = function() vim.o.bomb = false end,
 			}
 		or {
-			name = 'bomb',
-			description = 'BOM (Byte Order Mark) is written',
+			name = '󰚑 bomb',
+			description = ' BOM (Byte Order Mark) is written',
 			callback = function() vim.o.bomb = true end,
+		}
+end
+
+---@return Option|nil
+local opt_copilot = function()
+	local disabled = require('copilot.client').is_disabled()
+	return disabled
+			and {
+				name = ' copilot-on',
+				description = 'disable Copilot for all buffers',
+				callback = function() vim.cmd('Copilot enable') end,
+			}
+		or {
+			name = ' copilot-off',
+			description = 'enable Copilot for available buffers',
+			callback = function() vim.cmd('Copilot disable') end,
 		}
 end
 
@@ -61,6 +77,7 @@ local options = function()
 		opt_scrolloff(),
 		opt_relnumber(),
 		opt_bomb(),
+		opt_copilot(),
 	}
 end
 
