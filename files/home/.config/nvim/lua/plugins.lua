@@ -1,6 +1,6 @@
 --- Plugins
 
-vim.z.modload({ 'fennel' })
+-- vim.z.modload({ 'fennel' })
 
 vim.z.packadd({
 	'nvim-lua/plenary.nvim',
@@ -32,6 +32,7 @@ vim.z.packadd({
 	'hrsh7th/cmp-nvim-lsp',
 	'hrsh7th/cmp-buffer',
 	'hrsh7th/cmp-path',
+	-- 'brenopacheco/cmp-chicken',
 	'hrsh7th/nvim-cmp',
 	'windwp/nvim-autopairs',
 	'b0o/schemastore.nvim',
@@ -52,19 +53,19 @@ vim.z.packadd({
 	'brenopacheco/zk-nvim',
 	'jbyuki/one-small-step-for-vimkind',
 	'theHamsta/nvim-dap-virtual-text',
-	'rcarriga/nvim-dap-ui',
 	'mfussenegger/nvim-dap',
+	'nvim-neotest/nvim-nio',
+	'rcarriga/nvim-dap-ui',
 	'tpope/vim-dadbod',
 	'kristijanhusak/vim-dadbod-ui',
 	'kristijanhusak/vim-dadbod-completion',
-	'brenopacheco/libfzy.nvim',
-	-- 'brenopacheco/fennel-runtime.nvim',
 	-- TODO
 	-- 'vim-test/vim-test',
+	-- 'brenopacheco/chicken-ls',
 })
 
 vim.z.modload({
-	'args-view',
+	-- 'args-view',
 	'autochdir',
 	'backup',
 	'bufferizer',

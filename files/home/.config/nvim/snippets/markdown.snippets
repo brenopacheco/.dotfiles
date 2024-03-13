@@ -1,2 +1,29 @@
-snippet link > __Link__
+snippet href > __hyperlink__
 	[${1:desc}](${2:${TM_SELECTED_TEXT:url}})
+
+snippet img > __image__
+	![${1:desc}](${2:${TM_SELECTED_TEXT:url}})
+
+snippet bold > __bold__
+	__${1:${TM_SELECTED_TEXT:text}}__$0
+
+snippet italic > __italic__
+	_${1:${TM_SELECTED_TEXT:text}}_$0
+
+snippet strikethrough > __strikethrough__
+	~~${1:${TM_SELECTED_TEXT:text}}~~$0
+
+snippet quote > __quote__
+	> ${0:${TM_SELECTED_TEXT:text}}
+
+snippet code > __List Item__
+	`${1:${TM_SELECTED_TEXT:code}`
+
+snippet block > __List Item__
+	\`\`\`${1:lang}
+	${0:${TM_SELECTED_TEXT}}
+	\`\`\`
+
+snippet li > __List Item__
+	- __${1:{TM_SELECTED_TEXT:li}}__ - ${0}
+

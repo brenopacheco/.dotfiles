@@ -1,53 +1,12 @@
 local dap = require('dap')
-local dapui = require('dapui')
-local daputil = require('utils.dap')
 
-dap.set_log_level('TRACE')
-
----@diagnostic disable-next-line: missing-fields
-dapui.setup({
-	controls = {
-		element = 'repl',
-		enabled = true,
-		icons = {
-			disconnect = ' ',
-			pause = ' ',
-			play = ' ',
-			run_last = ' ',
-			step_back = ' ',
-			step_into = ' ',
-			step_out = ' ',
-			step_over = ' ',
-			terminate = ' ',
-		},
-	},
-	layouts = {
-		{
-			elements = {
-				-- { id = 'breakpoints', size = 0.25 },
-				{ id = 'stacks', size = 0.25 },
-				{ id = 'scopes', size = 0.50 },
-				{ id = 'watches', size = 0.25 },
-			},
-			position = 'right',
-			size = 50,
-		},
-		{
-			elements = {
-				{ id = 'repl', size = 1 },
-			},
-			position = 'bottom',
-			size = 11,
-		},
-	},
-})
+-- dap.set_log_level('TRACE')
+dap.set_log_level('ERROR')
 
 require('nvim-dap-virtual-text').setup({})
 
 dap.listeners.after.event_initialized['repl'] = function()
 	vim.notify('Dap session started', vim.log.levels.INFO)
-	-- dapui.open()
-	-- daputil.toggle_repl({ focus = false, mode = 'open' })
 end
 
 dap.listeners.before.event_terminated['repl'] = function()

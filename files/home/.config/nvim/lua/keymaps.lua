@@ -25,9 +25,7 @@ local keyboard = {
       { { 'n',     }, 'g=',             maps.args_add,           { desc = ' argsadd',             } },
       { { 'n',     }, 'g-',             maps.args_delete,        { desc = ' argsdel',             } },
       { { 'n',     }, 'g0',             maps.args_clear,         { desc = ' argsclr',             } },
-      -- { { 'n',     }, '<c-n>',          maps.args_next,          { desc = ' argsnext'             } },
-      -- { { 'n',     }, '<c-p>',          maps.args_prev,          { desc = ' argsprev'             } },
-      -- { { 'n',     }, '<c-p>',          maps.show_signature,     { desc = ' signature'            } },
+      { { 'n',     }, '<c-p>',          maps.show_signature,     { desc = ' signature'            } },
       { { 'n',     }, '<c-h>',          maps.show_highlight,     { desc = ' highlight'            } },
       { { 'n',     }, '<c-k>',          maps.show_hover,         { desc = ' hover'                } },
       { { 'n',     }, '<leader>e',      maps.errors_buffer,      { desc = ' errors-buf'           } },
@@ -187,6 +185,9 @@ local keyboard = {
   filetypes = {
     fennel = { -- [[
       { { 'n' }, '<c-p>', '<cmd>FennelReplEvalExpr<cr>',  { desc = ' eval at cursor'           } },
+    }, -- ]]
+    markdown = { -- [[
+      -- { { 'i' }, '<s-tab>', '<cmd>norm <^<cr>',           { desc = '  unshift'                 } },
     }, -- ]]
   }
 }

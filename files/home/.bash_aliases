@@ -1,5 +1,7 @@
 # rlwrap
 alias fennel='rlwrap fennel'
+alias csi='rlwrap chicken-csi'
+alias guile='rlwrap guile'
 # alias lua='rlwrap lua'
 
 # tmux

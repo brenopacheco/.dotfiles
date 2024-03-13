@@ -59,28 +59,8 @@ cmp.setup({
 		end, { 'i', 's' }),
 		['<C-k>'] = cmp.mapping(function() luasnip.jump(1) end, { 'i', 's' }),
 		['<C-j>'] = cmp.mapping(function() luasnip.jump(-1) end, { 'i', 's' }),
-		['<C-d>'] = function()
-			---@type number|nil
-			local docs_bufnr = nil
-			local winnrs = vim.api.nvim_tabpage_list_wins(0)
-			for _, winnr in ipairs(winnrs) do
-				local bufnr = vim.fn.winbufnr(winnr)
-				local ft = vim.api.nvim_get_option_value('ft', { buf = bufnr })
-				if ft == 'cmp_docs' then docs_bufnr = bufnr end
-			end
-			if not docs_bufnr then return vim.notify('No entry selected') end
-			-- here we should copy the buffer contents, copy the window options
-			-- and duplicate both
-		end,
 	}),
 	sources = cmp.config.sources({
-		{
-			name = 'copilot',
-			group_index = 1,
-			keyword_length = 1,
-			priority = 500,
-			trigger_characters = { ' ', '^' },
-		},
 		{
 			name = 'nvim_lsp',
 			keyword_length = 1,
@@ -132,6 +112,12 @@ cmp.setup({
 					return vim.tbl_keys(bufs)
 				end,
 			},
+		},
+		{
+			name = 'chicken',
+			-- keyword_length = 3,
+			group_index = 1,
+			priority = 100,
 		},
 	}),
 	experimental = {

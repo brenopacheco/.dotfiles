@@ -11,6 +11,14 @@ let g:neoformat_enabled_typescript = ['prettierd']
 let g:neoformat_enabled_typescriptreact = ['prettierd']
 let g:neoformat_enabled_go = ['goimports', 'gofumptextra', 'golines']
 let g:neoformat_enabled_ocaml = ['ocpindent', 'ocamlformatcustom']
+let g:neoformat_enabled_scheme = ['chickenfmt']
+]])
+
+vim.cmd([[
+let g:neoformat_scheme_chickenfmt = {
+        \ 'exe': 'scmfmt',
+        \ 'stdin': 1,
+        \ }
 ]])
 
 vim.cmd([[

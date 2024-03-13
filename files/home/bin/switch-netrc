@@ -1,17 +1,29 @@
 #!/usr/bin/env bash
 
-CURRENT=$(file ~/.netrc.gpg | grep symbolic | sed 's/^.*-//')
+# TARGET=$(file ~/.netrc.gpg | grep symbolic | sed 's/^.*-//')
 
-case $CURRENT in
+TARGET=$1
+
+if [ -z "$TARGET" ]; then
+  echo "Usage: switch-netrc <poatek|breno|bitbucket>"
+  exit 1
+fi
+
+case $TARGET in
   poatek)
+    echo "Switching to -> .netrc-poatek.gpg"
+    rm ~/.netrc.gpg
+    ln -sn ~/.netrc.gpg-poatek ~/.netrc.gpg
+    ;;
+  breno)
     echo "Switching to -> .netrc-breno.gpg"
     rm ~/.netrc.gpg
     ln -sn ~/.netrc.gpg-breno ~/.netrc.gpg
     ;;
-  breno)
-    echo "Switching to -> .netrc-poatek.gpg"
+  bitbucket)
+    echo "Switching to -> .netrc-bitbucket.gpg"
     rm ~/.netrc.gpg
-    ln -sn ~/.netrc.gpg-poatek ~/.netrc.gpg
+    ln -sn ~/.netrc.gpg-bitbucket ~/.netrc.gpg
     ;;
   *)
     echo "Error"

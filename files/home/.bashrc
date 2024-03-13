@@ -59,6 +59,8 @@ fi
 if [ -d ~/.asdf ]; then
 	source ~/.asdf/asdf.sh
 	source ~/.asdf/completions/asdf.bash
+	java_path="$(asdf which java)"
+	export JAVA_HOME="${java_path%/bin/java}"
 fi
 
 # Misc settings
@@ -87,6 +89,7 @@ export PATH=$PATH:$HOME/.nimble/bin       # nim
 export PATH=$PATH:$HOME/.opam/default/bin # ocaml
 export PATH=$PATH:$HOME/.dotnet/tools     # dotnet
 export PATH=$PATH:$HOME/.luarocks/bin     # lua
+export PATH=$PATH:$HOME/.chicken/bin      # chicken
 # fi
 
 test -e ~/.npmtoken && source ~/.npmtoken
@@ -94,3 +97,8 @@ test -e ~/.twitch-notify.conf && source ~/.twitch-notify.conf
 
 export ASPNETCORE_Kestrel__Certificates__Default__Password=""
 export ASPNETCORE_Kestrel__Certificates__Default__Path="$HOME/.aspnet/dotnet-devcert.pfx"
+
+export CHICKEN_INSTALL_PREFIX=$HOME/.chicken
+export CHICKEN_INSTALL_REPOSITORY=$HOME/.chicken
+export CHICKEN_REPOSITORY_PATH=$HOME/.chicken:/usr/lib/chicken/11
+export CHICKEN_DOC_REPOSITORY=$HOME/.chicken/share/chicken-doc

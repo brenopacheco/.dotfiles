@@ -8,17 +8,29 @@ local rootutil = require('utils.root')
 local M = {}
 
 -- Add buffer to arglist
-M.args_add = function() vim.cmd('ArgAdd') end
+M.args_add = function()
+	return vim.z.enabled('args-view') and vim.cmd('ArgAdd')
+		or vim.cmd('argadd | argdedupe')
+end
 
 -- Clear arglist
-M.args_clear = function() vim.cmd('ArgClear') end
+M.args_clear = function()
+	return vim.z.enabled('args-view') and vim.cmd('ArgClear') or vim.cmd('argd *')
+end
 
 -- Remove buffer from arglist
-M.args_delete = function() vim.cmd('ArgDelete') end
+M.args_delete = function()
+	return vim.z.enabled('args-view') and vim.cmd('ArgDelete')
+		or vim.cmd('argd %')
+end
 
-M.args_next = function() vim.cmd('ArgNext') end
+M.args_next = function()
+	return vim.z.enabled('args-view') and vim.cmd('ArgNext') or vim.cmd('next')
+end
 
-M.args_prev = function() vim.cmd('ArgPrev') end
+M.args_prev = function()
+	return vim.z.enabled('args-view') and vim.cmd('ArgPrev') or vim.cmd('prev')
+end
 
 -- Open buffer diagnostics in quickfix
 M.errors_buffer = function() qfutil.errors({ workspace = false }) end
@@ -189,10 +201,14 @@ M.goto_typedef = function()
 end
 
 -- Jump to next arg in arglist
-M.jump_argnext = function() vim.cmd('ArgNext') end
+M.jump_argnext = function()
+	return vim.z.enabled('args-view') and vim.cmd('ArgNext') or vim.cmd('next')
+end
 
 -- Jump to previous arg in arglist
-M.jump_argprev = function() vim.cmd('ArgPrev') end
+M.jump_argprev = function()
+	return vim.z.enabled('args-view') and vim.cmd('ArgPrev') or vim.cmd('prev')
+end
 
 -- Jump to next buffer in buffer list
 M.jump_bufnext = function() vim.cmd('bnext') end

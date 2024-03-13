@@ -1,8 +1,8 @@
 local lsp = require('lspconfig')
 local lsputil = require('utils.lsp')
 
--- vim.lsp.set_log_level(vim.log.levels.ERROR)
-vim.lsp.set_log_level(vim.log.levels.INFO)
+vim.lsp.set_log_level(vim.log.levels.DEBUG)
+-- vim.lsp.set_log_level(vim.log.levels.INFO)
 
 for type, icon in pairs({
 	Error = '󰅚 ',
@@ -51,18 +51,20 @@ lsp.elixirls.setup({
 	capabilities = capabilities,
 	cmd = { '/usr/bin/elixir-ls' },
 })
-lsp.fennel_ls.setup({
-	root_dir = function() return vim.fn.resolve(vim.fn.stdpath('config')) end,
-	capabilities = capabilities,
-	settings = {
-		['fennel-ls'] = {
-			['fennel-path'] = fennel['path'],
-			['macro-path'] = fennel['macro-path'],
-			['macro-file'] = fennel['macro-path'],
-			['extra-globals'] = table.concat(vim.tbl_keys(_G), ' '),
+if vim.z.enabled('fennel') then
+	lsp.fennel_ls.setup({
+		root_dir = function() return vim.fn.resolve(vim.fn.stdpath('config')) end,
+		capabilities = capabilities,
+		settings = {
+			['fennel-ls'] = {
+				['fennel-path'] = fennel['path'],
+				['macro-path'] = fennel['macro-path'],
+				['macro-file'] = fennel['macro-path'],
+				['extra-globals'] = table.concat(vim.tbl_keys(_G), ' '),
+			},
 		},
-	},
-})
+	})
+end
 lsp.gopls.setup({
 	capabilities = vim.tbl_extend('force', capabilities, {
 		textDocument = {
@@ -117,3 +119,14 @@ lsp.yamlls.setup({
 	capabilities = capabilities,
 })
 lsp.zk.setup({ capabilities = capabilities })
+
+lsp.metals.setup({
+	capabilities = capabilities,
+	root_dir = lsp.util.root_pattern(
+		'build.sbt',
+		'build.sc',
+		'build.gradle',
+		'pom.xml',
+		'.git'
+	),
+})
