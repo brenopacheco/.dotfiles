@@ -1,8 +1,8 @@
 local lsp = require('lspconfig')
 local lsputil = require('utils.lsp')
 
-vim.lsp.set_log_level(vim.log.levels.DEBUG)
--- vim.lsp.set_log_level(vim.log.levels.INFO)
+-- vim.lsp.set_log_level(vim.log.levels.DEBUG)
+vim.lsp.set_log_level(vim.log.levels.INFO)
 
 for type, icon in pairs({
 	Error = '󰅚 ',
@@ -129,4 +129,8 @@ lsp.metals.setup({
 		'pom.xml',
 		'.git'
 	),
+})
+
+lsp.svelte.setup({
+	capabilities = capabilities,
 })

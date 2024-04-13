@@ -17,9 +17,9 @@ local keyboard = {
     action = { -- [[
       { { 'n',     }, 'gr',             maps.goto_references,    { desc = ' references'           } },
       { { 'n',     }, 'gy',             maps.goto_typedef,       { desc = ' typedef'              } },
-      { { 'n',     }, 'gu',             maps.goto_implementation,{ desc = ' implementation'       } },
-      { { 'n',     }, 'gi',             maps.goto_incoming,      { desc = ' incoming-calls'       } },
-      { { 'n',     }, 'go',             maps.goto_outgoing,      { desc = ' outgoing-calls'       } },
+      { { 'n',     }, 'gi',             maps.goto_implementation,{ desc = ' implementation'       } },
+      { { 'n',     }, 'gI',             maps.goto_incoming,      { desc = ' incoming-calls'       } },
+      { { 'n',     }, 'gO',             maps.goto_outgoing,      { desc = ' outgoing-calls'       } },
       { { 'n',     }, 'gd',             maps.goto_declaration,   { desc = ' declaration'          } },
       { { 'n',     }, '<c-]>',          maps.goto_definition,    { desc = ' definition'           } },
       { { 'n',     }, 'g=',             maps.args_add,           { desc = ' argsadd',             } },
@@ -173,6 +173,7 @@ local keyboard = {
   abbreviations = {
     go = { -- [[
       ['eq']  = ':=',
+      ['ne']  = '!=',
       ['ife'] = 'if err != nil {<cr><cr>}<up><tab>',
       ['fn']  = 'func() {}<left><cr>.<cr><up><tab><del>',
       ['sw']  = 'switch {}<left><cr>.<cr><up><tab><del>',

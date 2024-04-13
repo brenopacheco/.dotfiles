@@ -5,28 +5,35 @@
 TARGET=$1
 
 if [ -z "$TARGET" ]; then
-  echo "Usage: switch-netrc <poatek|breno|bitbucket>"
-  exit 1
+	target=$(fd ".netrc.gpg-" -H -d 1 ~/ | sed 's/.*gpg-\(\S\+\)/\1/' | dmenu -p "-> .netrc.gpg")
+	if [ -z "$target" ]; then
+		notify-send "switch-netrc" "Error: no target selected"
+		exit 1
+	fi
+	rm ~/.netrc.gpg
+	ln -sn ~/.netrc.gpg-$target ~/.netrc.gpg
+	notify-send "switch-netrc" "\-> .netrc.gpg-$target"
+	exit 0
 fi
 
 case $TARGET in
-  poatek)
-    echo "Switching to -> .netrc-poatek.gpg"
-    rm ~/.netrc.gpg
-    ln -sn ~/.netrc.gpg-poatek ~/.netrc.gpg
-    ;;
-  breno)
-    echo "Switching to -> .netrc-breno.gpg"
-    rm ~/.netrc.gpg
-    ln -sn ~/.netrc.gpg-breno ~/.netrc.gpg
-    ;;
-  bitbucket)
-    echo "Switching to -> .netrc-bitbucket.gpg"
-    rm ~/.netrc.gpg
-    ln -sn ~/.netrc.gpg-bitbucket ~/.netrc.gpg
-    ;;
-  *)
-    echo "Error"
-    exit 1
-    ;;
+poatek)
+	echo "Switching to -> .netrc-poatek.gpg"
+	rm ~/.netrc.gpg
+	ln -sn ~/.netrc.gpg-poatek ~/.netrc.gpg
+	;;
+breno)
+	echo "Switching to -> .netrc-breno.gpg"
+	rm ~/.netrc.gpg
+	ln -sn ~/.netrc.gpg-breno ~/.netrc.gpg
+	;;
+bitbucket)
+	echo "Switching to -> .netrc-bitbucket.gpg"
+	rm ~/.netrc.gpg
+	ln -sn ~/.netrc.gpg-bitbucket ~/.netrc.gpg
+	;;
+*)
+	echo "Error"
+	exit 1
+	;;
 esac

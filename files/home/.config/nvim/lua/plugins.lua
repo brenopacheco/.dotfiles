@@ -7,7 +7,7 @@ vim.z.packadd({
 	'tpope/vim-fugitive',
 	'sodapopcan/vim-twiggy',
 	'lewis6991/gitsigns.nvim',
-	-- 'bluz71/vim-nightfly-guicolors',
+	'bluz71/vim-nightfly-guicolors',
 	-- 'brenopacheco/catppuccin.nvim',
 	'kyazdani42/nvim-web-devicons',
 	'norcalli/nvim-colorizer.lua',

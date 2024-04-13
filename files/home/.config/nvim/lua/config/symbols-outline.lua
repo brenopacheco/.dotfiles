@@ -1,5 +1,5 @@
 require('symbols-outline').setup({
-  width = 20,
+	width = 30,
 	autofold_depth = 0,
 	auto_unfold_hover = false,
 	keymaps = {

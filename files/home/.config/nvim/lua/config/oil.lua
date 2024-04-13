@@ -6,7 +6,7 @@ oil.setup({
 	keymaps = {
 		['-'] = 'actions.parent',
 		['e'] = 'actions.select',
-		-- ['<cr>'] = 'actions.select',
+		['<cr>'] = 'actions.select',
 		['+'] = 'actions.select',
 
 		['<c-p>'] = 'actions.preview',

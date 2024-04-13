@@ -7,9 +7,10 @@ compiler eslint
 setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
+setlocal expandtab=2
 setlocal formatoptions=croqlj
 setlocal textwidth=80
 setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
 setlocal commentstring=/*\ %s\ */
 
-let b:undo_ftplugin='setl mp< efm< ep< sw< ts< fo< tw< com< cms< '
+let b:undo_ftplugin='setl mp< efm< ep< sw< ts< et< fo< tw< com< cms< '

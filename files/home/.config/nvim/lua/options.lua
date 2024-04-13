@@ -81,7 +81,8 @@ vim.opt.pumheight      = 12                            -- max num of items in po
 vim.opt.pumwidth       = 15                            -- min popup menu width
 vim.opt.relativenumber = true                          -- set relative numbers
 vim.opt.report         = 0                             -- always report on :substitute
-vim.opt.scrolloff      = 999                           -- keep cursor centered
+-- vim.opt.scrolloff      = 999                           -- keep cursor centered
+vim.opt.scrolloff      = 0                             -- keep cursor centered
 vim.opt.shellcmdflag   = '-O globstar -c'
 vim.opt.shiftwidth     = 4                             -- number of spaces used by = op.
 vim.opt.shortmess:append('cs')                         -- remove annoying messages
