@@ -32,13 +32,8 @@ wk.setup({
 	icons = {
 		group = '', -- symbol prepended to a group
 	},
-	-- somewhy this bugs out fugitive `cc`
-	-- triggers = { '<leader>', '<c-w>', 'g', 'z', ']', '[' },
 	triggers = {},
-	disable = {
-		-- buftypes = { 'nofile', 'fugitive' },
-		-- filetypes = { 'fugitive', 'telescope', 'nvim-cmp', 'vim' },
-	},
+	disable = {},
 })
 
 wk.register({

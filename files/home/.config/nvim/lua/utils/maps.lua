@@ -521,4 +521,17 @@ M.keywordprg = function()
 	vim.notify(vim.o.keywordprg .. ' not found', vim.log.levels.WARN)
 end
 
+local function help(key) vim.cmd('WhichKey ' .. key) end
+
+M.help_leader = function() help('<leader>') end
+M.help_g = function() help('g') end
+M.help_find = function() help('<leader>f') end
+M.help_git = function() help('<leader>g') end
+M.help_debug = function() help('<leader>d') end
+M.help_quickfix = function() help('<leader>q') end
+M.help_test = function() help('<leader>t') end
+M.help_window = function() help('<C-w>') end
+M.help_jumpn = function() help(']') end
+M.help_jumpp = function() help('[') end
+
 return M
