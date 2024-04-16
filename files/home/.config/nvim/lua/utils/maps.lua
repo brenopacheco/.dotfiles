@@ -53,7 +53,7 @@ M.find_curdir = function()
 end
 
 -- Find files in git directory
-M.find_files = function()
+M.find_rfiles = function()
 	local root = rootutil.git_root()
 	vim.notify("info: searching '" .. root .. "'", vim.log.levels.INFO)
 	require('telescope.builtin').find_files({
@@ -75,7 +75,7 @@ M.find_config = function() require('utils.pickers.configs')() end
 M.find_make = function() require('utils.pickers.make')() end
 
 -- Find file in current project (nearest project file directory)
-M.find_project = function()
+M.find_pfiles = function()
 	local roots = rootutil.project_roots()
 	if #roots == 0 then
 		roots = { { path = rootutil.git_root() } }
