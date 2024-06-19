@@ -62,6 +62,7 @@ vim.z.packadd({
 	-- TODO
 	-- 'vim-test/vim-test',
 	-- 'brenopacheco/chicken-ls',
+  'Bekaboo/dropbar.nvim',
 })
 
 vim.z.modload({
@@ -82,7 +83,7 @@ vim.z.modload({
 	'yank-highlight',
 	'trim',
 	'pdf',
-	'format-on-save',
+	-- 'format-on-save',
 	'file-url',
 	'macro-recording-unmap',
 	-- 'messages',

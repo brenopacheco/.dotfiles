@@ -1,5 +1,6 @@
 #!/bin/bash
-exec 1>/tmp/xprofile.log 2>&1
+
+exec 1>/tmp/xprofile.log 2>/tmp/xprofile.err.log
 export PATH="/bin:/usr/bin:/home/$USER/bin"
 
 test -x "/home/$USER/.screenlayout/default.sh" && "/home/$USER/.screenlayout/default.sh"
@@ -23,18 +24,10 @@ redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 dbus-update-activation-environment --all
 gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
 
-picomtray & disown # picom systray indicator
-agua      & disown # drink water notifier
-dzen2_cal & disown # calendar widget
-
-# TODO: fix this on twitch-notify
-(
-	# shellcheck disable=SC1090
-	source /home/"$USER"/.twitch-notify.conf
-	while ! pgrep -x dwm; do
-		sleep 1;
-	done;
-	twitch-notify >>/tmp/twitch-notify.log 2>&1;
-) & disown
+picomtray   & disown
+agua        & disown
+dzen2_cal   & disown
+thunderbird & disown
+slack       & disown
 
 (sleep 1; xmodmap ~/.Xmodmap) & disown

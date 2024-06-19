@@ -1,5 +1,8 @@
+local bufutil = require('utils.buf')
+local configs = require('lspconfig.configs')
 local lsp = require('lspconfig')
 local lsputil = require('utils.lsp')
+local util = require('lspconfig.util')
 
 -- vim.lsp.set_log_level(vim.log.levels.DEBUG)
 vim.lsp.set_log_level(vim.log.levels.INFO)
@@ -134,3 +137,21 @@ lsp.metals.setup({
 lsp.svelte.setup({
 	capabilities = capabilities,
 })
+
+lsp.helm_ls.setup({
+	capabilities = capabilities,
+})
+
+-- lsp.biome.setup({
+-- 	capabilities = capabilities,
+-- 	on_attach = function(_, bufnr)
+-- 		vim.keymap.set({ 'n', 'x' }, '<leader>=', function()
+-- 			if vim.fn.mode() == 'n' then
+-- 				vim.cmd([[Neoformat biome]])
+-- 			else
+-- 				bufutil.set_visual(bufutil.get_visual())
+-- 				vim.cmd([['<,'>Neoformat biome]])
+-- 			end
+-- 		end, { buffer = bufnr })
+-- 	end,
+-- })

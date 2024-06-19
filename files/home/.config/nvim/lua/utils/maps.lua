@@ -530,7 +530,7 @@ M.help_git = function() help('<leader>g') end
 M.help_debug = function() help('<leader>d') end
 M.help_quickfix = function() help('<leader>q') end
 M.help_test = function() help('<leader>t') end
-M.help_window = function() help('<C-w>') end
+M.help_window = function() help('<leader>w') end
 M.help_jumpn = function() help(']') end
 M.help_jumpp = function() help('[') end
 

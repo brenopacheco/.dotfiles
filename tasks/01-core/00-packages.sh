@@ -77,7 +77,7 @@ packages=(
 	"xorg-xmodmap"
 	"xorg-xsetroot"
 	"xorg-xwininfo"
-	"yq"
+	# "yq" - wrong package, do not add. install using go
 	"zathura"
 	"zathura-pdf-mupdf"
 	"zip"

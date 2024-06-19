@@ -7,6 +7,7 @@ compiler gcc
 setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
+setlocal noexpandtab
 setlocal foldmethod=expr
 setlocal foldexpr=nvim_treesitter#foldexpr()
 setlocal formatoptions=croqlj

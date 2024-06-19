@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2016
+
+FC=~/fc
+FC_BACKEND=~/fc/backend
+FC_FRONTEND=~/fc/frontend
+BARKYN=~/barkyn/barker
+
+function init_fc() {
+	tmux new-session -d -s fc -n nvim -c $FC
+	tmux new-window -t fc -n docker -c $FC_BACKEND
+	tmux new-window -t fc -n backend -c $FC_BACKEND
+	tmux new-window -t fc -n frontend -c $FC_FRONTEND
+
+	tmux send-keys -t fc:docker 'docker-compose up' C-m
+
+	# tmux send-keys -t fc:backend 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-azurite-1)"   != '\''"healthy"'\'' ]; do sleep 1; done' C-m
+	# tmux send-keys -t fc:backend 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-databases-1)" != '\''"healthy"'\'' ]; do sleep 1; done' C-m
+	tmux send-keys -t fc:backend 'sleep 20' C-m
+	tmux send-keys -t fc:backend 'dotnet ef database update -s "./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj" -p "./apps/API/src/FarmerConnect.Core.Storage/FarmerConnect.Core.Storage.csproj" -c "FarmerConnect.Core.Storage.ApplicationDbContext"' C-m
+	tmux send-keys -t fc:backend 'yes | dotnet watch run --project ./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj' C-m
+
+	tmux send-keys -t fc:frontend 'rm -rf node_modules/.vite; yarn start:hub' C-m
+
+	tmux send-keys -t fc:nvim 'nvim oil:///$PWD/frontend/ oil:///$PWD/backend/apps/API/' C-m Space n
+}
+
+function init_barkyn() {
+	tmux new-session -d -s barkyn -n nvim -c $BARKYN
+	tmux new-window -t barkyn -n docker -c $BARKYN
+	tmux new-window -t barkyn -n lazydocker -c $BARKYN
+	tmux send-keys -t barkyn:docker 'docker-compose up' C-m
+	tmux send-keys -t barkyn:lazydocker 'lazydocker' C-m
+	tmux send-keys -t barkyn:nvim 'nvim oil:///$PWD' C-m
+}
+
+term_fc() {
+	docker-compose -f $FC_BACKEND/compose.yaml down
+	tmux kill-session -t fc
+}
+
+term_barkyn() {
+	docker-compose -f $BARKYN/compose.yml down
+	tmux kill-session -t barkyn
+}
+
+usage() {
+	echo "Usage: $0 <init|term> [--fc|--barkyn]"
+	if [ "$#" -gt 0 ]; then
+		echo ""
+		echo "$1"
+	fi
+}
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+	usage "Invalid number of arguments"
+	exit 1
+fi
+
+case $1 in
+init)
+	case $2 in
+	--fc)
+		init_fc
+		;;
+	--barkyn)
+		init_barkyn
+		;;
+	"")
+		init_fc
+		init_barkyn
+		;;
+	*)
+		usage "Invalid argument: $2"
+		exit 1
+		;;
+	esac
+	;;
+term)
+	case $2 in
+	--fc)
+		term_fc
+		;;
+	--barkyn)
+		term_barkyn
+		;;
+	"")
+		term_fc
+		term_barkyn
+		;;
+	*)
+		usage "Invalid argument: $2"
+		exit 1
+		;;
+	esac
+	;;
+*)
+	usage "Invalid command: $1"
+	exit 1
+	;;
+esac

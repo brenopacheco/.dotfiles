@@ -101,3 +101,6 @@ export CHICKEN_INSTALL_PREFIX=$HOME/.chicken
 export CHICKEN_INSTALL_REPOSITORY=$HOME/.chicken
 export CHICKEN_REPOSITORY_PATH=$HOME/.chicken:/usr/lib/chicken/11
 export CHICKEN_DOC_REPOSITORY=$HOME/.chicken/share/chicken-doc
+
+export ENCORE_INSTALL="/home/breno/.encore"
+export PATH="$ENCORE_INSTALL/bin:$PATH"

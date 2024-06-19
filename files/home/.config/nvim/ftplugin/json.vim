@@ -7,7 +7,7 @@ compiler eslint
 setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
-setlocal expandtab=2
+setlocal noexpandtab
 setlocal formatoptions=croqlj
 setlocal textwidth=80
 setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://

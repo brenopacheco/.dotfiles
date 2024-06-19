@@ -12,7 +12,6 @@ alias guile='rlwrap guile'
 alias ts='tmux new -s'
 alias ta="tmux_fzf"
 alias tl='tmux list-sessions -F "#{session_id}: #{session_name} (group: #{session_group}) - #{?session_attached,attached,detached}"'
-alias tk='terminate; tmux kill-server'
 
 alias pp='pushd .'
 alias po='popd'

@@ -1,22 +1,16 @@
 [user]
     email = brenoleonhardt@gmail.com
-    name = Breno Pacheco
-    signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
+    name = Breno Leonhardt Pacheco
+    ;signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
 [credential]
     helper = /usr/share/git/credential/netrc/git-credential-netrc.perl
     ; helper = /usr/share/git/credential/netrc/git-credential-netrc.perl -dv
+[core]
+    hooksPath = ~/.config/git/hooks
 [mergetool]
     prompt = false
-; [merge]
-;     tool = nvimmerge
-; [mergetool "nvimmerge"]
-;     cmd = "nvim -f -c \"Gvdiffsplit!\" \"$MERGED\""
 [difftool]
     prompt = false
-; [diff]
-;     tool = nvimdiff
-; [difftool "nvimdiff"]
-;     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [log]
     date = relative
 [alias]

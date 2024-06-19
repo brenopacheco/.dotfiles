@@ -44,4 +44,4 @@ vim.api.nvim_create_autocmd({ 'ModeChanged' }, {
 	callback = trigger,
 })
 
-vim.cmd('Copilot disable')
+-- vim.cmd('Copilot disable')
