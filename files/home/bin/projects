@@ -26,12 +26,15 @@ function init_fc() {
 }
 
 function init_barkyn() {
-	tmux new-session -d -s barkyn -n nvim -c $BARKYN
-	tmux new-window -t barkyn -n docker -c $BARKYN
+	tmux new-session -d -s barkyn -n docker -c $BARKYN
 	tmux new-window -t barkyn -n lazydocker -c $BARKYN
+	tmux new-window -t barkyn -n nvim -c $BARKYN
 	tmux send-keys -t barkyn:docker 'docker-compose up' C-m
 	tmux send-keys -t barkyn:lazydocker 'lazydocker' C-m
 	tmux send-keys -t barkyn:nvim 'nvim oil:///$PWD' C-m
+
+	tmux new-session -d -s "barkyn~logs" -n api -c $BARKYN
+	tmux send-keys -t "barkyn~logs:api" 'docker logs -f barker-apps-api' C-m
 }
 
 term_fc() {
@@ -42,6 +45,7 @@ term_fc() {
 term_barkyn() {
 	docker-compose -f $BARKYN/compose.yml down
 	tmux kill-session -t barkyn
+	tmux kill-session -t "barkyn~logs"
 }
 
 usage() {

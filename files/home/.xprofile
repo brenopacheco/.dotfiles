@@ -3,7 +3,10 @@
 exec 1>/tmp/xprofile.log 2>/tmp/xprofile.err.log
 export PATH="/bin:/usr/bin:/home/$USER/bin"
 
-test -x "/home/$USER/.screenlayout/default.sh" && "/home/$USER/.screenlayout/default.sh"
+LAYOUT="/home/$USER/.screenlayout/custom.sh"
+test -x "$LAYOUT" && (sleep 1; "$LAYOUT") & disown
+
+xrdb ~/.Xresources
 
 feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
 
@@ -24,9 +27,9 @@ redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 dbus-update-activation-environment --all
 gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
 
-picomtray   & disown
+# picomtray   & disown
 agua        & disown
-dzen2_cal   & disown
+# dzen2_cal   & disown
 thunderbird & disown
 slack       & disown
 

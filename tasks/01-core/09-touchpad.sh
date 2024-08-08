@@ -12,12 +12,12 @@ EndSection
 EOF
 )
 
+FILE="/etc/X11/xorg.conf.d/30-touchpad.conf"
+
 function should_run() {
-	test -e /etc/X11/xorg.conf.d/30-touchpad.conf &&
-		return "$DONE" || return "$RUN"
+	test -e "$FILE" && return "$DONE" || return "$RUN"
 }
 
 function task() {
-	echo "$CONFIG" | sudo tee /etc/X11/xorg.conf.d/30-touchpad.conf &&
-		return "$OK"
+	echo "$CONFIG" | sudo tee "$FILE" && return "$OK"
 }

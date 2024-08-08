@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# NOTE: not sure this works
 conf="/etc/systemd/logind.conf"
 
 function should_run() {
