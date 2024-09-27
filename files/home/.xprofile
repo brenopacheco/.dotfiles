@@ -3,12 +3,12 @@
 exec 1>/tmp/xprofile.log 2>/tmp/xprofile.err.log
 export PATH="/bin:/usr/bin:/home/$USER/bin"
 
-LAYOUT="/home/$USER/.screenlayout/custom.sh"
-test -x "$LAYOUT" && (sleep 1; "$LAYOUT") & disown
+LAYOUT="/home/breno/.screenlayout/default.sh"
+WALLPAPER="/usr/share/backgrounds/gnome/blobs-l.svg"
+
+test -x "$LAYOUT" && (sleep 1; "$LAYOUT"; feh --bg-fill "$WALLPAPER") & disown
 
 xrdb ~/.Xresources
-
-feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
 
 slstatus       & disown # statusbar
 dunst          & disown # notification daemon
@@ -33,4 +33,6 @@ agua        & disown
 thunderbird & disown
 slack       & disown
 
+(sleep 1; test -x "$LAYOUT" && "$LAYOUT") & disown
+(sleep 1; feh --bg-fill "$WALLPAPER") & disown
 (sleep 1; xmodmap ~/.Xmodmap) & disown

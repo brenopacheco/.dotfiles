@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
 dirs=(
-	"bin"
-	"desktop"
-	"downloads"
 	"git"
-	"music"
 	"sketch"
 	"tmp"
 )

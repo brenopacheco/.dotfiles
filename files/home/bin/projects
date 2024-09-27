@@ -14,9 +14,7 @@ function init_fc() {
 
 	tmux send-keys -t fc:docker 'docker-compose up' C-m
 
-	# tmux send-keys -t fc:backend 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-azurite-1)"   != '\''"healthy"'\'' ]; do sleep 1; done' C-m
-	# tmux send-keys -t fc:backend 'while [ "$(docker inspect --format='\''{{json .State.Health.Status}}'\'' backend-databases-1)" != '\''"healthy"'\'' ]; do sleep 1; done' C-m
-	tmux send-keys -t fc:backend 'sleep 20' C-m
+	tmux send-keys -t fc:backend 'sleep 120' C-m
 	tmux send-keys -t fc:backend 'dotnet ef database update -s "./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj" -p "./apps/API/src/FarmerConnect.Core.Storage/FarmerConnect.Core.Storage.csproj" -c "FarmerConnect.Core.Storage.ApplicationDbContext"' C-m
 	tmux send-keys -t fc:backend 'yes | dotnet watch run --project ./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj' C-m
 

@@ -18,7 +18,7 @@ clear shift
 
 ! modifiers
 keycode 66  = Control_L   Control_L   Control_L   Control_L
-keycode 50  =
+! keycode 50  =
 keycode 37  =
 keycode 133 = Super_L     Super_L     Super_L     Super_L
 keycode 64  = Alt_L       Alt_L       Alt_L       Alt_L

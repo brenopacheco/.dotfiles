@@ -26,6 +26,7 @@ alias yr='rm -rf ./node_modules && yarn install'
 alias nr='rm -rf ./node_modules && npm install'
 
 # git
+alias gff='git merge --ff-only'
 alias gr='cd $(git-root)'
 alias gs='git status'
 alias grm='git clean -fd'
@@ -56,7 +57,7 @@ alias la='ls -la'
 
 # directories
 alias mnt='cd /var/run/media/breno'
-alias desk='cd ~/desktop'
-alias down='cd ~/downloads'
+alias desk='cd ~/Desktop'
+alias down='cd ~/Downloads'
 alias dot='cd ~/.dotfiles'
 alias bin='cd ~/.bin'
