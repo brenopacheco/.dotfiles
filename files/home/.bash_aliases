@@ -1,6 +1,6 @@
 # shellcheck disable=SC2154
 
-alias z='pdf=$(fd -I -t f "\.pdf$" | dmenu) && zathura $pdf &'
+alias z='pdf=$(fd -t f "\.pdf$" ~/books | dmenu) && zathura $pdf &'
 
 # rlwrap
 alias fennel='rlwrap fennel'
