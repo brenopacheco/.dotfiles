@@ -1,53 +1,40 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2016
 
-FC=~/fc
-FC_BACKEND=~/fc/backend
-FC_FRONTEND=~/fc/frontend
-BARKYN=~/barkyn/barker
-
-function init_fc() {
-	tmux new-session -d -s fc -n nvim -c $FC
-	tmux new-window -t fc -n docker -c $FC_BACKEND
-	tmux new-window -t fc -n backend -c $FC_BACKEND
-	tmux new-window -t fc -n frontend -c $FC_FRONTEND
-
-	tmux send-keys -t fc:docker 'docker-compose up' C-m
-
-	tmux send-keys -t fc:backend 'sleep 120' C-m
-	tmux send-keys -t fc:backend 'dotnet ef database update -s "./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj" -p "./apps/API/src/FarmerConnect.Core.Storage/FarmerConnect.Core.Storage.csproj" -c "FarmerConnect.Core.Storage.ApplicationDbContext"' C-m
-	tmux send-keys -t fc:backend 'yes | dotnet watch run --project ./apps/API/src/FarmerConnect.Api/FarmerConnect.Api.csproj' C-m
-
-	tmux send-keys -t fc:frontend 'rm -rf node_modules/.vite; yarn start:hub' C-m
-
-	tmux send-keys -t fc:nvim 'nvim oil:///$PWD/frontend/ oil:///$PWD/backend/apps/API/' C-m Space n
-}
-
-function init_barkyn() {
-	tmux new-session -d -s barkyn -n docker -c $BARKYN
-	tmux new-window -t barkyn -n lazydocker -c $BARKYN
-	tmux new-window -t barkyn -n nvim -c $BARKYN
+function init_p1() {
+	DIR="$HOME/PLACEHOLDER"
+	tmux new-session -d -s barkyn -n docker -c "$DIR"
+	tmux new-window -t barkyn -n lazydocker -c "$DIR"
+	tmux new-window -t barkyn -n nvim -c "$DIR"
 	tmux send-keys -t barkyn:docker 'docker-compose up' C-m
 	tmux send-keys -t barkyn:lazydocker 'lazydocker' C-m
 	tmux send-keys -t barkyn:nvim 'nvim oil:///$PWD' C-m
-
-	tmux new-session -d -s "barkyn~logs" -n api -c $BARKYN
-	tmux send-keys -t "barkyn~logs:api" 'docker logs -f barker-apps-api' C-m
 }
 
-term_fc() {
-	docker-compose -f $FC_BACKEND/compose.yaml down
-	tmux kill-session -t fc
+function init_p2() {
+	DIR="$HOME/PLACEHOLDER"
+	tmux new-session -d -s barkyn -n docker -c "$DIR"
+	tmux new-window -t barkyn -n lazydocker -c "$DIR"
+	tmux new-window -t barkyn -n nvim -c "$DIR"
+	tmux send-keys -t barkyn:docker 'docker-compose up' C-m
+	tmux send-keys -t barkyn:lazydocker 'lazydocker' C-m
+	tmux send-keys -t barkyn:nvim 'nvim oil:///$PWD' C-m
 }
 
-term_barkyn() {
-	docker-compose -f $BARKYN/compose.yml down
-	tmux kill-session -t barkyn
-	tmux kill-session -t "barkyn~logs"
+term_p1() {
+	# docker-compose -f <path-to-yaml> down
+	# tmux kill-session -t p1
+	echo "PLACEHOLDER"
+}
+
+term_p2() {
+	# docker-compose -f <path-to-yaml> down
+	# tmux kill-session -t p1
+	echo "PLACEHOLDER"
 }
 
 usage() {
-	echo "Usage: $0 <init|term> [--fc|--barkyn]"
+	echo "Usage: $0 <init|term> [--p1|--p2]"
 	if [ "$#" -gt 0 ]; then
 		echo ""
 		echo "$1"
@@ -62,15 +49,15 @@ fi
 case $1 in
 init)
 	case $2 in
-	--fc)
-		init_fc
+	--p1)
+		init_p1
 		;;
-	--barkyn)
-		init_barkyn
+	--p2)
+		init_p2
 		;;
 	"")
-		init_fc
-		init_barkyn
+		init_p1
+		init_p2
 		;;
 	*)
 		usage "Invalid argument: $2"
@@ -80,15 +67,15 @@ init)
 	;;
 term)
 	case $2 in
-	--fc)
-		term_fc
+	--p1)
+		term_p1
 		;;
-	--barkyn)
-		term_barkyn
+	--p2)
+		term_p2
 		;;
 	"")
-		term_fc
-		term_barkyn
+		term_p1
+		term_p2
 		;;
 	*)
 		usage "Invalid argument: $2"

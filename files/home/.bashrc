@@ -66,7 +66,9 @@ fi
 # Misc settings
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
-export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+
+# Use gpg-agent for ssh
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 # GOPATH is required for LSP and gobuild
 export GOPATH=$HOME/.go

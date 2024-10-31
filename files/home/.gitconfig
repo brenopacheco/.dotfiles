@@ -1,11 +1,14 @@
 [user]
     email = brenoleonhardt@gmail.com
     name = Breno Leonhardt Pacheco
-    ;signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
+    signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
+[commit]
+    gpgsign = true
+[push]
+    autoSetupRemote = true
 [credential]
-    helper = /home/breno/.config/git/helper/netrc.sh
-    ; helper = /usr/share/git/credential/netrc/git-credential-netrc.perl
-    ; helper = /usr/share/git/credential/netrc/git-credential-netrc.perl -dv
+    helper = /usr/share/git/credential/netrc/git-credential-netrc.perl #-dv
+    ; helper = /home/breno/.config/git/helper/netrc.sh
 [core]
     hooksPath = ~/.config/git/hooks
 [mergetool]
@@ -16,8 +19,3 @@
     date = relative
 [alias]
     graph = !git log \"$@\" --oneline --graph --branches --remotes --date=short
-    ls    = !git ls-tree --name-only -r $(git branch --show-current)
-[commit]
-    gpgsign = true
-[push]
-    autoSetupRemote = true

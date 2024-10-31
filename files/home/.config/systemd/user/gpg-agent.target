@@ -1,0 +1,7 @@
+[Unit]
+Description=Start gpg-agent on login
+Requires=gpg-agent.service
+After=gpg-agent.service
+
+[Install]
+WantedBy=default.target

@@ -6,9 +6,10 @@ export PATH="/bin:/usr/bin:/home/$USER/bin"
 LAYOUT="/home/breno/.screenlayout/default.sh"
 WALLPAPER="/usr/share/backgrounds/gnome/blobs-l.svg"
 
-test -x "$LAYOUT" && (sleep 1; "$LAYOUT"; feh --bg-fill "$WALLPAPER") & disown
-
 xrdb ~/.Xresources
+
+# this is required for gnome-keyring to work
+dbus-update-activation-environment --all
 
 slstatus       & disown # statusbar
 dunst          & disown # notification daemon
@@ -21,18 +22,13 @@ pasystray \
 	--volume-inc=3 & disown # pulseaudio volume applet
 redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 
-# currently there is no rule set. do I need this?
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & disown
+# thunderbird & disown
+# slack       & disown
 
-dbus-update-activation-environment --all
-gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
+# start gpg-agent if not already running
+SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+export SSH_AUTH_SOCK
 
-# picomtray   & disown
-agua        & disown
-# dzen2_cal   & disown
-thunderbird & disown
-slack       & disown
-
-(sleep 1; test -x "$LAYOUT" && "$LAYOUT") & disown
-(sleep 1; feh --bg-fill "$WALLPAPER") & disown
-(sleep 1; xmodmap ~/.Xmodmap) & disown
+test -x "$LAYOUT" && "$LAYOUT"
+feh --bg-fill "$WALLPAPER"
+xmodmap ~/.Xmodmap
