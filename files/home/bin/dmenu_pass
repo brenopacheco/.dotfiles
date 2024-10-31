@@ -17,13 +17,19 @@ EOF
 shopt -s nullglob globstar
 
 prefix=${PASSWORD_STORE_DIR-~/.password-store}
-password_files=("$prefix"/**/*.gpg)
-password_files=("${password_files[@]#"$prefix"/}")
-password_files=("${password_files[@]%.gpg}")
 
-password=$(printf '%s\n' "${password_files[@]}" | dmenu -p "Passwords: ")
+password_files=()
+for file in "$prefix"/**/*.gpg; do
+	filename=$(basename "$file")
+	IFS=':' read -r type email target _ <<<"$filename)"
+	if [[ "$type" == "recovery" ]]; then
+		continue
+	fi
+	entry=$(printf '%-32s %-34s %8s;%s' "$target" "$email"  "[${type}]" "${filename%.gpg}")
+	password_files+=("$entry")
+done
 
-echo "$password"
+password=$(printf '%s\n' "${password_files[@]}" | dmenu -d ";")
 
 [[ -n $password ]] || exit
 
@@ -42,4 +48,6 @@ else
 		notify-send -a pass -t 10000 -i error "Error" "Could not decrypt password"
 		exit 1
 	fi
+	IFS=':' read -r type email target _ <<<"$password"
+	notify-send -a pass -t 2000 -i error "$target" "$email"
 fi
