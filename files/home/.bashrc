@@ -1,12 +1,10 @@
 # shellcheck disable=SC1090,SC2155
+
 # If not running interactively, do nothing
 case $- in
 *i*) ;;
 *) return ;;
 esac
-
-# get current branch in git repo
-export PROMPT_DIRTRIM=3
 
 PS1='\[\e[32m\]\u@\h\[\e[m\]:\[\e[34m\]\w\[\e[m\]\[\e[31m\]$(git_branch)\[\e[m\]\[\e[0m\]\$ '
 
@@ -18,90 +16,55 @@ function git_branch { # get git branch of pwd
 	fi
 }
 
-# History settings
-shopt -s histappend # appends history entries in .bash_history
-export HISTFILESIZE=9999999000
-export HISTSIZE=9999999000
-export HISTCONTROL=ignoreboth
-export HISTIGNORE='&:[ ]*'
-export HISTTIMEFORMAT='%F %T '
-shopt -s cmdhist
+shopt -s histappend               # append to history file
+shopt -s cmdhist                  # preserve multi-line commands
+shopt -s checkwinsize             # update terminal size variables LINES/COLUMNS
+shopt -s globstar                 # enable recursive globbing **/*
+set -o vi                         # use vi mode for command line
+set -o notify                     # immediate job completion notifications
+set completion-ignore-case On     # case-insensitive completion
 
-## encoding
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
+export PROMPT_DIRTRIM=3           # trim directory path to last 3 components
 
-## Uses vim mode in bash
-set -o vi
-set -o notify
-set completion-ignore-case On
-shopt -s checkwinsize
-shopt -s globstar
+export HISTFILESIZE=9999999000    # max size of history file
+export HISTSIZE=9999999000        # max number of history entries
+export HISTCONTROL=ignoreboth     # ignore duplicates and blank lines
+export HISTIGNORE='&:[ ]*'        # ignore specific patterns in history
+export HISTTIMEFORMAT='%F %T '    # format for timestamp in history
 
-# Source aliases and functions and keybindings
+export LC_ALL=en_US.UTF-8         # set locale for all categories
+export LANG=en_US.UTF-8           # set default language
+export LANGUAGE=en_US.UTF-8       # set preferred language for messages
+
 source "$HOME/.bash_aliases"
 source "$HOME/.bash_functions"
 source "$HOME/.bash_keybindings"
 
-# Set vim as default editor
-export EDITOR=/usr/bin/vim
-export VISUAL=/usr/bin/vim
-# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
-## source fzf settings
 if eval which fzf >/dev/null 2>&1; then
 	source /usr/share/fzf/key-bindings.bash
 	source /usr/share/fzf/completion.bash
 fi
 
-## source sdk manager
 if [ -d ~/.asdf ]; then
 	source ~/.asdf/asdf.sh
 	source ~/.asdf/completions/asdf.bash
-	java_path="$(asdf which java)"
-	export JAVA_HOME="${java_path%/bin/java}"
 fi
 
-# Misc settings
+export EDITOR=/usr/bin/vim
+export VISUAL=/usr/bin/vim
+export MANPAGER='/usr/bin/nvim +Man!'
+export OPENER='/usr/bin/xdg-open'
+export BROWSER='/usr/bin/chromium'
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
-
-# Use gpg-agent for ssh
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-
-# GOPATH is required for LSP and gobuild
 export GOPATH=$HOME/.go
 
-# OPAM configuration
-test -r /home/breno/.opam/opam-init/init.sh &&
-	. /home/breno/.opam/opam-init/init.sh >/dev/null 2>/dev/null
-
-# PATH
-# if [ "$SHLVL" = 1 ]; then
 export PATH=$PATH:$HOME/bin
 export PATH=$PATH:$HOME/.npm/bin          # node
-export PATH=$PATH:$HOME/.yarn/bin         # node
 export PATH=$PATH:$HOME/.cargo/bin        # rust
-export PATH=$PATH:$HOME/.local/bin        # python
-export PATH=$PATH:$HOME/.pkgs/bin         # ngrok
+export PATH=$PATH:$HOME/.local/bin        # pipx
 export PATH=$PATH:$HOME/.go/bin           # go
-export PATH=$PATH:$HOME/.nimble/bin       # nim
-export PATH=$PATH:$HOME/.opam/default/bin # ocaml
-export PATH=$PATH:$HOME/.dotnet/tools     # dotnet
 export PATH=$PATH:$HOME/.luarocks/bin     # lua
-export PATH=$PATH:$HOME/.chicken/bin      # chicken
-# fi
 
 test -e ~/.npmtoken && source ~/.npmtoken
-
-export ASPNETCORE_Kestrel__Certificates__Default__Password=""
-export ASPNETCORE_Kestrel__Certificates__Default__Path="$HOME/.aspnet/dotnet-devcert.pfx"
-
-export CHICKEN_INSTALL_PREFIX=$HOME/.chicken
-export CHICKEN_INSTALL_REPOSITORY=$HOME/.chicken
-export CHICKEN_REPOSITORY_PATH=$HOME/.chicken:/usr/lib/chicken/11
-export CHICKEN_DOC_REPOSITORY=$HOME/.chicken/share/chicken-doc
-
-export ENCORE_INSTALL="/home/breno/.encore"
-export PATH="$ENCORE_INSTALL/bin:$PATH"

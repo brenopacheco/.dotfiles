@@ -1,0 +1,32 @@
+# shellcheck disable=all
+
+pkgname=dwm-fork
+pkgver=6.5.r21.79bd73e
+pkgrel=1
+pkgdesc='Dynamic window manager (dwm) fork'
+url='https://github.com/brenopacheco/dwm-fork'
+arch=(x86_64)
+license=('MIT')
+options=('!debug')
+depends=('libx11' 'libxinerama' 'libxft' 'freetype2')
+conflicts=('dwm' 'xdg-desktop-portal-gnome')
+provides=('dwm')
+source=('git+https://github.com/brenopacheco/dwm-fork.git')
+md5sums=('SKIP')
+
+pkgver() {
+	cd dwm-fork
+	make version
+}
+
+build() {
+	cd dwm-fork
+	make dist
+}
+
+package() {
+	PREFIX="${pkgdir}/usr/share"
+	cd dwm-fork
+	mkdir -p "$PREFIX"
+	tar -xpvzf dwm-${pkgver}.tar.gz -C "$PREFIX"
+}

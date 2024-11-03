@@ -60,6 +60,7 @@ local supported = {
 	'proto',
 	'pug',
 	'python',
+	'query',
 	'r',
 	'racket',
 	'regex',
@@ -107,8 +108,6 @@ require('nvim-treesitter.configs').setup({
 				['if'] = '@function.inner',
 				['ac'] = '@comment.outer', -- not working
 				['ic'] = '@comment.inner', -- not working
-				-- ['ac'] = '@class.outer',
-				-- ['ic'] = '@class.inner',
 			},
 		},
 	},
@@ -116,8 +115,3 @@ require('nvim-treesitter.configs').setup({
 		enable = false,
 	},
 })
-
-vim.print(vim.treesitter.language.add('bash', {
-	path = require('nvim-treesitter.configs').get_parser_install_dir()
-		.. '/bash.so',
-}))

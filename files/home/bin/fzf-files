@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-OPTS="-m --ansi --height 40% --preview 'bat --color=always --style=header,grid --line-range :100 {}'"
-CMD="fd . -ia -t f -j 5 2>/dev/null | fzf $OPTS"
-FILES=$(eval "$CMD")
-[[ -n "$FILES" ]] && echo "$FILES"

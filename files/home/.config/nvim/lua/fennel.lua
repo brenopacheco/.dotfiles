@@ -1,1 +1,0 @@
-/usr/share/lua/5.4/fennel.lua

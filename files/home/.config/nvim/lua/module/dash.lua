@@ -1,12 +1,13 @@
 --[[ NOTE:
-  1. transform lynx-dump into vimdoc format
-  2. doc ends up being a help file
-  3. we need to generate tags for the help file
-  4. for each link we still don't have docs for, we need to generate
-     the docs for it
 
-
-NOTE: post-process/pre-process the output for specific file types (e.g: C)
+The scope of this project is too wide. Perhaps instead it'd be better
+to actually create a custom project that:
+  - pulls the docsets
+  - for each entry in the database, parse the file using an html->md tool
+  - keeps placeholders
+  - outputs the markdown and potentially convert md->vimdoc
+  - generates a new "database" based on tags
+  - *each docset would require a specific pre/post-processing*
 ]]
 --
 --
@@ -124,9 +125,9 @@ end
 local function query_db(name, query)
 	local db = get_docset_db(name)
 	local out = vim.system({ 'sqlite3', db, query }, { text = true }):wait()
-	assert(out.code == 0, out.stderr)
+	assert(out.code == 0, out.stderr, out.stdout)
 	return vim
-		.iter(out.stdout:split('\n'))
+		.iter(vim.split(out.stdout, '\n'))
 		:map(function(line) return vim.trim(line) end)
 		:filter(function(line) return line ~= '' end)
 		:totable()
@@ -199,7 +200,7 @@ local function query_dash(name, pattern)
 	return vim
 		.iter(rows)
 		:map(function(row)
-			local iter = vim.iter(row:split('|'))
+			local iter = vim.iter(vim.split(row, '|'))
 			local _, match, type = iter:next(), iter:next(), iter:next()
 			local path = iter:join('|')
 			path = path:gsub('^.*>', '')
@@ -344,7 +345,7 @@ local function get_result_contents(result)
 	local tmpfile = os.tmpname() .. '.html'
 	file_write(tmpfile, html)
 	local out = vim
-		.system({ 'lynx', '-dump', '-hiddenlinks=merge', tmpfile }, { text = true })
+		.system({ 'lynx', '-dump', '-nocolor', '-hiddenlinks=merge', tmpfile }, { text = true })
 		:wait()
 	local lynx = vim.split(vim.trim(out.stdout), '\n')
 	assert(out.code == 0, out.stderr)
@@ -359,7 +360,7 @@ end
 ---@param result dash.QueryResult
 local function open_result(result)
 	log(result)
-	assert(false, 'stop')
+	-- assert(false, 'stop')
 	local content = get_result_contents(result)
 	vim.cmd('vsp')
 	local buf = vim.api.nvim_create_buf(false, true)
@@ -463,10 +464,10 @@ M.setup = function(opts)
 	end
 	register_docsets(opts.docsets)
 	-- M.docset_names()
-	M.open('C', 'stdin')
+	-- M.open('C', 'stdin')
 	-- M.open('Ruby', 'StringIO.set_encoding')
 	-- log(M.enabled_docsets)
-	-- M.open('Go', 'fmt.Println')
+	M.open('Go', 'fmt.Println')
 	-- log(M.open('Lua_5.4', 'io'))
 	-- M.query('Vim', [['foldlevel']])
 	-- M.query('NodeJS', [[^assert.AssertionError]])
@@ -475,15 +476,15 @@ end
 M.setup({
 	reset = false,
 	docsets = {
-		'Vim',
-		'Lua_5.4',
+		-- 'Vim',
+		-- 'Lua_5.4',
 		'Go',
-		'NodeJS',
-		'OCaml',
-		'Ruby',
-		'Rust',
-		'TypeScript',
-		'C',
+		-- 'NodeJS',
+		-- 'OCaml',
+		-- 'Ruby',
+		-- 'Rust',
+		-- 'TypeScript',
+		-- 'C',
 	},
 })
 

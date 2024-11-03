@@ -188,15 +188,9 @@ local keyboard = {
       ['fn']  = 'func() {}<left><cr>.<cr><up><tab><del>',
       ['sw']  = 'switch {}<left><cr>.<cr><up><tab><del>',
       ['inf'] = 'interface{}',
-    }, -- ]]
-    fennel = { -- [[
-      ['lambda']  = 'λ',
     } -- ]]
   },
   filetypes = {
-    fennel = { -- [[
-      { { 'n' }, '<c-p>', '<cmd>FennelReplEvalExpr<cr>',  { desc = ' eval at cursor'           } },
-    }, -- ]]
     markdown = { -- [[
       -- { { 'i' }, '<s-tab>', '<cmd>norm <^<cr>',           { desc = '  unshift'                 } },
     }, -- ]]

@@ -1,0 +1,4 @@
+.config/
+.config/systemd/user/
+.ssh/
+.gnupg/

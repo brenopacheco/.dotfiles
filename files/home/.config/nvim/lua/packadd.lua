@@ -1,24 +1,7 @@
 ---@meta packadd
 --- Packadd - custom minimal package manager
---
--- Configures &runtimepath and &packpath
--- Disables unwanted plugins
--- Provides the Packadd [!] command
--- Provides vim.ensure(tbl) lua function
---   * installs packages as opt and enables them
---   * loads lua/config/<pkg-name>.lua configuration
---
---  TODO: the following options to the package (see `lazy`)
---        - `deps`: calls `ensure` on the list of dependencies
---        - `opts`: configuration table passed to setup()
---        - `init`: makes sure that the packages are loaded
--- This changes the way that the packages are loaded:
--- 1. instead of reading configuration from lua/config/<pkg-name>.lua,
---    we call packadd passing the options
--- 2. we can use different configs that bundle multiple packages. i.e:
---    git, lsp, complete, dap, treesitter, tools, ui, test, misc
 
-local plugin_dir = vim.fn.stdpath('config') -- alternatively, use ('data')
+local plugin_dir = vim.fn.stdpath('data')
 
 local packages = {}
 local modules = {}

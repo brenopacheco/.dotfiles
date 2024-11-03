@@ -1,0 +1,27 @@
+# shellcheck disable=all
+
+pkgname=neovim-fork
+pkgver=0.10.2
+pkgrel=1
+pkgdesc='Fork of Vim aiming to improve user experience, plugins, and GUIs.'
+arch=(x86_64)
+url='https://neovim.io'
+license=('custom:neovim')
+conflicts=(neovim)
+options=('!debug')
+
+source=("https://github.com/neovim/neovim/releases/download/v0.10.2/nvim-linux64.tar.gz")
+
+sha256sums=('9f696e635d503b844e4e78e88a22bcf512a78f288bf471379afc3d0004e15217')
+
+check() {
+  cd nvim-linux64
+  ./bin/nvim --version
+  ./bin/nvim --headless -u NONE -i NONE -c ':quit'
+}
+
+package() {
+  cd nvim-linux64
+  install -Dm755 bin/nvim -t "$pkgdir/usr/bin/"
+  cp -r lib share "$pkgdir/usr/"
+}

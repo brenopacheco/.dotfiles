@@ -1,0 +1,35 @@
+# shellcheck disable=all
+#
+# NOTE: Run `tic -sx /usr/share/st/st.info` if colors seem weird on nvim/tmux
+
+pkgname=st-fork
+pkgver=0.8.4.r10.641f928
+pkgrel=1
+pkgdesc='A simple virtual terminal emulator for X (patched fork)'
+arch=('x86_64')
+license=('MIT')
+depends=('libxft')
+options=('!debug')
+conflicts=('st')
+url="https://github.com/brenopacheco/st"
+
+source=("git+https://github.com/brenopacheco/st-fork.git")
+
+md5sums=('SKIP')
+
+pkgver() {
+	cd st-fork
+	make version
+}
+
+build() {
+	cd st-fork
+	make dist
+}
+
+package() {
+	PREFIX="${pkgdir}/usr/share"
+	cd st-fork
+	mkdir -p "$PREFIX"
+	tar -xpvzf st-${pkgver}.tar.gz -C "$PREFIX"
+}

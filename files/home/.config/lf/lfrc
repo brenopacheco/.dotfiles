@@ -1,189 +1,21 @@
-## custom maps
-map D :delete <enter>
-map R :bulkrename <enter>
-map W firefox
-map w chromium
-# map e emacs
-map e nvim
-map E vimdiff
-map ǵ go-dir
-map ǘ go-file
-map <esc> quit
-
-
-# use enter for shell commands
-map <enter> shell
-
-# execute current file (must be executable)
-map x $$f
-map X !$f
-
-# dedicated keys for file opener actions
-map o &mimeopen $f
-map O $mimeopen --ask $f
-
-
-## default taken from github
-# interpreter for shell commands (needs to be POSIX compatible)
-set shell bash
-
-# set '-eu' options for shell commands
-# These options are used to have safer shell commands. Option '-e' is used to
-# exit on error and option '-u' is used to give error for unset variables.
-# Option '-f' disables pathname expansion which can be useful when $f, $fs, and
-# $fx variables contain names with '*' or '?' characters. However, this option
-# is used selectively within individual commands as it can be limiting at
-# times.
-set shellopts '-eu'
-
-# set internal field separator (IFS) to "\n" for shell commands
-# This is useful to automatically split file names in $fs and $fx properly
-# since default file separator used in these variables (i.e. 'filesep' option)
-# is newline. You need to consider the values of these options and create your
-# commands accordingly.
 set ifs "\n"
-
-# leave some space at the top and the bottom of the screen
+set shellopts '-eu'
+set shell bash
 set scrolloff 10
 
-cmd vimdiff ${{
-	 	cache=""
-		for f in $fx; do
-			file_name=$(echo "$f" | sed 's: :\\ :g')
-			cache="$cache $file_name"
-		done
-		if [[ -n "$cache" ]]; then
-			eval "nvim -d $cache"
-		fi
-}}
-
-
-cmd emacs ${{
-	 	cache=""
-		for f in $fx; do
-			file_name=$(echo "$f" | sed 's: :\\ :g')
-			cache="$cache $file_name"
-		done
-		if [[ -n "$cache" ]]; then
-			eval "emacsclient -nw $cache"
-		fi
-}}
-
-cmd firefox ${{
-	firefox $fx
-}}
-
-cmd chromium ${{
-	chromium $fx & disown
-}}
-
-# # define a custom 'open' command
-# # This command is called when current file is not a directory. You may want to
-# # use either file extensions and/or mime types here. Below uses an editor for
-# # text files and a file opener for the rest.
-cmd open ${{
-	 	cache=""
-		for f in $fx; do
-			extension="${f##*.}"
-			case $extension in
-				"pdf")
-					zathura $f  1>/dev/null 2>&1 & disown
-					;;
-				"mp4"|"mkv"|"webm")
-					vlc $f 1>/dev/null 2>&1 & disown
-					;;
-				"gif")
-					viewnior $f & disown
-					;;
-				"jpg"|"png"|"jpeg")
-                    # sxiv $(dirname $f)/* &
-                    sxiv $f & disown
-                    break
-					;;
-				"tar"|"xz"|"gz"|"zip"|"rar"|"tgz")
-					file-roller $f &  disown
-					;;
-				"svg")
-					inkscape $f & disown
-					;;
-                "stl")
-                    openscad $f & disown
-                    ;;
-				*)
-					# nvim $f
-					file_name=$(echo "$f" | sed 's: :\\ :g')
-					cache="$cache $file_name"
-					;;
-			esac
-		done
-		if [[ -n "$cache" ]]; then
-			eval "st nvim $cache >/dev/null 2>&1 & disown"
-		fi
-	}}
-
-cmd go-dir ${{
-		OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-		CMD="fd . ~ -HIia -t d -j 5 2>/dev/null | fzf $OPTS"
-		dir_to_go=$(eval $CMD)
-		[[ $dir_to_go ]] && lf -remote "send cd $dir_to_go"
-	}}
-
-cmd go-file ${{
-		OPTS="--height 40% --preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-		CMD="fd . ~ -HIia -t f -j 5 2>/dev/null | fzf $OPTS"
-		file_to_go=$(eval $CMD)
-		dir_to_go=${file_to_go/%$(basename $file_to_go)/}
-		file_name=$(basename $file_to_go)
-		if [[ $file_to_go ]]; then
-			lf -remote "send cd $dir_to_go"
-			if [[ "$file_name" =~ ^\..* ]]; then
-				lf -remote "send set hidden!"
-			fi
-			lf -remote "send select $file_to_go"
-		fi
-	}}
-
-cmd bulkrename_old ${{
-	tmpfile=$(mktemp)
-	echo "$fx" > $tmpfile
-	bulkrename $tmpfile
-}}
+map e $$EDITOR "$f"
+map w $$BROWSER "$f" & disown
+map i $$PAGER "$f"
+# l will use $$OPENER
+map x $$f
+map D :delete <enter>
+map R :bulkrename <enter>
+map <esc> quit
+map <enter> shell
 
 cmd bulkrename ${{
 	tmpfile=$(mktemp)
 	echo "$fx" > $tmpfile
     echo $tmpfile > /tmp/log
 	qmv -d --format=do $(cat $tmpfile)
-}}
-
-# extract the current file with the right command
-# (xkcd link: https://xkcd.com/1168/)
-cmd extract ${{
-    set -f
-    case $f in
-        *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf $f;;
-        *.tar.gz|*.tgz) tar xzvf $f;;
-        *.tar.xz|*.txz) tar xJvf $f;;
-        *.zip) unzip $f;;
-        *.rar) unrar x $f;;
-        *.7z) 7z x $f;;
-    esac
-}}
-
-# compress current file or selected files with tar and gunzip
-cmd tar ${{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    tar czf $1.tar.gz $1
-    rm -rf $1
-}}
-
-# compress current file or selected files with zip
-cmd zip ${{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    zip -r $1.zip $1
-    rm -rf $1
 }}

@@ -1,0 +1,2 @@
+*/5 * * * * ~/bin/duck
+* * * * * DISPLAY=:0 /bin/dbus-launch notify-send -t 0 --urgency=critical "Drink water now!" "Time: $(date +%H)h"

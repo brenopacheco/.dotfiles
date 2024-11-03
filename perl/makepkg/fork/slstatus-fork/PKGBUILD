@@ -1,0 +1,32 @@
+# shellcheck disable=all
+
+pkgname=slstatus-fork
+pkgver=1.0.r6.c21e8ff
+pkgrel=1
+pkgdesc="A status monitor for window managers fork"
+url="https://github.com/brenopacheco/slstatus-fork"
+arch=(x86_64)
+license=('MIT')
+options=('!debug')
+depends=('libx11')
+conflicts=('slstatus')
+provides=('slstatus')
+source=("git+https://github.com/brenopacheco/slstatus-fork.git#commit=HEAD")
+md5sums=('SKIP')
+
+pkgver() {
+	cd slstatus-fork
+	make version
+}
+
+build() {
+	cd slstatus-fork
+	make dist
+}
+
+package() {
+	PREFIX="${pkgdir}/usr/share"
+	cd slstatus-fork
+	mkdir -p "$PREFIX"
+	tar -xpvzf slstatus-${pkgver}.tar.gz -C "$PREFIX"
+}

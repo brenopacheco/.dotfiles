@@ -1,3 +1,13 @@
+-- https://github.com/sbdchd/neoformat/issues/442
+-- function! NeoformatExpr() abort " {{{
+--     " if v:char != ''
+--     "     return
+--     " endif
+--     let line1 = v:lnum
+--     let line2 = v:lnum + v:count - 1
+--     execute ':' . line1 . ',' . line2 . 'Neoformat'
+-- endfunction "}}}
+
 vim.cmd([[
 let g:neoformat_enabled_c = ['clangformat']
 let g:neoformat_enabled_javascript = ['prettierd']
@@ -5,6 +15,7 @@ let g:neoformat_enabled_javascriptreact = ['prettierd']
 let g:neoformat_enabled_lua = ['stylua']
 let g:neoformat_enabled_python = ['yapf']
 let g:neoformat_enabled_rust = ['rustfmt']
+let g:neoformat_enabled_perl = ['perltidy']
 let g:neoformat_enabled_shell = ['shfmt']
 let g:neoformat_enabled_sql = ['sqlformat']
 let g:neoformat_enabled_typescript = ['prettierd']

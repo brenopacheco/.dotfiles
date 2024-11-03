@@ -1,0 +1,5 @@
+#!/bin/sh
+
+xrdb ~/.Xresources
+xmodmap ~/.Xmodmap
+xset r rate 200 30 # xset q | grep "auto repeat delay"

@@ -41,8 +41,10 @@ local M = function()
 			local pat = '  %s %' .. tostring(padding) .. 's'
 			return string.format(pat, project.name, '[' .. project.dir .. ']')
 		end,
-	}, function(choice)
-		-- TODO: if does not exist, prompt to create
+	}, function(choice, _, mode)
+		if mode == 'tab' then vim.cmd('tabnew') end
+		if mode == 'vsplit' then vim.cmd('vsplit') end
+		if mode == 'split' then vim.cmd('split') end
 		require('oil').open(choice.path)
 	end)
 end

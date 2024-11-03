@@ -1,0 +1,32 @@
+# shellcheck disable=all
+
+pkgname=dmenu-fork
+pkgver=5.2.r12.906f7a9
+pkgrel=1
+pkgdesc='Generic menu for X (dmenu) fork'
+url='https://github.com/brenopacheco/dmenu-fork'
+arch=(x86_64)
+license=(MIT)
+options=('!debug')
+depends=('coreutils' 'fontconfig' 'freetype2' 'glibc' 'libfontconfig.so' 'libx11' 'libxft' 'libxinerama' 'sh')
+conflicts=('dmenu')
+provides=('dmenu')
+source=('git+https://github.com/brenopacheco/dmenu-fork')
+md5sums=('SKIP')
+
+pkgver() {
+	cd dmenu-fork
+	make version
+}
+
+build() {
+	cd dmenu-fork
+	make dist
+}
+
+package() {
+	PREFIX="${pkgdir}/usr/share"
+	cd dmenu-fork
+	mkdir -p "$PREFIX"
+	tar -xpvzf dmenu-${pkgver}.tar.gz -C "$PREFIX"
+}

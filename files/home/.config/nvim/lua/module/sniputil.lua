@@ -1,6 +1,6 @@
 --- Sniputil
 --
--- Adds Snipyank, Sniplist, and Snipopen commands
+-- Provides Snipyank, Sniplist, and Snipopen commands
 
 if not vim.z.enabled('L3MON4D3/LuaSnip') then
 	return vim.notify('[sniputil]: LuaSnip not installed', vim.log.levels.WARN)

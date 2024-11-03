@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-opt=$(echo -e "confirm" | dmenu -p "Shutdown?")
-[[ "$opt" == "confirm" ]] && shutdown -h now

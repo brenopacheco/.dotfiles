@@ -77,7 +77,7 @@ local options = function()
 		opt_scrolloff(),
 		opt_relnumber(),
 		opt_bomb(),
-		opt_copilot(),
+		--opt_copilot(),
 	}
 end
 

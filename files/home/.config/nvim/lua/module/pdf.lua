@@ -17,7 +17,9 @@ local function pdftotext(bufnr, path)
 		:wait()
 	if out.code ~= 0 then return end
 	local text = vim.split(vim.trim(out.stdout), '\n')
-	vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, text)
+  local header = { '% pdf.lua (READONLY)', '% ' .. path, '' }
+	vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, header)
+	vim.api.nvim_buf_set_lines(bufnr, 3, -1, false, text)
 	vim.api.nvim_set_option_value('readonly', true, { buf = bufnr })
 	vim.api.nvim_set_option_value('modified', false, { buf = bufnr })
 end

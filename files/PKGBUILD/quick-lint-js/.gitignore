@@ -1,6 +1,0 @@
-quick-*
-PKGBUILD
-pkg/
-src/
-*.tar.gz
-*.tar.gz.zst

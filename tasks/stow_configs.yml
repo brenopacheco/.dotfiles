@@ -1,0 +1,19 @@
+---
+- name: Stow user configurations
+  shell: |
+    if output=$(stow -n --adopt -v 2 -t $HOME/ home 2>&1); then
+      echo "$output" | grep "LINK"
+      exit 0
+    else
+      echo "$output"
+      exit 1
+    fi
+  args:
+    chdir: "{{ playbook_dir }}/files"
+  register: output
+  changed_when: '"LINK" in output.stdout'
+
+# TODO: stow system configurations
+#- etc
+#- opt
+#- var

@@ -1,9 +1,6 @@
 --- Select picker
 --
 -- Provides a generic telescope picker that uses the same api from vim.ui.select
---
--- TODO: add support for multi select
--- TODO: add configuration option for extra keys (e.g C-v currently runs vsplit)
 
 if not vim.z.enabled('nvim-telescope/telescope.nvim') then
 	return vim.notify(
@@ -26,10 +23,14 @@ end
 ---               Plugins reimplementing `vim.ui.select` may wish to
 ---               use this to infer the structure or semantics of
 ---               `items`, or the context in which select() was called.
----@param on_choice function ((item|nil, idx|nil) -> ())
+---     - multi (boolean|nil)
+---               If enabled, tab/stab can select/unselect multiple entries
+---               and on_choice is called with a table of selections
+---@param on_choice function ((item|nil, idx|nil, action) -> ())
 ---               Called once the user made a choice.
 ---               `idx` is the 1-based index of `item` within `items`.
 ---               `nil` if the user aborted the dialog.
+---               `action` 'edit'|'tab'|'split'|'vsplit'|'quickfix'
 local function select(items, opts, on_choice)
 	local finders = require('telescope.finders')
 	local pickers = require('telescope.pickers')
@@ -61,35 +62,60 @@ local function select(items, opts, on_choice)
 				end,
 			}),
 			sorter = conf.generic_sorter({}),
-			attach_mappings = function(prompt_bufnr, map)
-				map('i', '<tab>', actions.move_selection_next)
-				map('i', '<s-tab>', actions.move_selection_previous)
-				-- map('i', '<tab>', actions.select_default)
-
-				if opts.on_next then
-					local enhance = {
-						post = function()
-							local selection = action_state.get_selected_entry()
-							if not selection then return end
-							opts.on_next(selection)
-						end,
-					}
-					actions.move_selection_next:enhance(enhance)
-					actions.move_selection_previous:enhance(enhance)
+			attach_mappings = function(_, map)
+				local function make_action(mode)
+					return function(prompt_bufnr)
+						local selection = action_state.get_selected_entry()
+            if opts.multi then
+              selection = { selection }
+            end
+						local picker = action_state.get_current_picker(prompt_bufnr)
+						if #picker:get_multi_selection() > 0 then
+							selection = picker:get_multi_selection()
+						end
+						actions.close(prompt_bufnr)
+						if on_choice ~= nil then
+							if selection == nil then
+								vim.notify('No matching entry', vim.log.levels.WARN)
+								return
+							end
+							on_choice(selection.value, selection.index, mode)
+						end
+					end
 				end
 
-				actions.select_default:replace(function()
-					actions.close(prompt_bufnr)
-					local selection = action_state.get_selected_entry()
-					if on_choice ~= nil then
-						if selection == nil then
-							vim.notify('No matching entry', vim.log.levels.WARN)
-							return
-						end
-						on_choice(selection.value, selection.index)
-					end
-				end)
-				return true
+				if opts.multi then
+					map(
+						'i',
+						'<tab>',
+						actions.toggle_selection + actions.move_selection_worse
+					)
+					map(
+						'i',
+						'<s-tab>',
+						actions.toggle_selection + actions.move_selection_better
+					)
+					map('i', '<c-a>', actions.select_all)
+					map('i', '<c-d>', actions.drop_all)
+				else
+					map('i', '<tab>', actions.move_selection_next)
+					map('i', '<s-tab>', actions.move_selection_previous)
+				end
+				map('i', '<cr>', make_action('edit'))
+				map('i', '<C-s>', make_action('split'))
+				map('i', '<C-v>', make_action('vsplit'))
+				map('i', '<C-t>', make_action('tab'))
+				map('i', '<c-q>', make_action('quickfix'))
+				map('i', '<c-c>', actions.close)
+				map('i', '<esc>', actions.close)
+				map('i', 'jk', actions.close)
+				map('i', 'kj', actions.close)
+				map('i', '<c-n>', actions.move_selection_next)
+				map('i', '<c-p>', actions.move_selection_previous)
+				map('i', '<c-f>', actions.preview_scrolling_up)
+				map('i', '<c-b>', actions.preview_scrolling_down)
+
+				return false
 			end,
 		})
 		:find()

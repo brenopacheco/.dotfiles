@@ -1,15 +1,15 @@
 #!/bin/bash
+# shellcheck disable=SC2155
 
-exec 1>/tmp/xprofile.log 2>/tmp/xprofile.err.log
+exec > >(logger -t xprofile -p user.info) 2> >(logger -t xprofile -p user.err)
+
 export PATH="/bin:/usr/bin:/home/$USER/bin"
+export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
-LAYOUT="/home/breno/.screenlayout/default.sh"
-WALLPAPER="/usr/share/backgrounds/gnome/blobs-l.svg"
+dbus-update-activation-environment --all # for gnome-keyring
 
-xrdb ~/.Xresources
-
-# this is required for gnome-keyring to work
-dbus-update-activation-environment --all
+"$USER/.screenlayout/asus.sh"
+feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
 
 slstatus       & disown # statusbar
 dunst          & disown # notification daemon
@@ -22,13 +22,9 @@ pasystray \
 	--volume-inc=3 & disown # pulseaudio volume applet
 redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 
-# thunderbird & disown
+thunderbird & disown
 # slack       & disown
 
-# start gpg-agent if not already running
-SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-export SSH_AUTH_SOCK
-
-test -x "$LAYOUT" && "$LAYOUT"
-feh --bg-fill "$WALLPAPER"
+xrdb ~/.Xresources
 xmodmap ~/.Xmodmap
+xset r rate 200 30 # xset q | grep "auto repeat delay"

@@ -1,0 +1,77 @@
+---
+# - name: "1"
+#   shell: pacman -Qi <pkg>
+#   # args:
+#   #   chdir: "{{ playbook_dir }}/files"
+#   # register: output
+#   changed_when: never
+
+# - name: foo
+#   set_fact:
+#     packages:
+#       - dmenu-fork
+#       - st-fork
+
+- name: Custom extract function for each package version
+  vars:
+    filters:
+      extract_pkg_info: |
+        def extract_pkg_info(package):
+          file_content = lookup('file', f'makepkg/{package}/PKGBUILD').splitlines()
+          version = next(line.replace('pkgver=', '') for line in file_content if line.startswith('pkgver='))
+          return {'package': package, 'version': version}
+        filter
+
+- name: Define package names
+  set_fact:
+    package_names: 
+      - dmenu-fork
+      - st-fork
+
+- name: Build packages array using map and json_query
+  set_fact:
+    packages: "{{ package_names | map('extract_pkg_info') | list }}"
+
+
+
+# - name: Initialize empty list for packages
+#   set_fact:
+#     packages: []
+
+# - name: Retrieve package versions and store in packages list
+#   set_fact:
+#     packages: "{{
+#         packages + [{
+#           'package': item,
+#           'version': (
+#             lookup('file', 'makepkg/' + item + '/PKGBUILD')
+#             .splitlines()
+#             | select('search', 'pkgver=')
+#             | first
+#             | regex_replace('pkgver=', '')
+#           )
+#         }]
+#       }}"
+#   loop:
+#     - dmenu-fork
+#     - st-fork
+#     - slstatus-fork
+#     - dwm-fork
+#     - neovim
+
+# - name: foo
+#   set_fact:
+#     pkgbuilds: { test: 'foo'}
+
+
+
+# - name: foo
+#   block:
+#     - name: test
+#       shell: |
+#         echo "package: {{ item }}"
+#       loop: "{{ packages }}"
+#       #   - neovim
+#       # register: missing_packages
+#       # ignore_errors: true
+#       # changed_when: false

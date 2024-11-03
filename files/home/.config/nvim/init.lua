@@ -10,7 +10,6 @@
 --]]
 
 vim.z = {}
-require('globals')
 require('options')
 require('packadd')
 require('plugins')

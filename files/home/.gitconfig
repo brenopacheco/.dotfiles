@@ -1,14 +1,15 @@
 [user]
     email = brenoleonhardt@gmail.com
     name = Breno Leonhardt Pacheco
-    signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
+    ; signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
+	; try to reconcile key by email
 [commit]
     gpgsign = true
 [push]
     autoSetupRemote = true
-[credential]
-    helper = /usr/share/git/credential/netrc/git-credential-netrc.perl #-dv
-    ; helper = /home/breno/.config/git/helper/netrc.sh
+; [credential]
+    ; helper = /usr/share/git/credential/netrc/git-credential-netrc.perl #-dv
+	; use ssh for credentials
 [core]
     hooksPath = ~/.config/git/hooks
 [mergetool]
