@@ -182,7 +182,8 @@ sub systemctl {
 
 # etc will scp all files in sync to a temporary dir, change permissions to
 # root, and check file by file if they are the same in the target system,
-# copying the file if they are not
+# copying the file if they are not. files will be owned by root and
+# permissions are kept
 sub etc {
     say "etc";
     # for (@_) {
