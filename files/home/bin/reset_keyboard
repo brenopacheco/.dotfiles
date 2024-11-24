@@ -1,5 +1,6 @@
 #!/bin/sh
 
+setxkbmap -model ppc105+inet -layout us
 xrdb ~/.Xresources
 xmodmap ~/.Xmodmap
 xset r rate 200 30 # xset q | grep "auto repeat delay"

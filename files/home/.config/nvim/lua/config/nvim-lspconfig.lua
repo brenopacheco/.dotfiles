@@ -25,7 +25,6 @@ vim.diagnostic.config({
 
 local capabilities = lsputil.capabilities
 
-lsp.autotools_ls.setup({ capabilities = capabilities })
 lsp.bashls.setup({ capabilities = capabilities })
 lsp.clangd.setup({
 	capabilities = capabilities,
@@ -37,6 +36,7 @@ lsp.clangd.setup({
 })
 lsp.cssls.setup({ capabilities = capabilities })
 lsp.dockerls.setup({ capabilities = capabilities })
+-- TODO: lsp.efm.setup({ capabilities = capabilities })
 lsp.eslint.setup({
 	capabilities = capabilities,
 	on_attach = function(_, bufnr)
@@ -84,7 +84,3 @@ lsp.yamlls.setup({
 	},
 })
 lsp.zk.setup({ capabilities = capabilities })
-
--- lsp.helm_ls.setup({ capabilities = capabilities })
--- lsp.metals.setup({ capabilities = capabilities })
--- lsp.svelte.setup({ capabilities = capabilities })

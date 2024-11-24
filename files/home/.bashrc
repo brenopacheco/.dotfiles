@@ -66,5 +66,6 @@ export PATH=$PATH:$HOME/.cargo/bin        # rust
 export PATH=$PATH:$HOME/.local/bin        # pipx
 export PATH=$PATH:$HOME/.go/bin           # go
 export PATH=$PATH:$HOME/.luarocks/bin     # lua
+export PATH=$PATH:/usr/bin/core_perl      # perl
 
 test -e ~/.npmtoken && source ~/.npmtoken
