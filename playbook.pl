@@ -12,15 +12,15 @@ configure (
 #     [ 'misc/crontab',     '/var/spool/cron/breno' ]
 # );
 
-# clone(
-#     [ 'git@github.com:brenopacheco/.dotfiles.git',       '~/.dotfiles'         ],
-#     [ 'git@github.com:brenopacheco/.password-store.git', '~/.password-store'   ],
-#     [ 'git@github.com:brenopacheco/notes.git',           '~/notes'             ],
-#     [ 'git@github.com:brenopacheco/dwm-fork.git',        '~/git/dwm-fork'      ],
-#     [ 'git@github.com:brenopacheco/st-fork.git',         '~/git/st-fork'       ],
-#     [ 'git@github.com:brenopacheco/dmenu-fork.git',      '~/git/dmenu-fork'    ],
-#     [ 'git@github.com:brenopacheco/slstatus-fork.git',   '~/git/slstatus-fork' ]
-# );
+clone(
+    [ 'git@github.com:brenopacheco/.dotfiles.git',       '~/.dotfiles'         ],
+    [ 'git@github.com:brenopacheco/.password-store.git', '~/.password-store'   ],
+    [ 'git@github.com:brenopacheco/notes.git',           '~/notes'             ],
+    [ 'git@github.com:brenopacheco/dwm-fork.git',        '~/git/dwm-fork'      ],
+    [ 'git@github.com:brenopacheco/st-fork.git',         '~/git/st-fork'       ],
+    [ 'git@github.com:brenopacheco/dmenu-fork.git',      '~/git/dmenu-fork'    ],
+    [ 'git@github.com:brenopacheco/slstatus-fork.git',   '~/git/slstatus-fork' ]
+);
 
 # clone(
 #     ['https://github.com/asdf-vm/asdf.git --branch v0.14.1', '~/.asdf' ]
@@ -40,28 +40,28 @@ configure (
 #     global => "1.20.0"
 # );
 
-# pacman(
-#     'arandr', 'base', 'base-devel', 'bash-completion', 'bat', 'bear',
-#     'blueman', 'bluez', 'bluez-utils', 'bottom', 'chromium', 'clang', 'cmake',
-#     'conky', 'cronie', 'ctags', 'dosfstools', 'dunst', 'dzen2', 'fd', 'feh',
-#     'file-roller', 'firefox', 'fzf', 'git', 'gnome-backgrounds', 'go',
-#     'gparted', 'gpick', 'gtk2', 'gtk3', 'gtk4', 'gvim', 'helm', 'htop',
-#     'imagemagick', 'inotify-tools', 'jq', 'k9s', 'lightdm',
-#     'lightdm-gtk-greeter', 'lldb', 'lsof', 'lua', 'lua51', 'lua52', 'lua53',
-#     'luajit', 'lua-language-server', 'luarocks', 'man-db', 'moreutils',
-#     'ncdu', 'net-tools', 'network-manager-applet', 'ninja',
-#     'otf-comicshanns-nerd', 'pamixer', 'parted', 'pass', 'pass-otp',
-#     'pasystray', 'pavucontrol', 'pdftk', 'perl', 'perl-tidy', 'python',
-#     'python-pipx', 'redshift', 'renameutils', 'ripgrep', 'rsync', 'rust',
-#     'screengrab', 'shellcheck', 'shfmt', 'sqlitebrowser', 'stow', 'stylua',
-#     'sxiv', 'tmux', 'tree', 'ttf-3270-nerd', 'ttf-firacode-nerd', 'udiskie',
-#     'unrar', 'unzip', 'usbutils', 'v4l2loopback-dkms', 'wget', 'wmctrl',
-#     'xarchiver', 'xclip', 'xdotool', 'xorg-server-xephyr', 'xorg-xev',
-#     'xorg-xkill', 'xorg-xlsclients', 'xorg-xmodmap', 'xorg-xsetroot',
-#     'xorg-xwininfo', 'zathura', 'zathura-pdf-mupdf', 'zip', 'zk'
-# );
+pacman(
+    'arandr', 'base', 'base-devel', 'bash-completion', 'bat', 'bear',
+    'blueman', 'bluez', 'bluez-utils', 'bottom', 'chromium', 'clang', 'cmake',
+    'conky', 'cronie', 'ctags', 'dosfstools', 'dunst', 'dzen2', 'fd', 'feh',
+    'file-roller', 'firefox', 'fzf', 'git', 'gnome-backgrounds', 'go',
+    'gparted', 'gpick', 'gtk2', 'gtk3', 'gtk4', 'gvim', 'helm', 'htop',
+    'imagemagick', 'inotify-tools', 'jq', 'k9s', 'lightdm',
+    'lightdm-gtk-greeter', 'lldb', 'lsof', 'lua', 'lua51', 'lua52', 'lua53',
+    'luajit', 'lua-language-server', 'luarocks', 'man-db', 'moreutils',
+    'ncdu', 'net-tools', 'network-manager-applet', 'ninja',
+    'otf-comicshanns-nerd', 'pamixer', 'parted', 'pass', 'pass-otp',
+    'pasystray', 'pavucontrol', 'pdftk', 'perl', 'perl-tidy', 'python',
+    'python-pipx', 'redshift', 'renameutils', 'ripgrep', 'rsync', 'rust',
+    'screengrab', 'shellcheck', 'shfmt', 'sqlitebrowser', 'stow', 'stylua',
+    'sxiv', 'tmux', 'tree', 'ttf-3270-nerd', 'ttf-firacode-nerd', 'udiskie',
+    'unrar', 'unzip', 'usbutils', 'v4l2loopback-dkms', 'wget', 'wmctrl',
+    'xarchiver', 'xclip', 'xdotool', 'xorg-server-xephyr', 'xorg-xev',
+    'xorg-xkill', 'xorg-xlsclients', 'xorg-xmodmap', 'xorg-xsetroot',
+    'xorg-xwininfo', 'zathura', 'zathura-pdf-mupdf', 'zip', 'zk'
+);
 
-stow(cwd => '~/.dotfiles', target => '~/', package => 'home');
+# stow(cwd => '~/.dotfiles', target => '~/', package => 'home');
 
 # dirs('git', 'sketch', 'tmp');
 
@@ -134,12 +134,22 @@ stow(cwd => '~/.dotfiles', target => '~/', package => 'home');
 use diagnostics;
 use feature 'say';
 
+sub _system {
+    my ($cmd) = @_;
+    my @out = `$cmd 2>&1`;
+    print "  | $_" for (@out);
+    if ($? != 0) {
+        print STDERR "\n[ERROR] command failed: $cmd\n";
+        exit 1;
+    }
+}
+
 sub configure {
     my (%cfg) = @_;
-    say "> [OK] configuring\n";
+    say "[OK] configuring";
     say "  * host: $cfg{host}";
     say "  * user: $cfg{user}";
-    say "  * root: $cfg{root}\n";
+    say "  * root: $cfg{root}";
 }
 
 # TODO: what do we want to ensure?
@@ -151,11 +161,17 @@ sub ensure {
 }
 
 sub clone {
-    say "clone";
-    # foreach (@_) {
-    #     my ($dir, $repo) = (@{$_});
-    #     say "Cloning ", $repo, "into $dir";
-    # }
+    my @res = grep { `file -E ${$_}[1]\n` and $? != 0 } @_;
+    if (!@res) {
+        return say "[OK] clone"
+    }
+    say "[-] clone";
+    my $mlen = (sort { $b <=> $a } map { length(${$_}[0]) } @res)[0];
+    for (@res) {
+        my ($repo, $dir) = (@{$_});
+        printf "  * cloning: %-${mlen}s -> %s\n", $repo, $dir;
+        _system("git clone $repo $dir");
+    }
 }
 
 # stow -n --adopt -v 2 -t $HOME/ home 2>&1
@@ -171,8 +187,17 @@ sub asdf {
 }
 
 sub pacman {
-    say "pacman";
-    # say "Installing (pacman) @_";
+    my $res = `pacman -Q @_ 2>&1`;
+    if ($? == 0) {
+        return say "[OK] pacman";
+    }
+    my @packages = $res =~ /error: package '(.*)' was not found/g;
+    say "[-] pacman";
+    for my $package (@packages) {
+        say "  * installing: $package" ;
+        _system("sudo pacman -S --noconfirm --needed $package");
+        # system("sudo pacman -S --noconfirm --needed $package") == 0 or die $res;
+    }
 }
 
 sub dirs {
