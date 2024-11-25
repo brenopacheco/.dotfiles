@@ -19,13 +19,12 @@ shopt -s nullglob globstar
 prefix=${PASSWORD_STORE_DIR-~/.password-store}
 
 password_files=()
-for file in "$prefix"/**/*.gpg; do
-	filename=$(basename "$file")
-	IFS=':' read -r type email target _ <<<"$filename)"
-	if [[ "$type" == "recovery" ]]; then
+for file in $(cd "$prefix" && fd -p '/(otp|web)/.*\.gpg$'); do
+	IFS='/' read -r type email target <<<"$file"
+	if [[ "$type" == "rec" ]]; then
 		continue
 	fi
-	entry=$(printf '%-32s %-34s %8s;%s' "$target" "$email"  "[${type}]" "${filename%.gpg}")
+	entry=$(printf '%-32s %-34s %8s;%s' "${target%.gpg}" "$email"  "[${type}]" "${file%.gpg}")
 	password_files+=("$entry")
 done
 
@@ -39,15 +38,11 @@ if [[ $password == otp:* ]]; then
 		exit 1
 	fi
 	icon="/usr/share/icons/Papirus-Dark/24x24/actions/password-copy.svg"
-	name="${password#*/}"
-	name="${name^}"
-	echo "$name"
-	notify-send -a pass -t 60000 -i "$icon" "${name}" "$(xclip -o -selection 'clipboard')"
+	notify-send -a pass -t 60000 -i "$icon" "${password%.gpg}" "$(xclip -o -selection 'clipboard')"
 else
 	if ! pass show -c "$password"; then
 		notify-send -a pass -t 10000 -i error "Error" "Could not decrypt password"
 		exit 1
 	fi
-	IFS=':' read -r type email target _ <<<"$password"
-	notify-send -a pass -t 2000 -i error "$target" "$email"
+	notify-send -a pass -t 2000 -i error "${password%.gpg}"
 fi
