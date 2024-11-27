@@ -1,5 +1,17 @@
 #!/usr/bin/env perl
 
+# TODO:
+# 1. swap `` calls for _system or something else
+# 2. complete subs
+#   - asdf
+#   - node
+#   - go
+#   - makepkg
+#   - etc
+#   - systemctl
+# 3. complete ensure sub
+# 4. make _system use ssh connection
+
 # Playbook =============================================================== {{{
 configure (
     host => 'localhost',
@@ -59,7 +71,7 @@ pacman(
 
 stow(cwd => '~/.dotfiles', target => '~/', package => 'home');
 
-dirs('git', 'sketch', 'tmp');
+dirs('~/git', '~/sketch', '~/tmp');
 
 etc(
     { file => 'etc/lightdm-gtk-greeter.conf', dir => '/etc/lightdm/'         },
@@ -182,7 +194,22 @@ sub stow {
 }
 
 sub asdf {
-    say "[TODO] asdf";
+    # my %args = @_;
+    # my @installed_plugins = _system(0, `asdf plugin list`);
+    # while (my ($plugin, $value) = each %args) {
+    #     my @installed_versions = _system(0, `asdf list $plugin`);
+    #     my $url = $value->{url};
+    #     my @versions = @{$value->{versions}};
+    #     my $global = $value->{global};
+    #     say "Plugin: $plugin";
+    #     say "  > url:      $url";
+    #     say "  > versions: @versions";
+    #     say "  > global:   $global";
+    #     _system(1, "asdf plugin add $plugin $url");
+    #     for my $version (@versions) {
+    #         _system(1, "asdf install $plugin $version");
+    #     }
+    # }
 }
 
 sub pacman {
@@ -199,7 +226,15 @@ sub pacman {
 }
 
 sub dirs {
-    say "[TODO] dirs";
+    my @dirs = grep { `file -E $_` and $? != 0 } @_;
+    if (!@dirs) {
+        return say "[OK] dirs";
+    }
+    say "[-] dirs";
+    for (@dirs) {
+        printf("  * mkdir: $_\n");
+        _system(1, "mkdir $_");
+    }
 }
 
 sub systemctl {

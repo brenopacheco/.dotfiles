@@ -10,7 +10,10 @@ ls /tmp/.X11-unix 2>/dev/null | sed 's/X//' | sort | uniq | while read -r DISPLA
 	export DISPLAY=":$DISPLAY"
 	case "$HID_NAME" in
 	"Keyboard K380")
-		~/bin/reset_keyboard
+		setxkbmap -model ppc105+inet -layout us
+		xrdb ~/.Xresources
+		xmodmap ~/.Xmodmap
+		xset r rate 200 30
 		;;
 	esac
 done
