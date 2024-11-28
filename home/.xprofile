@@ -25,7 +25,7 @@ redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 thunderbird & disown
 # slack       & disown
 
-~/bin/reset_keyboard
+~/bin/reset-keyboard
 
 # xrdb ~/.Xresources
 # xmodmap ~/.Xmodmap
