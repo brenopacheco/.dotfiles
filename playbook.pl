@@ -20,7 +20,7 @@ configure (
 #     [ 'misc/crontab',     '/var/spool/cron/breno' ]
 # );
 
-clone(
+git(
     [ 'git@github.com:brenopacheco/.dotfiles.git',            '~/.dotfiles'         ],
     [ 'git@github.com:brenopacheco/.password-store.git',      '~/.password-store'   ],
     [ 'git@github.com:brenopacheco/notes.git',                '~/notes'             ],
@@ -66,7 +66,7 @@ pacman(
 
 stow(cwd => '~/.dotfiles', target => '~/', package => 'home');
 
-dirs('~/git', '~/sketch', '~/tmp', '/tmp/xxx', '/tmp/yyy');
+dirs('~/git', '~/sketch', '~/tmp');
 
 # etc(
 #     { file => 'etc/lightdm-gtk-greeter.conf', dir => '/etc/lightdm/'         },
@@ -150,21 +150,20 @@ sub _check {
 
 sub configure {
     my (%cfg) = @_;
-    say "[OK] configuring";
     while (my ($key, $val) = each %cfg) {
         $cfg{$key} = $val;
     }
 }
 
-sub clone {
+sub git {
     my @in = @_;
     my $dirs = join(" ", map { ${$_}[1] } @in);
     my $out = _check("file -E $dirs")->{out};
     my @res = $out =~ /^(.*):\s+ERROR: cannot stat/mg;
     if (!@res) {
-        return say "[OK] clone"
+        return say "[OK] git"
     }
-    say "[-] clone";
+    say "[-] git";
     my $mlen = (sort { $b <=> $a } map { length(${$_}[0]) } @in)[0];
     for my $dir (@res) {
         my ($entry) = grep { $dir eq ${$_}[1] =~ s/~/\/home\/breno/r } @in;
