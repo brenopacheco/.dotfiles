@@ -2,7 +2,6 @@
 
 # TODO:
 # 1. [ ] complete subs
-#   - [ ] systemctl
 #   - [ ] makepkg
 #   - [ ] etc
 # 2. [ ] complete ensure sub
@@ -78,9 +77,26 @@ dirs('~/git', '~/sketch', '~/tmp');
 # );
 
 # systemctl(
-#     root => [ 'bluetooth', 'cronie', 'docker', 'lightdm', 'sshd' ],
-#     user => [ 'gpg-agent.target' ]
+#     user => [ 'gpg-agent.target' ],
+#     root => [
+#         'bluetooth.service',
+#         'cronie.service',
+#         'docker.service',
+#         'lightdm.service',
+#         'sshd.service'
+#      ]
 # );
+
+systemctl(
+    user => [ 'gpg-agent.target' ],
+    root => [
+        'bluetooth.service',
+        'cronie.service',
+        'docker.service',
+        'lightdm.service',
+        'sshd.service'
+     ]
+);
 
 # makepkg(
 #     'makepkg/fork' => [
@@ -248,7 +264,42 @@ sub dirs {
 }
 
 sub systemctl {
-    say "[TODO] systemctl";
+    my (%cfg) = @_;
+    my @tasks = ();
+    sub _service_status {
+        my ($services, $user_flag) = @_;
+        return () unless @$services;
+        my $cmd_prefix = $user_flag ? "systemctl --user" : "systemctl";
+        my @enabled = split("\n", _check("$cmd_prefix is-enabled @$services")->{out});
+        my @active = split("\n", _check("$cmd_prefix is-active @$services")->{out});
+        return map {
+            $services->[$_] => {
+                who => $user_flag ? 'user' : 'root',
+                enabled => $enabled[$_],
+                active => $active[$_]
+            }
+        } 0..$#$services;
+    }
+    my %root_status = _service_status($cfg{root}, 0);
+    my %user_status = _service_status($cfg{user}, 1);
+    my %status = (%root_status, %user_status);
+    while (my ($service, $status) = each %status) {
+        die "Unit not found: $service" if $status->{enabled} =~ /not-found/;
+        my $cmd_prefix = $status->{who} eq 'user' ? "systemctl --user" : "sudo systemctl";
+        push @tasks, sub {
+            say "  * enable [$status->{who}]: $service";
+            _task("$cmd_prefix enable $service");
+        } if $status->{enabled} =~ /disabled/;
+        push @tasks, sub {
+            say "  * start  [$status->{who}]: $service";
+            _task("$cmd_prefix start $service");
+        } if $status->{active} =~ /inactive/;
+    }
+    if (!@tasks) {
+        return say "[OK] systemctl";
+    }
+    say "[-] systemctl";
+    $_->() for @tasks;
 }
 
 
