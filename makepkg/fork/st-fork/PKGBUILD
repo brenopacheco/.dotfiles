@@ -28,7 +28,7 @@ build() {
 }
 
 package() {
-	PREFIX="${pkgdir}/usr/share"
+	PREFIX="${pkgdir}/usr"
 	cd st-fork
 	mkdir -p "$PREFIX"
 	tar -xpvzf st-${pkgver}.tar.gz -C "$PREFIX"

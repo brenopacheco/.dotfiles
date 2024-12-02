@@ -25,7 +25,7 @@ build() {
 }
 
 package() {
-	PREFIX="${pkgdir}/usr/share"
+	PREFIX="${pkgdir}/usr"
 	cd slstatus-fork
 	mkdir -p "$PREFIX"
 	tar -xpvzf slstatus-${pkgver}.tar.gz -C "$PREFIX"
