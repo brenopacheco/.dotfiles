@@ -14,6 +14,7 @@ arch=('any')
 url="https://kde.org/plasma-desktop"
 license=('GPL-2.0-or-later')
 conflicts=('breeze')
+options=('!debug')
 source=("http://download.kde.org/stable/plasma/${pkgver}/breeze-${pkgver}.tar.xz")
 b2sums=('0506fa24e3c98dd76cb5432d18f0a959e9c35f908a3057a611faea95a445ed81049c24c955b87153e973dc96fb25e1dd0ebbb6a7207e547b725743025cc43fee')
 

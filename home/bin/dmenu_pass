@@ -32,7 +32,9 @@ password=$(printf '%s\n' "${password_files[@]}" | dmenu -d ";")
 
 [[ -n $password ]] || exit
 
-if [[ $password == otp:* ]]; then
+echo $password
+
+if [[ $password == otp/* ]]; then
 	if ! pass otp code -c "$password"; then
 		notify-send -a pass -t 10000 -i error "Error" "Could not decrypt password"
 		exit 1

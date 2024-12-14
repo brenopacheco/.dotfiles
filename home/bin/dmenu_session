@@ -10,7 +10,7 @@ function list-sessions() {
 
 function list-repositories() {
 	fd -HI -t d "^.git$" -d 2 \
-		~/ ~/git ~/desktop/ ~/sketch/ ~/tmp/ ~/fc/ ~/barkyn/ \
+		~/ ~/git ~/desktop/ ~/sketch/ ~/tmp/ \
 		-E .asdf |
 		sed 's/\/\.git.*//' | sed "s#$HOME/##" | sort | uniq
 }

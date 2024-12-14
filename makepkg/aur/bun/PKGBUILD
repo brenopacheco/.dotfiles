@@ -12,6 +12,7 @@ arch=('x86_64' 'aarch64')
 url="https://github.com/oven-sh/bun"
 license=('MIT')
 provides=('bun')
+options=('!debug')
 conflicts=('bun')
 sha256sums_x86_64=('4bc000ff5096c5348767ad04d993505f210039a95880273a76d7bd0af0fc2f1f'
 	'9b296bcc20090b5ea079dc1bca15913a32246121169bcf54cbdb7384d6f5b32b'

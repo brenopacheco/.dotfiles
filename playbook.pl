@@ -1,26 +1,12 @@
 #!/usr/bin/env perl
 
-# TODO:
-# 1. [ ] complete subs
-#   - [ ] etc
-#   - [ ] ensure
-#   - [ ] makepkg
-# 2. [ ] complete ensure sub
-# 3. [ ] make _system use ssh connection
-
 # Playbook =============================================================== {{{
 configure(
     host  => 'localhost',
     root  => 'root',
     user  => $ENV{'USER'},
-    debug => 0,
-    ssh   => 0
+    debug => $ENV{'DEBUG'},
 );
-
-# ensure(
-#     [ 'misc/known_hosts', '~/.ssh/known_hosts'    ],
-#     [ 'misc/crontab',     '/var/spool/cron/breno' ]
-# );
 
 git(
     [ 'git@github.com:brenopacheco/.dotfiles.git',       '~/.dotfiles' ],
@@ -109,53 +95,41 @@ stow( cwd => '~/.dotfiles', target => '~/', package => 'home' );
 
 dirs( '~/git', '~/sketch', '~/tmp' );
 
-# etc(
-#     { file => 'etc/lightdm-gtk-greeter.conf', dir => '/etc/lightdm/'         },
-#     { file => 'etc/10-keyboard.rules',        dir => '/etc/udev/rules.d/'    },
-#     { file => 'etc/40-wacom.rules',           dir => '/etc/udev/rules.d/'    },
-#     { file => 'etc/10-keyboard.conf',         dir => '/etc/X11/xorg.conf.d/' },
-#     { file => 'etc/20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
-#     { file => 'etc/30-touchpad.conf',         dir => '/etc/X11/xorg.conf.d/' },
-# );
-
-# systemctl(
-#     user => [ 'gpg-agent.target' ],
-#     root => [
-#         'bluetooth.service',
-#         'cronie.service',
-#         'docker.service',
-#         'lightdm.service',
-#         'sshd.service'
-#      ]
-# );
+etc(
+    { file => 'lightdm-gtk-greeter.conf', dir => '/etc/lightdm/' },
+    { file => '10-keyboard.rules',        dir => '/etc/udev/rules.d/' },
+    { file => '40-wacom.rules',           dir => '/etc/udev/rules.d/' },
+    { file => '10-keyboard.conf',         dir => '/etc/X11/xorg.conf.d/' },
+    { file => '20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
+    { file => '30-touchpad.conf',         dir => '/etc/X11/xorg.conf.d/' },
+    { file => 'ssh_known_hosts',          dir => '/etc/ssh/' },
+    { file => 'pacman.conf',              dir => '/etc/' },
+);
 
 systemctl(
     user => ['gpg-agent.target'],
     root => [
-        'bluetooth.service', 'cronie.service',
-        'docker.service',    'lightdm.service',
-        'sshd.service'
+        'bluetooth.service',
+        'cronie.service',
+        'docker.service',
+        'lightdm.service',
+
+        # 'sshd.service'
     ]
 );
 
 makepkg(
-    'makepkg/fork/dmenu-fork',
-    'makepkg/fork/dwm-fork',
-    'makepkg/fork/slstatus-fork',
-    'makepkg/fork/st-fork',
+    'makepkg/fork/dmenu',
+    'makepkg/fork/dwm',
+    'makepkg/fork/slstatus',
+    'makepkg/fork/st',
+    'makepkg/fork/neovim',
 
-    # 'makepkg/fork/neovim',
     'makepkg/aur/bun',
-
-    # 'makepkg/aur/helm-ls',
-    # 'makepkg/aur/lls-addons',
-    # 'makepkg/aur/marksman',
-    # 'makepkg/aur/obs-backgroundremoval',
-    # 'makepkg/aur/rose-pine-gtk-theme-full',
-    # 'makepkg/aur/slack-desktop',
-    # 'makepkg/aur/vscode-js-debug',
-    # 'makepkg/aur/xcursor-breeze',
-    # 'makepkg/aur/zoom'
+    'makepkg/aur/lls-addons',
+    'makepkg/aur/rose-pine-gtk-theme-full',
+    'makepkg/aur/slack-desktop',
+    'makepkg/aur/xcursor-breeze',
 );
 
 node(
@@ -186,29 +160,42 @@ use feature 'say';
 
 my %cfg = ();
 
-sub _task {
+sub _cmd {
     my ($cmd) = @_;
-    if ( $cfg{ssh} ) {
-        $cmd =~ s/'/'\\''/g;
-        $cmd = "ssh $cfg{user}\@$cfg{host} '$cmd'";
-    }
     if ( $cfg{debug} ) {
         say "[DEBUG]: $cmd";
     }
-    my @out = `$cmd 2>&1`;
-    print "  | $_" for (@out);
-    if ( $? != 0 ) {
+    open my $fh, '-|', "$cmd 2>&1" or die "[ERROR] $cmd: $!\n";
+    while ( my $line = <$fh> ) {
+        print "  | $line";
+    }
+    close $fh or die "[ERROR] $cmd: $!\n";
+    my $exit_status = $? >> 8;
+    if ( $exit_status != 0 ) {
         print STDERR "\n[ERROR] command failed: $cmd\n";
         exit 1;
     }
 }
 
+sub _task {
+    my ( $who, $cmd ) = @_;
+    die "_copy must be used with 'root' or 'user'" if $who !~ /^(user)|(root)$/;
+    $cmd =~ s/'/'\\''/g;
+    $cmd = "ssh $cfg{$who}\@$cfg{host} '$cmd'";
+    _cmd($cmd);
+}
+
+sub _copy {
+    my ( $who, $src, $dst ) = @_;
+    die "_copy must be used with 'root' or 'user'" if $who !~ /^(user)|(root)$/;
+    $cmd = "scp -p -r $src $cfg{$who}\@$cfg{host}:$dst";
+    _cmd($cmd);
+}
+
 sub _check {
     my ($cmd) = @_;
-    if ( $cfg{ssh} ) {
-        $cmd =~ s/'/'\\''/g;
-        $cmd = "ssh $cfg{user}\@$cfg{host} '$cmd'";
-    }
+    $cmd =~ s/'/'\\''/g;
+    $cmd = "ssh $cfg{user}\@$cfg{host} '$cmd'";
     if ( $cfg{debug} ) {
         say "[DEBUG]: $cmd";
     }
@@ -219,13 +206,18 @@ sub _check {
     return { ok => $? == 0, out => $out };
 }
 
+sub _unquote {
+    my ($in) = @_;
+    $in =~ s/['"]//g;
+    return $in;
+}
+
 sub configure {
     my (%settings) = @_;
     $cfg{user}  = $settings{user};
     $cfg{root}  = $settings{root};
     $cfg{host}  = $settings{host};
     $cfg{debug} = $settings{debug};
-    $cfg{ssh}   = $settings{ssh};
 }
 
 sub git {
@@ -242,7 +234,7 @@ sub git {
         my ($entry) = grep { $dir eq ${$_}[1] =~ s/~/\/home\/$cfg{user}/r } @in;
         my ( $repo, $dir ) = @{$entry};
         printf "  * cloning: %-${mlen}s -> %s\n", $repo, $dir;
-        _task("git clone $repo $dir");
+        _task( 'user', "git clone $repo $dir" );
     }
 }
 
@@ -255,7 +247,7 @@ sub stow {
     }
     say "[-] stow";
     say "  * stowing: $cfg{cwd}/$cfg{package} => $cfg{target}";
-    _task("stow $args 2>&1 | grep 'LINK'");
+    _task( 'user', "stow $args 2>&1 | grep 'LINK'" );
 }
 
 sub asdf {
@@ -271,19 +263,21 @@ sub asdf {
         if ( !$installed ) {
             push @tasks, sub {
                 say "  * installing: $conf->{plugin} => $conf->{url}";
-                _task("$load asdf plugin add $conf->{plugin} $conf->{url}");
+                _task( 'user',
+                    "$load asdf plugin add $conf->{plugin} $conf->{url}" );
             };
         }
         for my $version (@missing) {
             push @tasks, sub {
                 say "  * installing: $conf->{plugin} => $version";
-                _task("$load asdf install $conf->{plugin} $version");
+                _task( 'user', "$load asdf install $conf->{plugin} $version" );
             };
         }
         if ( !$current || $current ne $conf->{global} ) {
             push @tasks, sub {
                 say "  * set-global: $conf->{plugin} => $conf->{global}";
-                _task("$load asdf global $conf->{plugin} $conf->{global}");
+                _task( 'user',
+                    "$load asdf global $conf->{plugin} $conf->{global}" );
             };
         }
     }
@@ -305,7 +299,7 @@ sub pacman {
     }
     say "[-] pacman";
     say "  * installing: ", join( ', ', @packages );
-    _task("sudo pacman -S --noconfirm --needed @packages");
+    _task( 'root', "pacman -S --noconfirm --needed @packages" );
 }
 
 sub dirs {
@@ -318,7 +312,7 @@ sub dirs {
     say "[-] dirs";
     for my $dir (@res) {
         say "  * mkdir: $dir";
-        _task("mkdir $dir");
+        _task( 'user', "mkdir $dir" );
     }
 }
 
@@ -348,15 +342,15 @@ sub systemctl {
     while ( my ( $service, $status ) = each %status ) {
         die "Unit not found: $service" if $status->{enabled} =~ /not-found/;
         my $cmd_prefix =
-          $status->{who} eq 'user' ? "systemctl --user" : "sudo systemctl";
+          $status->{who} eq 'user' ? "systemctl --user" : "systemctl";
         push @tasks, sub {
             say "  * enable [$status->{who}]: $service";
-            _task("$cmd_prefix enable $service");
+            _task( $status->{who}, "$cmd_prefix enable $service" );
           }
           if $status->{enabled} =~ /disabled/;
         push @tasks, sub {
             say "  * start  [$status->{who}]: $service";
-            _task("$cmd_prefix start $service");
+            _task( $status->{who}, "$cmd_prefix start $service" );
           }
           if $status->{active} =~ /inactive/;
     }
@@ -367,24 +361,36 @@ sub systemctl {
     $_->() for @tasks;
 }
 
-# TODO: what do we want to ensure?
-# 1. file exists (copy as is if not exist)
-# 2. lines are in included in the file
-# 3. respect original file ownership and permissions
-sub ensure {
-    say "[TODO] ensure";
-}
-
-# etc will scp all files in sync to a temporary dir, change permissions to
-# root, and check file by file if they are the same in the target system,
-# copying the file if they are not. files will be owned by root and
-# permissions are kept
 sub etc {
-    say "[TODO] etc";
+    my @in     = @_;
+    my $cmd    = "sha256sum " . join( " ", map { "$_->{dir}$_->{file}" } @in );
+    my @checks = split( "\n", _check($cmd)->{out} );
+    my @tasks  = ();
+    for ( 0 .. $#checks ) {
+        my ( $file, $dir ) = @{ $in[$_] }{ 'file', 'dir' };
+        $dir = "$dir/" if $dir !~ /\/$/;
+        my $src     = "./etc/$file";
+        my $dst     = "$dir$file";
+        my $dst_sha = $1 if $checks[$_]        =~ /^(\w+):?/;
+        my $src_sha = $1 if `sha256sum ${src}` =~ /^(\w+):?/;
+        if ( !defined($src_sha) ) {
+            die "File not found ${src}";
+        }
+        if ( $src_sha ne $dst_sha ) {
+            push @tasks, sub {
+                say "  * copying: $src -> $dst";
+                _copy( 'root', $src, $dst );
+            }
+        }
+    }
+    if ( !@tasks ) {
+        return say "[OK] etc";
+    }
+    say "[-] etc";
+    $_->() for @tasks;
 }
 
 sub makepkg {
-    say "[TODO] makepkg";
 
     sub _prepare {
         my @dirs = @_;
@@ -393,57 +399,74 @@ sub makepkg {
             my $dir      = $dirs[$_];
             my $pkg      = $pkgs[$_];
             my $PKGBUILD = "$dir/PKGBUILD";
+            die "Not found: $PKGBUILD" if !-e $PKGBUILD;
             my $pkgver = $1 if `grep -m1 "pkgver=" $PKGBUILD` =~ /pkgver=(\S+)/;
             my $pkgrel = $1 if `grep -m1 "pkgrel=" $PKGBUILD` =~ /pkgrel=(\S+)/;
-            my $version = $pkgver . "-" . $pkgrel;
-            $pkg => { dir => $dir, version => $version, vercmp => 1 };
+            my $name = $1 if `grep -m1 "pkgname=" $PKGBUILD` =~ /pkgname=(\S+)/;
+            my $version = _unquote($pkgver) . "-" . _unquote($pkgrel);
+            _unquote($name) => {
+                dir     => $dir,
+                version => $version,
+                install => 1,
+                build   => 1
+            };
         } 0 .. $#pkgs;
-        my @installs = split( "\n", _check("pacman -Q @pkgs 2>&1")->{out} );
+        my @pkgnames = keys %info;
+        my @installs = split( "\n", _check("pacman -Q @pkgnames 2>&1")->{out} );
         for (@installs) {
             next if /^error: package '(.*)' was not found/;
-            my ( $pkg, $installed ) = ( $1, $2 ) if /([\w-]+)\s(.+)/;
-            next if ( !defined $pkg ) or ( !defined $installed );
-            $info{$pkg}{installed} = $installed;
-            $info{$pkg}{vercmp}    = `vercmp $info{$pkg}{version} $installed`;
+            my ( $pkgname, $installed ) = ( $1, $2 ) if /([\w-]+)\s(.+)/;
+            next if ( !defined $pkgname ) or ( !defined $installed );
+            die "Unknown error" if !exists( $info{$pkgname} );
+            $info{$pkgname}{installed} = $installed;
+            $info{$pkgname}{install} =
+              `vercmp $info{$pkgname}{version} $installed`;
+        }
+        my @present = split( "\n", _check("pacman -Sl")->{out} );
+        for (@present) {
+            next if !/^custom /;
+            my ( $pkgname, $version ) = ( $1, $2 )
+              if $_ =~ /^custom (\S+?) (\S+)(\s\S+)?/;
+            next if !exists( $info{$pkgname} );
+            $info{$pkgname}{present} = $version;
+            $info{$pkgname}{build} = `vercmp $info{$pkgname}{version} $version`;
         }
         return %info;
     }
 
-    sub _install {
-
-# TODO:
-# my ($src, $dst) = ("files/makepkg/$pkgver", "/tmp/$pkgver")
-# my $buildcmd = "
-#     makepkg -scCf -d /tmp/makepkg/$pkgver &&
-#     cp /tmp/makepkg/$pkgver/*.pkg.tar.zst /usr/share/pacman/ &&
-#     repo-add --new /usr/share/pacman/*.db.tar.zst /usr/share/pacman/*.pkg.tar.zst
-# ";
-# push @commands, {
-#     name => "Build custom package $pkgname",
-#     shell => [
-#         sub { Lib::scp($src, $dst)}
-#         sub { Lib::ssh($buildcmd) }
-#     }
-# }
-# my $dir = # tmp dir
-# scp files/pacman/$pkg localhost:$dir
-# ssh localhost makepkg -scCf $dir
-# my $pkgfile = "$pkg-$pkgver-$pkgrel-x86_64.pkg.tar.zst";
-# my $dbdir = "/usr/share/pacman"
-# ssh localhost cp $dir/$pkgile $dbdir/";
-# ssh localhost repo-add $dbdir/*.db.tar.zst $dbdir/$pkgfile --add-new";
-    }
-
     my %info = _prepare(@_);
-    my @want = grep { $info{$_}{vercmp} > 0 } keys %info;
+    my @want =
+      grep { $info{$_}{install} > 0 || $info{$_}{build} > 0 } keys %info;
     if ( !@want ) {
         return say "[OK] makepkg";
     }
     say "[-] makepkg";
+    my $dbfile = "/usr/share/pacman/custom/custom.db.tar.zst";
+
+    # HACK: when having issues, `rm $dbfile && repo-add $dbfile && pacman -Sy`
+    chomp( my $dbdir = `dirname $dbfile` );
+    _task( 'root', "mkdir -p $dbdir" );
     for (@want) {
-        my $pkg   = $_;
-        my $props = $info{$pkg};
-        say "  * installing: $pkg $props->{version}";
+        my $pkgname = $_;
+        my $props   = $info{$pkgname};
+
+        if ( $props->{build} > 0 ) {
+            say "  * building package: $pkgname $props->{version}";
+            chomp( my $tmpdir = `mktemp -d` );
+            _copy( 'user', $props->{dir}, "$tmpdir/$pkgname" );
+            _task( 'user', "makepkg -scCf --dir $tmpdir/$pkgname" );
+            _task( 'root',
+                "cp $tmpdir/$pkgname/$pkgname-*.pkg.tar.zst $dbdir/" );
+            _task( 'root',
+                "repo-add --new $dbfile $dbdir/$pkgname-*.pkg.tar.zst" );
+            _task( 'root', "pacman -Sy" );
+        }
+
+        if ( $props->{install} > 0 ) {
+            say "  * installing package: $pkgname $props->{version}";
+            _task( 'root', "pacman -S --noconfirm $pkgname" );
+        }
+
     }
 }
 
@@ -464,7 +487,7 @@ sub node {
                 my $cmd = "source ~/.asdf/asdf.sh";
                 $cmd .= "&& asdf shell nodejs $version";
                 $cmd .= "&& npm install -g $ref->[1]";
-                _task($cmd);
+                _task( 'user', $cmd );
             }
         }
     }
@@ -486,7 +509,7 @@ sub go {
     say "[-] go";
     for my $ref (@want) {
         say "  * installing: $ref->[0]";
-        _task("go install $ref->[1]");
+        _task( 'user', "GOPATH=\$HOME/.go go install $ref->[1]" );
     }
 }
 

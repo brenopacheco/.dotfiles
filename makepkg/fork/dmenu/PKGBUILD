@@ -1,7 +1,7 @@
 # shellcheck disable=all
 
 pkgname=dmenu-fork
-pkgver=5.2.r12.906f7a9
+pkgver=5.2.r13.9ae3b12
 pkgrel=1
 pkgdesc='Generic menu for X (dmenu) fork'
 url='https://github.com/brenopacheco/dmenu-fork'

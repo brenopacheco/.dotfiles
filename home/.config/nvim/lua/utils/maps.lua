@@ -107,14 +107,16 @@ M.find_roots = function() require('utils.pickers.roots')() end
 M.find_grep = function()
 	require('telescope.builtin').live_grep({
 		default_text = vim.fn.expand('<cword>'),
-		search_dirs = { rootutil.git_root() },
+		cwd = rootutil.git_root(),
+		additional_args = { '--hidden' },
 	})
 end
 
 -- Find files in git directory using pattern under cursor
 M.find_star = function()
 	require('telescope.builtin').grep_string({
-		search_dirs = { rootutil.git_root() },
+		cwd = rootutil.git_root(),
+		additional_args = { '--hidden' },
 	})
 end
 
