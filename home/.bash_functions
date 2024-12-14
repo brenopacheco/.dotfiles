@@ -82,10 +82,14 @@ function git-root() {
 # }}}
 # git-checkout : select remote branch and checkout using --track {{{
 function git-checkout() {
-	branch=$(git branch -vva | grep remotes | awk '{print $1}' | sed 's/^remotes\/origin\///' | fzf -m --layout=reverse --header="Track branche:")
-	if [ -n "$branch" ]; then
-		local b="origin/$branch"
-		git checkout --track "${b}"
+	if [ $# -ne 0 ]; then
+		git checkout "$@"
+	else
+		branch=$(git branch -vva | grep remotes | awk '{print $1}' | sed 's/^remotes\/origin\///' | fzf -m --layout=reverse --header="Track branche:")
+		if [ -n "$branch" ]; then
+			local b="origin/$branch"
+			git checkout --track "${b}"
+		fi
 	fi
 }
 # }}}
