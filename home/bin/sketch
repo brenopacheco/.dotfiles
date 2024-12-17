@@ -4,7 +4,7 @@ LANG=$1
 
 function help() {
 	cat <<EOF
-Usage: sketch [ml|d|go|js|ts|bun|sh|c|lua|rust|zig|perl] [NAME]
+Usage: sketch [go|c|js|sh|lua|perl] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
@@ -21,15 +21,15 @@ fi
 LANG=$1
 NAME=$2
 
-if [[ ! "$LANG" =~ ^(ml|d|go|js|ts|bun|sh|c|lua|rust|zig|perl)$ ]]; then
+if [[ ! "$LANG" =~ ^(go|c|js|sh|lua|perl)$ ]]; then
 	help
-	echo "Invalid LANG: use ml, d, go, js, ts, bun, c, lua, rust, zig or perl" >&2
+	echo "Invalid language" >&2
 	exit 1
 fi
 
 mkdir -p ~/sketch
 
-TMPNAME="${LANG}_$(tr -cd 'a-f0-9' < /dev/urandom | head -c 10)"
+TMPNAME="${LANG}_$(tr -cd 'a-f0-9' </dev/urandom | head -c 10)"
 
 if [[ -n "$NAME" ]]; then
 	TMPNAME="$NAME-$TMPNAME"
@@ -44,29 +44,6 @@ EOF
 mkdir -p "$DIR"
 cd "$DIR" || exit 1
 git init
-
-
-D_TEMPLATE=$(
-	cat <<'END_HEREDOC'
-import io = std.stdio;
-void main()
-{
-    io.writeln("Hello, World!");
-}
-END_HEREDOC
-)
-
-JS_TSCONFIG=$(
-	cat <<'END_HEREDOC'
-{
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
-    "strict": true
-  }
-}
-END_HEREDOC
-)
 
 IGNORE_DIR=$HOME/.ignores
 
@@ -83,21 +60,6 @@ case $LANG in
 	echo -e 'all:\n\tgcc main.c -o main\n\t./main' >Makefile
 	;;
 "js")
-	npm init -y
-	touch main.js
-	echo -e 'all:\n\tnode main.js' >Makefile
-	echo "$JS_TSCONFIG" >tsconfig.json
-	npm i -D typescript @types/node
-	cp "${IGNORE_DIR}/Node.gitignore" .gitignore
-	;;
-"ts")
-	npm init -y
-	touch main.ts
-	echo -e 'all:\n\tts-node main.ts' >Makefile
-	tsc --init
-	cp "${IGNORE_DIR}/Node.gitignore" .gitignore
-	;;
-"bun")
 	bun init -y
 	echo -e 'all:\n\tbun run start' >Makefile
 	jq '.scripts = { "start": "bun run index.ts" }' package.json |
@@ -114,26 +76,6 @@ case $LANG in
 "lua")
 	touch main.lua
 	cp "${IGNORE_DIR}/Lua.gitignore" .gitignore
-	;;
-"rust")
-	touch main.rs
-	cargo init --name ${2:-sketch}
-	cp "${IGNORE_DIR}/Rust.gitignore" .gitignore
-	;;
-"zig")
-	echo -e 'all:\n\tzig run main.zig\n\nbuild:\n\tzig build-exe main.zig' >Makefile
-	echo -e 'const std = @import("std");\n\npub fn main() !void {\n\tconst stdout = std.io.getStdOut().writer();\n\ttry stdout.print("Hello, {s}!\\n", .{"world"});\n}' >main.zig
-	cp "${IGNORE_DIR}/zig.gitignore" .gitignore
-	;;
-"d")
-	echo -e "$D_TEMPLATE" >main.d
-	chmod +x ./main.d
-	echo -e 'all:\n\trdmd ./main.d' >Makefile
-	;;
-"ml")
-	echo -e "#!/usr/bin/env ocaml\n\nprint_endline \"Hello, world!\"" >main.ml
-	chmod +x ./main.ml
-	echo -e 'all:\n\t./main.ml' >Makefile
 	;;
 "perl")
 	echo -e "#!/usr/bin/env perl\n\nuse diagnostics;\nuse feature 'say';\n\n" >main.perl

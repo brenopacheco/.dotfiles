@@ -2,4 +2,4 @@
 #
 # When you can't sudo, run this
 
-faillock --user $USER --reset
+faillock --user "$USER" --reset

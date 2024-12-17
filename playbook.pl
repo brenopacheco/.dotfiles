@@ -181,7 +181,7 @@ sub _task {
     my ( $who, $cmd ) = @_;
     die "_copy must be used with 'root' or 'user'" if $who !~ /^(user)|(root)$/;
     $cmd =~ s/'/'\\''/g;
-    $cmd = "ssh $cfg{$who}\@$cfg{host} '$cmd'";
+    $cmd = "ssh -A $cfg{$who}\@$cfg{host} '$cmd'";
     _cmd($cmd);
 }
 
