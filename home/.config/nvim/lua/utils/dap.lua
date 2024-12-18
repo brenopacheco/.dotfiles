@@ -63,28 +63,16 @@ M.debug_hover = wrap(function() require('dap.ui.widgets').hover() end)
 
 M.debug_preview = wrap(function() require('dap.ui.widgets').preview() end)
 
-M.to_cursor = wrap(function() dap.run_to_cursor() end)
+M.debug_to_cursor = wrap(function() dap.run_to_cursor() end)
 
 M.toggle_ui = function() require('dapui').toggle({ reset = true }) end
 
-M.open_log = function()
+M.debug_open_log = function()
 	local path = vim.fn.stdpath('cache') .. '/dap.log'
 	vim.cmd('vsp ' .. path)
 end
 
--- ---@param opts? { mode: 'close'|'open'|'toggle', focus: boolean })
--- M.toggle_repl = function(opts)
--- 	opts = vim.tbl_extend('keep', opts or {}, {
--- 		mode = 'toggle',
--- 		focus = true,
--- 		cb = function()
--- 			require('dap').repl.open({ height = 10 })
---       vim.api.nvim_win_set_height(0, 33)
---       vim.cmd('wincmd p')
--- 		end,
--- 	})
--- 	bufutil.toggle('dap-repl', opts)
--- end
+M.debug_toggle_repl = function() vim.notify('Not implemented', vim.log.levels.WARN) end
 
 M.show_configs = function()
 	local configs = vim.inspect(dap.configurations)

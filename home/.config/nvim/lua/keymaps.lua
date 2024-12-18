@@ -10,43 +10,28 @@ local keyboard = {
     d     = { name = ' debug'  },
     f     = { name = ' find'   },
     g     = { name = '󰊢 git'    },
-    t     = { name = '󰙨 test'   },
     w     = { name = '󰖳 window' },
   }, -- ]]
   mappings = {
     action = { -- [[
       { { 'n',     }, 'gr',             maps.goto_references,    { desc = ' references'           } },
-      { { 'n',     }, 'gy',             maps.goto_typedef,       { desc = ' typedef'              } },
       { { 'n',     }, 'gi',             maps.goto_implementation,{ desc = ' implementation'       } },
-      { { 'n',     }, 'gI',             maps.goto_incoming,      { desc = ' incoming-calls'       } },
-      { { 'n',     }, 'gO',             maps.goto_outgoing,      { desc = ' outgoing-calls'       } },
-      { { 'n',     }, 'gd',             maps.goto_declaration,   { desc = ' declaration'          } },
       { { 'n',     }, '<c-]>',          maps.goto_definition,    { desc = ' definition'           } },
-      { { 'n',     }, 'g=',             maps.args_add,           { desc = ' argsadd',             } },
-      { { 'n',     }, 'g-',             maps.args_delete,        { desc = ' argsdel',             } },
-      { { 'n',     }, 'g0',             maps.args_clear,         { desc = ' argsclr',             } },
-      { { 'n',     }, '<c-p>',          maps.show_signature,     { desc = ' signature'            } },
-      { { 'n',     }, '<c-h>',          maps.show_highlight,     { desc = ' highlight'            } },
       { { 'n',     }, '<c-k>',          maps.show_hover,         { desc = ' hover'                } },
       { { 'n', 'x' }, 'ga',             maps.run_align,          { desc = ' align'                } },
       { { 'n', 'x' }, 'gx',             maps.run_gx,             { desc = ' browse',              } },
       { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
-      { { 'n',     }, 'gl',             maps.lsp_info,           { desc = ' lsp-info'             } },
       { { 'n',     }, 'g?',             maps.help_g,             { desc = ' which-key'            } },
       { { 'n',     }, '<leader>e',      maps.errors_buffer,      { desc = ' errors-buf'           } },
-      { { 'n',     }, '<leader>E',      maps.errors_workspace,   { desc = ' errors-ws'            } },
       { { 'n', 'x' }, '<leader>r',      maps.run_rename,         { desc = ' rename'               } },
       { { 'n', 'x' }, '<leader>s',      maps.run_replace,        { desc = ' replace'              } },
       { { 'n', 'x' }, '<leader>z',      maps.run_zknew,          { desc = ' zk-new',              } },
       { { 'n',     }, '<leader>m',      maps.run_make,           { desc = ' make',                } },
       { { 'n', 'x' }, '<leader>a',      maps.run_code,           { desc = ' code-action'          } },
       { { 'n', 'x' }, '<leader>i',      maps.run_neogen,         { desc = ' neogen',              } },
-      { { 'n',     }, '<leader>!',      maps.run_spawn,          { desc = ' spawn'                } },
-      { { 'n', 'x' }, '<leader>#',      maps.run_source,         { desc = ' source'               } },
       { { 'n', 'x' }, '<leader>=',      maps.run_format,         { desc = ' format'               } },
       { { 'n', 'x' }, '<leader>/',      maps.run_grep,           { desc = ' grep',                } },
       { { 'n', 'x' }, '<leader>*',      maps.run_star,           { desc = ' star',                } },
-      { { 'n',     }, '<leader>x',      maps.run_bd,             { desc = ' bufdelete'            } },
       { { 'n',     }, '<leader>p',      maps.switch_project,     { desc = ' switch project'       } },
       { { 'n',     }, '<leader>?',      maps.help_leader,        { desc = ' which-key'            } },
     }, -- ]]
@@ -66,11 +51,10 @@ local keyboard = {
       { {'n',      }, '<leader>dp',     maps.debug_preview,      { desc = '󰩣 info preview'         } },
       { {'n',      }, '<leader>d.',     maps.debug_to_cursor,    { desc = '󰇀 run to cursor'        } },
       { {'n',      }, '<leader>dm',     maps.debug_open_log,     { desc = ' dap log'              } },
-      { { 'n',     }, '<leader>d?',     maps.help_debug,         { desc = ' which-key'            } },
-      -- { {'n',      }, '<leader>du',     maps.debug_toggle_repl,  { desc = ' toggle repl'          } },
+      { {'n',      }, '<leader>d`',     maps.debug_toggle_repl,  { desc = ' toggle repl'          } },
+      { {'n',      }, '<leader>d?',     maps.help_debug,         { desc = ' which-key'            } },
     }, -- ]]
     find = { -- [[
-      { { 'n',     }, '<leader>fa',     maps.find_args,          { desc = ' arglist'              } },
       { { 'n',     }, '<leader>fb',     maps.find_buffers,       { desc = ' buffer'               } },
       { { 'n',     }, '<leader>fc',     maps.find_recent,        { desc = ' recent'               } },
       { { 'n',     }, '<leader>fp',     maps.find_rfiles,        { desc = ' git-files'            } },
@@ -79,11 +63,9 @@ local keyboard = {
       { { 'n',     }, '<leader>fl',     maps.find_config,        { desc = ' lua-configs'          } },
       { { 'n',     }, '<leader>fm',     maps.find_make,          { desc = ' makefile'             } },
       { { 'n',     }, '<leader>ff',     maps.find_pfiles,        { desc = ' project-files'        } },
-      { { 'n',     }, '<leader>fq',     maps.find_quickfix,      { desc = ' quickfix'             } },
       { { 'n',     }, '<leader>fr',     maps.find_roots,         { desc = ' roots'                } },
       { { 'n',     }, '<leader>f.',     maps.find_curdir,        { desc = ' curdir'               } },
       { { 'n',     }, '<leader>f/',     maps.find_grep,          { desc = ' grep'                 } },
-      { { 'n',     }, '<leader>f*',     maps.find_star,          { desc = ' star'                 } },
       { { 'n',     }, '<leader>fz',     maps.find_zk,            { desc = ' zk-notes'             } },
       { { 'n',     }, '<leader>f`',     maps.find_mark,          { desc = ' marks'                } },
       { { 'n',     }, '<leader>fs',     maps.find_doc_symbol,    { desc = ' doc-symbol'           } },
@@ -109,14 +91,6 @@ local keyboard = {
       { { 'n',     }, 'qn',             maps.qf_cnewer,          { desc = ' cnewer'               } },
       { { 'n',     }, 'q?',             maps.help_quickfix,      { desc = ' which-key'            } },
     }, -- ]]
-    test = { -- [[
-      { { 'n',     }, '<leader>tt',     maps.test_nearest,       { desc = ' nearest'              } },
-      { { 'n',     }, '<leader>tf',     maps.test_file,          { desc = ' file'                 } },
-      { { 'n',     }, '<leader>tv',     maps.test_visit,         { desc = ' visit'                } },
-      { { 'n',     }, '<leader>ts',     maps.test_suite,         { desc = ' suite'                } },
-      { { 'n',     }, '<leader>tp',     maps.test_previous,      { desc = ' previous'             } },
-      { { 'n',     }, '<leader>t?',     maps.help_test,          { desc = ' which-key'            } },
-    }, -- ]]
     window = { -- [[
       { { 'n',     }, '<leader>w',      '<c-w>',                 {                                 } },
       { { 'n',     }, '<leader>wt',     maps.run_tabnew,         { desc = ' tabnew',              } },
@@ -125,22 +99,14 @@ local keyboard = {
       { { 'n',     }, '<leader>w?',     maps.help_window,        { desc = ' which-key'            } },
     }, -- ]]
     jump = { -- [[
-      { { 'n',     }, ']a',             maps.jump_argnext,      { desc = '󰒭 arg-file'             } },
-      { { 'n',     }, '[a',             maps.jump_argprev,      { desc = '󰒮 arg-file'             } },
       { { 'n',     }, ']b',             maps.jump_bufnext,      { desc = '󰒭 buffer'               } },
       { { 'n',     }, '[b',             maps.jump_bufprev,      { desc = '󰒮 buffer'               } },
       { { 'n',     }, ']c',             maps.jump_chunknext,    { desc = '󰒭 chunk'                } },
       { { 'n',     }, '[c',             maps.jump_chunkprev,    { desc = '󰒮 chunk'                } },
       { { 'n',     }, ']e',             maps.jump_errornext,    { desc = '󰒭 error'                } },
       { { 'n',     }, '[e',             maps.jump_errorprev,    { desc = '󰒮 error'                } },
-      { { 'n',     }, ']f',             maps.jump_filenext,     { desc = '󰒭 file-tree'            } },
-      { { 'n',     }, '[f',             maps.jump_fileprev,     { desc = '󰒮 file-tree'            } },
       { { 'n',     }, ']q',             maps.jump_qfnext,       { desc = '󰒭 qf-entry'             } },
       { { 'n',     }, '[q',             maps.jump_qfprev,       { desc = '󰒮 qf-entry'             } },
-      { { 'n',     }, ']l',             maps.jump_locnext,      { desc = '󰒭 loc-entry'            } },
-      { { 'n',     }, '[l',             maps.jump_locprev,      { desc = '󰒮 loc-entry'            } },
-      { { 'n',     }, ']t',             maps.jump_tabnext,      { desc = '󰒭 tab'                  } },
-      { { 'n',     }, '[t',             maps.jump_tabprev,      { desc = '󰒮 tab'                  } },
       { { 'n',     }, ']`',             maps.jump_termnext,     { desc = '󰒭 terminal'             } },
       { { 'n',     }, '[`',             maps.jump_termprev,     { desc = '󰒮 terminal'             } },
       { { 'n',     }, ']?',             maps.help_jumpn,        { desc = ' which-key'            } },
@@ -149,13 +115,11 @@ local keyboard = {
     toggles = { -- [[
       { { 'n',     }, '<leader><tab>',  maps.toggle_outline,    { desc = ' outline'              } },
       { { 'n',     }, '<leader>q',      maps.toggle_quickfix,   { desc = ' quickfix'             } },
-      -- { { 'n',     }, '<leader>z',      maps.toggle_zen,        { desc = ' zen'                  } },
       { { 'n',     }, '<leader>n',      maps.toggle_ntree,      { desc = ' ntree'                } },
-      { { 'n',     }, '<leader>u',      maps.toggle_dapui,      { desc = ' dapui'                } },
+      -- { { 'n',     }, '<leader>u',      maps.toggle_dapui,      { desc = ' dapui'                } },
       { { 'n',     }, '<leader>o',      maps.toggle_option,     { desc = ' option'               } },
       { { 'n',     }, '<leader>`',      maps.toggle_term,       { desc = ' terminal'             } },
       { { 'n',     }, '<leader>~',      maps.newterm,           { desc = '󱓞 newterm'              } },
-      { { 'n',     }, '<leader>l',      maps.toggle_lf,         { desc = '󱓞 lf'                   } },
       { { 'n',     }, '-',              maps.toggle_oil,        { desc = '󱓞 oil'                  } },
     }, -- ]]
     defaults = { -- [[
@@ -186,15 +150,11 @@ local keyboard = {
       ['ne']  = '!=',
       ['ife'] = 'if err != nil {<cr><cr>}<up><tab>',
       ['fn']  = 'func() {}<left><cr>.<cr><up><tab><del>',
-      ['sw']  = 'switch {}<left><cr>.<cr><up><tab><del>',
-      ['inf'] = 'interface{}',
     } -- ]]
   },
-  filetypes = {
-    markdown = { -- [[
-      -- { { 'i' }, '<s-tab>', '<cmd>norm <^<cr>',           { desc = '  unshift'                 } },
-    }, -- ]]
-  }
+  filetypes = { -- [[
+    norg = {},
+  } -- ]]
 }
 
 -- [[ setup

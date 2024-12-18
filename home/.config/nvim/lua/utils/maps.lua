@@ -8,38 +8,23 @@ local rootutil = require('utils.root')
 local M = {}
 
 -- Add buffer to arglist
-M.args_add = function()
-	return vim.z.enabled('args-view') and vim.cmd('ArgAdd')
-		or vim.cmd('argadd | argdedupe')
-end
+M.args_add = function() vim.cmd('argadd | argdedupe | args') end
 
 -- Clear arglist
-M.args_clear = function()
-	return vim.z.enabled('args-view') and vim.cmd('ArgClear') or vim.cmd('argd *')
-end
+M.args_clear = function() vim.cmd('argd * | args') end
 
 -- Remove buffer from arglist
-M.args_delete = function()
-	return vim.z.enabled('args-view') and vim.cmd('ArgDelete')
-		or vim.cmd('argd %')
-end
+M.args_delete = function() vim.cmd('argd % | args') end
 
-M.args_next = function()
-	return vim.z.enabled('args-view') and vim.cmd('ArgNext') or vim.cmd('next')
-end
+M.args_next = function() vim.cmd('next') end
 
-M.args_prev = function()
-	return vim.z.enabled('args-view') and vim.cmd('ArgPrev') or vim.cmd('prev')
-end
+M.args_prev = function() vim.cmd('prev') end
 
 -- Open buffer diagnostics in quickfix
 M.errors_buffer = function() qfutil.errors({ workspace = false }) end
 
 -- Open workspace diagnostics in quickfix
 M.errors_workspace = function() qfutil.errors({ workspace = true }) end
-
--- Find file in arglist
-M.find_args = require('utils.pickers.arglist')
 
 -- Find buffer in buffer list
 M.find_buffers = function() require('telescope.builtin').buffers({}) end
@@ -106,11 +91,19 @@ M.find_roots = function() require('utils.pickers.roots')() end
 -- Find files in git directory using ripgrep
 M.find_grep = function()
 	require('telescope.builtin').live_grep({
-		default_text = vim.fn.expand('<cword>'),
 		cwd = rootutil.git_root(),
 		additional_args = { '--hidden' },
 	})
 end
+
+-- -- Find files in git directory using ripgrep
+-- M.find_grep = function()
+-- 	require('telescope.builtin').live_grep({
+-- 		default_text = vim.fn.expand('<cword>'),
+-- 		cwd = rootutil.git_root(),
+-- 		additional_args = { '--hidden' },
+-- 	})
+-- end
 
 -- Find files in git directory using pattern under cursor
 M.find_star = function()
@@ -125,6 +118,9 @@ M.find_zk = function() vim.cmd([[ZkNotes { sort = { 'modified' } }]]) end
 
 -- Find marks
 M.find_mark = function() require('telescope.builtin').marks({}) end
+
+-- Find registers
+M.find_registers = function() require('telescope.builtin').registers({}) end
 
 -- Find symbol in buffer
 M.find_doc_symbol = function()
@@ -299,6 +295,7 @@ M.run_bd = function() bufutil.delete() end
 M.switch_project = require('utils.pickers.project')
 
 -- stylua: ignore start
+M.toggle_dapui       = daputil.toggle_ui
 M.debug_start        = daputil.debug_start
 M.debug_restart      = daputil.debug_restart
 M.debug_terminate    = daputil.debug_terminate
@@ -312,9 +309,9 @@ M.debug_bp_clear     = daputil.debug_bp_clear
 M.debug_bp_list      = daputil.debug_bp_list
 M.debug_hover        = daputil.debug_hover
 M.debug_preview      = daputil.debug_preview
-M.debug_to_cursor    = daputil.to_cursor
-M.debug_open_log     = daputil.open_log
--- M.debug_toggle_repl  = daputil.toggle_repl
+M.debug_to_cursor    = daputil.debug_to_cursor
+M.debug_open_log     = daputil.debug_open_log
+M.debug_toggle_repl  = daputil.debug_toggle_repl
 -- stylua: ignore end
 
 -- Run code action
@@ -372,7 +369,7 @@ M.run_replace = function()
 		text = string.gsub(text, '\t', '\\t')
 	end
 	local repl = string.gsub(text, '\\n', '\\r')
-	local cmd = ':%s/'
+	local cmd = '<esc>:%s/'
 		.. text
 		.. '/'
 		.. repl
@@ -382,21 +379,8 @@ M.run_replace = function()
 	vim.api.nvim_feedkeys(cmd, 'n', true)
 end
 
--- Source buffer contents (vim/lua)
-M.run_source = function()
-	vim.cmd.source('%')
-	-- local ft = vim.bo.filetype
-	-- if ft ~= 'vim' and ft ~= 'lua' == nil then
-	-- 	return vim.notify('cannot source: run make instead', vim.log.levels.WARN)
-	-- end
-	-- if vim.fn.mode() == 'n' then
-	-- 	vim.cmd([[source]])
-	-- else
-	-- 	log(assert(loadstring(table.concat(bufutil.get_visual().text, '\n')))())
-	-- 	-- bufutil.set_visual(bufutil.get_visual())
-	-- 	-- vim.cmd([['<,'>source]])
-	-- end
-end
+-- Source vim buffer contents
+M.run_source = function() vim.cmd.source('%') end
 
 -- Spawn new terminal window in current dir
 M.run_spawn = function() vim.fn.system('st >/dev/null 2>&1 & disown $!') end
@@ -428,27 +412,6 @@ M.show_hover = function() lsputil.wrap(vim.lsp.buf.hover) end
 
 -- Show function signature help
 M.show_signature = function() lsputil.wrap(vim.lsp.buf.signature_help) end
-
--- Visit file where last test was run
-M.test_visit = function() vim.cmd('TestVisit') end
-
--- Runs all tests in the current file
-M.test_file = function() vim.cmd('TestFile') end
-
--- Runs the test nearest to the cursor
-M.test_nearest = function() vim.cmd('TestNearest') end
-
--- Runs the last test run
-M.test_previous = function() vim.cmd('TestLast') end
-
--- Runs the whole test suite
-M.test_suite = function() vim.cmd('TestSuite') end
-
--- Toggle dap ui
-M.toggle_dapui = function() daputil.toggle_ui() end
-
--- Open lf file explorer
-M.toggle_lf = function() vim.notify('not implemented', vim.log.levels.WARN) end
 
 -- Toggle side tree
 M.toggle_ntree = function()
@@ -496,9 +459,6 @@ M.toggle_term = function() vim.cmd('FloatermToggle') end
 
 -- Open new terminal
 M.newterm = function() vim.cmd('FloatermNew') end
-
--- Toggle zen mode
-M.toggle_zen = function() vim.cmd('ZenMode') end
 
 -- Open keyword under cursor or selection. Tries to resolve cword and cWORD
 -- as such:
