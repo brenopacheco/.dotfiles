@@ -2,37 +2,18 @@
 
 # Playbook =============================================================== {{{
 configure(
-    host  => 'localhost',
-    root  => 'root',
     user  => $ENV{'USER'},
+    host  => $ENV{'HOST'} // 'localhost',
+    root  => 'root',
     debug => $ENV{'DEBUG'},
 );
 
-git(
-    [ 'git@github.com:brenopacheco/.dotfiles.git',       '~/.dotfiles' ],
-    [ 'git@github.com:brenopacheco/.password-store.git', '~/.password-store' ],
-    [ 'git@github.com:brenopacheco/notes.git',           '~/notes' ],
-    [ 'git@github.com:brenopacheco/dwm-fork.git',        '~/git/dwm-fork' ],
-    [ 'git@github.com:brenopacheco/st-fork.git',         '~/git/st-fork' ],
-    [ 'git@github.com:brenopacheco/dmenu-fork.git',      '~/git/dmenu-fork' ],
-    [ 'git@github.com:brenopacheco/slstatus-fork.git', '~/git/slstatus-fork' ],
-    [ 'https://github.com/asdf-vm/asdf.git --branch v0.14.1', '~/.asdf' ]
-);
-
-asdf(
-    {
-        plugin   => "nodejs",
-        url      => "https://github.com/asdf-vm/asdf-nodejs.git",
-        versions => ["23.3.0"],
-        global   => "23.3.0"
-    },
-    {
-        plugin   => "yarn",
-        url      => "https://github.com/twuni/asdf-yarn.git",
-        versions => ["1.20.0"],
-        global   => "1.20.0"
-    }
-);
+# TODO:add a step under configure to check wether root is accessible via ssh
+# only using the loaded ssh keys. Fail if not with a warning:
+# "Unable to ssh into $ROOT@$HOST. Check the following:"
+# "- The host is reacheable"
+# "- The ssh-agent has the root's key loaded"
+# "- The host's /root/.ssh/authorized_keys is configured to accept the loaded key"
 
 pacman(
     'arandr',                 'base',
@@ -91,9 +72,9 @@ pacman(
     'zk'
 );
 
-stow( cwd => '~/.dotfiles', target => '~/', package => 'home' );
-
 dirs( '~/git', '~/sketch', '~/tmp' );
+
+stow( cwd => '~/.dotfiles', target => '~/', package => 'home' );
 
 etc(
     { file => 'lightdm-gtk-greeter.conf', dir => '/etc/lightdm/' },
@@ -104,6 +85,17 @@ etc(
     { file => '30-touchpad.conf',         dir => '/etc/X11/xorg.conf.d/' },
     { file => 'ssh_known_hosts',          dir => '/etc/ssh/' },
     { file => 'pacman.conf',              dir => '/etc/' },
+);
+
+git(
+    [ 'git@github.com:brenopacheco/.dotfiles.git',       '~/.dotfiles' ],
+    [ 'git@github.com:brenopacheco/.password-store.git', '~/.password-store' ],
+    [ 'git@github.com:brenopacheco/notes.git',           '~/notes' ],
+    [ 'git@github.com:brenopacheco/dwm-fork.git',        '~/git/dwm-fork' ],
+    [ 'git@github.com:brenopacheco/st-fork.git',         '~/git/st-fork' ],
+    [ 'git@github.com:brenopacheco/dmenu-fork.git',      '~/git/dmenu-fork' ],
+    [ 'git@github.com:brenopacheco/slstatus-fork.git', '~/git/slstatus-fork' ],
+    [ 'https://github.com/asdf-vm/asdf.git --branch v0.14.1', '~/.asdf' ]
 );
 
 systemctl(
@@ -130,6 +122,21 @@ makepkg(
     'makepkg/aur/rose-pine-gtk-theme-full',
     'makepkg/aur/slack-desktop',
     'makepkg/aur/xcursor-breeze',
+);
+
+asdf(
+    {
+        plugin   => "nodejs",
+        url      => "https://github.com/asdf-vm/asdf-nodejs.git",
+        versions => ["23.3.0"],
+        global   => "23.3.0"
+    },
+    {
+        plugin   => "yarn",
+        url      => "https://github.com/twuni/asdf-yarn.git",
+        versions => ["1.20.0"],
+        global   => "1.20.0"
+    }
 );
 
 node(
@@ -241,7 +248,7 @@ sub git {
 sub stow {
     my (%cfg) = @_;
     my $args  = "--adopt -v 2 -d $cfg{cwd} -t $cfg{target} $cfg{package}";
-    my @links = grep { /^LINK/g } _check("stow -n $args");
+    my @links = _check("stow -n $args")->{out} =~ /^LINK/mg;
     if ( !@links ) {
         return say "[OK] stow";
     }

@@ -2,10 +2,10 @@ snippet date
 	`strftime('%c')`
 
 snippet env
-	#!/bin/sh
+	#!/usr/bin/env ${0:sh}
 
 snippet modeline
-	vi:ft=sh:tw=80
+	vi:ft=${0:sh}:tw=80
 
 snippet FIX
 	`printf(&commentstring, 'FIX: ')`$0
