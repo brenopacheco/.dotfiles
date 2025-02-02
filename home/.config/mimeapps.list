@@ -1,0 +1,7 @@
+[Default Applications]
+image/jpeg=sxiv.desktop
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop
+
+[Added Associations]
+image/jpeg=sxiv.desktop;
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
