@@ -2,7 +2,7 @@
 
 pkgname=neovim-fork
 pkgver=0.11.0
-pkgrel=1609
+pkgrel=1698
 pkgdesc='Fork of Vim aiming to improve user experience, plugins, and GUIs.'
 arch=(x86_64)
 url='https://neovim.io'
@@ -10,18 +10,18 @@ license=('custom:neovim')
 conflicts=(neovim)
 options=('!debug')
 
-source=("https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz")
+source=("https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz")
 
-sha256sums=('8efbcc97af90be30f2a7d8283ecf6869fec9755df8f5cfe6142a1efd49d00159')
+sha256sums=('a630a43edf09b9e5849ea940cabfe4377ff74e98f2b8798590a3a6448a168db2')
 
 check() {
-  cd nvim-linux64
+  cd nvim-linux-x86_64
   ./bin/nvim --version
   ./bin/nvim --headless -u NONE -i NONE -c ':quit'
 }
 
 package() {
-  cd nvim-linux64
+  cd nvim-linux-x86_64
   install -Dm755 bin/nvim -t "$pkgdir/usr/bin/"
   cp -r lib share "$pkgdir/usr/"
 }

@@ -334,7 +334,7 @@ end
 M.run_grep = function() greputils.grep_pattern(nil) end
 
 -- xdg-open
-M.run_gx = function() require('gx').search_for_url() end
+M.run_gx = function() vim.cmd('Browse') end
 
 -- Open messages
 M.messages = function() vim.cmd('Messages') end
