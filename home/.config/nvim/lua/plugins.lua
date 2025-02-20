@@ -18,7 +18,7 @@ vim.z.packadd({
 	'j-hui/fidget.nvim',
 	'nvim-lualine/lualine.nvim',
 
-	-- TODO: replace with https://cmp.saghen.dev/
+	-- TODO: replace completion plugin with https://cmp.saghen.dev/
 	-- 'zbirenbaum/copilot.lua',
 	'L3MON4D3/LuaSnip',
 	'saadparwaiz1/cmp_luasnip',
@@ -29,9 +29,10 @@ vim.z.packadd({
 	'hrsh7th/nvim-cmp',
 	'windwp/nvim-autopairs',
 
-
-  -- NOTE: OK
+	-- NOTE: OK
 	'b0o/schemastore.nvim',
+	-- TODO: replace nvim-lspconfig with v0.11 built-in lsp.config
+	-- https://github.com/neovim/neovim/discussions/32523#discussioncomment-12256014
 	'neovim/nvim-lspconfig',
 	'ray-x/lsp_signature.nvim',
 	'chrishrb/gx.nvim',
@@ -41,18 +42,17 @@ vim.z.packadd({
 	'JoosepAlviste/nvim-ts-context-commentstring',
 	'numToStr/Comment.nvim',
 	'folke/todo-comments.nvim',
-	'simrat39/symbols-outline.nvim',
+	'simrat39/symbols-outline.nvim', -- replacement 'hedyhli/outline.nvim' is buggy
 	'nvim-telescope/telescope.nvim',
 	'HiPhish/rainbow-delimiters.nvim', -- TODO: check if broken with treesitter
 	'Bekaboo/dropbar.nvim',
 	'monkoose/matchparen.nvim',
-	'jbyuki/one-small-step-for-vimkind', -- TODO: what is this?
 
-	-- TODO: forks, check if can be patched instead
-	'brenopacheco/neodev.nvim',
-	'brenopacheco/gitlinker.nvim',
-	'brenopacheco/vim-floaterm',
-	'brenopacheco/zk-nvim',
+	-- NOTE: custom forks for deprecated plugins
+	'brenopacheco/neodev.nvim', -- replace with 'folke/lazydev.nvim' and make vim global (slow loading)
+	'brenopacheco/gitlinker.nvim', -- removes default keybinding
+	'brenopacheco/vim-floaterm', -- fixes Vim:E444 on-close last window
+	'brenopacheco/zk-nvim', -- loads ~/.config/zk/config.toml:notebook.dir
 })
 
 vim.z.modload({
