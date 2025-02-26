@@ -11,8 +11,8 @@ function lf() {
 	[[ -d "$dir" && "$dir" != "$(pwd)" ]] && cd "$dir" || return
 }
 # }}}
-# toggle-caps : toggle caps lock  {{{
-function toggle-caps() {
+# caps-lock : toggle caps lock  {{{
+function caps-lock() {
 	xdotool key Caps_Lock
 }
 #}}}
@@ -138,4 +138,4 @@ function clean-pacman() {
 	rm -rf ~/.cache/pacman
 }
 # }}}
-# vim:tw=78:ts=8:noet:ft=sh:norl:
+# vim:tw=78:ts=8:noet:ft=sh:norl:fdl=0:fdm=marker:fmr={{{,}}}
