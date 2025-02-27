@@ -8,13 +8,6 @@ configure(
     debug => $ENV{'DEBUG'},
 );
 
-# TODO:add a step under configure to check wether root is accessible via ssh
-# only using the loaded ssh keys. Fail if not with a warning:
-# "Unable to ssh into $ROOT@$HOST. Check the following:"
-# "- The host is reacheable"
-# "- The ssh-agent has the root's key loaded"
-# "- The host's /root/.ssh/authorized_keys is configured to accept the loaded key"
-
 pacman(
     'arandr',                 'base',
     'base-devel',             'bash-completion',
@@ -219,12 +212,33 @@ sub _unquote {
     return $in;
 }
 
+sub _test {
+    my ($who) = @_;
+    my $cmd = "ssh -o BatchMode=yes $cfg{$who}\@$cfg{host} 'exit'";
+    if ( $cfg{debug} ) {
+        say "[DEBUG]: $cmd";
+    }
+    my $out = `$cmd  2>&1`;
+    if ( system("$cmd >/dev/null 2>&1") ) {
+        my @message = (
+            "Error: Unable to ssh into $who\@$cfg{host}.",
+            "- Check the host is reacheable",
+            "- Check the ssh-agent has the ssh key loaded (ssh-add -L)",
+            "- Check the authorized_keys for $who includes the loaded key"
+        );
+        die join( "\n", @message );
+    }
+
+}
+
 sub configure {
     my (%settings) = @_;
     $cfg{user}  = $settings{user};
     $cfg{root}  = $settings{root};
     $cfg{host}  = $settings{host};
     $cfg{debug} = $settings{debug};
+    _test('root');
+    _test('user');
 }
 
 sub git {
