@@ -1,1 +1,1 @@
-ACTION=="bind", SUBSYSTEM=="hid", RUN+="/usr/bin/su breno -c /home/breno/bin/udev/keyboard.sh %p"
+ACTION=="add", SUBSYSTEM=="hid", RUN+="/usr/bin/su breno -c /home/breno/bin/udev/keyboard.sh %p"

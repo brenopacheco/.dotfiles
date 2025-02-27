@@ -4,3 +4,7 @@ setxkbmap -model ppc105+inet -layout us
 xrdb ~/.Xresources
 xmodmap ~/.Xmodmap
 xset r rate 200 30
+
+if xset q | grep -e "Caps Lock:\s\+on" >/dev/null; then
+	xdotool key Caps_Lock
+fi
