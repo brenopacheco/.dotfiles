@@ -7,15 +7,16 @@ local packages = {}
 local modules = {}
 
 local function register(repo)
-	local name = string.gsub(repo, '^.*/', '')
+	local user, name, branch = repo:match('([^/]+)/([^@]+)@?(.*)')
 	local dir = plugin_dir .. '/pack/site/opt/' .. name
 	packages[name] = {
 		config = nil,
-		repo = repo,
+		repo = user .. '/' .. name,
 		name = name,
 		dir = dir,
+		branch = branch,
 		installed = vim.fn.isdirectory(dir) ~= 0,
-		url = 'https://github.com/' .. repo .. '.git',
+		url = 'https://github.com/' .. user .. '/' .. name .. '.git',
 		loaded = vim.tbl_contains(vim.opt.packpath:get(), dir),
 	}
 	return packages[name]
@@ -38,6 +39,10 @@ local function install(pkg)
 			pkg.url,
 			pkg.dir,
 		}
+	if pkg.branch then
+		table.insert(cmd, '--branch')
+		table.insert(cmd, pkg.branch)
+	end
 	local result = vim
 		---@diagnostic disable-next-line: missing-fields
 		.system(cmd, {
@@ -79,6 +84,7 @@ local function packadd(repos)
 			config = string.gsub(config, '%.nvim$', '')
 			config = string.gsub(config, '%.vim$', '')
 			config = string.gsub(config, '%.lua$', '')
+			config = string.gsub(config, '%.cmp$', '')
 			local status, err = pcall(require, config)
 			if status then
 				pkg.config = config

@@ -19,6 +19,7 @@ vim.z.packadd({
 	'nvim-lualine/lualine.nvim',
 
 	-- TODO: replace completion plugin with https://cmp.saghen.dev/
+	-- 'saghen/blink.cmp@v0.13.0',
 	-- 'zbirenbaum/copilot.lua',
 	'L3MON4D3/LuaSnip',
 	'saadparwaiz1/cmp_luasnip',
