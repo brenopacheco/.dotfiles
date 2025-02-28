@@ -1,7 +1,25 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2086
 
-rg --max-count 1 "^Name=" /usr/share/applications |
+declare DIR=$HOME/.dotfiles/home/.config/applications
+
+# Parse command-line options
+while getopts "a" opt; do
+	case ${opt} in
+	a)
+		DIR="/usr/share/applications $HOME/.local/share/applications"
+		;;
+	*)
+		echo "Usage:" >&2
+		echo "  dmenu_apps [-a]" >&2
+		exit 1
+		;;
+	esac
+done
+
+rg --max-count 1 "^Name=" $DIR |
 	sed 's/.*\/\(.\+\)\.desktop:Name=\(.\+\)$/\2;(\1):\1.desktop/' |
 	column -t -s ';' |
+	sort |
 	dmenu -p Application -d ':' |
 	xargs -r gtk-launch
