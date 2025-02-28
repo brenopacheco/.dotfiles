@@ -16,25 +16,22 @@ function git_branch { # get git branch of pwd
 	fi
 }
 
-shopt -s histappend               # append to history file
-shopt -s cmdhist                  # preserve multi-line commands
-shopt -s checkwinsize             # update terminal size variables LINES/COLUMNS
-shopt -s globstar                 # enable recursive globbing **/*
-set -o vi                         # use vi mode for command line
-set -o notify                     # immediate job completion notifications
-set completion-ignore-case On     # case-insensitive completion
-
-export PROMPT_DIRTRIM=3           # trim directory path to last 3 components
-
-export HISTFILESIZE=9999999000    # max size of history file
-export HISTSIZE=9999999000        # max number of history entries
-export HISTCONTROL=ignoreboth     # ignore duplicates and blank lines
-export HISTIGNORE='&:[ ]*'        # ignore specific patterns in history
-export HISTTIMEFORMAT='%F %T '    # format for timestamp in history
-
-export LC_ALL=en_US.UTF-8         # set locale for all categories
-export LANG=en_US.UTF-8           # set default language
-export LANGUAGE=en_US.UTF-8       # set preferred language for messages
+shopt -s histappend            # append to history file
+shopt -s cmdhist               # preserve multi-line commands
+shopt -s checkwinsize          # update terminal size variables LINES/COLUMNS
+shopt -s globstar              # enable recursive globbing **/*
+set -o vi                      # use vi mode for command line
+set -o notify                  # immediate job completion notifications
+set completion-ignore-case On  # case-insensitive completion
+export PROMPT_DIRTRIM=3        # trim directory path to last 3 components
+export HISTFILESIZE=9999999000 # max size of history file
+export HISTSIZE=9999999000     # max number of history entries
+export HISTCONTROL=ignoreboth  # ignore duplicates and blank lines
+export HISTIGNORE='&:[ ]*'     # ignore specific patterns in history
+export HISTTIMEFORMAT='%F %T ' # format for timestamp in history
+export LC_ALL=en_US.UTF-8      # set locale for all categories
+export LANG=en_US.UTF-8        # set default language
+export LANGUAGE=en_US.UTF-8    # set preferred language for messages
 
 source "$HOME/.bash_aliases"
 source "$HOME/.bash_functions"
@@ -50,6 +47,8 @@ if [ -d ~/.asdf ]; then
 	source ~/.asdf/completions/asdf.bash
 fi
 
+test -e ~/.npmtoken && source ~/.npmtoken
+
 export EDITOR=/usr/bin/vim
 export VISUAL=/usr/bin/vim
 export MANPAGER='/usr/bin/nvim +Man!'
@@ -60,12 +59,21 @@ export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 export GOPATH=$HOME/.go
 
-export PATH=$PATH:$HOME/bin
-export PATH=$PATH:$HOME/.npm/bin          # node
-export PATH=$PATH:$HOME/.cargo/bin        # rust
-export PATH=$PATH:$HOME/.local/bin        # pipx
-export PATH=$PATH:$HOME/.go/bin           # go
-export PATH=$PATH:$HOME/.luarocks/bin     # lua
-export PATH=$PATH:/usr/bin/core_perl      # perl
+append_path() {
+	case ":$PATH:" in
+	*:"$1":*) ;;
+	*)
+		PATH="${PATH:+$PATH:}$1"
+		;;
+	esac
+}
 
-test -e ~/.npmtoken && source ~/.npmtoken
+append_path "$HOME/bin"
+append_path "$HOME/.npm/bin"          # node
+append_path "$HOME/.cargo/bin"        # rust
+append_path "$HOME/.local/bin"        # pipx
+append_path "$HOME/.go/bin"           # go
+append_path "$HOME/.luarocks/bin"     # lua
+append_path '/usr/bin/vendor_perl' && # perl
+	append_path '/usr/bin/core_perl' &&
+	append_path '/usr/bin/site_perl'
