@@ -1,4 +1,5 @@
 #!/bin/sh
+#desc=dual   monitors ASUS+HP
 #
 # This is a bit of a hack to get the second monitor to have the correct resolution
 # without warping the cursor between the two monitors. It relies on the

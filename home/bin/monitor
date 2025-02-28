@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+usage() {
+	exec 1>&2
+	echo "Usage: monitor -c <profile>"
+	echo ""
+	echo "Available profiles:"
+	for profile in ~/.screenlayout/*.sh; do
+		name=$(basename "$profile" .sh)
+		desc=$(grep '^#desc=' "$profile" | awk -F= '{print $2}')
+		printf "  %-10s %s\n" "$name" "$desc"
+	done
+	echo ""
+	echo "Error: $1"
+	exit 1
+}
+
+PROFILE=""
+while getopts ":c:" opt; do
+	case $opt in
+	c) PROFILE="$OPTARG" ;;
+	\?)
+		usage "invalid option: -$OPTARG"
+		;;
+	esac
+done
+
+if [[ -z "$PROFILE" ]]; then
+	usage "profile is required"
+fi
+
+FILE="$HOME/.screenlayout/${PROFILE}.sh"
+
+if [[ ! -f "$FILE" ]]; then
+	usage "invalid profile"
+fi
+
+source "$FILE"
+
+feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
+
+exit 0
