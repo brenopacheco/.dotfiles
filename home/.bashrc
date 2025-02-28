@@ -29,9 +29,7 @@ export HISTSIZE=9999999000     # max number of history entries
 export HISTCONTROL=ignoreboth  # ignore duplicates and blank lines
 export HISTIGNORE='&:[ ]*'     # ignore specific patterns in history
 export HISTTIMEFORMAT='%F %T ' # format for timestamp in history
-export LC_ALL=en_US.UTF-8      # set locale for all categories
-export LANG=en_US.UTF-8        # set default language
-export LANGUAGE=en_US.UTF-8    # set preferred language for messages
+export LC_ALL=en_US.UTF-8      # override all locale categories
 
 source "$HOME/.bash_aliases"
 source "$HOME/.bash_functions"
@@ -75,5 +73,4 @@ append_path "$HOME/.local/bin"        # pipx
 append_path "$HOME/.go/bin"           # go
 append_path "$HOME/.luarocks/bin"     # lua
 append_path '/usr/bin/vendor_perl' && # perl
-	append_path '/usr/bin/core_perl' &&
-	append_path '/usr/bin/site_perl'
+	append_path '/usr/bin/core_perl'
