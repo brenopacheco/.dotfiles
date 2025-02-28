@@ -16,7 +16,7 @@ ls /tmp/.X11-unix 2>/dev/null | sed 's/X//' | sort | uniq | while read -r DISPLA
 		(
 			sleep 1
 			~/bin/reset-keyboard
-			notify-send -i input-keyboard "$HID_NAME" "Keyboard reset"
+			notify-send -i input-keyboard "$HID_NAME" "Reset"
 		) &
 		disown
 		;;
