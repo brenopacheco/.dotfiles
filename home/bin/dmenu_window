@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2001
+# Select and focus window
 
 # Function to trim and add "..." to a string
 function trim_and_ellipsis() {

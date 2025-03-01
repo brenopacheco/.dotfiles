@@ -1,4 +1,5 @@
 #!/bin/sh
+# Reset keyboard settings
 
 setxkbmap -model ppc105+inet -layout us
 xrdb ~/.Xresources

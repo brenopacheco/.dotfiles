@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Opens a terminal on the directory of a mounted usb device
 
 devices=$(lsblk | grep -e "/run/media" | awk '{print $7}' | sed 's#.*/##')
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Create tmux session using dmenu selector
 
 function notify() {
 	notify-send "$(basename "$0")" "$1"

@@ -1,12 +1,7 @@
 #!/bin/bash
-# Burns an .iso from anywhere in $HOME into
-# one of the plugged devices using dd
-# Uses dmenu for selection
+# Burns an .iso from $HOME into one of the plugged devices using dd
 
-device=$(ls /dev/ | egrep "^(sd.|mmcblk[1-9]p.)$" | dmenu)
-[[ $? -eq 0 ]] || exit 1
-image=$(fd ".*\.(img|iso)$" ~ | dmenu)
-[[ $? -eq 0 ]] || exit 1
-echo "trying to burn $image to $device"
-sudo umount /dev/${device}*
-sudo dd bs=4M if=$image of=/dev/$device conv=fdatasync  status=progress
+device=$(fd -t b "^(sd.|mmcblk[1-9]p.)$" /dev | dmenu) &&
+	image=$(fd ".*\.(img|iso)$" ~ | dmenu) &&
+	sudo umount "${device}"* &&
+	sudo dd bs=4M if="$image" of="$device" conv=fdatasync status=progress || exit 1
