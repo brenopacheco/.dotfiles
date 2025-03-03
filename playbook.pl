@@ -74,8 +74,7 @@ etc(
     { file => '10-keyboard.rules',        dir => '/etc/udev/rules.d/' },
     { file => '40-wacom.rules',           dir => '/etc/udev/rules.d/' },
     { file => '10-keyboard.conf',         dir => '/etc/X11/xorg.conf.d/' },
-
-    # { file => '20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
+    { file => '20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
     { file => '30-touchpad.conf', dir => '/etc/X11/xorg.conf.d/' },
     { file => 'ssh_known_hosts',  dir => '/etc/ssh/' },
     { file => 'pacman.conf',      dir => '/etc/' },
