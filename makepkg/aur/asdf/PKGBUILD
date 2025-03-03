@@ -1,0 +1,26 @@
+# Maintainer: Alec Mev <alec@mev.earth>
+# Maintainer: Raphael Nestler <raphael.nestler@gmail.com>
+
+pkgname=asdf-vm
+pkgver=0.16.4
+pkgrel=1
+pkgdesc='Extendable version manager with support for Ruby, Node.js, Elixir, Erlang & more'
+arch=('x86_64')
+url='https://asdf-vm.com'
+license=('MIT')
+makedepends=('go')
+depends=('curl' 'git')
+source=(
+	"${pkgname}-${pkgver}.tar.gz::https://github.com/asdf-vm/asdf/releases/download/v${pkgver}/asdf-v${pkgver}-linux-amd64.tar.gz"
+	"LICENSE::https://raw.githubusercontent.com/asdf-vm/asdf/refs/heads/master/LICENSE"
+)
+sha256sums=(
+	'8db60d26924979649070f74b458c9771fe840410612f87cacf2373db50ddc65d'
+	'9295a85c0650c4a5b3ab5adcb20098cb42e129d16f9e62f5a5b00c91d8b74e55'
+)
+options=('!debug')
+
+package() {
+	install -Dm755 "${srcdir}/asdf" -t "$pkgdir/usr/bin/"
+	install -Dm644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

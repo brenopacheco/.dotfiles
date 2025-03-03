@@ -40,10 +40,7 @@ if eval which fzf >/dev/null 2>&1; then
 	source /usr/share/fzf/completion.bash
 fi
 
-if [ -d ~/.asdf ]; then
-	source ~/.asdf/asdf.sh
-	source ~/.asdf/completions/asdf.bash
-fi
+. <(asdf completion bash)
 
 test -e ~/.npmtoken && source ~/.npmtoken
 
@@ -67,6 +64,7 @@ append_path() {
 }
 
 append_path "$HOME/bin"
+append_path "$HOME/.asdf/shims"
 append_path "$HOME/.npm/bin"          # node
 append_path "$HOME/.cargo/bin"        # rust
 append_path "$HOME/.local/bin"        # pipx

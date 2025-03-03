@@ -14,7 +14,7 @@ local function register(repo)
 		repo = user .. '/' .. name,
 		name = name,
 		dir = dir,
-		branch = branch,
+		branch = string.len(branch) > 0 and branch or nil,
 		installed = vim.fn.isdirectory(dir) ~= 0,
 		url = 'https://github.com/' .. user .. '/' .. name .. '.git',
 		loaded = vim.tbl_contains(vim.opt.packpath:get(), dir),
@@ -23,6 +23,7 @@ local function register(repo)
 end
 
 local function install(pkg)
+	if pkg.installed and pkg.branch ~= nil then return end
 	local cmd = pkg.installed
 			and {
 				'git',

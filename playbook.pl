@@ -9,60 +9,60 @@ configure(
 );
 
 pacman(
-    'arandr',                 'base',
-    'base-devel',             'bash-completion',
-    'bat',                    'bear',
-    'blueman',                'bluez',
-    'bluez-utils',            'bottom',
-    'chromium',               'clang',
-    'cmake',                  'conky',
-    'cronie',                 'ctags',
-    'dosfstools',             'dunst',
-    'dzen2',                  'fd',
-    'feh',                    'file-roller',
-    'firefox',                'fzf',
-    'git',                    'gnome-backgrounds',
-    'go',                     'gopls',
-    'gparted',                'gpick',
-    'gtk2',                   'gtk3',
-    'gtk4',                   'gvim',
-    'helm',                   'htop',
-    'imagemagick',            'inotify-tools',
-    'jq',                     'k9s',
-    'lightdm',                'lightdm-gtk-greeter',
-    'lf',                     'lldb',
-    'lsof',                   'lua',
-    'lua51',                  'lua52',
-    'lua53',                  'luajit',
-    'lua-language-server',    'luarocks',
-    'man-db',                 'moreutils',
-    'ncdu',                   'net-tools',
-    'network-manager-applet', 'ninja',
-    'otf-comicshanns-nerd',   'pamixer',
-    'parted',                 'pass',
-    'pass-otp',               'pasystray',
-    'pavucontrol',            'pdftk',
-    'perl',                   'perl-tidy',
-    'python',                 'python-pipx',
-    'redshift',               'renameutils',
-    'ripgrep',                'rsync',
-    'rust',                   'screengrab',
-    'shellcheck',             'shfmt',
-    'sqlitebrowser',          'stow',
-    'stylua',                 'sxiv',
-    'tmux',                   'tree',
-    'ttf-3270-nerd',          'ttf-firacode-nerd',
-    'udiskie',                'unrar',
-    'unzip',                  'usbutils',
-    'v4l2loopback-dkms',      'wget',
-    'wmctrl',                 'xarchiver',
-    'xclip',                  'xdotool',
-    'xorg-server-xephyr',     'xorg-xev',
-    'xorg-xkill',             'xorg-xlsclients',
-    'xorg-xmodmap',           'xorg-xsetroot',
-    'xorg-xwininfo',          'zathura',
-    'zathura-pdf-mupdf',      'zip',
-    'zk'
+    'arandr',              'base',
+    'base-devel',          'bash-completion',
+    'bat',                 'bear',
+    'blueman',             'bluez',
+    'bluez-utils',         'bottom',
+    'chromium',            'clang',
+    'cmake',               'conky',
+    'cronie',              'ctags',
+    'dosfstools',          'docker',
+    'dunst',               'dzen2',
+    'fd',                  'feh',
+    'file-roller',         'firefox',
+    'fzf',                 'git',
+    'gnome-backgrounds',   'go',
+    'gopls',               'gparted',
+    'gpick',               'gtk2',
+    'gtk3',                'gtk4',
+    'gvim',                'helm',
+    'htop',                'imagemagick',
+    'inotify-tools',       'jq',
+    'k9s',                 'lightdm',
+    'lightdm-gtk-greeter', 'lf',
+    'lldb',                'lsof',
+    'lua',                 'lua51',
+    'lua52',               'lua53',
+    'luajit',              'lua-language-server',
+    'luarocks',            'man-db',
+    'moreutils',           'ncdu',
+    'net-tools',           'network-manager-applet',
+    'ninja',               'otf-comicshanns-nerd',
+    'pamixer',             'parted',
+    'pass',                'pass-otp',
+    'pasystray',           'pavucontrol',
+    'pdftk',               'perl',
+    'perl-tidy',           'python',
+    'python-pipx',         'redshift',
+    'renameutils',         'ripgrep',
+    'rsync',               'rust',
+    'screengrab',          'shellcheck',
+    'shfmt',               'sqlitebrowser',
+    'stow',                'stylua',
+    'sxiv',                'tmux',
+    'tree',                'ttf-3270-nerd',
+    'ttf-firacode-nerd',   'udiskie',
+    'unrar',               'unzip',
+    'usbutils',            'v4l2loopback-dkms',
+    'wget',                'wmctrl',
+    'xarchiver',           'xclip',
+    'xdotool',             'xorg-server-xephyr',
+    'xorg-xev',            'xorg-xkill',
+    'xorg-xlsclients',     'xorg-xmodmap',
+    'xorg-xsetroot',       'xorg-xwininfo',
+    'zathura',             'zathura-pdf-mupdf',
+    'zip',                 'zk'
 );
 
 dirs( '~/git', '~/sketch', '~/tmp' );
@@ -74,10 +74,11 @@ etc(
     { file => '10-keyboard.rules',        dir => '/etc/udev/rules.d/' },
     { file => '40-wacom.rules',           dir => '/etc/udev/rules.d/' },
     { file => '10-keyboard.conf',         dir => '/etc/X11/xorg.conf.d/' },
-    { file => '20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
-    { file => '30-touchpad.conf',         dir => '/etc/X11/xorg.conf.d/' },
-    { file => 'ssh_known_hosts',          dir => '/etc/ssh/' },
-    { file => 'pacman.conf',              dir => '/etc/' },
+
+    # { file => '20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
+    { file => '30-touchpad.conf', dir => '/etc/X11/xorg.conf.d/' },
+    { file => 'ssh_known_hosts',  dir => '/etc/ssh/' },
+    { file => 'pacman.conf',      dir => '/etc/' },
 );
 
 git(
@@ -88,7 +89,6 @@ git(
     [ 'git@github.com:brenopacheco/st-fork.git',         '~/git/st-fork' ],
     [ 'git@github.com:brenopacheco/dmenu-fork.git',      '~/git/dmenu-fork' ],
     [ 'git@github.com:brenopacheco/slstatus-fork.git', '~/git/slstatus-fork' ],
-    [ 'https://github.com/asdf-vm/asdf.git --branch v0.14.1', '~/.asdf' ]
 );
 
 systemctl(
@@ -96,6 +96,7 @@ systemctl(
     root => [
         'bluetooth.service',
         'cronie.service',
+
         'docker.service',
         'lightdm.service',
 
@@ -110,6 +111,7 @@ makepkg(
     'makepkg/fork/st',
     'makepkg/fork/neovim',
 
+    'makepkg/aur/asdf',
     'makepkg/aur/bun',
     'makepkg/aur/lls-addons',
     'makepkg/aur/rose-pine-gtk-theme-full',
@@ -272,10 +274,9 @@ sub stow {
 }
 
 sub asdf {
-    my $load  = 'source ~/.asdf/asdf.sh;';
     my @tasks = ();
     for my $conf (@_) {
-        my $check     = _check("$load asdf list $conf->{plugin}");
+        my $check     = _check("asdf list $conf->{plugin}");
         my $installed = $check->{ok};
         my %versions =
           map { $_ => 1 } $installed ? $check->{out} =~ /([^*\s]+)/mg : ();
@@ -284,21 +285,19 @@ sub asdf {
         if ( !$installed ) {
             push @tasks, sub {
                 say "  * installing: $conf->{plugin} => $conf->{url}";
-                _task( 'user',
-                    "$load asdf plugin add $conf->{plugin} $conf->{url}" );
+                _task( 'user', "asdf plugin add $conf->{plugin} $conf->{url}" );
             };
         }
         for my $version (@missing) {
             push @tasks, sub {
                 say "  * installing: $conf->{plugin} => $version";
-                _task( 'user', "$load asdf install $conf->{plugin} $version" );
+                _task( 'user', "asdf install $conf->{plugin} $version" );
             };
         }
         if ( !$current || $current ne $conf->{global} ) {
             push @tasks, sub {
                 say "  * set-global: $conf->{plugin} => $conf->{global}";
-                _task( 'user',
-                    "$load asdf global $conf->{plugin} $conf->{global}" );
+                _task( 'user', "asdf set -u $conf->{plugin} $conf->{global}" );
             };
         }
     }
@@ -367,6 +366,7 @@ sub systemctl {
         push @tasks, sub {
             say "  * enable [$status->{who}]: $service";
             _task( $status->{who}, "$cmd_prefix enable $service" );
+            _task( $status->{who}, "$cmd_prefix start $service" );
           }
           if $status->{enabled} =~ /disabled/;
         push @tasks, sub {
@@ -411,7 +411,21 @@ sub etc {
     $_->() for @tasks;
 }
 
+# HACK: when having issues, `rm $dbfile && repo-add $dbfile && pacman -Sy`
 sub makepkg {
+    my $dbfile = "/usr/share/pacman/custom/custom.db.tar.zst";
+    chomp( my $dbdir = `dirname $dbfile` );
+
+    my @tasks = ();
+
+    if ( !_check("test -f $dbfile")->{ok} ) {
+        push @tasks, sub {
+            say "  * initalizing $dbfile";
+            _task( 'root', "mkdir -p $dbdir" );
+            _task( 'root', "test -f $dbfile || repo-add $dbfile" );
+            _task( 'root', "pacman -Sy" );
+        }
+    }
 
     sub _prepare {
         my @dirs = @_;
@@ -458,42 +472,40 @@ sub makepkg {
     my %info = _prepare(@_);
     my @want =
       grep { $info{$_}{install} > 0 || $info{$_}{build} > 0 } keys %info;
-    if ( !@want ) {
+
+    for (@want) {
+        my $pkgname = $_;
+        push @tasks, sub {
+            my $props = $info{$pkgname};
+            if ( $props->{build} > 0 ) {
+                say "  * building package: $pkgname $props->{version}";
+                my $tmpdir = _check("mktemp -d")->{out};
+                chomp($tmpdir);
+                _copy( 'user', $props->{dir}, "$tmpdir/$pkgname" );
+                _task( 'user', "makepkg -scCf --dir $tmpdir/$pkgname" );
+                _task( 'root',
+                    "cp $tmpdir/$pkgname/$pkgname-*.pkg.tar.zst $dbdir/" );
+                _task( 'root',
+                    "repo-add --new $dbfile $dbdir/$pkgname-*.pkg.tar.zst" );
+                _task( 'root', "pacman -Sy" );
+            }
+            if ( $props->{install} > 0 ) {
+                say "  * installing package: $pkgname $props->{version}";
+                _task( 'root', "pacman -Sy --noconfirm $pkgname" );
+            }
+        }
+    }
+
+    if ( !@tasks ) {
         return say "[OK] makepkg";
     }
     say "[-] makepkg";
-    my $dbfile = "/usr/share/pacman/custom/custom.db.tar.zst";
-
-    # HACK: when having issues, `rm $dbfile && repo-add $dbfile && pacman -Sy`
-    chomp( my $dbdir = `dirname $dbfile` );
-    _task( 'root', "mkdir -p $dbdir" );
-    for (@want) {
-        my $pkgname = $_;
-        my $props   = $info{$pkgname};
-
-        if ( $props->{build} > 0 ) {
-            say "  * building package: $pkgname $props->{version}";
-            chomp( my $tmpdir = `mktemp -d` );
-            _copy( 'user', $props->{dir}, "$tmpdir/$pkgname" );
-            _task( 'user', "makepkg -scCf --dir $tmpdir/$pkgname" );
-            _task( 'root',
-                "cp $tmpdir/$pkgname/$pkgname-*.pkg.tar.zst $dbdir/" );
-            _task( 'root',
-                "repo-add --new $dbfile $dbdir/$pkgname-*.pkg.tar.zst" );
-            _task( 'root', "pacman -Sy" );
-        }
-
-        if ( $props->{install} > 0 ) {
-            say "  * installing package: $pkgname $props->{version}";
-            _task( 'root', "pacman -S --noconfirm $pkgname" );
-        }
-
-    }
+    $_->() for @tasks;
 }
 
 sub node {
     my @pkgs  = map { ${$_}[0] } @_;
-    my $check = _check('source ~/.asdf/asdf.sh && asdf list nodejs');
+    my $check = _check('asdf list nodejs');
     die "asdf nodejs plugin not found" if !$check->{ok};
     my @versions = $check->{out}       =~ /([^*\s]+)/mg;
     my $current  = $1 if $check->{out} =~ /\*(\S+)/;
@@ -505,9 +517,9 @@ sub node {
         for my $ref (@missing) {
             push @tasks, sub {
                 say "  * installing [$version]: $ref->[0]";
-                my $cmd = "source ~/.asdf/asdf.sh";
-                $cmd .= "&& asdf shell nodejs $version";
-                $cmd .= "&& npm install -g $ref->[1]";
+                my $cmd = 'export PATH=$PATH:~/.asdf/shims; cd /tmp';
+                $cmd .= " && asdf set nodejs $version";
+                $cmd .= " && npm install -g $ref->[1]";
                 _task( 'user', $cmd );
             }
         }
@@ -535,3 +547,4 @@ sub go {
 }
 
 # }}} ------------------------------------------------------------------------
+# vim:ft=perl:tw=80:fdls=0:fdl=0
