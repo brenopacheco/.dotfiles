@@ -74,7 +74,7 @@ etc(
     { file => '10-keyboard.rules',        dir => '/etc/udev/rules.d/' },
     { file => '40-wacom.rules',           dir => '/etc/udev/rules.d/' },
     { file => '10-keyboard.conf',         dir => '/etc/X11/xorg.conf.d/' },
-    { file => '20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
+    # { file => '20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
     { file => '30-touchpad.conf',         dir => '/etc/X11/xorg.conf.d/' },
     { file => 'ssh_known_hosts',          dir => '/etc/ssh/' },
     { file => 'pacman.conf',              dir => '/etc/' },
@@ -153,6 +153,8 @@ go(
     [ 'lazydocker',     'github.com/jesseduffield/lazydocker@latest' ],
     [ 'yq',             'github.com/mikefarah/yq/v4@latest' ]
 );
+
+gpg();
 
 # }}} ------------------------------------------------------------------------
 # Library ================================================================ {{{
@@ -545,6 +547,39 @@ sub go {
         say "  * installing: $ref->[0]";
         _task( 'user', "GOPATH=\$HOME/.go go install $ref->[1]" );
     }
+}
+
+sub gpg {
+    my @tasks = ();
+    my ($fingerprint) =
+      `gpgconf --list-options gpg` =~ /^default-key:.*:"(\w+)$/m
+      or die "gpg has no default-key configured";
+    my ($keygrip) =
+      `gpg --with-keygrip -k $fingerprint` =~
+      /^sub .*\[A\]\n\s*Keygrip = (\w+)/m
+      or die "keygrip not found for subkey of type [A] ($fingerprint)";
+
+    if ( !_check("gpg -k $fingerprint")->{ok} ) {
+        my $key     = "$fingerprint.key";
+        my @message = (
+            "Error: gpg key must be manually transfered. Run the following:\n",
+            "gpg --export-secret-key --armor $fingerprint > $key &&",
+            "  scp $key $cfg{user}\@$cfg{host}:/home/$cfg{user}/$key &&",
+            "  rm $fingerprint.key &&",
+            "  ssh -t $cfg{user}\@$cfg{host} 'gpg --import /home/$cfg{user}/$key' &&",
+            "  ssh $cfg{user}\@$cfg{host} 'rm /home/$cfg{user}/$key'\n\n"
+        );
+        die join( "\n", @message );
+    }
+
+    if ( _check("grep '^$keygrip' ~/.gnupg/sshcontrol")->{ok} ) {
+        return say "[OK] gpg";
+    }
+    say "[-] gpg";
+    say "  * adding ssh key to ~/.gnupg/sshcontrol ($fingerprint)";
+    _task( 'user', "echo $keygrip >> ~/.gnupg/sshcontrol" );
+    say "  * reloading gpg-agent";
+    _task( 'user', 'gpg-connect-agent reloadagent /bye' );
 }
 
 # }}} ------------------------------------------------------------------------
