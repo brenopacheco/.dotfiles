@@ -7,6 +7,7 @@
 local count = 0
 
 local function bufferize(tbl)
+	count = count + 1
 	local cmd = table.concat(tbl.fargs, ' ')
 	local result = tostring(vim.fn.execute(cmd))
 	local text = vim.split(vim.trim(result), '\n')

@@ -1,8 +1,8 @@
-local api = require("typescript-tools.api")
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local api = require('typescript-tools.api')
+local lsputil = require('utils.lsp')
 
 require('typescript-tools').setup({
-	capabilities = capabilities,
+	capabilities = lsputil.capabilities(),
 	settings = {
 		separate_diagnostic_server = true,
 		expose_as_code_action = 'all',

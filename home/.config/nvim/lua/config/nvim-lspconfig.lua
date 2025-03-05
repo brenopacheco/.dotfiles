@@ -23,7 +23,7 @@ vim.diagnostic.config({
 	severity_sort = true,
 })
 
-local capabilities = lsputil.capabilities
+local capabilities = lsputil.capabilities()
 
 lsp.bashls.setup({ capabilities = capabilities })
 lsp.clangd.setup({

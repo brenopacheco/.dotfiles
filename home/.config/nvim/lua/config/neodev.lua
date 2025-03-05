@@ -79,7 +79,7 @@ require('neodev').setup({
 	end,
 })
 
-local capabilities = lsputil.capabilities
+local capabilities = lsputil.capabilities()
 
 local lsp = require('lspconfig')
 

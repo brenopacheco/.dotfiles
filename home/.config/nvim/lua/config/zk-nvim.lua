@@ -1,4 +1,7 @@
-require('zk').setup({
+local lsputil = require('utils.lsp')
+local zk = require('zk')
+
+zk.setup({
 	picker = 'telescope', -- or "select"
 	highlight = {
 		additional_vim_regex_highlighting = { 'markdown' },
@@ -7,7 +10,7 @@ require('zk').setup({
 		config = {
 			cmd = { 'zk', 'lsp' },
 			name = 'zk',
-			capabilities = require('cmp_nvim_lsp').default_capabilities(),
+			capabilities = lsputil.capabilities(),
 			on_attach = function(client, bufnr)
 				vim.keymap.set(
 					'n',

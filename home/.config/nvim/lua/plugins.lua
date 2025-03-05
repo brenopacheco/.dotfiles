@@ -19,16 +19,9 @@ vim.z.packadd({
 	'nvim-lualine/lualine.nvim',
 
 	-- TODO: replace completion plugin with https://cmp.saghen.dev/
-	-- 'saghen/blink.cmp@v0.13.0',
-	-- 'zbirenbaum/copilot.lua',
 	'L3MON4D3/LuaSnip',
-	'saadparwaiz1/cmp_luasnip',
-	'onsails/lspkind.nvim',
-	'hrsh7th/cmp-nvim-lsp',
-	'hrsh7th/cmp-buffer',
-	'hrsh7th/cmp-path',
-	'hrsh7th/nvim-cmp',
 	'windwp/nvim-autopairs',
+	'saghen/blink.cmp@v0.13.0',
 
 	-- NOTE: OK
 	'b0o/schemastore.nvim',

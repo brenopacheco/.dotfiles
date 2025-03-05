@@ -86,10 +86,10 @@ M.on_list = function(opts)
 		vim.fn.setqflist({}, ' ', { title = opts.title, items = result })
 		qfutil.open('cfirst')
 	else
-		vim.lsp.util.jump_to_location(
+		vim.lsp.util.show_document(
 			opts.items[1].user_data,
 			vim.o.fileencoding,
-			false
+			{ reuse_win = false, focus = true }
 		)
 		vim.notify('This is the only result')
 	end
@@ -104,26 +104,28 @@ M.wrap = function(fn, ...)
 	return fn(unpack(args))
 end
 
-M.capabilities = vim.tbl_deep_extend(
-	'force',
-	vim.lsp.protocol.make_client_capabilities(),
-	vim.z.enabled('cmp-nvim-lsp')
-			and require('cmp_nvim_lsp').default_capabilities()
-		or {},
-	{
-		textDocument = {
-			completion = {
-				completionItem = {
-					snippetSupport = false,
+M.capabilities = function()
+	return vim.tbl_deep_extend(
+		'force',
+		vim.lsp.protocol.make_client_capabilities(),
+		vim.z.enabled('cmp-nvim-lsp')
+				and require('cmp_nvim_lsp').default_capabilities()
+			or {},
+		{
+			textDocument = {
+				completion = {
+					completionItem = {
+						snippetSupport = false,
+					},
 				},
 			},
-		},
-		workspace = {
-			didChangeWatchedFiles = {
-				dynamicRegistration = false,
+			workspace = {
+				didChangeWatchedFiles = {
+					dynamicRegistration = false,
+				},
 			},
-		},
-	}
-)
+		}
+	)
+end
 
 return M
