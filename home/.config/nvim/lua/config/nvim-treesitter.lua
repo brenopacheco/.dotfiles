@@ -37,7 +37,7 @@ local supported = {
 	'json5',
 	'julia',
 	'kotlin',
-	'latex',
+	-- 'latex',
 	'lua',
 	'luadoc',
 	'luau',
