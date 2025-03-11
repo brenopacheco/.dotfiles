@@ -1,7 +1,7 @@
 #!/bin/bash
 # Burns an .iso from $HOME into one of the plugged devices using dd
 
-device=$(fd -t b "^(sd.|mmcblk[1-9]p.)$" /dev | dmenu) &&
-	image=$(fd ".*\.(img|iso)$" ~ | dmenu) &&
-	sudo umount "${device}"* &&
-	sudo dd bs=4M if="$image" of="$device" conv=fdatasync status=progress || exit 1
+device=$(fd -t b "^(sd.|mmcblk[1-9]p.)$" /dev | dmenu) || exit 1
+image=$(fd ".*\.(img|iso)$" ~ | dmenu) || exit 1
+sudo umount "${device}"*
+sudo dd bs=4M if="$image" of="$device" conv=fdatasync status=progress
