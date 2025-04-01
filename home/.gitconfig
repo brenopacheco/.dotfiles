@@ -20,3 +20,5 @@
     date = relative
 [alias]
     graph = !git log \"$@\" --oneline --graph --branches --remotes --date=short
+[init]
+	defaultBranch = main

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Start a new sketch project
 
-LANG=$1
+SELECTED=$1
 
 function help() {
 	cat <<EOF
-Usage: sketch [go|c|js|sh|lua|perl] [NAME]
+Usage: sketch [go|c|js|sh|lua|pl] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
@@ -19,10 +19,10 @@ if test "$#" -lt 1; then
 	exit 0
 fi
 
-LANG=$1
+SELECTED=$1
 NAME=$2
 
-if [[ ! "$LANG" =~ ^(go|c|js|sh|lua|perl)$ ]]; then
+if [[ ! "$SELECTED" =~ ^(go|c|js|sh|lua|pl)$ ]]; then
 	help
 	echo "Invalid language" >&2
 	exit 1
@@ -30,25 +30,22 @@ fi
 
 mkdir -p ~/sketch
 
-TMPNAME="${LANG}_$(tr -cd 'a-f0-9' </dev/urandom | head -c 10)"
+TMPNAME="${SELECTED}_$(tr -cd 'a-f0-9' </dev/urandom | head -c 10)"
 
 if [[ -n "$NAME" ]]; then
 	TMPNAME="$NAME-$TMPNAME"
 fi
 
 DIR="$HOME/sketch/$TMPNAME"
-
-cat <<EOF
-Setting up sketch project with $LANG in $DIR
-EOF
+SESSION="sketch-$TMPNAME"
 
 mkdir -p "$DIR"
 cd "$DIR" || exit 1
-git init
+git init >/dev/null 2>&1 || exit 1
 
 IGNORE_DIR=$HOME/.ignores
 
-case $LANG in
+case $SELECTED in
 "go")
 	go mod init pkg
 	touch main.go
@@ -78,24 +75,19 @@ case $LANG in
 	touch main.lua
 	cp "${IGNORE_DIR}/Lua.gitignore" .gitignore
 	;;
-"perl")
-	echo -e "#!/usr/bin/env perl\n\nuse diagnostics;\nuse feature 'say';\n\n" >main.perl
-	chmod +x ./main.perl
-	echo -e 'all:\n\t./main.perl' >Makefile
+"pl")
+	echo -e "#!/usr/bin/env perl\n\nuse diagnostics;\nuse feature 'say';\n\n" >main.pl
+	chmod +x ./main.pl
+	echo -e 'all:\n\t./main.pl' >Makefile
 	;;
 esac
 
+echo "Language:  $SELECTED"
 echo "Directory: $DIR"
+echo "Session:   $SESSION"
 
-BASHRC=$(mktemp)
-
-cat "$HOME/.bashrc" >"$BASHRC"
-
-echo "nvim ." >>"$BASHRC"
-
-# shellcheck disable=SC2028
-echo "PS1='\[\033[38;5;20m\]\[\033[48;5;11m\]sketch\[$(tput sgr0)\]\[\e[34m\] \w\[$(tput sgr0)\]\$ '" >>"$BASHRC"
-
-tmux new -s "sketch-$TMPNAME" "bash --rcfile $BASHRC -i"
+tmux new-session -d -s "$SESSION" -c "$DIR"
+tmux send-keys -t "${SESSION}" 'nvim .' C-m
+tmux attach-session -t "$SESSION"
 
 exit 0
