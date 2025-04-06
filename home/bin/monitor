@@ -1,44 +1,112 @@
-#!/usr/bin/env bash
-# shellcheck disable=SC1090
-# Load ~/.screenlayout/ configuration
+#!/usr/bin/env perl
 
-usage() {
-	exec 1>&2
-	echo "Usage: monitor -c <profile>"
-	echo ""
-	echo "Available profiles:"
-	for profile in ~/.screenlayout/*.sh; do
-		name=$(basename "$profile" .sh)
-		desc=$(grep '^#desc=' "$profile" | awk -F= '{print $2}')
-		printf "  %-10s %s\n" "$name" "$desc"
-	done
-	echo ""
-	echo "Error: $1"
-	exit 1
+use Getopt::Long qw(GetOptions);
+use Pod::Usage   qw(pod2usage);
+use builtin      qw(trim);
+
+use feature 'say';
+
+my $help = 0;
+my $man  = 0;
+my $list = 0;
+GetOptions(
+    'h|help' => \$help,
+    'l|list' => \$list,
+    'man'    => \$man,
+) or pod2usage(2);
+pod2usage(1)               if $help;
+pod2usage( -verbose => 2 ) if $man;
+
+my $dir = "$ENV{'HOME'}/.screenlayout";
+opendir( my $dh, $dir ) or die "Can't open directory '$dir': $!";
+my @files = sort grep { !/^\./ && -x "$dir/$_" } readdir($dh);
+closedir($dh);
+
+my @profiles = ();
+for my $file (@files) {
+    my $name = trim($1)
+      if `grep -e "#\\s*name\\s*=" -m1 $dir/$file` =~ /name\s*=(.+)/;
+    my $desc = trim($1)
+      if `grep -e "#\\s*desc\\s*=" -m1 $dir/$file` =~ /desc\s*=(.+)/;
+    push @profiles,
+      {
+        path => "$dir/$file",
+        name => $name // $file,
+        desc => $desc // ""
+      };
 }
 
-PROFILE=""
-while getopts ":c:" opt; do
-	case $opt in
-	c) PROFILE="$OPTARG" ;;
-	\?)
-		usage "invalid option: -$OPTARG"
-		;;
-	esac
-done
+if ($list) {
+    my $mlen =
+      ( sort { $b <=> $a } map { length( $_->{name} ) } @profiles )[0] + 3;
+    say "Available profiles:";
+    for my $profile (@profiles) {
+        printf "  %-${mlen}s %s\n", $profile->{name}, $profile->{desc};
 
-if [[ -z "$PROFILE" ]]; then
-	usage "profile is required"
-fi
+    }
+    exit 0;
+}
 
-FILE="$HOME/.screenlayout/${PROFILE}.sh"
+my $profile = shift @ARGV;
 
-if [[ ! -f "$FILE" ]]; then
-	usage "invalid profile"
-fi
+pod2usage() unless ($profile);
 
-source "$FILE"
+my @matches = map {
+    $profile eq $_->{name} ? $_->{path} : ()
+} @profiles;
 
-feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
+if (!@matches) {
+    pod2usage("No profile matches '$profile'");
+}
 
-exit 0
+if (length (@matches) > 1) {
+    pod2usage("Multiple profiles match '$profile'");
+}
+
+system(@matches[0]);
+
+__END__
+
+=head1 NAME
+
+monitor - apply screenlayout X11 profiles
+
+=head1 SYNOPSIS
+
+    monitor [OPTION]... [PROFILE]
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-h, --help>
+
+Show usage
+
+=item B<--man>
+
+Read docs in man pager
+
+=item B<-l, --list>
+
+List available profiles
+
+=back
+
+=head1 DESCRIPTION
+
+B<This program> applies available X11 profile configurations from ~/.screenlayout.
+These profiles are B<executable> scripts containing the appropriate B<xrandr> commands.
+
+When a PROFILE is given, the program applies it, unless the --list option is
+passed. Profiles are shell scripts in ~/.screenlayout with comment key-value
+pairs:
+
+  # name = profile name
+  # desc = profile description
+
+=head1 AUTHOR
+
+Breno Pacheco <github.com/brenopacheco>
+
+=cut
