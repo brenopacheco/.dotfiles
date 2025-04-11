@@ -63,7 +63,7 @@ if (length (@matches) > 1) {
     pod2usage("Multiple profiles match '$profile'");
 }
 
-system(@matches[0]);
+system(@matches[0] . " && feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg");
 
 __END__
 
