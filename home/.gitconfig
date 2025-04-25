@@ -1,24 +1,20 @@
 [user]
-    email = brenoleonhardt@gmail.com
-    name = Breno Leonhardt Pacheco
-    ; signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
-	; try to reconcile key by email
+	name = Breno Leonhardt Pacheco
+	email = brenoleonhardt@gmail.com
+	signingkey = B01A3A7A20E3DD34D673FB20BCECC779EE234BC0
 [commit]
-    gpgsign = true
+	gpgsign = true
 [push]
-    autoSetupRemote = true
-; [credential]
-    ; helper = /usr/share/git/credential/netrc/git-credential-netrc.perl #-dv
-	; use ssh for credentials
+	autoSetupRemote = true
 [core]
-    hooksPath = ~/.config/git/hooks
+	hooksPath = ~/.config/git/hooks
 [mergetool]
-    prompt = false
+	prompt = false
 [difftool]
-    prompt = false
-[log]
-    date = relative
-[alias]
-    graph = !git log \"$@\" --oneline --graph --branches --remotes --date=short
+	prompt = false
 [init]
 	defaultBranch = main
+[log]
+	date = relative
+[alias]
+	graph = !git log \"$@\" --oneline --graph --branches --remotes --date=short

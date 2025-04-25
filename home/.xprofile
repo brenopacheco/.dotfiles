@@ -26,7 +26,3 @@ redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 # slack       & disown
 
 ~/bin/reset-keyboard
-
-# xrdb ~/.Xresources
-# xmodmap ~/.Xmodmap
-# xset r rate 200 30

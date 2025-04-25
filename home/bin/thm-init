@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+tmux new-session -d -s thm -n nvim -c ~/thm
+tmux send-keys -t thm:nvim 'nvim .' C-m
+
+tmux new-window -t thm -n dev -c ~/thm/thm-platform-client
+tmux split-window -h -t thm:dev -c ~/thm/tryhackme
+tmux send-keys -t thm:dev.1 'npm run dev' C-m
+tmux send-keys -t thm:dev.2 'npm run dev' C-m
+
+
+tmux new-window -t thm -n docker -c ~/thm
+tmux send-keys -t thm:docker 'docker-compose up -d' C-m
+tmux send-keys -t thm:docker 'lazydocker' C-m
+
+tmux new-window -t thm -n ngrok -c ~/thm
+tmux send-keys -t thm:ngrok 'ssh -fN -R 1337:localhost:8080 racknerd' C-m
+# ssh -fN -R 1337:localhost:8080 racknerd && 
+# while true; do cat /tmp/ngrok.log | jq -r 'select(.msg == "started tunnel") | .url'; done
+
+tmux attach -t thm

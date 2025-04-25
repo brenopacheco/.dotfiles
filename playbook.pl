@@ -122,8 +122,8 @@ asdf(
     {
         plugin   => "nodejs",
         url      => "https://github.com/asdf-vm/asdf-nodejs.git",
-        versions => ["23.3.0"],
-        global   => "23.3.0"
+        versions => ["23.3.0", "20.19.0"],
+        global   => "20.19.0"
     },
     {
         plugin   => "yarn",
@@ -577,6 +577,7 @@ sub gpg {
     }
     say "[-] gpg";
     say "  * adding ssh key to ~/.gnupg/sshcontrol ($fingerprint)";
+    # TODO: $keygrip S $email
     _task( 'user', "echo $keygrip >> ~/.gnupg/sshcontrol" );
     say "  * reloading gpg-agent";
     _task( 'user', 'gpg-connect-agent reloadagent /bye' );

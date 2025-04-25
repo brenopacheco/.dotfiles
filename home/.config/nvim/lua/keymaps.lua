@@ -154,7 +154,15 @@ local keyboard = {
   },
   filetypes = { -- [[
     norg = {},
-  } -- ]]
+  }, -- ]]
+	unmappings = {
+      { { 'n',     }, 'grn' },
+      { { 'n', 'x' }, 'gra' },
+      { { 'n',     }, 'grr' },
+      { { 'n',     }, 'gri' },
+      { { 'i',     }, '<c-s>' },
+      -- { { 'n',     }, 'gO' }
+	}
 }
 
 -- [[ setup
@@ -172,6 +180,10 @@ for _, group in pairs(keyboard.mappings) do
 			)
 		end
 	end
+end
+
+for _, map in pairs(keyboard.unmappings) do
+	pcall(vim.keymap.del, unpack(map))
 end
 
 vim.api.nvim_create_autocmd({ 'BufReadPost', 'FileType' }, {

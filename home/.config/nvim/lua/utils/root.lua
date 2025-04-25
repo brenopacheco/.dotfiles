@@ -59,10 +59,10 @@ M.downward_roots = function(opts)
 	local list = vim.split(obj.stdout, '\n')
 	---@type Root[]
 	local matches = {}
-	for _, pattern in ipairs(opts.patterns) do
-		for _, path in ipairs(list) do
-			local file = tostring(vim.fs.basename(path))
-			local dir = tostring(vim.fs.dirname(path))
+	for _, path in ipairs(list) do
+		local file = tostring(vim.fs.basename(path))
+		local dir = tostring(vim.fs.dirname(path))
+		for _, pattern in ipairs(opts.patterns) do
 			if string.match(file, pattern) ~= nil then
 				table.insert(matches, {
 					path = dir,

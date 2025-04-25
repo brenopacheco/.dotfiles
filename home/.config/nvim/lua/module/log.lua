@@ -3,6 +3,11 @@
 -- Adds global _G.log function
 -- Adds Log <lua expr> command
 
+-- TODO: new module "timestamp"
+-- local start_time = vim.loop.hrtime()
+-- log('Time: ' .. (vim.loop.hrtime() - start_time) / 1e6 .. ' ms') -- Convert to ms
+
+
 local count = 0
 
 _G.log = vim.schedule_wrap(function(...)

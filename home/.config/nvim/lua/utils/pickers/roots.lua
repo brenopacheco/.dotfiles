@@ -5,7 +5,9 @@
 local rootutil = require('utils.root')
 
 return function()
-	local root = rootutil.shortest_root()
+	-- local root = rootutil.shortest_root()
+	local root = vim.fn.expand('~/thm')
+	log(root)
 	local roots =
 		rootutil.downward_roots({ dir = root, patterns = rootutil.root_patterns })
 	roots = vim.tbl_filter(function(r) return r.path ~= root end, roots)

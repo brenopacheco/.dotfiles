@@ -7,6 +7,8 @@
 local count = 0
 
 local function bufferize(tbl)
+	-- for messages, we want to reuse the buffer
+	count = count + 1
 	local cmd = table.concat(tbl.fargs, ' ')
 	local result = tostring(vim.fn.execute(cmd))
 	local text = vim.split(vim.trim(result), '\n')

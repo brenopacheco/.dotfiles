@@ -72,3 +72,5 @@ append_path "$HOME/.go/bin"           # go
 append_path "$HOME/.luarocks/bin"     # lua
 append_path '/usr/bin/vendor_perl' && # perl
 	append_path '/usr/bin/core_perl'
+
+export PERL5LIB=~/.perl5

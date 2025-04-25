@@ -3,6 +3,8 @@ alias ts='tmux new -s'
 alias ta='tmux attach'
 alias tk='tmux kill-server'
 
+alias ports='netstat -tulpn'
+
 alias pp='pushd .'
 alias po='popd'
 

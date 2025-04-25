@@ -21,6 +21,6 @@ domains=(
 
 for domain in "${domains[@]}"; do
 	echo "Updating ${domain}..."
-	url="https://www.duckdns.org/update?domains=${domain}&token=${DUCKDNS_TOKEN}&ip="
+	url="https://www.duckdns.org/update?domains=${domain}&token=${DUCKDNS_TOKEN}&ip=192.210.226.212"
 	curl -s "${url}" | xargs -I{} echo "$(date) - ${domain} - {}" >>/tmp/duck.log
 done

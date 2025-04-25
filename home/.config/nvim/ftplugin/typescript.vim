@@ -4,6 +4,7 @@ endif
 let b:did_ftplugin = 1
 
 compiler bun
+setlocal expandtab
 setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2
@@ -17,4 +18,4 @@ setlocal suffixesadd+=.cjs,.css,.d.ts,.html,.js,.json,.jsx,.mjs,.ts,.tsx
 setlocal keywordprg=:zeal\ typescript:\
 " setlocal iskeyword+=#
 
-let b:undo_ftplugin='setl mp< efm< ep< sw< ts< fdm< fde< fo< tw< com< cms< sua< kp<'
+let b:undo_ftplugin='setl et< mp< efm< ep< sw< ts< fdm< fde< fo< tw< com< cms< sua< kp<'
