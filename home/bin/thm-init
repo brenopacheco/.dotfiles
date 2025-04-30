@@ -14,7 +14,7 @@ tmux send-keys -t thm:docker 'docker-compose up -d' C-m
 tmux send-keys -t thm:docker 'lazydocker' C-m
 
 tmux new-window -t thm -n ngrok -c ~/thm
-tmux send-keys -t thm:ngrok 'ssh -fN -R 1337:localhost:8080 racknerd' C-m
+tmux send-keys -t thm:ngrok 'ssh -v -N -R 8080:localhost:1337 racknerd' C-m
 # ssh -fN -R 1337:localhost:8080 racknerd && 
 # while true; do cat /tmp/ngrok.log | jq -r 'select(.msg == "started tunnel") | .url'; done
 
