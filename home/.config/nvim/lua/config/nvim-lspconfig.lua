@@ -1,9 +1,7 @@
 local lsp = require('lspconfig')
 local lsputil = require('utils.lsp')
 
--- vim.lsp.set_log_level(vim.log.levels.DEBUG)
--- vim.lsp.set_log_level(vim.log.levels.INFO)
-vim.lsp.set_log_level(vim.log.levels.ERROR)
+vim.lsp.set_log_level(vim.log.levels.ERROR) -- DEBUG / INFO
 
 for type, icon in pairs({
 	Error = '󰅚 ',
@@ -25,6 +23,7 @@ vim.diagnostic.config({
 
 local capabilities = lsputil.capabilities
 
+lsp.biome.setup({ capabilities = capabilities })
 lsp.bashls.setup({ capabilities = capabilities })
 lsp.clangd.setup({
 	capabilities = capabilities,
@@ -36,18 +35,7 @@ lsp.clangd.setup({
 })
 lsp.cssls.setup({ capabilities = capabilities })
 lsp.dockerls.setup({ capabilities = capabilities })
--- TODO: lsp.efm.setup({ capabilities = capabilities })
-lsp.eslint.setup({
-	capabilities = capabilities,
-	on_attach = function(_, bufnr)
-		vim.keymap.set(
-			{ 'n', 'x' },
-			'<leader>=',
-			'<cmd>EslintFixAll<cr>',
-			{ buffer = bufnr }
-		)
-	end,
-})
+lsp.eslint.setup({ capabilities = capabilities })
 lsp.gopls.setup({
 	capabilities = vim.tbl_extend('force', capabilities, {
 		textDocument = {

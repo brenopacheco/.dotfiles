@@ -2,8 +2,19 @@
 image/jpeg=sxiv.desktop
 application/pdf=org.pwmt.zathura-pdf-mupdf.desktop
 text/plain=nvim.desktop
+x-scheme-handler/mailto=userapp-Thunderbird-I9WN52.desktop
+message/rfc822=userapp-Thunderbird-I9WN52.desktop
+x-scheme-handler/mid=userapp-Thunderbird-I9WN52.desktop
+x-scheme-handler/webcal=userapp-Thunderbird-MK4442.desktop
+text/calendar=userapp-Thunderbird-MK4442.desktop
+application/x-extension-ics=userapp-Thunderbird-MK4442.desktop
+x-scheme-handler/webcals=userapp-Thunderbird-MK4442.desktop
 
 [Added Associations]
 image/jpeg=sxiv.desktop;
 application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
 text/plain=nvim.desktop;
+x-scheme-handler/mailto=userapp-Thunderbird-I9WN52.desktop;
+x-scheme-handler/mid=userapp-Thunderbird-I9WN52.desktop;
+x-scheme-handler/webcal=userapp-Thunderbird-MK4442.desktop;
+x-scheme-handler/webcals=userapp-Thunderbird-MK4442.desktop;

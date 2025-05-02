@@ -140,6 +140,7 @@ local keyboard = {
       { { 'n',     }, 'Q',          '<Nop>'                                  },
       { { 'x',     }, 'p',          'pgvy'                                   },
       { { 'n', 'x' }, 'K',           maps.keywordprg                         },
+      { {      'x' }, '=',           maps.run_format,                        },
       { { 's',     }, '<bs>',       '<bs>i'                                  },
       { { 'x',     }, '*',  [["zy/\V<C-r>=escape(@z, '\/')<cr><cr>]]         },
     } -- ]]

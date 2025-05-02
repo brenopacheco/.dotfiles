@@ -9,60 +9,61 @@ configure(
 );
 
 pacman(
-    'arandr',              'base',
-    'base-devel',          'bash-completion',
-    'bat',                 'bear',
-    'blueman',             'bluez',
-    'bluez-utils',         'bottom',
-    'chromium',            'clang',
-    'cmake',               'conky',
-    'cronie',              'ctags',
-    'dosfstools',          'docker',
-    'dunst',               'dzen2',
-    'fd',                  'feh',
-    'file-roller',         'firefox',
-    'fzf',                 'git',
-    'gnome-backgrounds',   'go',
-    'gopls',               'gparted',
-    'gpick',               'gtk2',
-    'gtk3',                'gtk4',
-    'gvim',                'helm',
-    'htop',                'imagemagick',
-    'inotify-tools',       'jq',
-    'k9s',                 'lightdm',
-    'lightdm-gtk-greeter', 'lf',
-    'lldb',                'lsof',
-    'lua',                 'lua51',
-    'lua52',               'lua53',
-    'luajit',              'lua-language-server',
-    'luarocks',            'man-db',
-    'moreutils',           'ncdu',
-    'net-tools',           'network-manager-applet',
-    'ninja',               'otf-comicshanns-nerd',
-    'pamixer',             'parted',
-    'pass',                'pass-otp',
-    'pasystray',           'pavucontrol',
-    'pdftk',               'perl',
-    'perl-tidy',           'python',
-    'python-pipx',         'redshift',
-    'renameutils',         'ripgrep',
-    'rsync',               'rust',
-    'screengrab',          'shellcheck',
-    'shfmt',               'sqlitebrowser',
-    'stow',                'stylua',
-    'sxiv',                'tmux',
-    'tree',                'ttf-3270-nerd',
-    'ttf-firacode-nerd',   'udiskie',
-    'unrar',               'unzip',
-    'usbutils',            'v4l2loopback-dkms',
-    'wget',                'wmctrl',
-    'xarchiver',           'xclip',
-    'xdotool',             'xorg-server-xephyr',
-    'xorg-xev',            'xorg-xkill',
-    'xorg-xlsclients',     'xorg-xmodmap',
-    'xorg-xsetroot',       'xorg-xwininfo',
-    'zathura',             'zathura-pdf-mupdf',
-    'zip',                 'zk'
+    'arandr',               'base',
+    'base-devel',           'bash-completion',
+    'bat',                  'bear',
+    'blueman',              'bluez',
+    'bluez-utils',          'bottom',
+    'chromium',             'clang',
+    'cmake',                'conky',
+    'cronie',               'ctags',
+    'dosfstools',           'docker',
+    'dunst',                'dzen2',
+    'fd',                   'feh',
+    'file-roller',          'firefox',
+    'fzf',                  'git',
+    'gnome-backgrounds',    'go',
+    'gopls',                'gparted',
+    'gpick',                'gtk2',
+    'gtk3',                 'gtk4',
+    'gvim',                 'helm',
+    'htop',                 'imagemagick',
+    'inotify-tools',        'jq',
+    'k9s',                  'lightdm',
+    'lightdm-gtk-greeter',  'lf',
+    'lldb',                 'lsof',
+    'lua',                  'lua51',
+    'lua52',                'lua53',
+    'luajit',               'lua-language-server',
+    'luarocks',             'man-db',
+    'moreutils',            'ncdu',
+    'net-tools',            'network-manager-applet',
+    'ninja',                'noto-fonts-emoji',
+    'otf-comicshanns-nerd', 'pamixer',
+    'parted',               'pass',
+    'pass-otp',             'pasystray',
+    'pavucontrol',          'pdftk',
+    'perl',                 'perl-tidy',
+    'python',               'python-pipx',
+    'redshift',             'renameutils',
+    'ripgrep',              'rsync',
+    'rust',                 'screengrab',
+    'shellcheck',           'shfmt',
+    'sqlitebrowser',        'stow',
+    'stylua',               'sxiv',
+    'tmux',                 'tree',
+    'ttf-3270-nerd',        'ttf-firacode-nerd',
+    'udiskie',              'unrar',
+    'unzip',                'usbutils',
+    'v4l2loopback-dkms',    'wget',
+    'wmctrl',               'xarchiver',
+    'xclip',                'xdotool',
+    'xorg-server-xephyr',   'xorg-xev',
+    'xorg-xkill',           'xorg-xlsclients',
+    'xorg-xmodmap',         'xorg-xsetroot',
+    'xorg-xwininfo',        'zathura',
+    'zathura-pdf-mupdf',    'zip',
+    'zk',
 );
 
 dirs( '~/git', '~/sketch', '~/tmp' );
@@ -74,7 +75,7 @@ etc(
     { file => '10-keyboard.rules',        dir => '/etc/udev/rules.d/' },
     { file => '40-wacom.rules',           dir => '/etc/udev/rules.d/' },
     { file => '10-keyboard.conf',         dir => '/etc/X11/xorg.conf.d/' },
-    # { file => '20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
+    { file => '20-monitor.conf',          dir => '/etc/X11/xorg.conf.d/' },
     { file => '30-touchpad.conf',         dir => '/etc/X11/xorg.conf.d/' },
     { file => 'ssh_known_hosts',          dir => '/etc/ssh/' },
     { file => 'pacman.conf',              dir => '/etc/' },
@@ -122,7 +123,7 @@ asdf(
     {
         plugin   => "nodejs",
         url      => "https://github.com/asdf-vm/asdf-nodejs.git",
-        versions => ["23.3.0", "20.19.0"],
+        versions => [ "23.3.0", "20.19.0" ],
         global   => "20.19.0"
     },
     {
@@ -138,6 +139,7 @@ node(
     [ 'eslint',                        'eslint' ],
     [ 'prettier',                      'prettier' ],
     [ 'prettierd',                     '@fsouza/prettierd' ],
+    [ 'eslint_d',                      'eslint_d' ],
     [ 'tsc',                           'typescript' ],
     [ 'tsserver',                      'typescript-language-server' ],
     [ 'vim-language-server',           'vim-language-server' ],
@@ -560,27 +562,19 @@ sub gpg {
       or die "keygrip not found for subkey of type [A] ($fingerprint)";
 
     if ( !_check("gpg -k $fingerprint")->{ok} ) {
-        my $key     = "$fingerprint.key";
+        my $srckey  = "/tmp/$fingerprint.key";
+        my $dstkey  = "/home/$cfg{user}/$key";
+        my $host    = "$cfg{user}\@$cfg{host}";
         my @message = (
             "Error: gpg key must be manually transfered. Run the following:\n",
-            "gpg --export-secret-key --armor $fingerprint > $key &&",
-            "  scp $key $cfg{user}\@$cfg{host}:/home/$cfg{user}/$key &&",
-            "  rm $fingerprint.key &&",
-            "  ssh -t $cfg{user}\@$cfg{host} 'gpg --import /home/$cfg{user}/$key' &&",
-            "  ssh $cfg{user}\@$cfg{host} 'rm /home/$cfg{user}/$key'\n\n"
+            "gpg --export-secret-key --armor $fingerprint > $srckey &&",
+            "  scp $srckey $host:$dstkey &&",
+            "  rm $srckey &&",
+            "  ssh -t $host 'gpg --import $dstkey' &&",
+            "  ssh $host 'rm $dstkey'\n\n"
         );
         die join( "\n", @message );
     }
-
-    if ( _check("grep '^$keygrip' ~/.gnupg/sshcontrol")->{ok} ) {
-        return say "[OK] gpg";
-    }
-    say "[-] gpg";
-    say "  * adding ssh key to ~/.gnupg/sshcontrol ($fingerprint)";
-    # TODO: $keygrip S $email
-    _task( 'user', "echo $keygrip >> ~/.gnupg/sshcontrol" );
-    say "  * reloading gpg-agent";
-    _task( 'user', 'gpg-connect-agent reloadagent /bye' );
 }
 
 # }}} ------------------------------------------------------------------------
