@@ -114,13 +114,6 @@ vim.opt.wildmode       = 'full'                        -- how wildmenu appears
 -- Extras
 vim.g.vim_indent_cont  = 4                             -- in vimscript, \ indents shiftwidth
 vim.g.c_syntax_for_h   = 1                             -- recognize .h as c file
--- Disable a few builtin modules
-vim.g.loaded_matchit = 1
-vim.g.loaded_matchparen = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_spellfile_plugin = 1
-vim.g.loaded_2html_plugin = 1
-vim.g.loaded_tutor_mode_plugin = 1
 -- stylua: ignore end
 
 -- vi:cc=92

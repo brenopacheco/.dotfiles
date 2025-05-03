@@ -1,54 +1,31 @@
 ---@meta packadd
 --- Packadd - custom minimal package manager
 
-local plugin_dir = vim.fn.stdpath('data')
+---@class Plug
+---@field [1]  string
+---@field as   string|nil
+---@field tag  string|nil
+---@example { 'Everblush/nvim', as = 'everblush', tag = "v1.2.3" }
 
+---@class Package
+---@field name   string
+---@field alias   string
+---@field dir    string
+---@field config bool|nil
+
+---@type table<string, Package>
 local packages = {}
+
+---@type table<string, boolean>
 local modules = {}
 
-local function register(repo)
-	local user, name, branch = repo:match('([^/]+)/([^@]+)@?(.*)')
-	local dir = plugin_dir .. '/pack/site/opt/' .. name
-	packages[name] = {
-		config = nil,
-		repo = user .. '/' .. name,
-		name = name,
-		dir = dir,
-		branch = string.len(branch) > 0 and branch or nil,
-		installed = vim.fn.isdirectory(dir) ~= 0,
-		url = 'https://github.com/' .. user .. '/' .. name .. '.git',
-		loaded = vim.tbl_contains(vim.opt.packpath:get(), dir),
-	}
-	return packages[name]
-end
-
-local function install(pkg)
-	if pkg.installed and pkg.branch ~= nil then return end
-	local cmd = pkg.installed
-			and {
-				'git',
-				'pull',
-				'--recurse-submodules',
-				'--update-shallow',
-			}
-		or {
-			'git',
-			'clone',
-			'--depth=1',
-			'--recurse-submodules',
-			'--shallow-submodules',
-			pkg.url,
-			pkg.dir,
-		}
-	if pkg.branch then
-		table.insert(cmd, '--branch')
-		table.insert(cmd, pkg.branch)
-	end
+---@param args string[]
+---@param cwd  string|nil
+local function git(args, cwd)
 	local result = vim
-		---@diagnostic disable-next-line: missing-fields
-		.system(cmd, {
+		.system(vim.list_extend({ 'git' }, args), {
 			text = true,
-			cwd = pkg.installed and pkg.dir or nil,
+			cwd = cwd,
 			env = vim.tbl_extend(
 				'force',
 				vim.fn.environ(),
@@ -57,101 +34,94 @@ local function install(pkg)
 		})
 		:wait()
 	if result.code ~= 0 then
-		error(
-			'Packadd: failed ensuring ' .. pkg.repo .. ' - ' .. vim.inspect(result),
+		error('Git failed: ' .. vim.inspect(result), vim.log.levels.ERROR)
+	end
+end
+
+---@param module string
+local function load(module)
+	local status, err = pcall(require, module)
+	if not status then
+		vim.notify(
+			'Error loading module ' .. module .. ':\n' .. err,
 			vim.log.levels.ERROR
 		)
 	end
-	pkg.installed = true
-	vim.notify('Packadd: installed ' .. pkg.repo, vim.log.levels.INFO)
+	return status
 end
 
-local function update()
-	for name, pkg in pairs(packages) do
-		vim.notify('Packadd: updating ' .. name)
-		install(pkg)
-	end
-end
-
----@param repos string[]
-local function packadd(repos)
-	for _, repo in ipairs(repos) do
-		local pkg = register(repo)
-		if not pkg.installed then install(pkg) end
-		if not pkg.loaded then
-			pkg.loaded = true
-			vim.cmd('packadd ' .. pkg.name)
-			local config = 'config/' .. pkg.name
-			config = string.gsub(config, '%.nvim$', '')
-			config = string.gsub(config, '%.vim$', '')
-			config = string.gsub(config, '%.lua$', '')
-			config = string.gsub(config, '%.cmp$', '')
-			local status, err = pcall(require, config)
-			if status then
-				pkg.config = config
-			else
-				pkg.config = false
-				local pattern = [[module ']] .. config .. [[' not found:]]
-				if string.sub(err, 1, string.len(pattern)) ~= pattern then
-					vim.notify(
-						'Error loading config ' .. config .. ':\n' .. err,
-						vim.log.levels.ERROR
-					)
-				end
-			end
+---@param plugs Plug[]
+local function packadd(plugs)
+	for _, plug in ipairs(plugs) do
+		local name = plug[1]
+		local alias = plug.as or name:match('[^/]+/([^@]+)')
+		local dir = vim.fn.stdpath('data') .. '/pack/site/opt/' .. alias
+		---@type Package
+		local pkg = { name = name, alias = alias, dir = dir }
+		if vim.fn.isdirectory(dir) ~= 1 then
+			local url = 'https://github.com/' .. plug[1] .. '.git'
+			vim.notify('Installing ' .. url)
+			git(
+				vim.list_extend({
+					'clone',
+					'--depth=1',
+					'--recurse-submodules',
+					'--shallow-submodules',
+					url,
+					dir,
+				}, plug.tag and { '--branch', plug.tag } or {}),
+				nil
+			)
 		end
+		vim.cmd('packadd ' .. alias)
+		local config = 'config/' .. alias
+		local path = vim.fn.stdpath('config') .. '/lua/' .. config .. '.lua'
+		if vim.fn.filereadable(path) == 1 then pkg.config = load(config) end
+		packages[name] = pkg
 	end
 	vim.cmd('helptags ALL')
 end
 
-local function packinstall(cmd) packadd(vim.split(cmd.args, '\n')) end
-
-local function packlist(cmd)
-	if cmd.args:len() > 0 then
-		for _, package in pairs(packages) do
-			if string.match(package.name, cmd.args) then
-				vim.print(package)
-				return
-			end
-		end
-		vim.notify('Package not found', vim.log.levels.WARN)
-	else
-		vim.print({ packages = packages, modules = { modules } })
+---@param mods string[]
+local function modload(mods)
+	for _, mod in ipairs(mods) do
+		modules[mod] = load('module/' .. mod) and true or nil
 	end
 end
 
-local function enabled(repo)
-	local name = string.gsub(repo, '^.*/', '')
-	local pkg = packages[name]
-	if pkg ~= nil then return pkg.installed and pkg.loaded end
-	local mod = modules[name]
-	return mod ~= nil and mod.loaded
+---@param name string
+local function enabled(name)
+	if packages[name] then return true end
+	for _, plugin in pairs(packages) do
+		if plugin.alias == name then return true end
+	end
+	return false
 end
 
-local function modload(mods)
-	for _, mod in ipairs(mods) do
-		local status, _ = pcall(require, 'module/' .. mod)
-		if status then
-			modules[mod] = {
-				name = mod,
-				loaded = true,
-			}
-		else
-			vim.notify('Packadd: failed loading module ' .. mod, vim.log.levels.ERROR)
-		end
+local function list()
+	vim.notify(vim.inspect({ modules = modules, packages = packages }))
+end
+
+local function update()
+	for name, plugin in pairs(packages) do
+		vim.notify('Updating ' .. name)
+		git({ 'pull', '--recurse-submodules', '--update-shallow' }, plugin.dir)
 	end
 end
 
 for _, plugin in pairs({
-	'tohtml',
-	'tutor',
+	'2html',
 	'matchit',
 	'matchparen',
 	'netrwPlugin',
 	'rplugin',
 	'spellfile',
+	'tohtml',
+	'tutor',
+	'tutor_mode',
 }) do
 	vim.g['loaded_' .. plugin] = 1
+	vim.g['loaded_' .. plugin .. '_plugin'] = 1
 end
 
 vim.opt.runtimepath = {
@@ -160,11 +130,11 @@ vim.opt.runtimepath = {
 	vim.env.VIMRUNTIME,
 	'/usr/lib/nvim',
 }
-vim.opt.packpath = { plugin_dir }
-vim.api.nvim_create_user_command('Packinstall', packinstall, { nargs = '?' })
-vim.api.nvim_create_user_command('Packlist', packlist, { nargs = '?' })
-vim.api.nvim_create_user_command('Packupdate', update, { nargs = 0 })
+vim.opt.packpath = { vim.fn.stdpath('data') }
 
 vim.z.enabled = enabled
 vim.z.packadd = packadd
 vim.z.modload = modload
+
+vim.api.nvim_create_user_command('Packupdate', update, { nargs = 0 })
+vim.api.nvim_create_user_command('Packlist', list, { nargs = 0 })
