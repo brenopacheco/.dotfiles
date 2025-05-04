@@ -1,5 +1,8 @@
 #!/usr/bin/env perl
 
+# TODO:
+#   gpg --export-ssh-key brenoleonhardt@gmail.com > ~/.ssh/blp.pub && chmod 0600 ~/.ssh/blp.pub
+
 # Playbook =============================================================== {{{
 configure(
     user  => $ENV{'USER'},
@@ -563,7 +566,7 @@ sub gpg {
 
     if ( !_check("gpg -k $fingerprint")->{ok} ) {
         my $srckey  = "/tmp/$fingerprint.key";
-        my $dstkey  = "/home/$cfg{user}/$key";
+        my $dstkey  = "/home/$cfg{user}/$fingerprint.key";
         my $host    = "$cfg{user}\@$cfg{host}";
         my @message = (
             "Error: gpg key must be manually transfered. Run the following:\n",
