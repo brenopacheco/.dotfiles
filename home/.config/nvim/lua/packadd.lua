@@ -109,20 +109,18 @@ local function update()
 	end
 end
 
-for _, plugin in pairs({
-	'2html',
-	'matchit',
-	'matchparen',
-	'netrwPlugin',
-	'rplugin',
-	'spellfile',
-	'tohtml',
-	'tutor',
-	'tutor_mode',
-}) do
-	vim.g['loaded_' .. plugin] = 1
-	vim.g['loaded_' .. plugin .. '_plugin'] = 1
-end
+vim.g.loaded_2html_plugin = 1
+vim.g.loaded_matchit = 1
+vim.g.loaded_matchparen = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_spellfile_plugin = 1
+vim.g.loaded_tutor_mode_plugin = 1
+-- vim.g.loaded_remote_plugins = 1
+-- vim.g.loaded_gzip = 1
+-- vim.g.loaded_man = 1
+-- vim.g.loaded_shada_plugin = 1
+-- vim.g.loaded_tarPlugin = 1
+-- vim.g.loaded_zipPlugin = 1
 
 vim.opt.runtimepath = {
 	vim.fn.stdpath('config'),

@@ -1,4 +1,4 @@
-local opts = {
+require('copilot').setup({
 	filetypes = {
 		-- ['fennel'] = false,
 		['*'] = true,
@@ -18,9 +18,7 @@ local opts = {
 			},
 		},
 	},
-}
-
-require('copilot').setup(opts)
+})
 
 -- FIX: whenever entering insert mode, copilot won't show suggestions
 --      until a key is pressed, so we force it to show suggestions.

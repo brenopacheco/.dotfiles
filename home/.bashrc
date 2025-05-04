@@ -35,14 +35,8 @@ source "$HOME/.bash_aliases"
 source "$HOME/.bash_functions"
 source "$HOME/.bash_keybindings"
 
-if eval which fzf >/dev/null 2>&1; then
-	source /usr/share/fzf/key-bindings.bash
-	source /usr/share/fzf/completion.bash
-fi
-
-. <(asdf completion bash)
-
-test -e ~/.npmtoken && source ~/.npmtoken
+eval "$(fzf --bash)"
+eval "$(asdf completion bash)"
 
 export EDITOR=/usr/bin/vim
 export VISUAL=/usr/bin/vim
@@ -52,6 +46,7 @@ export BROWSER='/usr/bin/chromium'
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+export PERL5LIB=~/.perl5
 export GOPATH=$HOME/.go
 
 append_path() {
@@ -73,4 +68,5 @@ append_path "$HOME/.luarocks/bin"     # lua
 append_path '/usr/bin/vendor_perl' && # perl
 	append_path '/usr/bin/core_perl'
 
-export PERL5LIB=~/.perl5
+
+test -e ~/.npmtoken && source ~/.npmtoken
