@@ -24,3 +24,13 @@ local function messages() bufferize({ fargs = { 'messages' } }) end
 
 vim.api.nvim_create_user_command('Bufferize', bufferize, { nargs = '*' })
 vim.api.nvim_create_user_command('Messages', messages, { nargs = 0 })
+
+vim.api.nvim_create_user_command('Bclean', function()
+	local curbuf = vim.api.nvim_get_current_buf()
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		local modified = vim.api.nvim_get_option_value('modified', { buf = buf })
+		if not modified and curbuf ~= buf then
+			vim.api.nvim_buf_delete(buf, { force = false, unload = false })
+		end
+	end
+end, { nargs = 0 })

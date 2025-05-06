@@ -1,14 +1,11 @@
 -- Log
 --
 -- Adds global _G.log function
--- Adds Log <lua expr> command
-
--- TODO: new module "timestamp"
--- local start_time = vim.loop.hrtime()
--- log('Time: ' .. (vim.loop.hrtime() - start_time) / 1e6 .. ' ms') -- Convert to ms
-
+-- Adds _G.get_log_level() and _G.set_log_level(level)
+-- Replaces vim.notify to respect set log level
 
 local count = 0
+local log_level = vim.log.levels.INFO
 
 _G.log = vim.schedule_wrap(function(...)
 	local args = { ... }
@@ -23,9 +20,23 @@ _G.log = vim.schedule_wrap(function(...)
 	vim.notify(display, vim.log.levels.INFO)
 end)
 
-local function logcmd(tbl)
-	local s = 'return _G.log(' .. table.concat(tbl.fargs, '\n') .. ')'
-	assert(loadstring(s))()
+_G.get_log_level = function() return log_level end
+
+---@param level vim.log.levels
+_G.set_log_level = function(level)
+	if type(level) ~= 'number' or level < 0 or level > 5 then
+		error('Invalid log level: ' .. vim.inspect(level))
+	end
+	log_level = level
+	vim.notify('Log level set to ' .. vim.inspect(level), level)
 end
 
-vim.api.nvim_create_user_command('Log', logcmd, { nargs = '*' })
+---@param msg string
+---@param level vim.log.levels
+---@diagnostic disable-next-line: duplicate-set-field
+vim.notify = function(msg, level)
+	level = level or vim.log.levels.INFO
+	if level < log_level then return end
+  local chunks = { { msg, level == vim.log.levels.WARN and 'WarningMsg' or nil } }
+  vim.api.nvim_echo(chunks, true, { err = level == vim.log.levels.ERROR })
+end

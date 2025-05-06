@@ -1,0 +1,3 @@
+-- TODO: new module "timestamp"
+-- local start_time = vim.loop.hrtime()
+-- log('Time: ' .. (vim.loop.hrtime() - start_time) / 1e6 .. ' ms') -- Convert to ms

@@ -226,4 +226,16 @@ M.get_cexprs = function(opts)
 	return words
 end
 
+-- TODO: move this
+vim.api.nvim_create_user_command('Bclean', function()
+	local curbuf = vim.api.nvim_get_current_buf()
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		local modified = vim.api.nvim_get_option_value('modified', { buf = buf })
+		if not modified and curbuf ~= buf then
+			vim.api.nvim_buf_delete(buf, { force = false, unload = false })
+		end
+	end
+end, { nargs = 0 })
+
 return M
+

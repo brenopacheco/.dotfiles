@@ -10,7 +10,7 @@ return function()
 	vim.ui.select(files, {
 		prompt = 'Lua configurations:',
 		format_item = function(item) return string.sub(item, cwd_len) end,
-	}, function(choice)
-		if choice ~= nil then vim.cmd('e ' .. choice) end
+	}, function(choice, _, action)
+		if choice ~= nil then vim.cmd(action .. choice) end
 	end)
 end

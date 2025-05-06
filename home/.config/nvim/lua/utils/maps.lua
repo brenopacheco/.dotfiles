@@ -171,7 +171,7 @@ end
 -- Goto symbol definition
 M.goto_definition = function()
 	if vim.o.ft == 'help' then
-		vim.cmd(vim.o.keywordprg .. ' ' .. vim.fn.expand('<cword>'))
+		M.keywordprg()
 	else
 		vim.lsp.buf.definition({ on_list = lsputil.on_list })
 	end

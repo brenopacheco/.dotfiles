@@ -1,7 +1,7 @@
 local lsp = require('lspconfig')
 local lsputil = require('utils.lsp')
 
-vim.lsp.set_log_level(vim.log.levels.ERROR) -- DEBUG / INFO
+vim.lsp.set_log_level(vim.log.levels.INFO) -- DEBUG / INFO
 
 for type, icon in pairs({
 	Error = '󰅚 ',
@@ -57,7 +57,11 @@ lsp.jsonls.setup({
 		},
 	},
 })
-lsp.marksman.setup({ capabilities = capabilities })
+-- lsp.marksman.setup({ capabilities = capabilities })
+lsp.rust_analyzer.setup({
+	cmd = { vim.fn.trim(vim.fn.system('rustup which rust-analyzer')) },
+	capabilities = capabilities,
+})
 lsp.vimls.setup({ capabilities = capabilities })
 lsp.yamlls.setup({
 	capabilities = capabilities,

@@ -12,7 +12,7 @@ ls /tmp/.X11-unix 2>/dev/null | sed 's/X//' | sort | uniq | while read -r DISPLA
 	export DISPLAY=":$DISPLAY"
 	echo "Configuring keyboard - DISPLAY $DISPLAY"
 	case "$HID_NAME" in
-	"Keyboard K380")
+	"Keyboard K380"|"CX 2.4G Wireless Receiver")
 		(
 			sleep 1
 			~/bin/reset-keyboard

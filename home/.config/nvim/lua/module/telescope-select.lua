@@ -15,22 +15,25 @@ end
 ---@param opts table Additional options
 ---     - prompt (string|nil)
 ---               Text of the prompt. Defaults to `Select one of:`
----     - format_item (function item -> text)
----               Function to format an
----               individual item from `items`. Defaults to `tostring`.
+---     - format_item (fun(item: any): string|nil)
+---               Function to format an individual item from `items`. Defaults to `tostring`.
 ---     - kind (string|nil)
 ---               Arbitrary hint string indicating the item shape.
----               Plugins reimplementing `vim.ui.select` may wish to
----               use this to infer the structure or semantics of
----               `items`, or the context in which select() was called.
 ---     - multi (boolean|nil)
----               If enabled, tab/stab can select/unselect multiple entries
----               and on_choice is called with a table of selections
----@param on_choice function ((item|nil, idx|nil, action) -> ())
----               Called once the user made a choice.
----               `idx` is the 1-based index of `item` within `items`.
----               `nil` if the user aborted the dialog.
----               `action` 'edit'|'tab'|'split'|'vsplit'|'quickfix'
+---               If enabled, tab/stab can select/unselect multiple entries,
+---               and on_choice is called with a table of selections.
+---
+---@param on_choice fun(item: any|nil, idx: integer|nil, action: string|nil)
+---               Called once the user makes a choice.
+---               `item` is the selected entry, or `nil` if cancelled.
+---               `idx` is the 1-based index of the selected item, or `nil` if cancelled.
+---               `action` describes how the item was chosen. One of:
+---                   - "edit"     (default <CR>)
+---                   - "tabe"     (<Tab>)
+---                   - "split"    (<C-x>)
+---                   - "vsplit"   (<C-v>)
+---                   - "quickfix" (<C-q>)
+---               May be `nil` if the selection was cancelled.
 local function select(items, opts, on_choice)
 	local finders = require('telescope.finders')
 	local pickers = require('telescope.pickers')
@@ -104,7 +107,7 @@ local function select(items, opts, on_choice)
 				map('i', '<cr>', make_action('edit'))
 				map('i', '<C-s>', make_action('split'))
 				map('i', '<C-v>', make_action('vsplit'))
-				map('i', '<C-t>', make_action('tab'))
+				map('i', '<C-t>', make_action('tabe'))
 				map('i', '<c-q>', make_action('quickfix'))
 				map('i', '<c-c>', actions.close)
 				map('i', '<esc>', actions.close)

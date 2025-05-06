@@ -60,7 +60,7 @@ local function packadd(plugs)
 		local pkg = { name = name, alias = alias, dir = dir }
 		if vim.fn.isdirectory(dir) ~= 1 then
 			local url = 'https://github.com/' .. plug[1] .. '.git'
-			vim.notify('Installing ' .. url)
+			vim.notify('Installing ' .. url, vim.log.levels.INFO)
 			git(
 				vim.list_extend({
 					'clone',
