@@ -61,6 +61,9 @@ lsp.jsonls.setup({
 lsp.rust_analyzer.setup({
 	cmd = { vim.fn.trim(vim.fn.system('rustup which rust-analyzer')) },
 	capabilities = capabilities,
+	-- on_attach = function(_, bufnr)
+	-- 	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+	-- end,
 })
 lsp.vimls.setup({ capabilities = capabilities })
 lsp.yamlls.setup({

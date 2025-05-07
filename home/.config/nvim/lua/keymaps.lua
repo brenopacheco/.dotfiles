@@ -81,7 +81,7 @@ local keyboard = {
       { { 'n',     }, '<leader>gp',     maps.git_preview,        { desc = ' preview'              } },
       { { 'n',     }, '<leader>gr',     maps.git_reset,          { desc = ' reset'                } },
       { { 'n',     }, '<leader>gb',     maps.git_blame,          { desc = ' blame'                } },
-      { { 'n',     }, '<leader>gy',     maps.git_link,           { desc = ' gitlink'              } },
+      { { 'n', 'x' }, '<leader>gy',     maps.git_link,           { desc = ' gitlink'              } },
       { { 'n',     }, '<leader>g?',     maps.help_git,           { desc = ' which-key'            } },
     }, -- ]]
     quickfix = { -- [[
@@ -142,7 +142,7 @@ local keyboard = {
       { { 'n', 'x' }, 'K',           maps.keywordprg                         },
       { {      'x' }, '=',           maps.run_format,                        },
       { { 's',     }, '<bs>',       '<bs>i'                                  },
-      { { 'x',     }, '*',  [["zy/\V<C-r>=escape(@z, '\/')<cr><cr>]]         },
+      { { 'x',     }, '*',          [["zy/\V<C-r>=escape(@z, '\/')<cr><cr>]] },
     } -- ]]
   },
   abbreviations = {

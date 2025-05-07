@@ -143,7 +143,7 @@ M.git_twiggy = function() bufutil.toggle('twiggy', { cb = vim.cmd.Twiggy }) end
 -- Open permalink to current line in browser and copy to clipboard
 M.git_link = function()
 	require('gitlinker').get_buf_range_url(
-		'n',
+		vim.fn.mode() == 'n' and 'n' or 'v',
 		{ action_callback = require('gitlinker.actions').open_in_browser }
 	)
 end

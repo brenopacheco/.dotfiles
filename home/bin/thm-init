@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 tmux new-session -d -s thm -n nvim -c ~/thm
-tmux send-keys -t thm:nvim 'nvim .' C-m
+tmux send-keys -t thm:client -c ~/thm/thm-platform-client/ 'nvim .' C-m
+tmux send-keys -t thm:server -c ~/thm/tryhackme 'nvim .' C-m
 
 tmux new-window -t thm -n dev -c ~/thm/thm-platform-client
 tmux split-window -h -t thm:dev -c ~/thm/tryhackme
