@@ -61,6 +61,7 @@ M.find_make = function() require('utils.pickers.make')() end
 
 -- Find file in current project (nearest project file directory)
 M.find_pfiles = function()
+	---@type {path: string}[]
 	local roots = rootutil.project_roots()
 	if #roots == 0 then
 		roots = { { path = rootutil.git_root() } }
@@ -117,7 +118,7 @@ end
 M.find_zk = function() vim.cmd([[ZkNotes { sort = { 'modified' } }]]) end
 
 -- Find marks
-M.find_mark = function() require('telescope.builtin').marks({}) end
+M.find_mark = require('utils.pickers.marks')
 
 -- Find registers
 M.find_registers = function() require('telescope.builtin').registers({}) end
