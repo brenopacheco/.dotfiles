@@ -16,7 +16,7 @@ local parse_path = function(str)
 end
 
 local function format_item(item, cols)
-	local offset = 6
+	local offset = 12
 	local limit = cols - 19 - offset
 	local scheme, path = parse_path(item.file)
 	local dir, filename = split_path(path)
@@ -30,10 +30,14 @@ local function format_item(item, cols)
 		dirstr = scheme .. '://' .. dirstr
 		dirstrlen = dirstrlen + string.len(scheme) + 3
 	end
+	if dirstr == "" then
+		dirstr = 'buffer'
+		dirstrlen = 6
+	end
 	local padding =
 		string.rep(' ', limit - string.len(filename) - dirstrlen + offset)
 	return string.format(
-		"%-3s L%-4s %s %s [%s]",
+		'%-3s L%-4s %s %s [%s]',
 		item.mark,
 		tostring(item.pos[2]),
 		filename,
@@ -43,9 +47,20 @@ local function format_item(item, cols)
 end
 
 return function()
+	local buffer_marks = vim.iter(vim.fn.getmarklist(vim.fn.bufnr())):map(
+		function(mark)
+			mark.file = vim.fn.bufname()
+			return mark
+		end
+	):totable()
+
+	local global_marks = vim.fn.getmarklist()
+
+	local all_marks = vim.list_extend(buffer_marks, global_marks)
+
 	local marks = vim
-		.iter(vim.fn.getmarklist())
-		:filter(function(item) return item.mark:match("^'[1-9]$") end)
+		.iter(all_marks)
+		:filter(function(item) return item.mark:match("^'[1-9a-z]$") end)
 		:totable()
 
 	vim.ui.select(marks, {
