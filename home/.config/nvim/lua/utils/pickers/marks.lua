@@ -1,3 +1,4 @@
+local markutil = require('utils.marks')
 local strutil = require('utils.strings')
 
 local split_path = function(path)
@@ -30,7 +31,7 @@ local function format_item(item, cols)
 		dirstr = scheme .. '://' .. dirstr
 		dirstrlen = dirstrlen + string.len(scheme) + 3
 	end
-	if dirstr == "" then
+	if dirstr == '' then
 		dirstr = 'buffer'
 		dirstrlen = 6
 	end
@@ -47,23 +48,11 @@ local function format_item(item, cols)
 end
 
 return function()
-	local buffer_marks = vim.iter(vim.fn.getmarklist(vim.fn.bufnr())):map(
-		function(mark)
-			mark.file = vim.fn.bufname()
-			return mark
-		end
-	):totable()
-
-	local global_marks = vim.fn.getmarklist()
-
-	local all_marks = vim.list_extend(buffer_marks, global_marks)
-
-	local marks = vim
-		.iter(all_marks)
-		:filter(function(item) return item.mark:match("^'[1-9a-z]$") end)
-		:totable()
-
-	vim.ui.select(marks, {
+	local  marks =  markutil.list()
+	if #marks == 0 then
+		return vim.notify("No marks found", vim.log.levels.WARN)
+	end
+	vim.ui.select(markutil.list(), {
 		prompt = 'Lua configurations:',
 		format_item = format_item,
 	}, function(choice, _, action)

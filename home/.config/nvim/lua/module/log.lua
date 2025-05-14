@@ -37,6 +37,7 @@ end
 vim.notify = function(msg, level)
 	level = level or vim.log.levels.INFO
 	if level < log_level then return end
-  local chunks = { { msg, level == vim.log.levels.WARN and 'WarningMsg' or nil } }
-  vim.api.nvim_echo(chunks, true, { err = level == vim.log.levels.ERROR })
+	local chunks =
+		{ { msg, level == vim.log.levels.WARN and 'WarningMsg' or nil } }
+	vim.api.nvim_echo(chunks, true, { err = level == vim.log.levels.ERROR })
 end

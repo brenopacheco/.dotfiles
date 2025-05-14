@@ -2,6 +2,7 @@ local bufutil = require('utils.buf')
 local daputil = require('utils.dap')
 local greputils = require('utils.grep')
 local lsputil = require('utils.lsp')
+local markutil = require('utils.marks')
 local qfutil = require('utils.qf')
 local rootutil = require('utils.root')
 
@@ -496,5 +497,9 @@ M.help_test = function() help('<leader>t') end
 M.help_window = function() help('<leader>w') end
 M.help_jumpn = function() help(']') end
 M.help_jumpp = function() help('[') end
+
+M.clear_marks = function() 
+	vim.cmd('delmarks a-z0-9 | echo "Marks cleared" | wshada!') 
+end
 
 return M

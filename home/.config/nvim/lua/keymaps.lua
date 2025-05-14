@@ -23,6 +23,7 @@ local keyboard = {
       { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
       { { 'n',     }, 'g?',             maps.help_g,             { desc = ' which-key'            } },
       { { 'n',     }, '<leader>e',      maps.errors_buffer,      { desc = ' errors-buf'           } },
+      { { 'n',     }, '<leader>c',      maps.clear_marks,        { desc = ' clear-marks'          } },
       { { 'n', 'x' }, '<leader>r',      maps.run_rename,         { desc = ' rename'               } },
       { { 'n', 'x' }, '<leader>s',      maps.run_replace,        { desc = ' replace'              } },
       { { 'n', 'x' }, '<leader>z',      maps.run_zknew,          { desc = ' zk-new',              } },

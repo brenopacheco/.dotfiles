@@ -111,6 +111,9 @@ vim.opt.wildignore     = {                             -- ignore pattern using v
 }
 vim.opt.wildmenu       = true                          -- tab help in cmdline
 vim.opt.wildmode       = 'full'                        -- how wildmenu appears
+
+vim.opt.shada = "!,'100,<50,s10,h"
+
 -- Extras
 vim.g.vim_indent_cont  = 4                             -- in vimscript, \ indents shiftwidth
 vim.g.c_syntax_for_h   = 1                             -- recognize .h as c file
