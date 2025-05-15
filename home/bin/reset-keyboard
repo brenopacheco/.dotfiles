@@ -1,11 +1,80 @@
-#!/bin/sh
-# Reset keyboard settings
+#!/usr/bin/env perl
 
-setxkbmap -model ppc105+inet -layout us
-xrdb ~/.Xresources
-xmodmap ~/.Xmodmap
-xset r rate 200 30
+use Getopt::Long qw(GetOptions);
+use Pod::Usage   qw(pod2usage);
+use builtin      qw(trim);
+use feature 'say';
 
-if xset q | grep -e "Caps Lock:\s\+on" >/dev/null; then
-	xdotool key Caps_Lock
-fi
+my $help = 0;
+my $man  = 0;
+my $xmodmap = 0;
+GetOptions(
+    'h|help'    => \$help,
+    'x|xmodmap' => \$xmodmap,
+    'man'       => \$man,
+) or pod2usage(2);
+pod2usage(1)               if $help;
+pod2usage( -verbose => 2 ) if $man;
+
+# Set default keyboard layout
+system("setxkbmap -model ppc105+inet -layout us") == 0
+    or warn "Failed to run setxkbmap\n";
+
+# Load X resources
+system("xrdb ~/.Xresources") == 0
+    or warn "Failed to load .Xresources\n";
+
+# Set key repeat rate
+system("xset r rate 200 30") == 0
+    or warn "Failed to set key repeat rate\n";
+
+# Untoggle Caps Lock if on
+if (`xset q` =~ /Caps Lock:\s+on/) {
+    system("xdotool key Caps_Lock") == 0
+        or warn "Failed to toggle Caps Lock off\n";
+}
+
+# Load .Xmodmap if requested
+if ($xmodmap) {
+    system("xmodmap ~/.Xmodmap") == 0
+        or warn "Failed to load .Xmodmap\n";
+}
+
+__END__
+
+=head1 NAME
+
+reset-keyboard - configure X11 keyboard settings
+
+=head1 SYNOPSIS
+
+    reset-keyboard [OPTION]... [PROFILE]
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-h, --help>
+
+Show usage
+
+=item B<--man>
+
+Read docs in man pager
+
+=item B<-x, --xmodmap>
+
+Load .Xmodmap
+
+=back
+
+=head1 DESCRIPTION
+
+B<This program> configures the keyboard as a default US keyboard, sets
+key repeat rate, untoggles Caps Lock if it's on, loads .Xresources, and optionally .Xmodmap.
+
+=head1 AUTHOR
+
+Breno Pacheco <github.com/brenopacheco>
+
+=cut

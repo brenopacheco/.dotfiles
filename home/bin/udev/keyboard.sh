@@ -12,11 +12,19 @@ ls /tmp/.X11-unix 2>/dev/null | sed 's/X//' | sort | uniq | while read -r DISPLA
 	export DISPLAY=":$DISPLAY"
 	echo "Configuring keyboard - DISPLAY $DISPLAY"
 	case "$HID_NAME" in
-	"Keyboard K380"|"CX 2.4G Wireless Receiver")
+	"Keyboard K380" | "CX 2.4G Wireless Receiver")
 		(
 			sleep 1
-			~/bin/reset-keyboard
+			~/bin/reset-keyboard -x "$HID_NAME"
 			notify-send -i input-keyboard "$HID_NAME" "Reset"
+		) &
+		disown
+		;;
+	"Kinesis Corporation Adv360 Pro")
+		(
+			sleep 1
+			~/bin/reset-keyboard "$HID_NAME"
+			notify-send -i input-keyboard "$HID_NAME" "Reset (no Xmodmap)"
 		) &
 		disown
 		;;

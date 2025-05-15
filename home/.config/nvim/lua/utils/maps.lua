@@ -2,7 +2,6 @@ local bufutil = require('utils.buf')
 local daputil = require('utils.dap')
 local greputils = require('utils.grep')
 local lsputil = require('utils.lsp')
-local markutil = require('utils.marks')
 local qfutil = require('utils.qf')
 local rootutil = require('utils.root')
 
@@ -162,9 +161,6 @@ M.git_reset = function() require('gitsigns').reset_hunk() end
 -- Stage git hunk under cursor
 M.git_stage = function() require('gitsigns').stage_hunk() end
 
--- Unstage git hunk under cursor
-M.git_unstage = function() require('gitsigns').undo_stage_hunk() end
-
 -- Goto symbol declaration
 M.goto_declaration = function()
 	lsputil.wrap(vim.lsp.buf.declaration, { on_list = lsputil.on_list })
@@ -201,14 +197,10 @@ M.goto_typedef = function()
 end
 
 -- Jump to next arg in arglist
-M.jump_argnext = function()
-	return vim.z.enabled('args-view') and vim.cmd('ArgNext') or vim.cmd('next')
-end
+M.jump_argnext = function() return vim.cmd('next') end
 
 -- Jump to previous arg in arglist
-M.jump_argprev = function()
-	return vim.z.enabled('args-view') and vim.cmd('ArgPrev') or vim.cmd('prev')
-end
+M.jump_argprev = function() return vim.cmd('prev') end
 
 -- Jump to next buffer in buffer list
 M.jump_bufnext = function() vim.cmd('bnext') end
@@ -217,16 +209,20 @@ M.jump_bufnext = function() vim.cmd('bnext') end
 M.jump_bufprev = function() vim.cmd('bprevious') end
 
 -- Jump to next git hunk or diff chunk
-M.jump_chunknext = function() require('gitsigns').next_hunk() end
+M.jump_chunknext = function() require('gitsigns.nav').nav_hunk('next') end
 
 -- Jump to prev git hunk or diff chunk
-M.jump_chunkprev = function() require('gitsigns').prev_hunk() end
+M.jump_chunkprev = function() require('gitsigns.nav').nav_hunk('prev') end
 
 -- Jump to the next diagnostic
-M.jump_errornext = function() vim.diagnostic.goto_next() end
+M.jump_errornext = function()
+	vim.diagnostic.jump({ diagnostic = vim.diagnostic.get_next() })
+end
 
 -- Jump to the previous diagnostic
-M.jump_errorprev = function() vim.diagnostic.goto_prev() end
+M.jump_errorprev = function()
+	vim.diagnostic.jump({ diagnostic = vim.diagnostic.get_prev() })
+end
 
 -- Jump to next file in file tree
 M.jump_filenext = function()
@@ -485,21 +481,15 @@ M.keywordprg = function()
 	vim.notify(vim.o.keywordprg .. ' not found', vim.log.levels.WARN)
 end
 
-local function help(key) vim.cmd('WhichKey ' .. key) end
+M.help = function(key)
+	return function()
+		vim.cmd('WhichKey ' .. key)
+		-- v2.1.0
+	end
+end
 
-M.help_leader = function() help('<leader>') end
-M.help_g = function() help('g') end
-M.help_find = function() help('<leader>f') end
-M.help_git = function() help('<leader>g') end
-M.help_debug = function() help('<leader>d') end
-M.help_quickfix = function() help('<leader>q') end
-M.help_test = function() help('<leader>t') end
-M.help_window = function() help('<leader>w') end
-M.help_jumpn = function() help(']') end
-M.help_jumpp = function() help('[') end
-
-M.clear_marks = function() 
-	vim.cmd('delmarks a-z0-9 | echo "Marks cleared" | wshada!') 
+M.clear_marks = function()
+	vim.cmd('delmarks a-z0-9 | echo "Marks cleared" | wshada!')
 end
 
 return M
