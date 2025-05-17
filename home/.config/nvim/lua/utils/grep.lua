@@ -31,56 +31,68 @@ M.qf_filter = function(opts)
 	)
 end
 
+--TODO: refactor this asap
 ---@param pattern string | nil
-M.grep_pattern = function(pattern)
-	local handler = function(input)
+---@param selected 'git' | 'buffer' | 'curdir' | 'buflist' | 'arglist' | 'project'  | nil
+M.grep_pattern = function(pattern, selected)
+	local handler = function(input, where)
 		if input == nil or input == '' then return end
+
+		local on_choice = function(choice)
+			local buffer = vim.fn.bufnr()
+			---@type string | nil
+			local cmd = nil
+			if choice == 'git' then
+				local root = rootutils.git_root()
+				if root == nil then
+					return vim.notify('No git root found', vim.log.levels.WARN)
+				end
+				cmd = "silent grep! '" .. input .. "' " .. rootutils.git_root()
+			elseif choice == 'project' then
+				local root = rootutils.project_roots()[1]
+				if root == nil then
+					return vim.notify('No project root found', vim.log.levels.WARN)
+				end
+				cmd = "silent grep! '" .. input .. "' " .. root.path
+			elseif choice == 'curdir' then
+				cmd = "silent grep! '" .. input .. "' " .. vim.fn.getcwd()
+			elseif choice == 'buffer' then
+				cmd = 'silent vimgrep /' .. input .. '/j %'
+			elseif choice == 'buflist' then
+				cmd = 'silent cexpr [] | bufdo vimgrepadd /'
+					.. input
+					.. '/j % | '
+					.. buffer
+					.. 'b'
+			elseif choice == 'arglist' then
+				cmd = 'silent vimgrep /' .. input .. '/j ## | ' .. buffer .. 'b'
+			end
+			if cmd == nil then return end
+			vim.cmd(cmd)
+			vim.fn.histadd('cmd', cmd)
+			local _, empty = qfutil.qf()
+			if not empty then qfutil.open() end
+		end
+
+		if where then return on_choice(where) end
+
 		vim.ui.select(
 			{ 'git', 'project', 'curdir', 'buffer', 'buflist', 'arglist' },
 			{
 				prompt = 'Grep /' .. input,
 			},
-			function(choice)
-				local buffer = vim.fn.bufnr()
-				---@type string | nil
-				local cmd = nil
-				if choice == 'git' then
-					local root = rootutils.git_root()
-					if root == nil then
-						return vim.notify('No git root found', vim.log.levels.WARN)
-					end
-					cmd = "silent grep! '" .. input .. "' " .. rootutils.git_root()
-				elseif choice == 'project' then
-					local root = rootutils.project_roots()[1]
-					if root == nil then
-						return vim.notify('No project root found', vim.log.levels.WARN)
-					end
-					cmd = "silent grep! '" .. input .. "' " .. root.path
-				elseif choice == 'curdir' then
-					cmd = "silent grep! '" .. input .. "' " .. vim.fn.getcwd()
-				elseif choice == 'buffer' then
-					cmd = 'silent vimgrep /' .. input .. '/j %'
-				elseif choice == 'buflist' then
-					cmd = 'silent cexpr [] | bufdo vimgrepadd /'
-						.. input
-						.. '/j % | '
-						.. buffer
-						.. 'b'
-				elseif choice == 'arglist' then
-					cmd = 'silent vimgrep /' .. input .. '/j ## | ' .. buffer .. 'b'
-				end
-				if cmd == nil then return end
-				vim.cmd(cmd)
-				vim.fn.histadd('cmd', cmd)
-				local _, empty = qfutil.qf()
-				if not empty then qfutil.open() end
-			end
+			on_choice
 		)
 	end
+
 	if pattern == nil or pattern == '' then
-		return vim.ui.input({ prompt = '>Grep /' }, handler)
+		return vim.ui.input(
+			{ prompt = '>Grep /' },
+			function(choice) handler(choice, nil) end
+		)
 	end
-	handler(pattern)
+
+	return handler(pattern, selected)
 end
 
 return M

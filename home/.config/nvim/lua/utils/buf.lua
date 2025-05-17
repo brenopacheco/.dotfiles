@@ -138,15 +138,6 @@ function M.is_file(bufnr)
 	return vim.fn.bufname(bufnr) ~= ''
 end
 
--- Delete buffer
-M.delete = function()
-	local status, _ = pcall(vim.api.nvim_buf_delete, 0, {})
-	if not status then
-		local x = vim.fn.confirm('buffer has been modified', '&qCancel\n&xDelete')
-		if x == 2 then return vim.cmd('bd!') end
-	end
-end
-
 --- Checks if any visible window has a buffer of the given filetype
 ---@param filetype string
 ---@return boolean, number, number : is visible, winid, bufnr

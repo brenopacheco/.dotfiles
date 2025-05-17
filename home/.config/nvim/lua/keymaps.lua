@@ -22,6 +22,7 @@ local keyboard = {
       { { 'n', 'x' }, 'gx',             maps.run_gx,             { desc = ' browse',              } },
       { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
       { { 'n',     }, 'g?',             maps.help('g'),          { desc = ' which-key'            } },
+      { { 'n', 'x' }, 'g]',             maps.run_star_git,       { desc = ' star git',            } },
       { { 'n',     }, '<leader>e',      maps.errors_buffer,      { desc = ' errors-buf'           } },
       { { 'n',     }, '<leader>c',      maps.clear_marks,        { desc = ' clear-marks'          } },
       { { 'n', 'x' }, '<leader>r',      maps.run_rename,         { desc = ' rename'               } },
@@ -77,7 +78,6 @@ local keyboard = {
     }, -- ]]
     git = { -- [[
       { { 'n',     }, '<leader>gg',     maps.git_fugitive,       { desc = ' fugitive'             } },
-      { { 'n',     }, '<leader>gt',     maps.git_twiggy,         { desc = ' twiggy'               } },
       { { 'n',     }, '<leader>gl',     maps.git_log,            { desc = ' logs'                 } },
       { { 'n',     }, '<leader>gs',     maps.git_stage,          { desc = ' stage'                } },
       -- { { 'n',     }, '<leader>gu',     maps.git_unstage,        { desc = ' unstage'              } },

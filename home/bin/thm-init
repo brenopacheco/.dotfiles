@@ -6,17 +6,15 @@ tmux send-keys -t thm:server -c ~/thm/tryhackme 'nvim .' C-m
 
 tmux new-window -t thm -n dev -c ~/thm/thm-platform-client
 tmux split-window -h -t thm:dev -c ~/thm/tryhackme
+tmux send-keys -t thm:dev.1 'sleep 10' C-m
 tmux send-keys -t thm:dev.1 'npm run dev' C-m
+tmux send-keys -t thm:dev.2 'sleep 10' C-m
 tmux send-keys -t thm:dev.2 'npm run dev' C-m
 
-
 tmux new-window -t thm -n docker -c ~/thm
-tmux send-keys -t thm:docker 'docker-compose up -d' C-m
-tmux send-keys -t thm:docker 'lazydocker' C-m
+tmux send-keys -t thm:docker "./restore-dump.sh" C-m
 
 tmux new-window -t thm -n ngrok -c ~/thm
 tmux send-keys -t thm:ngrok 'ssh -v -N -R 8080:localhost:1337 racknerd' C-m
-# ssh -fN -R 1337:localhost:8080 racknerd && 
-# while true; do cat /tmp/ngrok.log | jq -r 'select(.msg == "started tunnel") | .url'; done
 
 tmux attach -t thm
