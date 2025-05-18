@@ -28,8 +28,8 @@ end
 
 M.find_gitstatus = function() require('telescope.builtin').git_status({}) end
 M.find_helptag = function() require('telescope.builtin').help_tags({}) end
-M.find_config = function() require('utils.pickers.configs')() end
-M.find_make = function() require('utils.pickers.make')() end
+M.find_config = require('utils.pickers.configs')
+M.find_make = require('utils.pickers.make')
 M.find_pfiles = function()
 	---@type {path: string}[]
 	local roots = rootutil.project_roots()
@@ -208,6 +208,7 @@ M.run_source = function() vim.cmd.source('%') end
 
 M.run_spawn = function() vim.fn.system('st >/dev/null 2>&1 & disown $!') end
 
+--@deprecated unused?
 M.run_star = function()
 	local pattern = bufutil.is_visual()
 			and table.concat(bufutil.get_visual().text, '')

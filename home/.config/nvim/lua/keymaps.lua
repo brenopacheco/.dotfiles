@@ -33,7 +33,6 @@ local keyboard = {
       { { 'n', 'x' }, '<leader>i',      maps.run_neogen,         { desc = ' neogen',              } },
       { { 'n', 'x' }, '<leader>=',      maps.run_format,         { desc = ' format'               } },
       { { 'n', 'x' }, '<leader>/',      maps.run_grep,           { desc = ' grep',                } },
-      { { 'n', 'x' }, '<leader>*',      maps.run_star,           { desc = ' star',                } },
       { { 'n',     }, '<leader>p',      maps.switch_project,     { desc = ' switch project'       } },
       { { 'n',     }, '<leader>?',      maps.help('<leader>'),   { desc = ' which-key'            } },
     }, -- ]]

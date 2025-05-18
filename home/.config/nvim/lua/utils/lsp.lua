@@ -69,6 +69,7 @@ M.on_list = function(opts)
 		end
 		return false
 	end
+	-- log("initial", vim.iter(opts.items):map(function(i) return i.filename end):totable())
 	for _, entry in ipairs(opts.items) do
 		local key = entry.filename .. ':' .. entry.lnum
 		local has_seen = seen[key] ~= nil
@@ -79,6 +80,7 @@ M.on_list = function(opts)
 		else
 		end
 	end
+	-- log("result", vim.iter(result):map(function(i) return i.filename end):totable())
 	if #result == 0 then
 		return vim.notify('No results found', vim.log.levels.WARN)
 	end
@@ -86,10 +88,10 @@ M.on_list = function(opts)
 		vim.fn.setqflist({}, ' ', { title = opts.title, items = result })
 		qfutil.open('cfirst')
 	else
-		vim.lsp.util.jump_to_location(
-			opts.items[1].user_data,
+		vim.lsp.util.show_document(
+			result[1].user_data,
 			vim.o.fileencoding,
-			false
+			{reuse_win = false, focus = true}
 		)
 		vim.notify('This is the only result')
 	end
