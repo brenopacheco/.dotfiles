@@ -1,7 +1,4 @@
-[Desktop Entry]
-Version=1.0
 Name=Zeal
-GenericName=Documentation Browser
 Comment=Simple API documentation browser
 Exec=zeal %u
 Icon=zeal
