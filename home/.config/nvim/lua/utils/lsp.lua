@@ -60,7 +60,7 @@ end
 -- *lsp-on-list-handler*
 ---@param opts {items: table[], title: string, context: table|nil}
 M.on_list = function(opts)
-	local ignore = { 'styled%-components/index%.d%.ts' }
+	local ignore = { 'styled%-components/index%.d%.ts', 'buildHooks%.d%.ts' }
 	local seen = {}
 	local result = {}
 	local function should_ignore(key)

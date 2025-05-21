@@ -73,12 +73,14 @@ end
 
 ---@return Option[]
 local options = function()
-	return {
+	local opts = {}
+	if vim.z.enabled('copilot') then table.insert(opts, opt_copilot()) end
+	vim.list_extend(opts, {
 		opt_scrolloff(),
 		opt_relnumber(),
 		opt_bomb(),
-		--opt_copilot(),
-	}
+	})
+	return opts
 end
 
 return function()

@@ -86,6 +86,7 @@ M.git_log = function() vim.cmd([[G log]]) end
 M.git_preview = function() require('gitsigns').preview_hunk() end
 M.git_reset = function() require('gitsigns').reset_hunk() end
 M.git_stage = function() require('gitsigns').stage_hunk() end
+M.git_unstage = function() require('gitsigns').undo_stage_hunk() end
 
 M.goto_declaration = function()
 	lsputil.wrap(vim.lsp.buf.declaration, { on_list = lsputil.on_list })
@@ -310,5 +311,7 @@ end
 M.clear_marks = function()
 	vim.cmd('delmarks a-z0-9 | echo "Marks cleared" | wshada!')
 end
+
+M.clear_buffers = bufutil.clear_buffers
 
 return M

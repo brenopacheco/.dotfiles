@@ -217,8 +217,7 @@ M.get_cexprs = function(opts)
 	return words
 end
 
--- TODO: move this
-vim.api.nvim_create_user_command('Bclean', function()
+M.clear_buffers = function()
 	local curbuf = vim.api.nvim_get_current_buf()
 	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
 		local modified = vim.api.nvim_get_option_value('modified', { buf = buf })
@@ -226,7 +225,9 @@ vim.api.nvim_create_user_command('Bclean', function()
 			vim.api.nvim_buf_delete(buf, { force = false, unload = false })
 		end
 	end
-end, { nargs = 0 })
+	vim.notify('Cleared all buffers')
+end
+
+vim.api.nvim_create_user_command('Bclean', M.clear_buffers, { nargs = 0 })
 
 return M
-
