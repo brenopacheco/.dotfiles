@@ -222,7 +222,9 @@ M.clear_buffers = function()
 	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
 		local modified = vim.api.nvim_get_option_value('modified', { buf = buf })
 		if not modified and curbuf ~= buf then
-			vim.api.nvim_buf_delete(buf, { force = false, unload = false })
+			local bufname = vim.api.nvim_buf_get_name(buf)
+			local isterm = bufname:match('^term://') ~= nil
+			pcall(vim.api.nvim_buf_delete, buf, { force = isterm, unload = false })
 		end
 	end
 	vim.notify('Cleared all buffers')
