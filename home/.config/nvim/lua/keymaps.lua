@@ -15,7 +15,6 @@ local keyboard = {
   mappings = {
     action = { -- [[
       { { 'n',     }, '<c-n>',          maps.find_mark,          { desc = ' marks'                } },
-      { { 'n',     }, '<c-p>',          maps.find_mark,          { desc = ' marks'                } },
       { { 'n',     }, '<c-]>',          maps.goto_definition,    { desc = ' definition'           } },
       { { 'n',     }, '<c-k>',          maps.show_hover,         { desc = ' hover'                } },
       { { 'n',     }, 'gr',             maps.goto_references,    { desc = ' references'           } },

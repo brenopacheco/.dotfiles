@@ -21,21 +21,28 @@ function setup_session() {
 	local session_name
 	session_name=$(basename "$repository" | tr . _)
 	if ! tmux has-session -t="$session_name" 2>/dev/null; then
-		tmux new-session -ds "$session_name" -c "$repository"
+		tmux new-session -ds "$session_name" -c "$HOME/$repository"
 	fi
 	echo "$session_name"
 }
 
 function launch_or_attach() {
 	local session=${1//./_}
-	local open_window
-	open_window=$(xwininfo -root -tree | grep st-256color | grep "$session" | awk '{print $1}' | head -n1)
-	if [[ -n "$open_window" ]]; then
-		wmctrl -i -a "$open_window"
+
+	if [[ -n "$TMUX" ]]; then
+		tmux switch-client -t "$session" 
+		exit 0
 	else
-		(setsid nohup st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1) &
-		disown
+		local open_window
+		open_window=$(xwininfo -root -tree | grep st-256color | grep "$session" | awk '{print $1}' | head -n1)
+		if [[ -n "$open_window" ]]; then
+			wmctrl -i -a "$open_window"
+		else
+			(setsid nohup st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1) &
+			disown
+		fi
 	fi
+
 }
 
 declare -x repo
