@@ -5,39 +5,39 @@ use Pod::Usage   qw(pod2usage);
 use builtin      qw(trim);
 use feature 'say';
 
-my $help = 0;
-my $man  = 0;
+my $help    = 0;
+my $man     = 0;
 my $xmodmap = 0;
 GetOptions(
     'h|help'    => \$help,
     'x|xmodmap' => \$xmodmap,
     'man'       => \$man,
 ) or pod2usage(2);
+
 pod2usage(1)               if $help;
 pod2usage( -verbose => 2 ) if $man;
 
-# Set default keyboard layout
-system("setxkbmap -model ppc105+inet -layout us") == 0
-    or warn "Failed to run setxkbmap\n";
+say "Setting 105-key US layout...";
+system("setxkbmap -model pc105+inet -layout us") == 0
+  or warn "Failed to run setxkbmap\n";
 
-# Load X resources
-system("xrdb ~/.Xresources") == 0
-    or warn "Failed to load .Xresources\n";
-
-# Set key repeat rate
+say "Setting key-repeat rate...";
 system("xset r rate 200 30") == 0
-    or warn "Failed to set key repeat rate\n";
+  or warn "Failed to set key repeat rate\n";
 
-# Untoggle Caps Lock if on
-if (`xset q` =~ /Caps Lock:\s+on/) {
+say "Sourcing ~/.Xresources...";
+system("xrdb ~/.Xresources") == 0 or warn "Failed to load .Xresources\n";
+
+if ( `xset q` =~ /Caps Lock:\s+on/ ) {
+    say "Untoggling Caps Lock...";
     system("xdotool key Caps_Lock") == 0
-        or warn "Failed to toggle Caps Lock off\n";
+      or warn "Failed to toggle Caps Lock off\n";
 }
 
-# Load .Xmodmap if requested
 if ($xmodmap) {
+    say "Sourcing ~/.xmodmap...";
     system("xmodmap ~/.Xmodmap") == 0
-        or warn "Failed to load .Xmodmap\n";
+      or warn "Failed to load .Xmodmap\n";
 }
 
 __END__

@@ -194,7 +194,7 @@ M.get_cexprs = function(opts)
 	local cword = vim.fn.expand('<cword>'):gsub('[^%w%.%_%-]', '')
 	local pat = '[%w%.%_%-%>]*' .. cword
 	local cexpr = line:match(pat)
-	if not cexpr then return {} end
+	if not cexpr then return { cword } end
 	local matches = vim.split(cexpr, '%.')
 	local words = {}
 	local word = ''

@@ -1,4 +1,6 @@
 # shellcheck disable=SC2154
+alias gpgr="gpgconf --reload gpg-agent"
+
 alias ts='tmux new -s'
 alias ta='tmux attach'
 alias tk='tmux kill-server'

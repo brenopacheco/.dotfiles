@@ -49,7 +49,6 @@ vim.z.packadd({
 	{ 'HiPhish/rainbow-delimiters.nvim',               as = 'rainbow-delimiters'     },
 	{ 'Bekaboo/dropbar.nvim',                          as = 'dropbar'                },
 	{ 'monkoose/matchparen.nvim',                      as = 'matchparen'             },
-	-- { 'olimorris/codecompanion.nvim',                  as = 'codecompanion'          },
 	{ 'brenopacheco/neodev.nvim',                      as = 'neodev'                 }, -- replace with 'folke/lazydev.nvim' and make vim global (slow loading)
 	{ 'brenopacheco/gitlinker.nvim',                   as = 'gitlinker'              }, -- removes default keybinding
 	{ 'brenopacheco/vim-floaterm'                                                    }, -- fixes Vim:E444 on-close last window
