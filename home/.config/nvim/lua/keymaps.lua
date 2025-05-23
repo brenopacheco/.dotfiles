@@ -15,6 +15,7 @@ local keyboard = {
   mappings = {
     action = { -- [[
       { { 'n',     }, '<c-n>',          maps.find_mark,          { desc = ' marks'                } },
+      { { 'n',     }, '<c-p>',          maps.switch_project,     { desc = ' switch project'       } },
       { { 'n',     }, '<c-]>',          maps.goto_definition,    { desc = ' definition'           } },
       { { 'n',     }, '<c-k>',          maps.show_hover,         { desc = ' hover'                } },
       { { 'n',     }, 'gr',             maps.goto_references,    { desc = ' references'           } },
@@ -35,7 +36,6 @@ local keyboard = {
       { { 'n', 'x' }, '<leader>i',      maps.run_neogen,         { desc = ' neogen',              } },
       { { 'n', 'x' }, '<leader>=',      maps.run_format,         { desc = ' format'               } },
       { { 'n', 'x' }, '<leader>/',      maps.run_grep,           { desc = ' grep',                } },
-      { { 'n',     }, '<leader>p',      maps.switch_project,     { desc = ' switch project'       } },
       { { 'n',     }, '<leader>?',      maps.help('<leader>'),   { desc = ' which-key'            } },
     }, -- ]]
     debug = { -- [[
