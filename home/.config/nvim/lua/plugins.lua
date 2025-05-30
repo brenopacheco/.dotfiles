@@ -12,8 +12,7 @@ vim.z.packadd({
 	{ 'nvim-lua/plenary.nvim'                                                        },
 	{ 'tpope/vim-fugitive'                                                           },
 	{ 'lewis6991/gitsigns.nvim',                       as = 'gitsigns'               },
-	{ 'bluz71/vim-nightfly-guicolors',                 as = 'vim-nightfly-guicolors' },
-	-- { 'Everblush/nvim',                                as = 'everblush'              },
+	-- { 'bluz71/vim-nightfly-guicolors',                 as = 'vim-nightfly-guicolors' },
 	{ 'kyazdani42/nvim-web-devicons',                  as = 'nvim-web-devicons'      },
 	{ 'norcalli/nvim-colorizer.lua',                   as = 'nvim-colorizer'         },
 	{ 'shellRaining/hlchunk.nvim',                     as = 'hlchunk'                },
@@ -42,6 +41,7 @@ vim.z.packadd({
 	{ 'nvim-treesitter/nvim-treesitter'                                              },
 	{ 'nvim-treesitter/nvim-treesitter-textobjects'                                  },
 	{ 'JoosepAlviste/nvim-ts-context-commentstring'                                  },
+	{ 'zk-org/zk-nvim'                                                               },
 	{ 'numToStr/Comment.nvim',                         as = 'Comment'                },
 	{ 'folke/todo-comments.nvim',                      as = 'todo-comments'          },
 	{ 'simrat39/symbols-outline.nvim',                 as = 'symbols-outline'        },
@@ -49,10 +49,13 @@ vim.z.packadd({
 	{ 'HiPhish/rainbow-delimiters.nvim',               as = 'rainbow-delimiters'     },
 	{ 'Bekaboo/dropbar.nvim',                          as = 'dropbar'                },
 	{ 'monkoose/matchparen.nvim',                      as = 'matchparen'             },
-	{ 'brenopacheco/neodev.nvim',                      as = 'neodev'                 }, -- replace with 'folke/lazydev.nvim' and make vim global (slow loading)
+
+	-- TODO:replace with 'folke/lazydev.nvim' and make vim global (slow loading)
+	{ 'brenopacheco/neodev.nvim',                      as = 'neodev'                 },
+
+	-- TODO: write own
 	{ 'brenopacheco/gitlinker.nvim',                   as = 'gitlinker'              }, -- removes default keybinding
 	{ 'brenopacheco/vim-floaterm'                                                    }, -- fixes Vim:E444 on-close last window
-	{ 'brenopacheco/zk-nvim'                                                         }, -- loads ~/.config/zk/config.toml:notebook.dir
 })
 -- stylua: ignore end
 

@@ -1,5 +1,0 @@
-[notebook]
-dir = "~/notes"
-
-[tool]
-pager = "bat --style=plain --color=always"
