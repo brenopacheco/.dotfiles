@@ -37,4 +37,3 @@ alias ls='ls -F --color=auto -1'
 
 alias down='cd ~/Downloads'
 alias desk='cd ~/Desktop'
-alias mnt='cd /var/run/media/breno'

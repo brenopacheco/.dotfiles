@@ -1,7 +1,3 @@
-
-# bind -r "\C-t"
-# bind -r "c"
-
 bind -x '"": "clear"'             # C-l    :: clear screen
 bind '"": "fzf-hist"'           # ctrl-r :: show history
 

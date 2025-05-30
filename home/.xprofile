@@ -8,9 +8,7 @@ export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
 dbus-update-activation-environment --all # for gnome-keyring
 
-"$USER/.screenlayout/asus.sh"
-# feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
-feh --bg-fill /usr/share/backgrounds/gnome/amber-l.jxl
+feh --bg-fill /usr/share/backgrounds/gnome/blobs-l.svg
 
 slstatus       & disown # statusbar
 dunst          & disown # notification daemon
@@ -22,8 +20,5 @@ pasystray \
 	--key-grabbing \
 	--volume-inc=3 & disown # pulseaudio volume applet
 redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
-
-# thunderbird & disown
-# slack       & disown
 
 ~/bin/reset-keyboard

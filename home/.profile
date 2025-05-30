@@ -1,2 +1,2 @@
 # Executed on interactive remote login
-[[ -f ~/.bashrc ]] && . ~/.bashrc
+[[ -f ~/.bashrc ]] && . "$HOME/.bashrc"
