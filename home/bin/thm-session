@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+start() {
+	tmux new-session -d -s thm -n nvim -c ~/thm
+	tmux send-keys -t thm:nvim 'nvim .' C-m
+
+	tmux new-window -t thm -n dev -c ~/thm/thm-platform-client
+	tmux split-window -h -t thm:dev -c ~/thm/tryhackme
+	tmux send-keys -t thm:dev.1 'sleep 10' C-m
+	tmux send-keys -t thm:dev.1 'npm run dev' C-m
+	tmux send-keys -t thm:dev.2 'sleep 10' C-m
+	tmux send-keys -t thm:dev.2 'npm run dev' C-m
+
+	tmux new-window -t thm -n docker -c ~/thm
+	tmux send-keys -t thm:docker "./restore-dump.sh" C-m
+
+	tmux new-window -t thm -n ngrok -c ~/thm
+	tmux send-keys -t thm:ngrok 'ssh -v -N -R 8080:localhost:1337 racknerd' C-m
+
+	if [ -z "$TMUX" ]; then
+		tmux attach -t thm
+	else
+		tmux switch-client -t thm
+	fi
+}
+
+stop() {
+	docker-compose -f ~/thm/compose.yml down &
+	disown
+	tmux kill-session -t thm
+}
+
+exists() {
+	tmux has-session -t thm 2>/dev/null
+}
+
+if [ "$1" == "start" ]; then
+	if exists; then
+		echo "THM session already exists. Use 'stop' to terminate it first."
+		exit 1
+	fi
+	echo "Starting THM session..."
+	start
+elif [ "$1" == "stop" ]; then
+	if ! exists; then
+		echo "No THM session found. Use 'start' to create a new session."
+		exit 1
+	fi
+	echo "Stopping THM session..."
+	stop
+	exit 0
+else
+	echo "Usage: $0 {start|stop}"
+	exit 1
+fi

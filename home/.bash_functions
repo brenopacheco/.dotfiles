@@ -143,4 +143,9 @@ function clean-pacman() {
 	rm -rf ~/.cache/pacman
 }
 # }}}
+# compress-pdf : compress input pdf {{{
+function compress-pdf() {
+    /bin/gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer    -dNOPAUSE -dQUIET -dBATCH    -sOutputFile="${1%.pdf}-compressed.pdf" "$1"
+}
+# }}}
 # vim:tw=78:ts=8:noet:ft=sh:norl:fdl=0:fdm=marker:fmr={{{,}}}

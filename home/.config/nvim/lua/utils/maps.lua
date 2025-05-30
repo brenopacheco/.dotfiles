@@ -224,6 +224,8 @@ M.run_star_git = function()
 	greputils.grep_pattern(pattern, 'git')
 end
 
+M.run_term = function() vim.cmd('term') end
+
 M.run_tabnew = function() vim.cmd('tabnew') end
 
 M.run_zknew = function()

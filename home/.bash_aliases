@@ -1,4 +1,6 @@
 # shellcheck disable=SC2154
+alias cr='cargo run'
+
 alias gpgr="gpgconf --reload gpg-agent"
 
 alias ts='tmux new -s'

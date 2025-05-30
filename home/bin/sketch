@@ -5,7 +5,7 @@ SELECTED=$1
 
 function help() {
 	cat <<EOF
-Usage: sketch [go|c|js|sh|lua|pl] [NAME]
+Usage: sketch [go|c|js|sh|lua|pl|rust] [NAME]
 
 Creates a sketch project for a given language.
 The directory is created in $HOME/sketch with a random name.
@@ -22,7 +22,7 @@ fi
 SELECTED=$1
 NAME=$2
 
-if [[ ! "$SELECTED" =~ ^(go|c|js|sh|lua|pl)$ ]]; then
+if [[ ! "$SELECTED" =~ ^(go|c|js|sh|lua|pl|rust)$ ]]; then
 	help
 	echo "Invalid language" >&2
 	exit 1
@@ -79,6 +79,10 @@ case $SELECTED in
 	echo -e "#!/usr/bin/env perl\n\nuse diagnostics;\nuse feature 'say';\n\n" >main.pl
 	chmod +x ./main.pl
 	echo -e 'all:\n\t./main.pl' >Makefile
+	;;
+"rust")
+	cargo init
+	echo -e "all:\n\tcargo run" >Makefile
 	;;
 esac
 
