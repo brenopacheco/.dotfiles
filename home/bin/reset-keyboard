@@ -38,6 +38,8 @@ if ($xmodmap) {
     say "Sourcing ~/.xmodmap...";
     system("xmodmap ~/.Xmodmap") == 0
       or warn "Failed to load .Xmodmap\n";
+} else {
+    say "\@ Skiped sourcing ~/.xmodmap...";
 }
 
 __END__

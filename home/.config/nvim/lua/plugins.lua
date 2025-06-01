@@ -12,7 +12,7 @@ vim.z.packadd({
 	{ 'nvim-lua/plenary.nvim'                                                        },
 	{ 'tpope/vim-fugitive'                                                           },
 	{ 'lewis6991/gitsigns.nvim',                       as = 'gitsigns'               },
-	-- { 'bluz71/vim-nightfly-guicolors',                 as = 'vim-nightfly-guicolors' },
+	{ 'bluz71/vim-nightfly-guicolors',                 as = 'vim-nightfly-guicolors' },
 	{ 'kyazdani42/nvim-web-devicons',                  as = 'nvim-web-devicons'      },
 	{ 'norcalli/nvim-colorizer.lua',                   as = 'nvim-colorizer'         },
 	{ 'shellRaining/hlchunk.nvim',                     as = 'hlchunk'                },

@@ -1,0 +1,33 @@
+#!/bin/bash
+# shellcheck disable=SC1090
+# */10 * * * * $HOME/bin/cron/sync-duckdns
+
+# ~/.duckdns file format:
+# token: 1234 # duckdns tooken
+# domains:
+#   - example.com:208.65.153.238 # <name>:<ip>
+#   - example.org:localhost
+
+exec 1> >(logger -p user.info -t cron-duckdns)
+exec 2> >(logger -p user.err -t cron-duckdns)
+
+if ! test -f ~/.duckdns; then
+	exit 0
+fi
+
+. ~/.duckdns >/dev/null || exit 1
+
+TOKEN=$(yq '.token' config.txt)
+
+if test -z "$DUCKDNS_TOKEN"; then
+	echo "Missing duckdns token" >&2
+	exit 1
+fi
+
+for entry in $(yq '.domains[]' "$TMPFILE"); do
+	domain=$(echo "$entry" | cut -d':' -f1)
+	ip=$(echo "$entry" | cut -d':' -f2)
+	echo "Updating ${domain} with ip ${ip}..."
+	url="https://www.duckdns.org/update?domains=${domain}&token=${TOKEN}&ip=${ip}"
+	curl -s "${url}" | xargs -I{} echo "$(date) - ${domain} - {}" >>/tmp/duck.log
+done

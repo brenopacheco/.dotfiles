@@ -2,7 +2,8 @@
 # shellcheck disable=SC2012
 # Called by udev rule with %p
 
-exec 1> >(logger -p user.notice -t keyboard)
+# journalctl -t keyboard
+exec 1> >(logger -p user.info -t keyboard)
 exec 2> >(logger -p user.err -t keyboard)
 export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 
