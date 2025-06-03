@@ -68,6 +68,7 @@ append_path "$HOME/.luarocks/bin"     # lua
 append_path '/usr/bin/vendor_perl' && # perl
 	append_path '/usr/bin/core_perl'
 
+append_path "$(dirname "$(rustup which rustc)")"
 
 test -e ~/.npmtoken && source ~/.npmtoken
 

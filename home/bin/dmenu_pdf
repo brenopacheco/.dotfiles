@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+name=$(fd "\.pdf$" -t f ~ | rg -v "thm/tryhackme" | sed "s#$HOME/##" | sort | uniq | dmenu)
+file="$HOME/$name"
+test -f "$file" && zathura "$file" & disown

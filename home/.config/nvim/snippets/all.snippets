@@ -7,6 +7,9 @@ snippet env
 snippet modeline
 	vi:ft=${0:sh}:tw=80
 
+snippet git
+	git@github.com:brenopacheco/${1:$TM_SELECTED_TEXT}.git$0
+
 snippet FIX
 	`printf(&commentstring, 'FIX: ')`$0
 
