@@ -34,6 +34,7 @@ vim.z.packadd({
 	{ 'hrsh7th/nvim-cmp'                                                             },
 	{ 'windwp/nvim-autopairs'                                                        },
 	{ 'b0o/schemastore.nvim',                          as = 'schemastore'            },
+	{ 'folke/neodev.nvim',                             as = 'neodev'                 }, -- TODO:replace with 'folke/lazydev.nvim' and make vim global (slow loading)
 	{ 'neovim/nvim-lspconfig'                                                        },
 	{ 'ray-x/lsp_signature.nvim',                      as = 'lsp-signature'          },
 	{ 'chrishrb/gx.nvim',                              as = 'gx'                     },
@@ -49,13 +50,8 @@ vim.z.packadd({
 	{ 'HiPhish/rainbow-delimiters.nvim',               as = 'rainbow-delimiters'     },
 	{ 'Bekaboo/dropbar.nvim',                          as = 'dropbar'                },
 	{ 'monkoose/matchparen.nvim',                      as = 'matchparen'             },
-
-	-- TODO:replace with 'folke/lazydev.nvim' and make vim global (slow loading)
-	{ 'brenopacheco/neodev.nvim',                      as = 'neodev'                 },
-
-	-- TODO: write own
-	{ 'brenopacheco/gitlinker.nvim',                   as = 'gitlinker'              }, -- removes default keybinding
-	{ 'brenopacheco/vim-floaterm'                                                    }, -- fixes Vim:E444 on-close last window
+	{ 'brenopacheco/gitlinker.nvim',                   as = 'gitlinker'              }, -- removes default keybinding TODO: write own
+	{ 'brenopacheco/vim-floaterm'                                                    }, -- fixes Vim:E444 on-close last window TODO: write own
 })
 -- stylua: ignore end
 

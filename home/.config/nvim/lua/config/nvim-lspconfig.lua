@@ -1,6 +1,10 @@
 local lsp = require('lspconfig')
 local lsputil = require('utils.lsp')
 
+if vim.z.enabled('neodev') then
+	require('neodev').setup({ lspconfig = true })
+end
+
 vim.lsp.set_log_level(vim.log.levels.INFO) -- DEBUG / INFO
 
 for type, icon in pairs({
@@ -57,14 +61,7 @@ lsp.jsonls.setup({
 		},
 	},
 })
--- lsp.marksman.setup({ capabilities = capabilities })
-lsp.rust_analyzer.setup({
-	cmd = { vim.fn.trim(vim.fn.system('rustup which rust-analyzer')) },
-	capabilities = capabilities,
-	-- on_attach = function(_, bufnr)
-	-- 	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-	-- end,
-})
+lsp.rust_analyzer.setup({ capabilities = capabilities })
 lsp.vimls.setup({ capabilities = capabilities })
 lsp.yamlls.setup({
 	capabilities = capabilities,
@@ -79,3 +76,4 @@ lsp.yamlls.setup({
 	},
 })
 lsp.zk.setup({ capabilities = capabilities })
+lsp.lua_ls.setup({ capabilities = capabilities })
