@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2012
 # Called by udev rule with %p
-
+#
 # journalctl -t keyboard
 exec 1> >(logger -p user.info -t keyboard)
 exec 2> >(logger -p user.err -t keyboard)

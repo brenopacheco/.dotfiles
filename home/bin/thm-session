@@ -5,7 +5,7 @@ start() {
 	tmux send-keys -t thm:nvim 'nvim .' C-m
 
 	tmux new-window -t thm -n dev -c ~/thm/thm-platform-client
-	tmux split-window -h -t thm:dev -c ~/thm/tryhackme
+	tmux split-window -t thm:dev -c ~/thm/tryhackme/apps/api
 	tmux send-keys -t thm:dev.1 'sleep 10' C-m
 	tmux send-keys -t thm:dev.1 'npm run dev' C-m
 	tmux send-keys -t thm:dev.2 'sleep 10' C-m

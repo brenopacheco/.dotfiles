@@ -5,6 +5,8 @@
 #   2. add crontab for user
 #       0 */4 * * *  $HOME/bin/cron/sync-books
 #       */10 * * * * $HOME/bin/cron/sync-duckdns
+#   3. files in etc should have a placeholder for USER and replace
+#   4. why does udev rule runs twice? see journalctl -n 100 -t keyboard
 
 # Playbook =============================================================== {{{
 configure(
@@ -15,61 +17,61 @@ configure(
 );
 
 pacman(
-    'arandr',               'base',
-    'base-devel',           'bash-completion',
-    'bat',                  'bear',
-    'blueman',              'bluez',
-    'bluez-utils',          'bottom',
-    'chromium',             'clang',
-    'cmake',                'conky',
-    'cronie',               'ctags',
-    'dosfstools',           'docker',
-    'dunst',                'dzen2',
-    'fd',                   'feh',
-    'file-roller',          'firefox',
-    'fzf',                  'git',
-    'gnome-backgrounds',    'go',
-    'gopls',                'gparted',
-    'gpick',                'gtk2',
-    'gtk3',                 'gtk4',
-    'gvim',                 'helm',
-    'htop',                 'imagemagick',
-    'inotify-tools',        'jq',
-    'k9s',                  'lightdm',
-    'lightdm-gtk-greeter',  'lf',
-    'lldb',                 'lsof',
-    'lua',                  'lua51',
-    'lua52',                'lua53',
-    'luajit',               'lua-language-server',
-    'luarocks',             'man-db',
-    'moreutils',            'ncdu',
-    'net-tools',            'network-manager-applet',
-    'ninja',                'noto-fonts-emoji',
-    'otf-comicshanns-nerd', 'pamixer',
-    'parted',               'pass',
-    'pass-otp',             'pasystray',
-    'pavucontrol',          'pdftk',
-    'perl',                 'perl-tidy',
-    'python',               'python-pipx',
-    'redshift',             'renameutils',
-    'ripgrep',              'rsync',
-    'rust',                 'screengrab',
-    'shellcheck',           'shfmt',
-    'sqlitebrowser',        'stow',
-    'stylua',               'sxiv',
-    'tmux',                 'tree',
-    'ttf-3270-nerd',        'ttf-firacode-nerd',
-    'udiskie',              'unrar',
-    'unzip',                'usbutils',
-    'v4l2loopback-dkms',    'wget',
-    'wmctrl',               'xarchiver',
-    'xclip',                'xdotool',
-    'xorg-server-xephyr',   'xorg-xev',
-    'xorg-xkill',           'xorg-xlsclients',
-    'xorg-xmodmap',         'xorg-xsetroot',
-    'xorg-xwininfo',        'zathura',
-    'zathura-pdf-mupdf',    'zip',
-    'zk',
+    'arandr',                 'base',
+    'base-devel',             'bash-completion',
+    'bat',                    'bear',
+    'blueman',                'bluez',
+    'bluez-utils',            'bottom',
+    'chromium',               'clang',
+    'cmake',                  'conky',
+    'cronie',                 'ctags',
+    'docker',                 'dosfstools',
+    'dunst',                  'dzen2',
+    'fd',                     'feh',
+    'file-roller',            'firefox',
+    'fzf',                    'git',
+    'gnome-backgrounds',      'go',
+    'gopls',                  'gparted',
+    'gpick',                  'gtk2',
+    'gtk3',                   'gtk4',
+    'gvim',                   'helm',
+    'htop',                   'imagemagick',
+    'inotify-tools',          'jq',
+    'k9s',                    'lf',
+    'lightdm',                'lightdm-gtk-greeter',
+    'lldb',                   'lsof',
+    'lua',                    'lua51',
+    'lua52',                  'lua53',
+    'luajit',                 'lua-language-server',
+    'luarocks',               'man-db',
+    'moreutils',              'musl',
+    'ncdu',                   'net-tools',
+    'network-manager-applet', 'ninja',
+    'noto-fonts-emoji',       'otf-comicshanns-nerd',
+    'pamixer',                'parted',
+    'pass',                   'pass-otp',
+    'pasystray',              'pavucontrol',
+    'pdftk',                  'perl',
+    'perl-tidy',              'python',
+    'python-pipx',            'redshift',
+    'renameutils',            'ripgrep',
+    'rsync',                  'rustup',
+    'screengrab',             'shellcheck',
+    'shfmt',                  'sqlitebrowser',
+    'stow',                   'stylua',
+    'sxiv',                   'tmux',
+    'tree',                   'ttf-3270-nerd',
+    'ttf-firacode-nerd',      'udiskie',
+    'unrar',                  'unzip',
+    'usbutils',               'v4l2loopback-dkms',
+    'wget',                   'wmctrl',
+    'xarchiver',              'xclip',
+    'xdotool',                'xorg-server-xephyr',
+    'xorg-xev',               'xorg-xkill',
+    'xorg-xlsclients',        'xorg-xmodmap',
+    'xorg-xsetroot',          'xorg-xwininfo',
+    'zathura',                'zathura-pdf-mupdf',
+    'zip',                    'zk',
 );
 
 dirs( '~/git', '~/sketch', '~/tmp' );
@@ -160,6 +162,20 @@ go(
     [ 'kind',           'sigs.k8s.io/kind@v0.20.0' ],
     [ 'lazydocker',     'github.com/jesseduffield/lazydocker@latest' ],
     [ 'yq',             'github.com/mikefarah/yq/v4@latest' ]
+);
+
+rust(
+    {
+        toolchains => [
+            "stable-x86_64-unknown-linux-gnu",
+            "nightly-x86_64-unknown-linux-gnu"
+        ],
+        default    => "stable-x86_64-unknown-linux-gnu",
+        components => [
+            "rust-analyzer-x86_64-unknown-linux-gnu",
+            "rust-std-x86_64-unknown-linux-musl"
+        ]
+    }
 );
 
 gpg();
@@ -555,6 +571,59 @@ sub go {
         say "  * installing: $ref->[0]";
         _task( 'user', "GOPATH=\$HOME/.go go install $ref->[1]" );
     }
+}
+
+use Data::Dumper;
+
+sub rust {
+    my ($conf) = @_;
+    my @tasks = ();
+
+    my $rustup_check = _check("which rustup");
+    die "rustup not installed" if !$rustup_check->{ok};
+
+    my $toolchain_check      = _check("rustup toolchain list");
+    my @installed_toolchains = $toolchain_check->{out} =~ /^([^\s]+)/mg;
+    for my $toolchain ( @{ $conf->{toolchains} } ) {
+        if ( !grep { $_ eq $toolchain } @installed_toolchains ) {
+            push @tasks, sub {
+                say "  * installing toolchain: $toolchain";
+                _task( 'user', "rustup toolchain install $toolchain" );
+            };
+        }
+    }
+
+    my $default_check     = _check("rustup default");
+    my $default_toolchain = $1 if $default_check->{out} =~ /^([^\s]+)/;
+    if ( $default_toolchain ne $conf->{default} ) {
+        push @tasks, sub {
+            say "  * setting default toolchain: $conf->{default}";
+            _task( 'user', "rustup default $conf->{default}" );
+        };
+    }
+
+    for my $toolchain ( @{ $conf->{toolchains} } ) {
+        my $components_check =
+          _check("rustup component list --installed --toolchain $toolchain");
+        my %installed_components =
+          map { $_ => 1 } split( /\n/, $components_check->{out} );
+        for my $component ( @{ $conf->{components} } ) {
+            if ( !exists $installed_components{$component} ) {
+                push @tasks, sub {
+                    say "  * installing component [$toolchain]: $component";
+                    _task( 'user',
+                        "rustup component add $component --toolchain $toolchain"
+                    );
+                };
+            }
+        }
+    }
+
+    if ( !@tasks ) {
+        return say "[OK] rust";
+    }
+    say "[-] rust";
+    $_->() for @tasks;
 }
 
 sub gpg {

@@ -1,13 +1,10 @@
 [Default Applications]
-# Web
 x-scheme-handler/http=chromium.desktop
 x-scheme-handler/https=chromium.desktop
 x-scheme-handler/about=chromium.desktop
 x-scheme-handler/unknown=chromium.desktop
 text/html=chromium.desktop
 application/xhtml+xml=chromium.desktop
-
-# Text files / Code
 text/plain=nvim.desktop
 text/x-csrc=nvim.desktop
 text/x-chdr=nvim.desktop
@@ -19,8 +16,6 @@ application/json=nvim.desktop
 application/x-yaml=nvim.desktop
 application/xml=nvim.desktop
 application/x-tex=nvim.desktop
-
-# Images
 image/jpeg=sxiv.desktop
 image/png=sxiv.desktop
 image/gif=sxiv.desktop
@@ -29,8 +24,6 @@ image/bmp=sxiv.desktop
 image/tiff=sxiv.desktop
 image/svg+xml=sxiv.desktop
 image/x-xcf=sxiv.desktop
-
-# Archives
 application/zip=file-roller.desktop
 application/x-tar=file-roller.desktop
 application/x-bzip=file-roller.desktop
@@ -40,10 +33,7 @@ application/x-compressed-tar=file-roller.desktop
 application/x-7z-compressed=file-roller.desktop
 application/x-rar=file-roller.desktop
 application/vnd.rar=file-roller.desktop
-
-# PDFs
 application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
-
-# Default fallback for unknown text types
 inode/directory=org.gnome.Nautilus.desktop
 application/octet-stream=chromium.desktop
+text/csv=libreoffice-calc.desktop

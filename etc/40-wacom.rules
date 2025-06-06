@@ -1,1 +1,1 @@
-ACTION=="bind", SUBSYSTEM=="hid", RUN+="/usr/bin/su breno -c /opt/bin/wacom.sh %p"
+ACTION=="bind", SUBSYSTEM=="hid", RUN+="/usr/bin/su breno -c /home/breno/bin/udev/wacom.sh %p"
