@@ -2,23 +2,42 @@
 # shellcheck disable=SC2086
 # Launch application from global (-a) or user config applications
 
-declare DIR=$HOME/.dotfiles/home/.config/applications
+APPS=(
+	'arandr.desktop'
+	'aseprite.desktop'
+	'blueman-manager.desktop'
+	'chromium.desktop'
+	'com.github.xournalpp.xournalpp.desktop'
+	'discord.desktop'
+	'firefox.desktop'
+	'gparted.desktop'
+	'libreoffice-base.desktop'
+	'lxappearance.desktop'
+	'mongodb-compass.desktop'
+	'org.freecad.FreeCAD.desktop'
+	'org.gnome.Calculator.desktop'
+	'org.gnome.Cheese.desktop'
+	'org.gnome.Nautilus.desktop'
+	'org.gpick.gpick.desktop'
+	'org.inkscape.Inkscape.desktop'
+	'org.kde.krita.desktop'
+	'org.kde.okular.desktop'
+	'org.mozilla.Thunderbird.desktop'
+	'org.pulseaudio.pavucontrol.desktop'
+	'org.zealdocs.zeal.desktop'
+	'screengrab.desktop'
+	'slack.desktop'
+	'sqlitebrowser.desktop'
+	'steam.desktop'
+	'sxiv.desktop'
+	'transmission-qt.desktop'
+	'vlc.desktop'
+	'Zoom.desktop'
+)
 
-# Parse command-line options
-while getopts "a" opt; do
-	case ${opt} in
-	a)
-		DIR="/usr/share/applications $HOME/.local/share/applications"
-		;;
-	*)
-		echo "Usage:" >&2
-		echo "  dmenu_apps [-a]" >&2
-		exit 1
-		;;
-	esac
-done
+FILES=("${APPS[@]/#/\/usr\/share\/applications\/}")
 
-rg --max-count 1 "^Name=" $DIR |
+rg --max-count 1 "^Name=" "${FILES[@]}" |
 	sed 's/.*\/\(.\+\)\.desktop:Name=\(.\+\)$/\2;(\1):\1.desktop/' |
 	column -t -s ';' |
 	sort |

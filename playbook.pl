@@ -74,9 +74,21 @@ pacman(
     'zip',                    'zk',
 );
 
-dirs( '~/git', '~/sketch', '~/tmp' );
+dirs(
+    # default directories
+    '~/git', '~/sketch', '~/tmp',
 
-stow( cwd => '~/.dotfiles', target => '~/', package => 'home' );
+    # prevent stow folding
+    '~/.config',         '~/.config/systemd/user',
+    '~/.config/FreeCAD', '~/.gnupg',
+    '~/.ssh'
+);
+
+stow(
+    cwd     => '~/.dotfiles',
+    target  => '~/',
+    package => 'home',
+);
 
 etc(
     { file => 'lightdm-gtk-greeter.conf', dir => '/etc/lightdm/' },
@@ -653,4 +665,4 @@ sub gpg {
 }
 
 # }}} ------------------------------------------------------------------------
-# vim:ft=perl:tw=80:fdls=0:fdl=0
+# vim:ft=perl:tw=80

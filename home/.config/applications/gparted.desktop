@@ -1,8 +1,0 @@
-Name=GParted
-Comment=Create, reorganize, and delete partitions
-Exec=/usr/bin/gparted %f
-Icon=gparted
-Terminal=false
-Type=Application
-Categories=GNOME;System;Filesystem;
-StartupNotify=true

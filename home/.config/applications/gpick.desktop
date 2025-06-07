@@ -1,9 +1,0 @@
-Name=Gpick
-Comment=Color picker
-Exec=gpick %u
-Icon=gpick
-StartupNotify=true
-MimeType=application/x-gpick-palette;
-Terminal=false
-Type=Application
-Categories=Graphics;GTK;

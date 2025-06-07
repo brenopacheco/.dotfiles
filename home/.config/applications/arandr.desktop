@@ -1,7 +1,0 @@
-Name=ARandR
-Icon=display
-Exec=arandr
-Terminal=false
-Type=Application
-Categories=Settings;HardwareSettings;
-StartupNotify=true

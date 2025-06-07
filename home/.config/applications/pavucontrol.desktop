@@ -1,7 +1,0 @@
-Name=Volume Control
-Comment=Adjust the volume level
-Exec=pavucontrol
-Icon=multimedia-volume-control
-StartupNotify=true
-Type=Application
-Categories=AudioVideo;Audio;Mixer;GTK;Settings;X-XFCE-SettingsDialog;X-XFCE-HardwareSettings;

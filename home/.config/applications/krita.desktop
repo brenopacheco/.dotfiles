@@ -1,9 +1,0 @@
-Name=Krita
-Exec=krita %F
-MimeType=application/x-krita;image/openraster;application/x-krita-paintoppreset;
-Comment=Digital Painting
-Type=Application
-Icon=krita
-Categories=Qt;KDE;Graphics;2DGraphics;RasterGraphics;
-StartupNotify=true
-StartupWMClass=krita

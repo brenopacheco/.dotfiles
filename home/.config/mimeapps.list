@@ -37,3 +37,6 @@ application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
 inode/directory=org.gnome.Nautilus.desktop
 application/octet-stream=chromium.desktop
 text/csv=libreoffice-calc.desktop
+
+[Added Associations]
+model/stl=blender.desktop;
