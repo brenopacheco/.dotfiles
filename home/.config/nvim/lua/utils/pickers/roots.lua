@@ -32,7 +32,11 @@ return function()
 			return item == '.' and './'
 				or './' .. string.sub(item, string.len(root) + 2)
 		end,
-	}, function(choice)
-		if choice ~= nil then vim.cmd('e ' .. choice) end
+	}, function(choice, _, mode)
+		if choice == nil then return end
+		if mode == 'tab' then vim.cmd('tabnew') end
+		if mode == 'vsplit' then vim.cmd('vsplit') end
+		if mode == 'split' then vim.cmd('split') end
+		require('oil').open(choice)
 	end)
 end

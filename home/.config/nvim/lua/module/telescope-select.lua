@@ -1,6 +1,12 @@
 --- Select picker
 --
 -- Provides a generic telescope picker that uses the same api from vim.ui.select
+--
+-- TODO:
+--	1. provide on_choice actions for files (e.g: 'tabe | edit <choice>')
+--	2. change api to allow actions on multi = true
+--	3. refactor
+--	4. see oil open for dirs
 
 if not vim.z.enabled('nvim-telescope/telescope.nvim') then
 	return vim.notify(

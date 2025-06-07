@@ -74,3 +74,9 @@ test -e ~/.npmtoken && source ~/.npmtoken
 
 export NODE_OPTIONS="--max-old-space-size=12288"
 export ZK_NOTEBOOK_DIR="$HOME/notes"
+
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac

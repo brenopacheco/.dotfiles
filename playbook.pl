@@ -79,8 +79,9 @@ dirs(
     '~/git', '~/sketch', '~/tmp',
 
     # prevent stow folding
-    '~/.config',         '~/.config/systemd/user',
-    '~/.config/FreeCAD', '~/.gnupg',
+    '~/.config',
+    '~/.config/systemd/user',
+    '~/.gnupg',
     '~/.ssh'
 );
 

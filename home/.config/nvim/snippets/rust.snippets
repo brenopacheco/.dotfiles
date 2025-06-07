@@ -1,2 +1,14 @@
-snippet derive > __derive macro__
+snippet derive > __#[derive()]__
 	#[derive($0)]
+
+snippet pl __println!()__
+	    println!("${1:$TM_SELECTED_TEXT}");$0
+
+snippet dbg __dbg!()__
+	dbg!(${1:$TM_SELECTED_TEXT});$0
+
+
+snippet main __func main()__
+	fn main() {
+		${1:$TM_SELECTED_TEXT}$0
+	}
