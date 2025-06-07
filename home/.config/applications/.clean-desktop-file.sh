@@ -13,6 +13,8 @@ FIELDS=(
 	"MimeType"
 )
 
+mkdir -p parsed
+
 PATTERN=$(echo "${FIELDS[@]}" | sed 's/ /|/g')
 PATTERN="^(${PATTERN})="
 
