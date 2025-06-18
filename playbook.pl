@@ -48,6 +48,7 @@ pacman(
     'ncdu',                   'net-tools',
     'network-manager-applet', 'ninja',
     'noto-fonts-emoji',       'otf-comicshanns-nerd',
+    'ttf-indic-otf',          'noto-fonts-cjk',
     'pamixer',                'parted',
     'pass',                   'pass-otp',
     'pasystray',              'pavucontrol',
