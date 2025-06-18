@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 # TODO:
+#   0. replace st with kitty for font support
 #   1. gpg --export-ssh-key brenoleonhardt@gmail.com > ~/.ssh/blp.pub && chmod 0600 ~/.ssh/blp.pub
 #   2. add crontab for user
 #       0 */4 * * *  $HOME/bin/cron/sync-books
