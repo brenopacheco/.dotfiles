@@ -1,9 +1,8 @@
 #!/usr/bin/env perl
 
 # TODO:
-#   0. replace st with kitty for font support
 #   1. gpg --export-ssh-key brenoleonhardt@gmail.com > ~/.ssh/blp.pub && chmod 0600 ~/.ssh/blp.pub
-#   2. add crontab for user
+#   2. add user crontab
 #       0 */4 * * *  $HOME/bin/cron/sync-books
 #       */10 * * * * $HOME/bin/cron/sync-duckdns
 #   3. files in etc should have a placeholder for USER and replace
