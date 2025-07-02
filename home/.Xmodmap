@@ -18,7 +18,6 @@ clear shift
 
 ! modifiers
 keycode 66  = Control_L   Control_L   Control_L   Control_L
-! keycode 50  =
 keycode 37  =
 keycode 133 = Super_L     Super_L     Super_L     Super_L
 keycode 64  = Alt_L       Alt_L       Alt_L       Alt_L
@@ -29,26 +28,6 @@ keycode 204 =
 keycode 206 =
 keycode 92  =
 keycode 203 =
-
-! other keymaps
-! keycode 11  = 2            at              2            at
-! keycode 12  = 3            numbersign      3            numbersign
-! keycode 19  = 0            equal           0            equal
-! keycode 20  = minus        underscore      minus        underscore
-! keycode 21  = dead_acute   dead_grave      dead_acute   dead_grave
-! keycode 34  = plus         asterisk        plus         asterisk
-! keycode 35  = bracketleft  braceleft       bracketleft  braceleft
-! keycode 47  = parenright   parenleft       parenright   parenleft
-! keycode 48  = dead_tilde   dead_circumflex dead_tilde   dead_circumflex
-! keycode 49  = apostrophe   quotedbl        apostrophe   quotedbl
-! keycode 51  = bracketright braceright      bracketright braceright
-! keycode 59  = comma        less            comma        less
-! keycode 60  = period       greater         period       greater
-! keycode 61  = semicolon    colon           semicolon    colon
-! keycode 94  = backslash    bar             backslash    bar
-! keycode 105 = slash        question        slash        question
-
-
 
 keycode 94  = backslash bar asciitilde apostrophe
 

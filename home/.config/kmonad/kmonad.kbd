@@ -1,0 +1,15 @@
+(defcfg
+  input  (device-file "/dev/input/by-id/usb-CX_2.4G_Wireless_Receiver-event-kbd")
+  output (uinput-sink "kmonad-virtual")
+  fallthrough true
+  allow-cmd true
+)
+
+(defsrc x c n m ) ;; Home row keys
+
+(deflayer home-row-mods
+  (tap-hold-next-release 200 x lctl)
+  (tap-hold-next-release 200 c lshift)
+  (tap-hold-next-release 200 n rshift)
+  (tap-hold-next-release 200 m rctl)
+)

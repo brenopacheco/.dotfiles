@@ -75,15 +75,15 @@ lsp.yamlls.setup({
 		},
 	},
 })
-lsp.zk.setup({
-	capabilities = capabilities,
-	on_attach = function(_, bufnr)
-		vim.keymap.set(
-			'n',
-			'<leader>i',
-			'<cmd>ZkInsertLink<cr>',
-			{ buffer = bufnr }
-		)
-	end,
-})
+-- lsp.zk.setup({
+-- 	capabilities = capabilities,
+-- 	on_attach = function(_, bufnr)
+-- 		vim.keymap.set(
+-- 			'n',
+-- 			'<leader>i',
+-- 			'<cmd>ZkInsertLink<cr>',
+-- 			{ buffer = bufnr }
+-- 		)
+-- 	end,
+-- })
 lsp.lua_ls.setup({ capabilities = capabilities })

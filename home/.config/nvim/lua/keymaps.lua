@@ -147,6 +147,7 @@ local keyboard = {
       { {      'x' }, '=',           maps.run_format,                        },
       { { 's',     }, '<bs>',       '<bs>i'                                  },
       { { 'x',     }, '*',          [["zy/\V<C-r>=escape(@z, '\/')<cr><cr>]] },
+      { { 'n',     }, '\\',         ':sp | wincmd p | te! <c-f>i' },
     } -- ]]
   },
   abbreviations = { -- [[
@@ -239,5 +240,5 @@ script: use {rhs} mappings defined in the script - <SID>      (default false)
 expr:   evaluate {rhs} as an expression                       (default false)
 unique: don't remap if already mapped                         (default false)
 desc:   human-readable description                            (default '')
-vim:fdl=0:tw=103:cc=103:fdm=marker:fmr=[[,]]
+vim:tw=103:cc=103:fdm=marker:fmr=[[,]]
 --]]

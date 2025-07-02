@@ -316,4 +316,9 @@ end
 
 M.clear_buffers = bufutil.clear_buffers
 
+M.terminal_input = function()
+	log("hey!")
+	vim.cmd('normal! :terminal! ')
+end
+
 return M

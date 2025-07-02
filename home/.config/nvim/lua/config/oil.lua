@@ -8,7 +8,6 @@ oil.setup({
 		-- ['e'] = 'actions.select',
 		['<cr>'] = 'actions.select',
 
-		['<c-p>'] = 'actions.preview',
 		['<c-s>'] = 'actions.select_split',
 		['<c-t>'] = 'actions.select_tab',
 

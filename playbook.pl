@@ -264,9 +264,9 @@ sub _test {
     if ( system("$cmd >/dev/null 2>&1") ) {
         my @message = (
             "Error: Unable to ssh into $who\@$cfg{host}.",
-            "- Check the host is reacheable",
-            "- Check the ssh-agent has the ssh key loaded (ssh-add -L)",
-            "- Check the authorized_keys for $who includes the loaded key"
+            "- Check the host is reacheable (HOST: systemctl is-active sshd)",
+            "- Check the ssh-agent has the ssh key loaded (CLIENT: ssh-add -L)",
+            "- Check the host's ~/.ssh/authorized_keys for $who includes the key"
         );
         die join( "\n", @message );
     }

@@ -119,4 +119,5 @@ vim.g.vim_indent_cont  = 4                             -- in vimscript, \ indent
 vim.g.c_syntax_for_h   = 1                             -- recognize .h as c file
 -- stylua: ignore end
 
+vim.env.MANPAGER = '' -- unset nvim manpager
 -- vi:cc=92
