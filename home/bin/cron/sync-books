@@ -5,7 +5,10 @@
 exec 1> >(logger -p user.info -t cron-books)
 exec 2> >(logger -p user.err -t cron-books)
 
+# rclone config
+# copy / sync
 rclone sync "$HOME/books" gdrive:books \
+	--drive-use-trash \
 	--log-level=INFO \
 	--human-readable \
 	--stats-one-line
