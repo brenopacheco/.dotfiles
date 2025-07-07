@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 # TODO:
+#   0. perl packages (e.g: cpanm JSON::XS)
 #   1. gpg --export-ssh-key brenoleonhardt@gmail.com > ~/.ssh/blp.pub && chmod 0600 ~/.ssh/blp.pub
 #   2. add user crontab
 #       0 */4 * * *  $HOME/bin/cron/sync-books
@@ -73,6 +74,7 @@ pacman(
     'xorg-xsetroot',          'xorg-xwininfo',
     'zathura',                'zathura-pdf-mupdf',
     'zip',                    'zk',
+    'cpanminus', 'perl-local-lib'
 );
 
 dirs(
@@ -83,7 +85,8 @@ dirs(
     '~/.config',
     '~/.config/systemd/user',
     '~/.gnupg',
-    '~/.ssh'
+    '~/.ssh',
+    '~/.perl5'
 );
 
 stow(
@@ -371,7 +374,7 @@ sub dirs {
     say "[-] dirs";
     for my $dir (@res) {
         say "  * mkdir: $dir";
-        _task( 'user', "mkdir $dir" );
+        _task( 'user', "mkdir -p $dir" );
     }
 }
 

@@ -46,8 +46,6 @@ export BROWSER='/usr/bin/chromium'
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-export PERL5LIB=~/.perl5
-export GOPATH=$HOME/.go
 
 append_path() {
 	case ":$PATH:" in
@@ -58,6 +56,10 @@ append_path() {
 	esac
 }
 
+export GOPATH=$HOME/.go
+export ZK_NOTEBOOK_DIR="$HOME/notes"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+
 append_path "$HOME/bin"
 append_path "$HOME/.asdf/shims"
 append_path "$HOME/.npm/bin"          # node
@@ -65,18 +67,16 @@ append_path "$HOME/.cargo/bin"        # rust
 append_path "$HOME/.local/bin"        # pipx
 append_path "$HOME/.go/bin"           # go
 append_path "$HOME/.luarocks/bin"     # lua
-append_path '/usr/bin/vendor_perl' && # perl
-	append_path '/usr/bin/core_perl'
-
+append_path "$HOME/.perl5/bin"        # lua
+append_path '/usr/bin/vendor_perl'
+append_path '/usr/bin/core_perl'
 append_path "$(dirname "$(rustup which rustc)")"
 
 test -e ~/.npmtoken && source ~/.npmtoken
 
 export NODE_OPTIONS="--max-old-space-size=12288"
-export ZK_NOTEBOOK_DIR="$HOME/notes"
 
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
+# perl
+export PERL5LIB="$HOME/.perl5/custom"  # for stowed modules
+export PERL_CPANM_OPT="--local-lib=$HOME/.perl5 --self-contained"
+eval "$(perl -I "$HOME"/.perl5/lib/perl5/ -Mlocal::lib="$HOME/.perl5")"

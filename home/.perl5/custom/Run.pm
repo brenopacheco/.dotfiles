@@ -41,7 +41,7 @@ sub shell {
         stodut => \@stdout,
         stderr => \@stderr,
         status => $? >> 8,
-        ok     => $? == 0,
+        ok     => $? == 0 ? 1 : 0,
     };
 }
 
