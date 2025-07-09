@@ -7,7 +7,6 @@
 local count = 0
 
 local function bufferize(tbl)
-	-- for messages, we want to reuse the buffer
 	count = count + 1
 	local cmd = table.concat(tbl.fargs, ' ')
 	local result = tostring(vim.fn.execute(cmd))
@@ -22,7 +21,7 @@ end
 
 local function messages() bufferize({ fargs = { 'messages' } }) end
 
-vim.api.nvim_create_user_command('Bufferize', bufferize, { nargs = '*' })
+vim.api.nvim_create_user_command('Bufferize', bufferize, { nargs = '+' })
 vim.api.nvim_create_user_command('Messages', messages, { nargs = 0 })
 
 vim.api.nvim_create_user_command('Bclean', function()

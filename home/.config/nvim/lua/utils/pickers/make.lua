@@ -37,13 +37,7 @@ return function()
 		end,
 	}, function(choice)
 		if choice ~= nil then
-			if vim.z.enabled('voldikss/vim-floaterm') then
-				vim.cmd([[let g:floaterm_autoclose = 0]])
-				vim.cmd('FloatermNew cd ' .. choice.dir .. '; ' .. choice.cmd)
-			else
-				vim.cmd('botright term cd ' .. choice.dir .. '; ' .. choice.cmd)
-				vim.cmd('wincmd p')
-			end
+				vim.cmd('bo te! cd ' .. choice.dir .. '; ' .. choice.cmd)
 		end
 	end)
 end

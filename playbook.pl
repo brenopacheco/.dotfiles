@@ -74,7 +74,8 @@ pacman(
     'xorg-xsetroot',          'xorg-xwininfo',
     'zathura',                'zathura-pdf-mupdf',
     'zip',                    'zk',
-    'cpanminus', 'perl-local-lib'
+    'cpanminus',              'perl-local-lib',
+    'man-pages'
 );
 
 dirs(
@@ -165,12 +166,14 @@ node(
     [ 'prettier',                      'prettier' ],
     [ 'prettierd',                     '@fsouza/prettierd' ],
     [ 'eslint_d',                      'eslint_d' ],
+    [ 'biome',                         '@biomejs/biome' ],
     [ 'tsc',                           'typescript' ],
     [ 'tsserver',                      'typescript-language-server' ],
     [ 'vim-language-server',           'vim-language-server' ],
     [ 'yaml-language-server',          'yaml-language-server' ],
     [ 'vscode-eslint-language-server', 'vscode-langservers-extracted' ],
-    [ 'docker-langserver',             'dockerfile-language-server-nodejs' ]
+    [ 'docker-langserver',             'dockerfile-language-server-nodejs' ],
+    [ 'http-server',                   'http-server' ]
 );
 
 go(
@@ -268,7 +271,7 @@ sub _test {
             "Error: Unable to ssh into $who\@$cfg{host}.",
             "- Check the host is reacheable (HOST: systemctl is-active sshd)",
             "- Check the ssh-agent has the ssh key loaded (CLIENT: ssh-add -L)",
-            "- Check the host's ~/.ssh/authorized_keys for $who includes the key"
+"- Check the host's ~/.ssh/authorized_keys for $who includes the key"
         );
         die join( "\n", @message );
     }

@@ -72,4 +72,5 @@ vim.z.modload({
 	'telescope-select',
 	'trim',
 	'yank-highlight',
+	'compile',
 })

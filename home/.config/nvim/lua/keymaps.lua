@@ -24,6 +24,8 @@ local keyboard = {
       { { 'n', 'x' }, 'ga',             maps.run_align,          { desc = ' align'                } },
       { { 'n', 'x' }, 'gx',             maps.run_gx,             { desc = ' browse',              } },
       { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
+			--{ { 'n',     }, 'gb',             maps.bufferize,          { desc = ' bufferize'            } },
+			--{ { 'n',     }, 'gc',             maps.compile,          { desc = ' compile'            } },
       { { 'n',     }, 'g?',             maps.help('g'),          { desc = ' which-key'            } },
       { { 'n', 'x' }, 'g]',             maps.run_star_git,       { desc = ' star git',            } },
       { { 'n',     }, '<leader>t',      maps.run_term,           { desc = ' run-term'             } },
@@ -147,7 +149,9 @@ local keyboard = {
       { {      'x' }, '=',           maps.run_format,                        },
       { { 's',     }, '<bs>',       '<bs>i'                                  },
       { { 'x',     }, '*',          [["zy/\V<C-r>=escape(@z, '\/')<cr><cr>]] },
-      { { 'n',     }, '\\',         ':sp | wincmd p | te! <c-f>i' },
+      --{ { 'n',     }, '\\',         ':sp | wincmd p | te! <c-f>i' },
+      --{ { 'n',     }, '\\',         ':Compile <c-f>i' },
+      { { 'n',     }, '\\',         ':Compile ' },
     } -- ]]
   },
   abbreviations = { -- [[
