@@ -38,8 +38,8 @@ function launch_or_attach() {
 		if [[ -n "$open_window" ]]; then
 			wmctrl -i -a "$open_window"
 		else
-			(setsid nohup st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1) &
-			disown
+			# setsid st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1
+			setsid st -t "$session" -e bash -c "tmux attach -t $session >/dev/null 2>&1; exec bash"
 		fi
 	fi
 

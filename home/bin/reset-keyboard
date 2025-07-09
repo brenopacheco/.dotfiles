@@ -2,7 +2,6 @@
 
 use Getopt::Long qw(GetOptions);
 use Pod::Usage   qw(pod2usage);
-use builtin      qw(trim);
 use feature 'say';
 
 my $help    = 0;
