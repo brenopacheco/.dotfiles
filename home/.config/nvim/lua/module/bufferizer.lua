@@ -22,6 +22,7 @@ end
 local function messages() bufferize({ fargs = { 'messages' } }) end
 
 vim.api.nvim_create_user_command('Bufferize', bufferize, { nargs = '+' })
+vim.api.nvim_create_user_command('B', bufferize, { nargs = '+' })
 vim.api.nvim_create_user_command('Messages', messages, { nargs = 0 })
 
 vim.api.nvim_create_user_command('Bclean', function()

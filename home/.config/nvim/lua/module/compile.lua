@@ -4,12 +4,13 @@
 
 local function compile(tbl)
 	local cmd = tbl.args
-	--vim.cmd('sp | wincmd p | te! ' .. cmd)
 	vim.cmd('bo te! ' .. cmd)
 end
 
-vim.api.nvim_create_user_command(
-	'Compile',
-	compile,
-	{ nargs = '+', complete = 'shellcmdline' }
-)
+for _, command in pairs({ 'C', 'Compile' }) do
+	vim.api.nvim_create_user_command(
+		command,
+		compile,
+		{ nargs = '+', complete = 'shellcmdline' }
+	)
+end
