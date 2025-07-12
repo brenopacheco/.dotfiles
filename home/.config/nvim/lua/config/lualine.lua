@@ -40,21 +40,20 @@ local filename = {
 	fmt = function(name) return name .. ' ' end,
 }
 
+local lualine_git = require('lualine.components.branch.git_branch')
+local string_utils = require('utils.strings')
+
 local directory = {
 	function()
-		local len = 60
-		local path = tostring(vim.fn.getcwd())
-		local match
-		local tpath = tostring(path)
-		while true do
-			if string.len(tpath) <= len or string.find(tpath, '^/?[^/]+$') then
-				break
-			end
-			tpath, match = string.gsub(tpath, '^/[^/]+', '')
-			if match == 0 then break end
-		end
-		if string.len(path) > string.len(tpath) then return '…' .. tpath end
-		return tpath
+		local win_width = vim.go.columns or vim.fn.winwidth(0)
+		local branch_width = string.len(lualine_git.get_branch(vim.fn.bufnr()))
+		local filename_width = string.len(vim.fn.bufname())
+		local offset_width = 90
+		local available_width = win_width
+			- branch_width
+			- filename_width
+			- offset_width
+		return string_utils.truncate_path(vim.fn.getcwd(), available_width)
 	end,
 }
 

@@ -7,7 +7,7 @@
 local count = 0
 local log_level = vim.log.levels.INFO
 
-_G.log = vim.schedule_wrap(function(...)
+local format = function(...)
 	local args = { ... }
 	count = count + 1
 	local ts = vim.fn.strftime('%T')
@@ -16,9 +16,16 @@ _G.log = vim.schedule_wrap(function(...)
 		table.insert(texts, vim.inspect(v))
 	end
 	local text = table.concat(texts, ', ')
-	local display = tostring(ts .. ' #' .. count .. ': ' .. text)
-	vim.notify(display, vim.log.levels.INFO)
+	return tostring(ts .. ' #' .. count .. ': ' .. text)
+end
+
+_G.log = vim.schedule_wrap(function(...)
+	vim.notify(format(...), vim.log.levels.INFO)
 end)
+
+_G.warn = function(...)
+	vim.notify(format(...), vim.log.levels.WARN)
+end
 
 _G.get_log_level = function() return log_level end
 

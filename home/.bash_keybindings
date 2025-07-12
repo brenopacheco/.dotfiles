@@ -1,5 +1,4 @@
 bind -x '"": "clear"'             # C-l    :: clear screen
-bind '"": "fzf-hist"'           # ctrl-r :: show history
 
 bind '"\C-p": previous-history'
 bind '"\C-n": next-history'

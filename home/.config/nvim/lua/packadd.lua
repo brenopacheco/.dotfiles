@@ -89,13 +89,18 @@ local function modload(mods)
 	end
 end
 
----@param name string
+---@param name string package name
 local function enabled(name)
 	if packages[name] then return true end
 	for _, plugin in pairs(packages) do
 		if plugin.alias == name then return true end
 	end
 	return false
+end
+
+---@param name string module name
+local function mloaded(name)
+	return modules[name] == true
 end
 
 local function list()
@@ -133,6 +138,7 @@ vim.opt.packpath = { vim.fn.stdpath('data') }
 vim.z.enabled = enabled
 vim.z.packadd = packadd
 vim.z.modload = modload
+vim.z.mloaded = mloaded
 
 vim.api.nvim_create_user_command('Packupdate', update, { nargs = 0 })
 vim.api.nvim_create_user_command('Packlist', list, { nargs = 0 })

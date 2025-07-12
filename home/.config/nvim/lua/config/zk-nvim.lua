@@ -1,5 +1,12 @@
 local capabilities = require('utils.lsp').capabilities
 
+-- TODO:
+-- local zk_keywordprg = function(tbl)
+-- 	log(tbl)
+-- end
+
+-- vim.api.nvim_create_user_command('ZkHelp', zk_keywordprg, { nargs = '+', range = 2 })
+
 require('zk').setup({
 	picker = 'telescope', -- or "select"
 	highlight = {
@@ -15,6 +22,7 @@ require('zk').setup({
 					'<cmd>ZkInsertLink<cr>',
 					{ buffer = bufnr }
 				)
+				-- vim.opt.keywordprg = ':ZkHelp'
 			end,
 		},
 	},
