@@ -3,7 +3,7 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-compiler gcc-run
+compiler cc-run
 setlocal equalprg=
 setlocal shiftwidth=2
 setlocal tabstop=2

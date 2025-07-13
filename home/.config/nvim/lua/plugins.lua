@@ -67,7 +67,6 @@ vim.z.modload({
 	'macro-recording-unmap',
 	'pdf',
 	'reloader',
-	-- 'shada',
 	'sniputil',
 	'telescope-select',
 	'trim',

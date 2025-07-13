@@ -1,17 +1,23 @@
 if exists('current_compiler')
   finish
 endif
-let current_compiler = 'gcc-run'
+let current_compiler = 'cc-run'
 
 let s:save_cpo = &cpo
 set cpo-=C
 
-if !filereadable('/tmp/gcc-run')
+if !filereadable('/tmp/cc-run')
   call writefile([
-	  \ "echo 'compile... ' $1",
-      \ "gcc $1 && ./a.out && rm a.out"
-	  \ ], '/tmp/gcc-run')
-  call system("chmod +x /tmp/gcc-run")
+	  \ "#!/usr/bin/env sh",
+	  \ "OUT=$(mktemp) || exit 1",
+      \ "CMD=\"cc $1 -o $OUT\"",
+	  \ "if eval \"$CMD\"; then",
+	  \ "    chmod +x \"$OUT\"",
+	  \ "    \"$OUT\"",
+	  \ "fi",
+	  \ "rm \"$OUT\""
+	  \ ], '/tmp/cc-run')
+  call system("chmod +x /tmp/cc-run")
 endif
 
 CompilerSet errorformat=
@@ -35,7 +41,7 @@ CompilerSet errorformat=
       \%X%*\\a:\ Leaving\ directory\ %*[`']%f',
       \%DMaking\ %*\\a\ in\ %f
 
-CompilerSet makeprg=/tmp/gcc-run
+CompilerSet makeprg=/tmp/cc-run
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

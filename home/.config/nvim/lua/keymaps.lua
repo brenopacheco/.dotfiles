@@ -24,8 +24,6 @@ local keyboard = {
       { { 'n', 'x' }, 'ga',             maps.run_align,          { desc = ' align'                } },
       { { 'n', 'x' }, 'gx',             maps.run_gx,             { desc = ' browse',              } },
       { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
-			--{ { 'n',     }, 'gb',             maps.bufferize,          { desc = ' bufferize'            } },
-			--{ { 'n',     }, 'gc',             maps.compile,          { desc = ' compile'            } },
       { { 'n',     }, 'g?',             maps.help('g'),          { desc = ' which-key'            } },
       { { 'n', 'x' }, 'g]',             maps.run_star_git,       { desc = ' star git',            } },
       { { 'n',     }, '<leader>t',      maps.run_term,           { desc = ' run-term'             } },
@@ -40,6 +38,8 @@ local keyboard = {
       { { 'n', 'x' }, '<leader>i',      maps.run_neogen,         { desc = ' neogen',              } },
       { { 'n', 'x' }, '<leader>=',      maps.run_format,         { desc = ' format'               } },
       { { 'n', 'x' }, '<leader>/',      maps.run_grep,           { desc = ' grep',                } },
+      { { 'n', 'x' }, '<leader>]',      maps.compile,            { desc = ' compile',             } },
+      { { 'n'      }, '<leader>[',      maps.recompile,          { desc = ' recompile',           } },
       { { 'n',     }, '<leader>?',      maps.help('<leader>'),   { desc = ' which-key'            } },
     }, -- ]]
     debug = { -- [[
@@ -149,9 +149,9 @@ local keyboard = {
       { {      'x' }, '=',           maps.run_format,                        },
       { { 's',     }, '<bs>',       '<bs>i'                                  },
       { { 'x',     }, '*',          [["zy/\V<C-r>=escape(@z, '\/')<cr><cr>]] },
-      --{ { 'n',     }, '\\',         ':sp | wincmd p | te! <c-f>i' },
-      --{ { 'n',     }, '\\',         ':Compile <c-f>i' },
-      { { 'n',     }, '\\',         ':Compile ' },
+    }, -- ]]
+    cmdline = { -- [[
+      -- TODO: ~/notes/nthmn3k7-linux-terminal-keybindings.md
     } -- ]]
   },
   abbreviations = { -- [[

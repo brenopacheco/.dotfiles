@@ -172,7 +172,6 @@ end
 M.run_grep = function() greputils.grep_pattern(nil) end
 M.run_gx = function() vim.cmd('Browse') end
 
-
 M.run_make = function()
 	return bufutil.is_file() and vim.cmd([[make %]])
 		or vim.notify('not implemented', vim.log.levels.WARN)
@@ -303,6 +302,30 @@ M.keywordprg = function()
 	vim.notify(vim.o.keywordprg .. ' not found', vim.log.levels.WARN)
 end
 
+-- vim.o.keywordprg
+-- vim.o.keywordpr
+-- vim.o.keywordp
+-- ...
+M.keywordprg_alt = function()
+	if not vim.o.keywordprg then
+		return vim.notify('info: keywordprg not set', vim.log.levels.WARN)
+	end
+	local search = bufutil.is_visual()
+			and table.concat(bufutil.get_visual().text, '')
+		or tostring(vim.fn.expand('<cWORD>'))
+	local cexprs = {}
+	for i = #search, 2, -1 do
+		table.insert(cexprs, search:sub(1, i))
+	end
+	for _, pattern in ipairs(cexprs) do
+		log(pattern)
+		local status =
+			pcall(vim.api.nvim_exec2, vim.o.keywordprg .. ' ' .. pattern, {})
+		if status then return vim.notify('keywordprg ' .. pattern) end
+	end
+	vim.notify(vim.o.keywordprg .. ' not found', vim.log.levels.WARN)
+end
+
 M.help = function(key)
 	return function()
 		vim.cmd('WhichKey ' .. key)
@@ -316,9 +339,15 @@ end
 
 M.clear_buffers = bufutil.clear_buffers
 
-M.terminal_input = function()
-	log("hey!")
-	vim.cmd('normal! :terminal! ')
+M.compile = function()
+	local args = bufutil.is_visual()
+			and table.concat(bufutil.get_visual().text, '')
+		or ''
+	local cmd =
+		vim.api.nvim_replace_termcodes(':Compile ' .. args, true, true, true)
+	vim.api.nvim_feedkeys(cmd, 'n', true)
 end
+
+M.recompile = function() vim.cmd('Recompile') end
 
 return M

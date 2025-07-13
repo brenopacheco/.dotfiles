@@ -1,5 +1,5 @@
-bind -x '"": "clear"'             # C-l    :: clear screen
-
+#bind -x '"": "clear"'             # C-l    :: clear screen
+bind '"\C-l": clear-screen'
 bind '"\C-p": previous-history'
 bind '"\C-n": next-history'
 
