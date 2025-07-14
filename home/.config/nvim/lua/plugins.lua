@@ -52,6 +52,7 @@ vim.z.packadd({
 	{ 'monkoose/matchparen.nvim',                      as = 'matchparen'             },
 	{ 'brenopacheco/gitlinker.nvim',                   as = 'gitlinker'              }, -- removes default keybinding TODO: write own
 	{ 'brenopacheco/vim-floaterm'                                                    }, -- fixes Vim:E444 on-close last window TODO: write own
+  { 'KabbAmine/zeavim.vim'},
 })
 -- stylua: ignore end
 
@@ -72,4 +73,5 @@ vim.z.modload({
 	'trim',
 	'yank-highlight',
 	'compile',
+	'keywordprg'
 })

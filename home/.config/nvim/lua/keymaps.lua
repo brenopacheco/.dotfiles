@@ -21,6 +21,7 @@ local keyboard = {
       { { 'n',     }, 'gr',             maps.goto_references,    { desc = ' references'           } },
       { { 'n',     }, 'gi',             maps.goto_implementation,{ desc = ' implementation'       } },
       { { 'n',     }, 'gy',             maps.goto_typedef,       { desc = ' typedef'              } },
+      { { 'n',     }, 'gO',             maps.qf_buf_symbols,     { desc = ' buf-symbols'          } },
       { { 'n', 'x' }, 'ga',             maps.run_align,          { desc = ' align'                } },
       { { 'n', 'x' }, 'gx',             maps.run_gx,             { desc = ' browse',              } },
       { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
@@ -71,7 +72,8 @@ local keyboard = {
       { { 'n',     }, '<leader>fm',     maps.find_make,          { desc = ' makefile'             } },
       { { 'n',     }, '<leader>ff',     maps.find_pfiles,        { desc = ' project-files'        } },
       { { 'n',     }, '<leader>fr',     maps.find_roots,         { desc = ' roots'                } },
-      { { 'n',     }, '<leader>f.',     maps.find_curdir,        { desc = ' curdir'               } },
+      { { 'n',     }, '<leader>f.',     maps.find_curdir,        { desc = ' curdir-files'         } },
+      { { 'n',     }, '<leader>fd',     maps.find_directory,     { desc = ' directory'            } },
       { { 'n',     }, '<leader>f/',     maps.find_grep,          { desc = ' grep'                 } },
       { { 'n',     }, '<leader>fz',     maps.find_zk,            { desc = ' zk-notes'             } },
       { { 'n',     }, '<leader>f`',     maps.find_mark,          { desc = ' marks'                } },
@@ -171,7 +173,7 @@ local keyboard = {
       { { 'n',     }, 'grr' },
       { { 'n',     }, 'gri' },
       { { 'i',     }, '<c-s>' },
-      { { 'n',     }, 'gO' }
+      --{ { 'n',     }, 'gO' }
 	} -- ]]
 }
 

@@ -75,7 +75,7 @@ pacman(
     'zathura',                'zathura-pdf-mupdf',
     'zip',                    'zk',
     'cpanminus',              'perl-local-lib',
-    'man-pages'
+    'man-pages',
 );
 
 dirs(

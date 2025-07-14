@@ -191,7 +191,7 @@ M.get_cexprs = function(opts)
 	opts = opts or {}
 	local reverse = opts.reverse or false
 	local line = vim.fn.getline('.')
-	local cword = vim.fn.expand('<cword>'):gsub('[^%w%.%_%-]', '')
+	local cword = vim.fn.expand('<cexpr>'):gsub('[^%w%.%_%-]', '')
 	local pat = '[%w%.%_%-%>]*' .. cword
 	local cexpr = line:match(pat)
 	if not cexpr then return { cword } end

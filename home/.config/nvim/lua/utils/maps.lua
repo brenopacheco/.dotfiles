@@ -17,6 +17,19 @@ M.find_curdir = function()
 		hidden = true,
 	})
 end
+M.find_directory = function()
+	-- TODO: this is not quite good
+	require('telescope.builtin').find_files({
+		cwd = vim.fn.getcwd(),
+		-- find_command = {'fd', '.', '-t', 'd', '--base-directory', vim.env.HOME },
+		find_command = { 'fd', '.', '-t', 'd' },
+		search_dirs = {
+			vim.env.HOME,
+			vim.env.HOME .. '/.config',
+			vim.env.HOME .. '/.local',
+		},
+	})
+end
 M.find_rfiles = function()
 	local root = rootutil.git_root()
 	vim.notify("info: searching '" .. root .. "'", vim.log.levels.INFO)
@@ -109,6 +122,7 @@ end
 M.goto_typedef = function()
 	vim.lsp.buf.type_definition({ on_list = lsputil.on_list })
 end
+M.qf_buf_symbols = function() vim.lsp.buf.document_symbol({ loclist = false }) end
 
 M.jump_argnext = function() return vim.cmd('next') end
 M.jump_argprev = function() return vim.cmd('prev') end
