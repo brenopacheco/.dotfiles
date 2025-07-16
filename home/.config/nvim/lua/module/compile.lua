@@ -7,6 +7,8 @@
 --
 assert(vim.z.mloaded('log'), 'log module is not loaded')
 
+local FOCUS_COMPILATION = true
+
 local history = {}
 
 local MAX_CWD_LEN = 20
@@ -42,6 +44,17 @@ local function remove_history_duplicates()
 	end
 end
 
+local function itemize(max_len)
+	return function(idx, item)
+		return string.format(
+			'%-4s %-' .. tostring(max_len + item.offset) .. 's $ %s',
+			'[#' .. idx .. ']',
+			item.short,
+			item.cmd
+		)
+	end
+end
+
 local function compile(cmd, cwd)
 	if vim.fn.isdirectory(cwd) ~= 1 then
 		return warn('Invalid directory: ' .. cwd)
@@ -66,8 +79,12 @@ local function compile(cmd, cwd)
 		short = short,
 		offset = offset,
 	})
-	vim.cmd('wincmd p')
+	if not FOCUS_COMPILATION then
+		vim.cmd('wincmd p')
+	else
+	end
 	remove_history_duplicates()
+	vim.notify("Compile " .. cmd)
 end
 
 local function recompile_cmd(tbl)
@@ -79,17 +96,6 @@ local function recompile_cmd(tbl)
 	local item = history[tonumber(index)]
 	if not item then return warn('Invalid recompile argument') end
 	compile(cmd or item.cmd, item.cwd)
-end
-
-local function itemize(max_len)
-	return function(idx, item)
-		return string.format(
-			'%-4s %-' .. tostring(max_len + item.offset) .. 's $ %s',
-			'[#' .. idx .. ']',
-			item.short,
-			item.cmd
-		)
-	end
 end
 
 local function recompile_complete_nr(A, L)
