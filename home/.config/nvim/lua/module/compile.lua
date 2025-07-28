@@ -7,6 +7,8 @@
 --
 assert(vim.z.mloaded('log'), 'log module is not loaded')
 
+local M = {}
+
 local FOCUS_COMPILATION = true
 
 local history = {}
@@ -55,17 +57,24 @@ local function itemize(max_len)
 	end
 end
 
-local function compile(cmd, cwd)
+local function change_dir(dir)
+	vim.cmd([[silent! lcd ]] .. dir)
+	vim.cmd([[silent! cd  ]] .. dir)
+	vim.cmd([[silent! tc  ]] .. dir)
+end
+
+M.compile = function(cmd, cwd)
 	if vim.fn.isdirectory(cwd) ~= 1 then
 		return warn('Invalid directory: ' .. cwd)
 	end
 	local win_id = find_compile_window()
 	if win_id ~= nil then
 		vim.api.nvim_set_current_win(win_id)
-		vim.cmd('te! ' .. cmd)
+		change_dir(cwd)
+		vim.cmd('silent! te! ' .. cmd)
 	else
-		vim.cmd('cd! ' .. cwd)
-		vim.cmd('bo te! ' .. cmd)
+		change_dir(cwd)
+		vim.cmd('silent! bo te! ' .. cmd)
 	end
 	local bufnr = vim.fn.bufnr()
 	vim.api.nvim_buf_set_var(bufnr, 'compile', cmd)
@@ -79,12 +88,13 @@ local function compile(cmd, cwd)
 		short = short,
 		offset = offset,
 	})
+	remove_history_duplicates()
+	vim.notify('Compile ' .. cmd)
 	if not FOCUS_COMPILATION then
 		vim.cmd('wincmd p')
 	else
+		-- vim.cmd('norm i')
 	end
-	remove_history_duplicates()
-	vim.notify("Compile " .. cmd)
 end
 
 local function recompile_cmd(tbl)
@@ -95,7 +105,7 @@ local function recompile_cmd(tbl)
 	if #tbl.fargs == 0 then index = #history end
 	local item = history[tonumber(index)]
 	if not item then return warn('Invalid recompile argument') end
-	compile(cmd or item.cmd, item.cwd)
+	M.compile(cmd or item.cmd, item.cwd)
 end
 
 local function recompile_complete_nr(A, L)
@@ -124,7 +134,7 @@ end
 for _, command in pairs({ 'C', 'Compile' }) do
 	vim.api.nvim_create_user_command(
 		command,
-		function(tbl) compile(tbl.args, vim.fn.getcwd()) end,
+		function(tbl) M.compile(tbl.args, vim.fn.getcwd()) end,
 		{ nargs = '+', complete = 'shellcmdline' }
 	)
 end
@@ -136,3 +146,5 @@ for _, command in pairs({ 'R', 'Recompile' }) do
 		{ nargs = '?', complete = recompile_complete_nr }
 	)
 end
+
+return M

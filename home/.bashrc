@@ -78,5 +78,5 @@ export NODE_OPTIONS="--max-old-space-size=12288"
 
 # perl
 export PERL5LIB="$HOME/.perl5/custom"  # for stowed modules
-export PERL_CPANM_OPT="--local-lib=$HOME/.perl5 --self-contained"
+export PERL_CPANM_OPT="--local-lib=$HOME/.perl5"
 eval "$(perl -I "$HOME"/.perl5/lib/perl5/ -Mlocal::lib="$HOME/.perl5")"
