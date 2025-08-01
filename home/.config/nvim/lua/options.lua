@@ -47,7 +47,7 @@ vim.opt.grepprg        = table.concat({
   '$*'
 }, ' ')
 vim.opt.hidden         = true                          -- hide files don't prompt for save
-vim.opt.history        = 500                           -- keep more history in q:
+vim.opt.history        = 10000                         -- keep more history in q:
 vim.opt.hlsearch       = true                          -- keep search highlighted
 vim.opt.ignorecase     = true                          -- ignore case when searching
 vim.opt.inccommand     = 'nosplit'                     -- preview subsittution as you type

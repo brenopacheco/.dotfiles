@@ -9,8 +9,6 @@ assert(vim.z.mloaded('log'), 'log module is not loaded')
 
 local M = {}
 
-local FOCUS_COMPILATION = true
-
 local history = {}
 
 local MAX_CWD_LEN = 20
@@ -63,7 +61,7 @@ local function change_dir(dir)
 	vim.cmd([[silent! tc  ]] .. dir)
 end
 
-M.compile = function(cmd, cwd)
+M.compile = function(cmd, cwd, focus)
 	if vim.fn.isdirectory(cwd) ~= 1 then
 		return warn('Invalid directory: ' .. cwd)
 	end
@@ -90,7 +88,7 @@ M.compile = function(cmd, cwd)
 	})
 	remove_history_duplicates()
 	vim.notify('Compile ' .. cmd)
-	if not FOCUS_COMPILATION then
+	if not focus then
 		vim.cmd('wincmd p')
 	else
 		-- vim.cmd('norm i')
@@ -105,7 +103,7 @@ local function recompile_cmd(tbl)
 	if #tbl.fargs == 0 then index = #history end
 	local item = history[tonumber(index)]
 	if not item then return warn('Invalid recompile argument') end
-	M.compile(cmd or item.cmd, item.cwd)
+	M.compile(cmd or item.cmd, item.cwd, false)
 end
 
 local function recompile_complete_nr(A, L)
@@ -134,7 +132,7 @@ end
 for _, command in pairs({ 'C', 'Compile' }) do
 	vim.api.nvim_create_user_command(
 		command,
-		function(tbl) M.compile(tbl.args, vim.fn.getcwd()) end,
+		function(tbl) M.compile(tbl.args, vim.fn.getcwd(), true) end,
 		{ nargs = '+', complete = 'shellcmdline' }
 	)
 end

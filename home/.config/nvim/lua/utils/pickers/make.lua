@@ -38,7 +38,7 @@ return function()
 	}, function(choice)
 		if choice ~= nil then
 			if vim.z.mloaded('compile') then
-				require('module.compile').compile(choice.cmd, choice.dir)
+				require('module.compile').compile(choice.cmd, choice.dir, true)
 			else
 				vim.cmd('bo te! cd ' .. choice.dir .. '; ' .. choice.cmd)
 			end
