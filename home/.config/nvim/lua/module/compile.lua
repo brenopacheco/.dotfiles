@@ -3,7 +3,7 @@
 -- Provides :C/Compile <cmd>  - works like M-x compile
 --          :R/Recompile[!]
 --
--- TODO: refactor this
+-- Bang focus on the compilation window
 --
 assert(vim.z.mloaded('log'), 'log module is not loaded')
 
@@ -103,7 +103,7 @@ local function recompile_cmd(tbl)
 	if #tbl.fargs == 0 then index = #history end
 	local item = history[tonumber(index)]
 	if not item then return warn('Invalid recompile argument') end
-	M.compile(cmd or item.cmd, item.cwd, false)
+	M.compile(cmd or item.cmd, item.cwd, tbl.bang)
 end
 
 local function recompile_complete_nr(A, L)
@@ -132,8 +132,8 @@ end
 for _, command in pairs({ 'C', 'Compile' }) do
 	vim.api.nvim_create_user_command(
 		command,
-		function(tbl) M.compile(tbl.args, vim.fn.getcwd(), true) end,
-		{ nargs = '+', complete = 'shellcmdline' }
+		function(tbl) M.compile(tbl.args, vim.fn.getcwd(), tbl.bang) end,
+		{ bang = true, nargs = '+', complete = 'shellcmdline' }
 	)
 end
 
@@ -141,7 +141,7 @@ for _, command in pairs({ 'R', 'Recompile' }) do
 	vim.api.nvim_create_user_command(
 		command,
 		recompile_cmd,
-		{ nargs = '?', complete = recompile_complete_nr }
+		{ bang = true, nargs = '?', complete = recompile_complete_nr }
 	)
 end
 

@@ -358,7 +358,7 @@ M.compile = function()
 			and table.concat(bufutil.get_visual().text, '')
 		or ''
 	local cmd =
-		vim.api.nvim_replace_termcodes(':Compile ' .. args, true, true, true)
+		vim.api.nvim_replace_termcodes(':Compile! ' .. args, true, true, true)
 	vim.api.nvim_feedkeys(cmd, 'n', true)
 end
 

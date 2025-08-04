@@ -33,6 +33,7 @@ vim.z.packadd({
 	{ 'hrsh7th/cmp-path'                                                             },
 	{ 'hrsh7th/nvim-cmp'                                                             },
 	{ 'windwp/nvim-autopairs'                                                        },
+	-- { 'Saghen/blink.cmp',                              as = 'blink'                  },
 	{ 'b0o/schemastore.nvim',                          as = 'schemastore'            },
 	{ 'folke/neodev.nvim',                             as = 'neodev'                 }, -- TODO:replace with 'folke/lazydev.nvim' and make vim global (slow loading)
 	{ 'neovim/nvim-lspconfig'                                                        },

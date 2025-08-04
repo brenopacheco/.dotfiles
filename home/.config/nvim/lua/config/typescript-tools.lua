@@ -1,5 +1,5 @@
-local api = require("typescript-tools.api")
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local api = require('typescript-tools.api')
+local capabilities = require('utils.lsp').capabilities()
 
 require('typescript-tools').setup({
 	capabilities = capabilities,

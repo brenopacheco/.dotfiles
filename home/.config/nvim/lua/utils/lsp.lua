@@ -60,7 +60,11 @@ end
 -- *lsp-on-list-handler*
 ---@param opts {items: table[], title: string, context: table|nil}
 M.on_list = function(opts)
-	local ignore = { 'styled%-components/index%.d%.ts', 'buildHooks%.d%.ts', 'react/ts5%.0/index%.d%.ts' }
+	local ignore = {
+		'styled%-components/index%.d%.ts',
+		'buildHooks%.d%.ts',
+		'react/ts5%.0/index%.d%.ts',
+	}
 	local seen = {}
 	local result = {}
 	local function should_ignore(key)
@@ -91,7 +95,7 @@ M.on_list = function(opts)
 		vim.lsp.util.show_document(
 			result[1].user_data,
 			vim.o.fileencoding,
-			{reuse_win = false, focus = true}
+			{ reuse_win = false, focus = true }
 		)
 		vim.notify('This is the only result')
 	end
@@ -106,26 +110,28 @@ M.wrap = function(fn, ...)
 	return fn(unpack(args))
 end
 
-M.capabilities = vim.tbl_deep_extend(
-	'force',
-	vim.lsp.protocol.make_client_capabilities(),
-	vim.z.enabled('cmp-nvim-lsp')
-			and require('cmp_nvim_lsp').default_capabilities()
-		or {},
-	{
-		textDocument = {
-			completion = {
-				completionItem = {
-					snippetSupport = false,
+M.capabilities = function()
+	return vim.tbl_deep_extend(
+		'force',
+		vim.lsp.protocol.make_client_capabilities(),
+		vim.z.enabled('cmp-nvim-lsp')
+				and require('cmp_nvim_lsp').default_capabilities()
+			or {},
+		{
+			textDocument = {
+				completion = {
+					completionItem = {
+						snippetSupport = false,
+					},
 				},
 			},
-		},
-		workspace = {
-			didChangeWatchedFiles = {
-				dynamicRegistration = false,
+			workspace = {
+				didChangeWatchedFiles = {
+					dynamicRegistration = false,
+				},
 			},
-		},
-	}
-)
+		}
+	)
+end
 
 return M

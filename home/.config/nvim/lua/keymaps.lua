@@ -234,17 +234,18 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'FileType' }, {
 		end
 	end,
 })
-
 -- ]]
 
---[[ *:map-arguments*
-buffer: current buffer only                                   (default false)
-remap:  recursive mapping                                     (default false)
-nowait: don't wait for other mappings, immediatly evaluate    (default false)
-silent: don't echo the command                                (default false)
-script: use {rhs} mappings defined in the script - <SID>      (default false)
-expr:   evaluate {rhs} as an expression                       (default false)
-unique: don't remap if already mapped                         (default false)
-desc:   human-readable description                            (default '')
-vim:tw=103:cc=103:fdm=marker:fmr=[[,]]
+--[[ 
+*:map-arguments*
+  buffer: current buffer only                                   (default false)
+  remap:  recursive mapping                                     (default false)
+  nowait: don't wait for other mappings, immediatly evaluate    (default false)
+  silent: don't echo the command                                (default false)
+  script: use {rhs} mappings defined in the script - <SID>      (default false)
+  expr:   evaluate {rhs} as an expression                       (default false)
+  unique: don't remap if already mapped                         (default false)
+  desc:   human-readable description                            (default '')
 --]]
+
+-- vim:tw=103:cc=103:fdm=marker:fmr=[[,]]

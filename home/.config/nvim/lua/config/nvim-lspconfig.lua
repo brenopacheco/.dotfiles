@@ -25,7 +25,7 @@ vim.diagnostic.config({
 	severity_sort = true,
 })
 
-local capabilities = lsputil.capabilities
+local capabilities = lsputil.capabilities()
 
 lsp.biome.setup({ capabilities = capabilities })
 lsp.bashls.setup({ capabilities = capabilities })
