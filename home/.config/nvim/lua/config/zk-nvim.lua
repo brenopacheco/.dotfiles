@@ -1,4 +1,4 @@
-local capabilities = require('utils.lsp').capabilities
+local capabilities = require('utils.lsp').capabilities()
 
 -- TODO:
 -- local zk_keywordprg = function(tbl)

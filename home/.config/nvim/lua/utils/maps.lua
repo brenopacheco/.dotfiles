@@ -364,4 +364,14 @@ end
 
 M.recompile = function() vim.cmd('Recompile') end
 
+M.file_url = function()
+	if vim.fn.mode() == 'n' then
+		vim.cmd('Url')
+	else
+		vim.cmd('Url!')
+		local cmd = vim.api.nvim_replace_termcodes('<esc>', true, true, true)
+		vim.api.nvim_feedkeys(cmd, 'v', true)
+	end
+end
+
 return M

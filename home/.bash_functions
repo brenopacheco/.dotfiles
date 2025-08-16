@@ -85,7 +85,7 @@ function git-checkout() {
 	if [ $# -ne 0 ]; then
 		git checkout "$@"
 	else
-		branch=$(git branch -vva | grep remotes | awk '{print $1}' | sed 's/^remotes\/origin\///' | fzf --no-multi --header="Branch:")
+		branch=$(git branch -vva | awk '{print $1}' | sed 's/^remotes\/origin\///' | sort -u | fzf --no-multi --header="Branch:")
 		if [ -n "$branch" ]; then
 			if git show-ref --verify --quiet refs/heads/"$branch"; then
 				# Check if the branch exists locally

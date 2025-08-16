@@ -8,6 +8,8 @@ APPS=(
 	'blueman-manager.desktop'
 	'chromium.desktop'
 	'com.github.xournalpp.xournalpp.desktop'
+	'com.stremio.stremio.desktop'
+	'cursor-cursor.desktop'
 	'discord.desktop'
 	'firefox.desktop'
 	'gparted.desktop'

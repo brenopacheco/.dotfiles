@@ -27,6 +27,7 @@ local keyboard = {
       { { 'n',     }, 'gm',             maps.messages,           { desc = ' messages'             } },
       { { 'n',     }, 'g?',             maps.help('g'),          { desc = ' which-key'            } },
       { { 'n', 'x' }, 'g]',             maps.run_star_git,       { desc = ' star git',            } },
+      { { 'n', 'x' }, 'gp',             maps.file_url,           { desc = ' file-url'             } },
       { { 'n',     }, '<leader>t',      maps.run_term,           { desc = ' run-term'             } },
       { { 'n',     }, '<leader>e',      maps.errors_buffer,      { desc = ' errors-buf'           } },
       { { 'n',     }, '<leader>c',      maps.clear_marks,        { desc = ' clear-marks'          } },

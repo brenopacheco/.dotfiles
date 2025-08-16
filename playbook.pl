@@ -1,13 +1,19 @@
 #!/usr/bin/env perl
 
 # TODO:
-#   0. perl packages (e.g: cpanm JSON::XS)
+#   0. ~perl packages (e.g: cpanm JSON::XS)~
 #   1. gpg --export-ssh-key brenoleonhardt@gmail.com > ~/.ssh/blp.pub && chmod 0600 ~/.ssh/blp.pub
 #   2. add user crontab
 #       0 */4 * * *  $HOME/bin/cron/sync-books
 #       */10 * * * * $HOME/bin/cron/sync-duckdns
 #   3. files in etc should have a placeholder for USER and replace
 #   4. why does udev rule runs twice? see journalctl -n 100 -t keyboard
+#   5. add ./makepkg/aur/
+#        cursor-bin
+#        ngrok
+#        obs-backgroundremoval
+#        stremio
+#        zoom
 
 # Playbook =============================================================== {{{
 configure(
