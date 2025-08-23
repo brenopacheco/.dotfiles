@@ -42,6 +42,7 @@ local keyboard = {
       { { 'n', 'x' }, '<leader>/',      maps.run_grep,           { desc = ' grep',                } },
       { { 'n', 'x' }, '<leader>]',      maps.compile,            { desc = ' compile',             } },
       { { 'n'      }, '<leader>[',      maps.recompile,          { desc = ' recompile',           } },
+      { { 'n',     }, '<leader>\\',     maps.npm_test_file,      { desc = ' npm-test-file'        } },
       { { 'n',     }, '<leader>?',      maps.help('<leader>'),   { desc = ' which-key'            } },
     }, -- ]]
     debug = { -- [[

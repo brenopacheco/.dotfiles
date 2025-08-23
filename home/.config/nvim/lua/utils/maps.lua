@@ -374,4 +374,20 @@ M.file_url = function()
 	end
 end
 
+-- Only for npm now
+M.npm_test_file = function()
+	local fts = {
+		javascript = true,
+		javascriptreact = true,
+		typescript = true,
+		typescriptreact = true,
+	}
+	if fts[vim.bo.filetype] == nil then
+		return vim.notify('Not a js/ts file', vim.log.levels.WARN)
+	end
+	local dir = vim.fn.getcwd()
+	local cmd = 'npm run test -- ' .. vim.fn.expand('%:p')
+	require('module.compile').compile(cmd, dir, true)
+end
+
 return M
