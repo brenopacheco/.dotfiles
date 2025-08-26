@@ -61,6 +61,40 @@ local function change_dir(dir)
 	vim.cmd([[silent! tc  ]] .. dir)
 end
 
+local function get_max_len()
+	return vim
+		.iter(history)
+		:map(function(item) return string.len(item.short) - item.offset end)
+		:fold(0, math.max)
+end
+
+M.open_compile = function()
+	local items = vim
+		.iter(history)
+		:enumerate()
+		:filter(function(_, item) return vim.fn.bufexists(item.bufnr) == 1 end)
+		:map(function(idx, item)
+			item['idx'] = idx
+			return item
+		end)
+		:rev()
+		:totable()
+	if #items == 0 then return warn('No compile buffer available') end
+	local max_len = get_max_len()
+	vim.ui.select(items, {
+		prompt = 'Run:',
+		format_item = function(item) return itemize(max_len)(item.idx, item) end,
+	}, function(item)
+		local win_id = find_compile_window()
+		if win_id ~= nil then
+			vim.api.nvim_set_current_win(win_id)
+			vim.cmd('silent! b ' .. item.bufnr)
+		else
+			vim.cmd('silent! bo split | b ' .. item.bufnr)
+		end
+	end)
+end
+
 M.compile = function(cmd, cwd, focus)
 	if vim.fn.isdirectory(cwd) ~= 1 then
 		return warn('Invalid directory: ' .. cwd)
@@ -88,11 +122,7 @@ M.compile = function(cmd, cwd, focus)
 	})
 	remove_history_duplicates()
 	vim.notify('Compile ' .. cmd)
-	if not focus then
-		vim.cmd('wincmd p')
-	else
-		-- vim.cmd('norm i')
-	end
+	if not focus then vim.cmd('wincmd p') end
 end
 
 local function recompile_cmd(tbl)
@@ -107,10 +137,7 @@ local function recompile_cmd(tbl)
 end
 
 local function recompile_complete_nr(A, L)
-	local max_len = vim
-		.iter(history)
-		:map(function(item) return string.len(item.short) - item.offset end)
-		:fold(0, math.max)
+	local max_len = get_max_len()
 	local start = string.find(L, '%S%s') + 2
 	local search = string.sub(L, start):gsub('^%s+', '')
 	local completions = vim

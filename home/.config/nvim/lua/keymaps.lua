@@ -15,7 +15,6 @@ local keyboard = {
   mappings = {
     action = { -- [[
       { { 'n',     }, '<c-n>',          maps.find_mark,          { desc = ' marks'                } },
-      { { 'n',     }, '<c-p>',          maps.switch_project,     { desc = ' switch project'       } },
       { { 'n',     }, '<c-]>',          maps.goto_definition,    { desc = ' definition'           } },
       { { 'n',     }, '<c-k>',          maps.show_hover,         { desc = ' hover'                } },
       { { 'n',     }, 'gr',             maps.goto_references,    { desc = ' references'           } },
@@ -42,6 +41,7 @@ local keyboard = {
       { { 'n', 'x' }, '<leader>/',      maps.run_grep,           { desc = ' grep',                } },
       { { 'n', 'x' }, '<leader>]',      maps.compile,            { desc = ' compile',             } },
       { { 'n'      }, '<leader>[',      maps.recompile,          { desc = ' recompile',           } },
+      { { 'n',     }, '<c-p>',          maps.open_compile,       { desc = ' open compile'         } },
       { { 'n',     }, '<leader>\\',     maps.npm_test_file,      { desc = ' npm-test-file'        } },
       { { 'n',     }, '<leader>?',      maps.help('<leader>'),   { desc = ' which-key'            } },
     }, -- ]]

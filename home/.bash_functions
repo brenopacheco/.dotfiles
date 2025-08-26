@@ -6,7 +6,7 @@ function cd() {
 # lf : run lf cding to last dir & reseting marks {{{
 function lf() {
 	tmp="$(mktemp)"
-	$(which lf) -last-dir-path="$tmp"
+	$(/bin/which lf) -last-dir-path="$tmp"
 	dir="$(cat "$tmp")"
 	[[ -d "$dir" && "$dir" != "$(pwd)" ]] && cd "$dir" || return
 }
@@ -52,6 +52,16 @@ function git-prune-branches() {
 	git fetch -p
 	echo "running pruning of local branches"
 	git branch -vv | grep ': gone]' | grep -v "\*" | awk '{ print $1; }' | xargs -i bash -c 'git branch -D {}'
+}
+# }}}
+# git-log-dated: git log with timestamps {{{
+function git-log-dated() {
+	git log --pretty=format:"%ct | %H | %s | %D" | while read line; do
+		timestamp=$(echo $line | cut -d'|' -f1)
+		rest=$(echo $line | cut -d'|' -f2-)
+		normalized_date=$(date -u -d "@$timestamp" "+%Y-%m-%d %H:%M:%S UTC")
+		echo "$normalized_date |$rest"
+	done
 }
 # }}}
 # shut : shutdown {{{
@@ -145,7 +155,15 @@ function clean-pacman() {
 # }}}
 # compress-pdf : compress input pdf {{{
 function compress-pdf() {
-    /bin/gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer    -dNOPAUSE -dQUIET -dBATCH    -sOutputFile="${1%.pdf}-compressed.pdf" "$1"
+	/bin/gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dQUIET -dBATCH -sOutputFile="${1%.pdf}-compressed.pdf" "$1"
+}
+# }}}
+# which : which alias as explained in `man which` {{{
+function which() {
+	(
+		alias
+		declare -f
+	) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot "$@"
 }
 # }}}
 # vim:tw=78:ts=8:noet:ft=sh:norl:fdl=0:fdm=marker:fmr={{{,}}}

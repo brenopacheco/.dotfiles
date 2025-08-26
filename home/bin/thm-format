@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+BASE_COMMIT=$(git merge-base HEAD master)
+
+CHANGED_FILES=$(git diff --name-only "$BASE_COMMIT"..HEAD | tr '\n' ' ')
+
+cd "$HOME/thm/tryhackme" || exit 1
+
+if [ -n "$CHANGED_FILES" ]; then
+	echo "Running biome check on changed files..."
+	cd "$HOME/thm/tryhackme" && biome check --fix --unsafe "$CHANGED_FILES"
+else
+	echo "No changed files to check."
+fi

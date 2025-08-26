@@ -363,6 +363,9 @@ M.compile = function()
 end
 
 M.recompile = function() vim.cmd('Recompile') end
+M.open_compile = function()
+	require('module.compile').open_compile()
+end
 
 M.file_url = function()
 	if vim.fn.mode() == 'n' then

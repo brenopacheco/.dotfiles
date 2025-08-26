@@ -2,6 +2,7 @@
 --
 -- Run any target from Makefile, Go, Rust, etc.
 
+-- TODO: width calculation is wrong
 return function()
 	local targets = require('utils.make').targets()
 	if #targets == 0 then
