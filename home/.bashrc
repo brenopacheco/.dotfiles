@@ -74,7 +74,7 @@ append_path "$(dirname "$(rustup which rustc)")"
 
 test -e ~/.npmtoken && source ~/.npmtoken
 
-export NODE_OPTIONS="--max-old-space-size=12288"
+export NODE_OPTIONS="--max-old-space-size=24576"
 
 # perl
 export PERL5LIB="$HOME/.perl5/custom"  # for stowed modules

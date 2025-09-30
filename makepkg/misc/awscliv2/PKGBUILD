@@ -1,0 +1,22 @@
+# shellcheck disable=all
+pkgname=awscliv2
+pkgver=2.31.3
+pkgrel=1
+arch=('x86_64')
+provides=('aws')
+depends=('python')
+options=('!debug')
+conflicts=('aws-cli')
+
+source=('https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip')
+md5sums=('6b3d23d7cf944d600fa9986df9e9718f')
+
+pkgver() {
+	./aws/dist/aws --version | sed 's#aws-cli/\(\S\+\).*#\1#'
+}
+
+package() {
+	./aws/install --bin-dir "$pkgdir"/usr/bin --install-dir "$pkgdir"/usr/lib/aws-cli
+	ln -srf "$pkgdir"/usr/lib/aws-cli/v2/current/bin/aws           "$pkgdir"/usr/bin/aws
+	ln -srf "$pkgdir"/usr/lib/aws-cli/v2/current/bin/aws_completer "$pkgdir"/usr/bin/aws_completer
+}

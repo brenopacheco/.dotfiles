@@ -9,7 +9,7 @@ APPS=(
 	'chromium.desktop'
 	'com.github.xournalpp.xournalpp.desktop'
 	'com.stremio.stremio.desktop'
-	'cursor-cursor.desktop'
+	'cursor.desktop'
 	'discord.desktop'
 	'firefox.desktop'
 	'gparted.desktop'

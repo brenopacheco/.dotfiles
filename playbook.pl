@@ -141,7 +141,9 @@ makepkg(
     'makepkg/fork/dwm',
     'makepkg/fork/slstatus',
     'makepkg/fork/st',
-    'makepkg/fork/neovim',
+
+    'makepkg/misc/neovim',
+    'makepkg/misc/awscliv2',
 
     'makepkg/aur/asdf',
     'makepkg/aur/bun',
