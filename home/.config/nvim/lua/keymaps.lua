@@ -86,6 +86,7 @@ local keyboard = {
     git = { -- [[
       { { 'n',     }, '<leader>gg',     maps.git_fugitive,       { desc = ' fugitive'             } },
       { { 'n',     }, '<leader>gl',     maps.git_log,            { desc = ' logs'                 } },
+      { { 'n',     }, '<leader>gL',     maps.git_clog,           { desc = ' clog'                 } },
       { { 'n',     }, '<leader>gs',     maps.git_stage,          { desc = ' stage'                } },
       { { 'n',     }, '<leader>gu',     maps.git_unstage,        { desc = ' unstage'              } },
       { { 'n',     }, '<leader>gp',     maps.git_preview,        { desc = ' preview'              } },

@@ -1,14 +1,2 @@
 extends javascript
 
-snippet import description
-	import ${1:imports} from "${1:module}";
-
-snippet jest > __jest template__
-	import ${1:imports} from "./${2:module}";
-	
-	describe("${2}", () => {
-	  it("${3:test}", () => {
-	    expect(1).toBe(1);
-			$0
-	  });
-	});

@@ -37,6 +37,9 @@ application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
 inode/directory=org.gnome.Nautilus.desktop
 application/octet-stream=chromium.desktop
 text/csv=libreoffice-calc.desktop
+application/x-colpkg=anki.desktop
+application/x-apkg=anki.desktop
+application/x-ankiaddon=anki.desktop
 
 [Added Associations]
 model/stl=blender.desktop;

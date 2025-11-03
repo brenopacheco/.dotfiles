@@ -1,48 +1,18 @@
 snippet col __console.log object__
 	  console.log(${1:$TM_SELECTED_TEXT});$0
 
-snippet fun > __named function__
+snippet fn > __named function__
 	function ${1:fn}(${2}) {
 		$0
 	}
 
-snippet fn > __named function__
-	function(${1}) {
-		$0
-	}
-
-snippet fn-async > __async named function__
-	async function ${1:fn}(${2}) {
-		$0
-	}
-
 snippet afn > __anonymous function__
-	(${2}) => {
+	(${1}) => {
 		$0
 	}
 
-snippet afn-async __async anonymous function__
-	(${2}) => {
-		$0
-	}
-
-snippet cfn > __const anonymous function__
-	const ${1:fn} = (${2}) => {
-		$0
-	}
-
-snippet cafn-async > __const async anonymous function__
-	const ${1:fn} = async (${2}) => {
-		$0
-	}
-
-snippet iife > __immediately invoked function expression__
+snippet iife > __immediately invoked function__
 	  (() => {
-	    $0
-	  })()
-
-snippet ciife > __const immediately invoked function expression__
-	  const ${1:x} = (() => {
 	    $0
 	  })()
 
@@ -56,73 +26,26 @@ snippet test > __jest test, it template__
 		$0
 	});
 
-snippet it > __jest test, it template__
-	it('$1', () => {
-		$0
-	});
-
 snippet ctor > __constructor__
 	constructor($1) {
 		$0
 	}
 
-snippet @type > __@type annotation__
-	/** @type {$1} */
-
-snippet @private > __@private annotation__
-	/** @private */
-
-snippet @public > __@public annotation__
-	/** @public */
-
-snippet @protected > __@protected annotation__
-	/** @protected */
-
-snippet @readonly > __@readonly annotation__
-	/** @readonly */
-
-snippet @override > __@readonly annotation__
-	/** @override */
-
-snippet @ts-check > __@ts-check annotation__
-	// @ts-check
-
-snippet @ts-nocheck > __@ts-check annotation__
-	// @ts-nocheck
-
-snippet fori > __for i__
-	for (let i = ${1:1}; i <= ${2:100}; i++) {
-		$0
+snippet fori > __for of__
+	for (const ${1:item} in ${2:array}) {
+		${0}
 	}
 
-snippet forl > __for of__
+snippet foro > __for of__
 	for (const ${1:item} of ${2:array}) {
 		${0}
 	}
 
-snippet fort > __for in__
-	for (const ${1:prop} in ${2:object}) {
-		${0}
-	}
-
 snippet throw > __throw not implemented__
-			throw new Error('Not implemented');
+			throw new Error('${1:Not implemented}');
 
 snippet require > __const ... require(...)__
 	const ${1:default} = require("${2:module}");
 
 snippet module > __module.exports = ...__
-	module.exports = ${1:module}
-
-snippet jest > __jest template__
-	const ${1:imports} = require("./${2:module}");
-	
-	describe("${2}", () => {
-	  it("${3:test}", () => {
-	    expect(1).toBe(1);
-			$0
-	  });
-	});
-
-snippet expect > __jest describe__
-	expect(${1:what}).toBe(${2:expected});
+	module.exports = ${0:{\}}

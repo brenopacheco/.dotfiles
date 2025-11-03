@@ -9,10 +9,13 @@ snippet use-state  > __React.useState()__
 	  const [${1:state}, ${2:setState}] = useState(${3:initialValue});
 
 snippet component
-	function ${1:Component}() {
+	interface ${1:Component}Props {}
+
+	export const ${1:Component} = (props: ${1:Component}Props) => {
+
 	  return (
 	    <>
-	        $0
+			$0
 	    </>
 	  );
 	}

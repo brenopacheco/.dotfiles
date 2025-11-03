@@ -95,7 +95,12 @@ M.git_link = function()
 		{ action_callback = require('gitlinker.actions').open_in_browser }
 	)
 end
-M.git_log = function() vim.cmd([[G log]]) end
+M.git_log = function() vim.cmd([[G log -n 999]]) end
+M.git_clog = function()
+	local cmd =
+		vim.api.nvim_replace_termcodes(':Gclog -n 999 --grep ', true, true, true)
+	vim.api.nvim_feedkeys(cmd, 'n', true)
+end
 M.git_preview = function() require('gitsigns').preview_hunk() end
 M.git_reset = function() require('gitsigns').reset_hunk() end
 M.git_stage = function() require('gitsigns').stage_hunk() end
@@ -363,9 +368,7 @@ M.compile = function()
 end
 
 M.recompile = function() vim.cmd('Recompile') end
-M.open_compile = function()
-	require('module.compile').open_compile()
-end
+M.open_compile = function() require('module.compile').open_compile() end
 
 M.file_url = function()
 	if vim.fn.mode() == 'n' then

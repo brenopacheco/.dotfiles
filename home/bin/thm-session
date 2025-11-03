@@ -4,10 +4,6 @@ start() {
 	tmux new-session -d -s thm -n nvim -c ~/thm/tryhackme
 	tmux send-keys -t thm:nvim 'nvim .' C-m
 
-	# tmux new-window -t thm -n dev -c ~/thm/tryhackme
-	# tmux send-keys -t thm:dev 'sleep 10' C-m
-	# tmux send-keys -t thm:dev 'pnpm run dev' C-m
-
 	tmux new-window -t thm -n dev -c ~/thm/tryhackme/apps/frontend
 	tmux split-window -t thm:dev -c ~/thm/tryhackme/apps/api
 	tmux split-window -t thm:dev -c ~/thm/tryhackme
