@@ -13,6 +13,11 @@ local function run_gpg(buf, mode, cb)
 	cb = cb or function() end
 	local cmd_arg = mode == 'decrypt' and '-dq' or '-easq'
 	local end_line = vim.api.nvim_buf_line_count(buf)
+	-- TODO: disable leaky options
+	-- vim.bo.backup = false (global, this fails)
+	-- vim.bo.writebackup = false
+	-- vim.bo.swapfile = false
+	-- vim.bo.undofile = false
 	local text = vim.api.nvim_buf_get_lines(buf, 0, end_line, false)
 	local obj = vim
 		---@diagnostic disable-next-line: missing-fields
