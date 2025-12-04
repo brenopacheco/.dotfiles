@@ -6,12 +6,16 @@ set scrolloff 10
 map e $$EDITOR "$f"
 map w $$BROWSER "$f" & disown
 map i $$PAGER "$f"
-# l will use $$OPENER
 map x $$f
+map X !$f
+#map o &mimeopen $f
+#map O $mimeopen --ask $f
 map D :delete <enter>
 map R :bulkrename <enter>
 map <esc> quit
 map <enter> shell
+
+# dedicated keys for file opener actions
 
 cmd bulkrename ${{
 	tmpfile=$(mktemp)

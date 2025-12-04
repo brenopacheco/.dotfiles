@@ -1,45 +1,255 @@
 [Default Applications]
+
+## Web / HTML
+text/html=chromium.desktop
 x-scheme-handler/http=chromium.desktop
 x-scheme-handler/https=chromium.desktop
 x-scheme-handler/about=chromium.desktop
 x-scheme-handler/unknown=chromium.desktop
-text/html=chromium.desktop
-application/xhtml+xml=chromium.desktop
-text/plain=nvim.desktop
-text/x-csrc=nvim.desktop
-text/x-chdr=nvim.desktop
-text/x-c++src=nvim.desktop
-text/x-c++hdr=nvim.desktop
-text/x-python=nvim.desktop
-application/x-shellscript=nvim.desktop
-application/json=nvim.desktop
-application/x-yaml=nvim.desktop
-application/xml=nvim.desktop
-application/x-tex=nvim.desktop
+
+## PDF
+application/pdf=zathura.desktop
+
+## Images
 image/jpeg=sxiv.desktop
 image/png=sxiv.desktop
 image/gif=sxiv.desktop
 image/webp=sxiv.desktop
-image/bmp=sxiv.desktop
 image/tiff=sxiv.desktop
+image/bmp=sxiv.desktop
 image/svg+xml=sxiv.desktop
-image/x-xcf=sxiv.desktop
+
+## Archives
 application/zip=file-roller.desktop
 application/x-tar=file-roller.desktop
-application/x-bzip=file-roller.desktop
-application/x-bzip-compressed-tar=file-roller.desktop
-application/x-gzip=file-roller.desktop
-application/x-compressed-tar=file-roller.desktop
+application/x-xz=file-roller.desktop
+application/gzip=file-roller.desktop
+application/x-bzip2=file-roller.desktop
 application/x-7z-compressed=file-roller.desktop
-application/x-rar=file-roller.desktop
 application/vnd.rar=file-roller.desktop
-application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
-inode/directory=org.gnome.Nautilus.desktop
-application/octet-stream=chromium.desktop
-text/csv=libreoffice-calc.desktop
-application/x-colpkg=anki.desktop
-application/x-apkg=anki.desktop
-application/x-ankiaddon=anki.desktop
 
-[Added Associations]
-model/stl=blender.desktop;
+## File manager
+inode/directory=org.gnome.Nautilus.desktop
+
+## LibreOffice formats
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libreoffice-calc.desktop
+application/vnd.openxmlformats-officedocument.presentationml.presentation=libreoffice-impress.desktop
+application/vnd.oasis.opendocument.text=libreoffice-writer.desktop
+application/vnd.oasis.opendocument.spreadsheet=libreoffice-calc.desktop
+application/vnd.oasis.opendocument.presentation=libreoffice-impress.desktop
+application/msword=libreoffice-writer.desktop
+application/vnd.ms-excel=libreoffice-calc.desktop
+application/vnd.ms-powerpoint=libreoffice-impress.desktop
+
+########## CORE TEXT ##########
+text/plain=nvim.desktop
+text/x-readme=nvim.desktop
+text/x-credits=nvim.desktop
+text/x-install=nvim.desktop
+text/x-authors=nvim.desktop
+text/x-copying=nvim.desktop
+text/x-license=nvim.desktop
+text/x-log=nvim.desktop
+inode/x-empty=nvim.desktop
+
+########## MARKDOWN / FORMATTED ##########
+text/markdown=nvim.desktop
+text/x-markdown=nvim.desktop
+application/markdown=nvim.desktop
+text/x-rst=nvim.desktop
+text/x-asciidoc=nvim.desktop
+text/x-patch=nvim.desktop
+text/x-diff=nvim.desktop
+
+########## HTML / XML / SGML ##########
+text/xml=nvim.desktop
+application/xml=nvim.desktop
+application/xml-external-parsed-entity=nvim.desktop
+text/x-sgml=nvim.desktop
+application/sgml=nvim.desktop
+text/html=nvim.desktop    # (override browser if desired)
+application/xhtml+xml=nvim.desktop
+
+########## JSON / YAML / TOML / CONFIG ##########
+application/json=nvim.desktop
+application/ld+json=nvim.desktop
+application/json-patch=nvim.desktop
+application/merge-patch+json=nvim.desktop
+application/yaml=nvim.desktop
+application/x-yaml=nvim.desktop
+text/yaml=nvim.desktop
+text/x-yaml=nvim.desktop
+text/x-toml=nvim.desktop
+application/toml=nvim.desktop
+text/x-ini=nvim.desktop
+text/x-config=nvim.desktop
+text/x-properties=nvim.desktop
+application/x-env=nvim.desktop
+text/x-env=nvim.desktop
+
+########## SHELL / SCRIPTS ##########
+application/x-shellscript=nvim.desktop
+text/x-shellscript=nvim.desktop
+text/x-script=nvim.desktop
+application/x-bash=nvim.desktop
+text/x-bash=nvim.desktop
+application/x-sh=nvim.desktop
+text/x-sh=nvim.desktop
+application/x-zsh=nvim.desktop
+text/x-zshell=nvim.desktop
+application/x-csh=nvim.desktop
+
+########## PYTHON ##########
+text/x-python=nvim.desktop
+application/x-python=nvim.desktop
+application/vnd.python.bytecode=nvim.desktop
+text/x-cython=nvim.desktop
+
+########## RUBY / PERL / PHP / LUA ##########
+text/x-ruby=nvim.desktop
+application/x-ruby=nvim.desktop
+text/x-perl=nvim.desktop
+application/x-perl=nvim.desktop
+application/x-perl-script=nvim.desktop
+text/x-php=nvim.desktop
+application/x-php=nvim.desktop
+text/x-lua=nvim.desktop
+application/x-lua=nvim.desktop
+
+########## C / C++ / OBJ-C ##########
+text/x-c=nvim.desktop
+text/x-csrc=nvim.desktop
+text/x-chdr=nvim.desktop
+text/x-c++src=nvim.desktop
+text/x-c++hdr=nvim.desktop
+text/x-cpp=nvim.desktop
+text/x-objcsrc=nvim.desktop
+text/x-objchdr=nvim.desktop
+
+########## ASSEMBLY ##########
+text/x-asm=nvim.desktop
+text/x-gas=nvim.desktop
+
+########## GO / RUST / HASKELL / OCAML ##########
+text/x-go=nvim.desktop
+text/x-rustsrc=nvim.desktop
+text/x-haskell=nvim.desktop
+text/x-ocaml=nvim.desktop
+text/x-ocamlml=nvim.desktop
+
+########## JAVA / KOTLIN / SCALA / GROOVY ##########
+text/x-java=nvim.desktop
+text/x-kotlin=nvim.desktop
+text/x-scala=nvim.desktop
+text/x-groovy=nvim.desktop
+
+########## JAVASCRIPT / TYPESCRIPT ##########
+text/javascript=nvim.desktop
+application/javascript=nvim.desktop
+application/x-javascript=nvim.desktop
+text/x-typescript=nvim.desktop
+application/x-typescript=nvim.desktop
+application/typescript=nvim.desktop
+
+########## CSS / SCSS / SASS ##########
+text/css=nvim.desktop
+text/x-scss=nvim.desktop
+text/x-sass=nvim.desktop
+text/x-less=nvim.desktop
+
+########## SQL / DATA ##########
+text/x-sql=nvim.desktop
+application/sql=nvim.desktop
+text/x-csv=nvim.desktop
+text/csv=nvim.desktop
+application/csv=nvim.desktop
+text/tab-separated-values=nvim.desktop
+application/vnd.ms-access=nvim.desktop
+
+########## BUILD SYSTEMS ##########
+text/x-makefile=nvim.desktop
+text/x-cmake=nvim.desktop
+application/x-cmake=nvim.desktop
+application/x-m4=nvim.desktop
+text/x-m4=nvim.desktop
+text/x-meson=nvim.desktop
+text/x-ninja=nvim.desktop
+text/x-yacc=nvim.desktop
+text/x-lex=nvim.desktop
+text/x-gradle=nvim.desktop
+
+########## DOCKER / CONTAINERS ##########
+text/x-dockerfile=nvim.desktop
+application/x-dockerfile=nvim.desktop
+text/x-kubernetes=nvim.desktop
+application/x-kubernetes=nvim.desktop
+
+########## SYSTEMD / LINUX CONFIG ##########
+text/x-systemd-unit=nvim.desktop
+application/x-systemd-unit=nvim.desktop
+text/x-changelog=nvim.desktop
+text/x-sudoers=nvim.desktop
+text/x-hosts=nvim.desktop
+text/x-fstab=nvim.desktop
+text/x-logrotate=nvim.desktop
+text/x-crontab=nvim.desktop
+text/x-udev=nvim.desktop
+
+########## EDITOR / IDE METADATA ##########
+text/x-vim=nvim.desktop
+text/x-emacs-lisp=nvim.desktop
+text/x-lisp=nvim.desktop
+text/x-scheme=nvim.desktop
+application/x-elisp=nvim.desktop
+application/x-emacs-lisp=nvim.desktop
+
+########## MISC PROGRAMMING ##########
+text/x-d=nvim.desktop
+text/x-pascal=nvim.desktop
+text/x-fortran=nvim.desktop
+text/x-yaml=nvim.desktop
+text/x-sql=nvim.desktop
+text/x-awk=nvim.desktop
+text/x-tcl=nvim.desktop
+text/x-matlab=nvim.desktop
+text/x-r=nvim.desktop
+application/x-r-script=nvim.desktop
+
+########## CONFIG / PACKAGE DESCRIPTOR ##########
+application/x-desktop=nvim.desktop
+application/x-ini=nvim.desktop
+application/x-mswinurl=nvim.desktop
+application/x-properties=nvim.desktop
+application/x-pem-key=nvim.desktop
+application/pkix-cert=nvim.desktop
+application/x-public-key=nvim.desktop
+text/x-pgp=nvim.desktop
+
+########## TEMPLATES ##########
+text/x-jinja=nvim.desktop
+text/x-handlebars=nvim.desktop
+text/x-mustache=nvim.desktop
+text/x-ejs=nvim.desktop
+text/x-liquid=nvim.desktop
+
+########## DOCUMENTATION ##########
+text/x-changelog=nvim.desktop
+text/x-readme=nvim.desktop
+text/x-install=nvim.desktop
+text/x-copying=nvim.desktop
+text/x-news=nvim.desktop
+
+########## PATCHES ##########
+text/x-diff=nvim.desktop
+application/x-patch=nvim.desktop
+
+########## LOGS ##########
+text/x-log=nvim.desktop
+
+########## FALLBACK ##########
+application/x-perl=nvim.desktop
+application/x-python-script=nvim.desktop
+application/x-ruby-script=nvim.desktop
+application/x-php-script=nvim.desktop
+application/x-lua-script=nvim.desktop
