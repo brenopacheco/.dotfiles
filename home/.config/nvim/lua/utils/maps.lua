@@ -63,7 +63,6 @@ M.find_pfiles = function()
 	})
 end
 M.find_recent = function() require('telescope.builtin').oldfiles({}) end
-M.find_roots = require('utils.pickers.roots')
 M.find_grep = function()
 	require('telescope.builtin').live_grep({
 		cwd = rootutil.git_root(),
