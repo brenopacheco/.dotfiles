@@ -1,0 +1,20 @@
+#!/bin/sh
+
+case "$(uname)" in
+Darwin)
+	logger -p user.info -t pinentry "macOS detected, using pinentry-mac"
+	exec /opt/homebrew/bin/pinentry-mac
+	;;
+Linux)
+	if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+		logger -p user.info -t pinentry "Linux GUI detected, using pinentry-gtk"
+		exec /usr/bin/pinentry-gtk
+	else
+		logger -p user.info -t pinentry "Linux TTY detected, using pinentry-tty"
+		exec /usr/bin/pinentry-tty
+	fi
+	;;
+esac
+
+logger -p user.err -t pinentry "Unknown OS, no pinentry program"
+exit 1

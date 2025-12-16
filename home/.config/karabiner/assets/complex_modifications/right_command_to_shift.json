@@ -1,0 +1,15 @@
+{
+  "title": "Right Command to Right Shift",
+  "rules": [
+    {
+      "description": "Remap Right Command to Right Shift",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "right_command" },
+          "to": [ { "key_code": "right_shift" } ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Caps Lock to Control",
+  "rules": [
+    {
+      "description": "Remap Caps Lock to Control",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "caps_lock" },
+          "to": [ { "key_code": "left_control" } ]
+        }
+      ]
+    }
+  ]
+}

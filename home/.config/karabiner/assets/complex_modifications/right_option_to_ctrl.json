@@ -1,0 +1,15 @@
+{
+  "title": "Right Option to Right Control",
+  "rules": [
+    {
+      "description": "Remap Right Option to Right Control",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "right_option" },
+          "to": [ { "key_code": "right_control" } ]
+        }
+      ]
+    }
+  ]
+}

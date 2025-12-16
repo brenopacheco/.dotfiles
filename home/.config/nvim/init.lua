@@ -9,6 +9,8 @@
                              brenoleonhardt@gmail.com
 --]]
 
+if vim.g.vscode then return end
+
 vim.z = {}
 require('options')
 require('packadd')
