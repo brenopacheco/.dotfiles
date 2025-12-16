@@ -9,9 +9,26 @@ assert(vim.z.mloaded('log'), 'log module is not loaded')
 
 local M = {}
 
-local history = {}
+local MAX_CWD_LEN = 30
+local PRESERVE_HISTORY = true
+local HISTORY_FILE = vim.fn.stdpath('data') .. '/compile_history'
 
-local MAX_CWD_LEN = 20
+local history = (function()
+	if not PRESERVE_HISTORY then return {} end
+
+	local exists = vim.fn.filereadable(HISTORY_FILE) == 1
+	if not exists then return {} end
+
+	---@type string[]
+	local commands = vim.fn.readfile(HISTORY_FILE)
+
+	local history = {}
+	for _, command_str in ipairs(commands) do
+		local command = vim.json.decode(command_str)
+		table.insert(history, command)
+	end
+	return history
+end)()
 
 local strings_util = require('utils.strings')
 
@@ -31,7 +48,8 @@ local function find_compile_window()
 	return nil
 end
 
-local function remove_history_duplicates()
+---@diagnostic disable-next-line: redefined-local
+local function remove_history_duplicates(history)
 	local cache = {}
 	for i = #history, 1, -1 do
 		local item = history[i]
@@ -112,15 +130,23 @@ M.compile = function(cmd, cwd, focus)
 	vim.api.nvim_buf_set_var(bufnr, 'compile', cmd)
 	local pid = vim.fn.getbufvar(vim.fn.bufnr(), 'terminal_job_pid')
 	local short, offset = short_path(cwd)
-	table.insert(history, {
+	local command = {
 		bufnr = bufnr,
 		cwd = cwd,
 		cmd = cmd,
 		pid = pid,
 		short = short,
 		offset = offset,
-	})
-	remove_history_duplicates()
+	}
+	table.insert(history, command)
+	remove_history_duplicates(history)
+	if PRESERVE_HISTORY then
+		local file = io.open(HISTORY_FILE, 'a')
+		if file then
+			file:write(vim.json.encode(command) .. '\n')
+			file:close()
+		end
+	end
 	vim.notify('Compile ' .. cmd)
 	if not focus then vim.cmd('wincmd p') end
 end
