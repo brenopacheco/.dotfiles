@@ -88,12 +88,7 @@ end
 
 M.git_blame = function() vim.cmd([[Git blame]]) end
 M.git_fugitive = function() bufutil.toggle('fugitive', { cb = vim.cmd.G }) end
-M.git_link = function()
-	require('gitlinker').get_buf_range_url(
-		vim.fn.mode() == 'n' and 'n' or 'v',
-		{ action_callback = require('gitlinker.actions').open_in_browser }
-	)
-end
+M.git_link = function() require('utils.gitlink').gitlink() end
 M.git_log = function() vim.cmd([[G log -n 999]]) end
 M.git_clog = function()
 	local cmd =
@@ -293,9 +288,9 @@ M.toggle_outline = function()
 end
 
 M.toggle_quickfix = function() bufutil.toggle('qf', { cb = qfutil.open }) end
-M.toggle_term = function() vim.cmd('FloatermToggle') end
+M.toggle_term = function() require('utils.term').toggle() end
 
-M.newterm = function() vim.cmd('FloatermNew') end
+M.new_term = function() require('utils.term').new_term() end
 
 -- Open keyword under cursor or selection. Tries to resolve cword and cWORD
 -- as such:

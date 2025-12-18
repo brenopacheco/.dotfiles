@@ -131,7 +131,7 @@ local keyboard = {
       -- { { 'n',     }, '<leader>u',      maps.toggle_dapui,      { desc = ' dapui'                } },
       { { 'n',     }, '<leader>o',      maps.toggle_option,     { desc = ' option'               } },
       { { 'n',     }, '<leader>`',      maps.toggle_term,       { desc = ' terminal'             } },
-      { { 'n',     }, '<leader>~',      maps.newterm,           { desc = '󱓞 newterm'              } },
+      { { 'n',     }, '<leader>~',      maps.new_term,          { desc = '󱓞 newterm'              } },
       { { 'n',     }, '-',              maps.toggle_oil,        { desc = '󱓞 oil'                  } },
     }, -- ]]
     defaults = { -- [[

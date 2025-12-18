@@ -51,8 +51,6 @@ vim.z.packadd({
 	{ 'HiPhish/rainbow-delimiters.nvim',               as = 'rainbow-delimiters'     },
 	{ 'Bekaboo/dropbar.nvim',                          as = 'dropbar'                },
 	{ 'monkoose/matchparen.nvim',                      as = 'matchparen'             },
-	{ 'brenopacheco/gitlinker.nvim',                   as = 'gitlinker'              }, -- removes default keybinding TODO: write own
-	{ 'brenopacheco/vim-floaterm'                                                    }, -- fixes Vim:E444 on-close last window TODO: write own
   { 'KabbAmine/zeavim.vim'},
 })
 -- stylua: ignore end

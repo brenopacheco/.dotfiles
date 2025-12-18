@@ -74,6 +74,14 @@ function M.set_visual(visual)
 	vim.fn.setpos("'>", visual.pos.start)
 end
 
+function M.escape_visual()
+	vim.api.nvim_feedkeys(
+		vim.api.nvim_replace_termcodes('<Esc>', true, false, true),
+		'n',
+		true
+	)
+end
+
 local function reset_dapui()
 	if not vim.z.enabled('rcarriga/nvim-dap-ui') then return end
 	local dapui = require('dapui')
