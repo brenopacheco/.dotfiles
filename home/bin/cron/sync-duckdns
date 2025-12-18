@@ -16,13 +16,13 @@
 exec 1> >(logger -p user.info -t cron-duckdns)
 exec 2> >(logger -p user.err -t cron-duckdns)
 
-if ! test -f ~/.duckdns; then
+DUCKDNS_CONFIG=$HOME/.duckdns
+
+if ! test -f "$DUCKDNS_CONFIG"; then
 	exit 0
 fi
 
-. ~/.duckdns >/dev/null || exit 1
-
-TOKEN=$(yq '.token' config.txt)
+DUCKDNS_TOKEN=$(yq '.token' "$DUCKDNS_CONFIG")
 
 if test -z "$DUCKDNS_TOKEN"; then
 	echo "Missing duckdns token" >&2
@@ -34,5 +34,5 @@ for entry in $(yq '.domains[]' "$TMPFILE"); do
 	ip=$(echo "$entry" | cut -d':' -f2)
 	echo "Updating ${domain} with ip ${ip}..."
 	url="https://www.duckdns.org/update?domains=${domain}&token=${TOKEN}&ip=${ip}"
-	curl -s "${url}" | xargs -I{} echo "$(date) - ${domain} - {}" >>/tmp/duck.log
+	curl -s "${url}" | xargs -I{} echo "$(date) - ${domain} - {}"
 done
