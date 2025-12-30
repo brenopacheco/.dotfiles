@@ -8,7 +8,7 @@ x-scheme-handler/about=chromium.desktop
 x-scheme-handler/unknown=chromium.desktop
 
 ## PDF
-application/pdf=zathura.desktop
+application/pdf=org.pwmt.zathura.desktop
 
 ## Images
 image/jpeg=sxiv.desktop

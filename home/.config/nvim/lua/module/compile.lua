@@ -91,6 +91,9 @@ M.open_compile = function()
 		.iter(history)
 		:enumerate()
 		:filter(function(_, item) return vim.fn.bufexists(item.bufnr) == 1 end)
+		:filter(
+			function(_, item) return vim.fn.getbufvar(item.bufnr, 'compile') ~= '' end
+		)
 		:map(function(idx, item)
 			item['idx'] = idx
 			return item
