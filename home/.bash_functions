@@ -6,7 +6,7 @@ function cd() {
 # lf : run lf cding to last dir & reseting marks {{{
 function lf() {
 	tmp="$(mktemp)"
-	$(/bin/which lf) -last-dir-path="$tmp"
+	$(/usr/bin/which lf) -last-dir-path="$tmp"
 	dir="$(cat "$tmp")"
 	[[ -d "$dir" && "$dir" != "$(pwd)" ]] && cd "$dir" || return
 }

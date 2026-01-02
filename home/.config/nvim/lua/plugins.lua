@@ -40,7 +40,7 @@ vim.z.packadd({
 	{ 'ray-x/lsp_signature.nvim',                      as = 'lsp-signature'          },
 	{ 'chrishrb/gx.nvim',                              as = 'gx'                     },
 	{ 'pmizio/typescript-tools.nvim',                  as = 'typescript-tools'       },
-	{ 'nvim-treesitter/nvim-treesitter'                                              },
+	{ 'nvim-treesitter/nvim-treesitter',               tag = 'master'                },
 	{ 'nvim-treesitter/nvim-treesitter-textobjects'                                  },
 	{ 'JoosepAlviste/nvim-ts-context-commentstring'                                  },
 	{ 'zk-org/zk-nvim'                                                               },
