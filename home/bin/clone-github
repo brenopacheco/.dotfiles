@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+comm -3 <(gh repo list brenopacheco \
+	--limit 100 \
+	--json name,isArchived \
+	--jq '.[] | select(.isArchived==false) | .name' |
+	sort -u) <(/usr/bin/ls -1 ~/git | sort -u) |
+	grep -vE '^(.dotfiles|.password-store)$' |
+	dmenu -p Repository -d ':' |
+	xargs -I{} -r git clone git@github.com:brenopacheco/{}.git "$HOME/git/{}"
