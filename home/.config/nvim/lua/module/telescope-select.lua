@@ -21,8 +21,15 @@ end
 ---@param opts table Additional options
 ---     - prompt (string|nil)
 ---               Text of the prompt. Defaults to `Select one of:`
----     - format_item (fun(item: any): string|nil)
+---     - format_item (fun(item: any, width: integer|nil, get_filtered_entries: fun(): table): string|nil)
 ---               Function to format an individual item from `items`. Defaults to `tostring`.
+---               Parameters:
+---                 - item: The item to format
+---                 - width: The picker width in columns
+---                 - get_filtered_entries: Function that returns the currently filtered list of items
+---                   (after user's filter input). Note: During entry_maker initialization, this may
+---                   return all items or an empty list. Once the picker is active and filtering,
+---                   it will return the actual filtered entries.
 ---     - kind (string|nil)
 ---               Arbitrary hint string indicating the item shape.
 ---     - multi (boolean|nil)
@@ -52,6 +59,47 @@ local function select(items, opts, on_choice)
 	local ratio = (opts.cols or 75) / vim.o.columns
 	if ratio > 1 then ratio = 0.9 end
 	theme.layout_config.width = ratio
+
+	-- Store picker reference in closure to access filtered entries
+	local picker_ref = nil
+
+	-- Function to get filtered entries from the picker
+	-- Returns the list of currently filtered items (after user's filter input)
+	-- Note: This will return an empty list when called from entry_maker during initialization,
+	-- but will have the filtered entries once the picker is active and user filters
+	local function get_filtered_entries()
+		if not picker_ref then
+			-- Picker not yet initialized, return empty or all items
+			return items or {}
+		end
+		local manager = picker_ref.manager
+		if not manager then return items or {} end
+
+		-- Try to get filtered entries from the manager
+		-- Note: The exact API may vary by telescope version
+		-- manager.results should contain the currently filtered/visible entries
+		-- after the user types in the filter prompt
+		local filtered = {}
+
+		-- Access the manager's results
+		-- Try different possible API methods depending on telescope version
+		local entry_list = nil
+		if manager.results then
+			entry_list = manager.results
+		elseif manager.get_results then
+			entry_list = manager:get_results()
+		end
+
+		if entry_list then
+			for _, entry in ipairs(entry_list) do
+				-- Extract the value from the entry object
+				if entry and entry.value then table.insert(filtered, entry.value) end
+			end
+		end
+
+		return filtered
+	end
+
 	pickers
 		.new(theme, {
 			prompt_title = opts and opts.prompt or 'Select:',
@@ -61,7 +109,7 @@ local function select(items, opts, on_choice)
 					local picker_width = math.floor((ratio * vim.o.columns))
 					local text = opts
 							and opts.format_item
-							and opts.format_item(item, picker_width)
+							and opts.format_item(item, picker_width, get_filtered_entries)
 						or item
 					return {
 						value = item,
@@ -71,13 +119,13 @@ local function select(items, opts, on_choice)
 				end,
 			}),
 			sorter = conf.generic_sorter({}),
-			attach_mappings = function(_, map)
+			attach_mappings = function(prompt_bufnr, map)
+				-- Store picker reference for access to filtered entries
+				picker_ref = action_state.get_current_picker(prompt_bufnr)
 				local function make_action(mode)
 					return function(prompt_bufnr)
 						local selection = action_state.get_selected_entry()
-            if opts.multi then
-              selection = { selection }
-            end
+						if opts.multi then selection = { selection } end
 						local picker = action_state.get_current_picker(prompt_bufnr)
 						if #picker:get_multi_selection() > 0 then
 							selection = picker:get_multi_selection()

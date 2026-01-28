@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+EVENT=$(sudo libinput list-devices |
+	grep -m 1 -A 1 "CX 2.4G Wireless Receiver" |
+	tail -1 |
+	sed 's/.*event//')
+
+if [[ -z "$EVENT" ]]; then
+	exit 1
+fi
+
+sudo libinput debug-events --device "/dev/input/event$EVENT"

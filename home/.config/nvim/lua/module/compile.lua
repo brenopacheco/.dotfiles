@@ -65,7 +65,7 @@ end
 local function itemize(max_len)
 	return function(idx, item)
 		return string.format(
-			'%-4s %-' .. tostring(max_len + item.offset) .. 's $ %s',
+			'%-5s %-' .. tostring(max_len + item.offset) .. 's  $ %s',
 			'[#' .. idx .. ']',
 			item.short,
 			item.cmd
@@ -79,9 +79,9 @@ local function change_dir(dir)
 	vim.cmd([[silent! tc  ]] .. dir)
 end
 
-local function get_max_len()
+local function get_max_len(items)
 	return vim
-		.iter(history)
+		.iter(items)
 		:map(function(item) return string.len(item.short) - item.offset end)
 		:fold(0, math.max)
 end
@@ -101,10 +101,12 @@ M.open_compile = function()
 		:rev()
 		:totable()
 	if #items == 0 then return warn('No compile buffer available') end
-	local max_len = get_max_len()
 	vim.ui.select(items, {
 		prompt = 'Run:',
-		format_item = function(item) return itemize(max_len)(item.idx, item) end,
+		format_item = function(item, _, get_filtered_entries)
+			-- get_filtered_entries is a hack on ./telescope-select.lua:70
+			return itemize(get_max_len(get_filtered_entries()))(item.idx, item)
+		end,
 	}, function(item)
 		local win_id = find_compile_window()
 		if win_id ~= nil then
@@ -165,24 +167,27 @@ local function recompile_cmd(tbl)
 	M.compile(cmd or item.cmd, item.cwd, tbl.bang)
 end
 
-local function recompile_complete_nr(A, L)
-	local max_len = get_max_len()
+local function recompile_complete_nr(_, L)
 	local start = string.find(L, '%S%s') + 2
 	local search = string.sub(L, start):gsub('^%s+', '')
-	local completions = vim
+	local items = vim
 		.iter(history)
 		:enumerate()
-		:map(itemize(max_len))
+		:map(function(idx, item)
+			item['idx'] = idx
+			return item
+		end)
 		:rev()
-		:filter(function(str) return string.sub(str, 1, #search) == search end)
-		:map(
-			function(str)
-				return #search > 0 and string.sub(str, #search - #A + 1) or str
-			end
-		)
-		:take(4)
+		:filter(function(item) return string.match(item.cmd, search) end)
+		:take(10)
 		:totable()
-	return completions
+
+	local max_len = get_max_len(items)
+
+	return vim.iter(items):map(function(item) return item.idx, item end)
+:map(
+		itemize(max_len)
+	):totable()
 end
 
 for _, command in pairs({ 'C', 'Compile' }) do

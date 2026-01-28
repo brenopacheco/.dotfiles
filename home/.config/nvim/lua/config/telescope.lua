@@ -39,11 +39,12 @@ defaults.mappings = {
 		['<c-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
 		['<c-a>'] = actions.select_all,
 		['<c-d>'] = actions.drop_all,
+		['<c-x>'] = actions.delete_buffer + actions.close,
 		['<Tab>'] = actions.toggle_selection + actions.move_selection_worse,
 		['<S-Tab>'] = actions.toggle_selection + actions.move_selection_better,
 		['<C-s>'] = actions.select_horizontal,
-		['<C-v>'] = actions.select_vertical,
-		['<C-t>'] = actions.select_tab,
+		['<c-v>'] = actions.select_vertical,
+		['<c-t>'] = actions.select_tab,
 	},
 }
 

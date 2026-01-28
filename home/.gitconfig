@@ -18,3 +18,5 @@
 	date = relative
 [alias]
 	graph = !git log \"$@\" --oneline --graph --branches --remotes --date=short
+[url "git@github.com:"]
+	insteadOf = https://github.com/

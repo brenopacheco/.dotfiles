@@ -95,6 +95,7 @@ local go = {
 					dir = dir,
 					file = file,
 					kind = 'go',
+					id = tostring(vim.fn.fnamemodify(dir, ':t')),
 				}
 			end,
 			cmds

@@ -30,7 +30,7 @@ fi
 
 mkdir -p ~/sketch
 
-TMPNAME="${SELECTED}_$(tr -cd 'a-f0-9' </dev/urandom | head -c 10)"
+TMPNAME="${SELECTED}_$(LC_ALL=C tr -cd 'a-f0-9' </dev/urandom | head -c 10)"
 
 if [[ -n "$NAME" ]]; then
 	TMPNAME="$NAME-$TMPNAME"

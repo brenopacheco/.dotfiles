@@ -135,8 +135,9 @@ M.jump_qfnext = function() qfutil.next_entry() end
 M.jump_qfprev = function() qfutil.prev_entry() end
 M.jump_tabnext = function() vim.cmd('tabnext') end
 M.jump_tabprev = function() vim.cmd('tabprevious') end
-M.jump_termnext = function() vim.cmd('FloatermNext') end
-M.jump_termprev = function() vim.cmd('FloatermPrev') end
+-- TODO:
+-- M.jump_termnext = function() vim.cmd('FloatermNext') end
+-- M.jump_termprev = function() vim.cmd('FloatermPrev') end
 
 M.qf_cnewer = function() vim.cmd('cnewer') end
 M.qf_colder = function() vim.cmd('colder') end

@@ -119,8 +119,8 @@ local keyboard = {
       { { 'n',     }, '[e',             maps.jump_errorprev,    { desc = '󰒮 error'                } },
       { { 'n',     }, ']q',             maps.jump_qfnext,       { desc = '󰒭 qf-entry'             } },
       { { 'n',     }, '[q',             maps.jump_qfprev,       { desc = '󰒮 qf-entry'             } },
-      { { 'n',     }, ']`',             maps.jump_termnext,     { desc = '󰒭 terminal'             } },
-      { { 'n',     }, '[`',             maps.jump_termprev,     { desc = '󰒮 terminal'             } },
+      -- { { 'n',     }, ']`',             maps.jump_termnext,     { desc = '󰒭 terminal'             } },
+      -- { { 'n',     }, '[`',             maps.jump_termprev,     { desc = '󰒮 terminal'             } },
       { { 'n',     }, ']?',             maps.help(']'),         { desc = ' which-key'            } },
       { { 'n',     }, '[?',             maps.help('['),         { desc = ' which-key'            } },
     }, -- ]]
@@ -173,6 +173,7 @@ local keyboard = {
   }, -- ]]
 	unmappings = {  -- [[
       { { 'n',     }, 'grn' },
+      { { 'n',     }, 'grt' },
       { { 'n', 'x' }, 'gra' },
       { { 'n',     }, 'grr' },
       { { 'n',     }, 'gri' },

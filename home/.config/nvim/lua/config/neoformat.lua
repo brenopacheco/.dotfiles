@@ -1,9 +1,14 @@
 vim.cmd([[
-let g:neoformat_enabled_javascript      = ['biome']
-let g:neoformat_enabled_javascriptreact = ['biome']
-let g:neoformat_enabled_typescript      = ['biome']
-let g:neoformat_enabled_typescriptreact = ['biome']
-let g:neoformat_enabled_json            = ['biome']
+"let g:neoformat_enabled_javascript      = ['biome']
+"let g:neoformat_enabled_javascriptreact = ['biome']
+"let g:neoformat_enabled_typescript      = ['biome']
+"let g:neoformat_enabled_typescriptreact = ['biome']
+"let g:neoformat_enabled_json            = ['biome']
+let g:neoformat_enabled_javascript      = ['eslint_d', 'prettierd']
+let g:neoformat_enabled_javascriptreact = ['eslint_d', 'prettierd']
+let g:neoformat_enabled_typescript      = ['eslint_d', 'prettierd']
+let g:neoformat_enabled_typescriptreact = ['eslint_d', 'prettierd']
+let g:neoformat_enabled_json            = ['eslint_d', 'prettierd']
 
 let g:neoformat_enabled_c               = ['clangformat']
 let g:neoformat_enabled_lua             = ['stylua']
@@ -29,9 +34,3 @@ let g:neoformat_typescript_biome = g:biome_formatter
 let g:neoformat_typescriptreact_biome = g:biome_formatter
 let g:neoformat_json_biome = g:biome_formatter
 ]])
-
--- 'prettierd', 'eslint_d',
--- 'prettierd', 'eslint_d',
--- 'prettierd', 'eslint_d',
--- 'prettierd', 'eslint_d',
--- 'prettierd', 'eslint_d',
