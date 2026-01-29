@@ -8,15 +8,23 @@
 	autoSetupRemote = true
 [core]
 	hooksPath = ~/.config/git/hooks
+	editor = nvim -f
 [mergetool]
 	prompt = false
+[merge]
+	ff = only
+[pull]
+	rebase = true
 [difftool]
 	prompt = false
 [init]
 	defaultBranch = main
 [log]
 	date = relative
-[alias]
-	graph = !git log \"$@\" --oneline --graph --branches --remotes --date=short
+; [alias]
+[url "git@github-blp.com:brenopacheco/"]
+    insteadOf = git@github.com:brenopacheco/
+    insteadOf = https://github.com/brenopacheco/
+
 [url "git@github.com:"]
-	insteadOf = https://github.com/
+    insteadOf = https://github.com/
