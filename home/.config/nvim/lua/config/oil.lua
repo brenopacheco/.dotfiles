@@ -10,6 +10,7 @@ oil.setup({
 
 		['<c-s>'] = 'actions.select_split',
 		['<c-t>'] = 'actions.select_tab',
+		["<C-l>"] = "actions.preview",
 
 		['g?'] = 'actions.show_help',
 		['gx'] = 'actions.open_external',

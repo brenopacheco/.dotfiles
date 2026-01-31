@@ -6,6 +6,7 @@
 -- Bang focus on the compilation window
 --
 assert(vim.z.mloaded('log'), 'log module is not loaded')
+local strings_util = require('utils.strings')
 
 local M = {}
 
@@ -15,13 +16,10 @@ local HISTORY_FILE = vim.fn.stdpath('data') .. '/compile_history'
 
 local history = (function()
 	if not PRESERVE_HISTORY then return {} end
-
 	local exists = vim.fn.filereadable(HISTORY_FILE) == 1
 	if not exists then return {} end
-
 	---@type string[]
 	local commands = vim.fn.readfile(HISTORY_FILE)
-
 	local history = {}
 	for _, command_str in ipairs(commands) do
 		local command = vim.json.decode(command_str)
@@ -30,7 +28,6 @@ local history = (function()
 	return history
 end)()
 
-local strings_util = require('utils.strings')
 
 local function short_path(cwd)
 	local str = strings_util.truncate_path(cwd, MAX_CWD_LEN)
@@ -179,15 +176,16 @@ local function recompile_complete_nr(_, L)
 		end)
 		:rev()
 		:filter(function(item) return string.match(item.cmd, search) end)
-		:take(10)
+		-- :take(10)
 		:totable()
 
 	local max_len = get_max_len(items)
 
-	return vim.iter(items):map(function(item) return item.idx, item end)
-:map(
-		itemize(max_len)
-	):totable()
+	return vim
+		.iter(items)
+		:map(function(item) return item.idx, item end)
+		:map(itemize(max_len))
+		:totable()
 end
 
 for _, command in pairs({ 'C', 'Compile' }) do

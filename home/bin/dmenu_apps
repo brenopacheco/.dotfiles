@@ -8,6 +8,7 @@ APPS=(
 	'blueman-manager.desktop'
 	'chromium.desktop'
 	'cisco-pt.desktop'
+	'code-oss.desktop'
 	'com.github.xournalpp.xournalpp.desktop'
 	'com.obsproject.Studio.desktop'
 	'com.stremio.stremio.desktop'
