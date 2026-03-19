@@ -30,7 +30,8 @@ white = "#a1aab8"
 yellow = "#e3d18a"
 
 [colors.primary]
-background = "#011627"
+# background = "#011627"
+#background = "#f6f2ee" # dayfox
 bright_foreground = "#eeeeee"
 foreground = "#bdc1c6"
 

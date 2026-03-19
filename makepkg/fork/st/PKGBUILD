@@ -3,7 +3,7 @@
 # NOTE: Run `tic -sx /usr/share/st/st.info` if colors seem weird on nvim/tmux
 
 pkgname=st-fork
-pkgver=0.8.r13.3b04a65
+pkgver=0.8.r15.0afb3d8
 pkgrel=1
 pkgdesc='A simple virtual terminal emulator for X (patched fork)'
 arch=('x86_64')

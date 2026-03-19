@@ -44,7 +44,8 @@ eval "$(asdf completion bash)"
 
 export EDITOR=/usr/bin/vim
 export VISUAL=/usr/bin/vim
-export MANPAGER='/usr/bin/nvim +Man!'
+#export MANPAGER='/usr/bin/nvim +Man!'
+export MANPAGER='/usr/bin/less'
 export OPENER='/usr/bin/xdg-open'
 export BROWSER='/usr/bin/chromium'
 export XDG_CONFIG_HOME=$HOME/.config

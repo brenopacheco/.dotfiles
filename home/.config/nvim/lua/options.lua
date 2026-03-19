@@ -1,13 +1,15 @@
---- Options
-
 -- stylua: ignore start
 vim.opt.autochdir      = true                          -- use file path as vim's dir
 vim.opt.autoindent     = true                          -- new lines inherits indentation
+vim.opt.autoread       = true                          --
+vim.opt.autowrite      = false                         --
+vim.opt.autowriteall   = false                         --
 vim.opt.bomb           = false                         -- ??? <feff>
 vim.opt.clipboard      = 'unnamed,unnamedplus'         -- copy/pasting from x11 clipboard
 vim.opt.cmdheight      = 1                             -- only 1 row for cmdline
 vim.opt.colorcolumn    = { 78 }                        -- draw column at position
 vim.opt.conceallevel   = 0                             -- shows |hyperlinks|
+vim.opt.confirm        = true
 vim.opt.cursorline     = true                          -- highlights current line
 vim.opt.encoding       = 'utf-8'                       -- set default internal encoding
 vim.opt.fileformat     = 'unix'                        -- set default file format
@@ -52,19 +54,19 @@ vim.opt.hlsearch       = true                          -- keep search highlighte
 vim.opt.ignorecase     = true                          -- ignore case when searching
 vim.opt.inccommand     = 'nosplit'                     -- preview subsittution as you type
 vim.opt.incsearch      = true                          -- search as chars are entered
-vim.opt.keywordprg     = ':help'                       -- use help as default for <S-k>
+vim.opt.keywordprg     = ':help!'                      -- use help! as default for K
 vim.opt.laststatus     = 3                             -- show a single statusline
 vim.opt.lazyredraw     = true                          -- do not redraw during macros
 vim.opt.linebreak      = true                          -- don't break word when wrapping
+vim.opt.list           = true                          -- actually use listchars
 vim.opt.listchars      = {
   tab                  = [[» ]],
   trail                = '¬',
   nbsp                 = '␣',
   extends              = '›',
   precedes             = '‹',
-  -- eol                  = '$',
+  eol                  = '$',
 }
-vim.opt.list           = true                          -- actually use listchars
 vim.opt.more           = true                          -- show --more-- to scroll messages
 vim.opt.expandtab      = false                         -- don't expands tabs as spaces
 vim.opt.joinspaces     = false                         -- always insert 1 spc on join J
@@ -77,12 +79,11 @@ vim.opt.wrapscan       = false                         -- search next stops at e
 vim.opt.wrap           = false                         -- don't wrap lines
 vim.opt.number         = true                          -- set numeration of lines
 vim.opt.path           = '**'                          -- extend path to glob **
-vim.opt.pumheight      = 12                            -- max num of items in popup menu
+vim.opt.pumheight      = 6                             -- max num of items in popup menu
 vim.opt.pumwidth       = 15                            -- min popup menu width
 vim.opt.relativenumber = true                          -- set relative numbers
 vim.opt.report         = 0                             -- always report on :substitute
--- vim.opt.scrolloff      = 999                           -- keep cursor centered
-vim.opt.scrolloff      = 0                             -- keep cursor centered
+vim.opt.scrolloff      = 10
 vim.opt.shellcmdflag   = '-O globstar -c'
 vim.opt.shiftwidth     = 4                             -- number of spaces used by = op.
 vim.opt.shortmess:append('cs')                         -- remove annoying messages
@@ -120,5 +121,8 @@ vim.g.vim_indent_cont  = 4                             -- in vimscript, \ indent
 vim.g.c_syntax_for_h   = 1                             -- recognize .h as c file
 -- stylua: ignore end
 
-vim.env.MANPAGER = '' -- unset nvim manpager
--- vi:cc=92
+vim.env.MANPAGER = ''
+require('vim._core.ui2').enable({ enable = true })
+vim.cmd('filetype plugin on') -- load ftplugin/<ft>.lua/vim
+vim.cmd('filetype indent on') -- load indent/<ft>.lua/vim
+vim.cmd('syntax on') -- might conflict with treesitter?

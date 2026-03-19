@@ -1,0 +1,43 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime": {
+    "version": "LuaJIT",
+    "path": [
+      "lua/?.lua",
+      "lua/?/init.lua",
+    ]
+  },
+  "diagnostics": {
+    "globals": ["vim"]
+  },
+  "workspace": {
+    "library": {
+      "${3rd}/luv/library": true,
+      "${3rd}/busted/library": true,
+      "/home/breno/.dotfiles/nvim": true,
+      "/home/breno/.dotfiles/nvim/after": true,
+      "/home/breno/.local/share/nvim/site/pack/core/opt/blink.cmp": true,
+      "/home/breno/.local/share/nvim/site/pack/core/opt/nvim-surround": true,
+      "/home/breno/.local/share/nvim/site/pack/core/opt/nvim-treesitter": true,
+      "/home/breno/.local/share/nvim/site/pack/core/opt/oil.nvim": true,
+      "/home/breno/.local/share/nvim/site/pack/core/opt/snacks.nvim": true,
+      "/home/breno/.local/share/nvim/site/pack/core/opt/vim-fugitive": true,
+      "/home/breno/.local/share/nvim/site/pack/core/opt/nvim-lspconfig": true,
+      "/home/breno/.local/share/nvim/site": true,
+      "/usr/lib/nvim": true,
+      "/usr/share/nvim/runtime/lua": true,
+      "/usr/share/nvim/runtime/pack/dist/opt/matchit": true,
+      "/usr/share/nvim/runtime": true
+    },
+    "checkThirdParty": false
+  },
+  "completion": {
+    "callSnippet": "Replace"
+  },
+  "hint": {
+    "enable": true
+  },
+  "codeLens": {
+    "enable": true
+  }
+}

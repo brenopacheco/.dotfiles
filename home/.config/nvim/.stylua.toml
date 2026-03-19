@@ -1,0 +1,49 @@
+# Stylua ─────────────────────────────────────────────────────────────────────
+
+# ── Syntax ──────────────────────────────────────────────────────────────────
+# "Lua52", "Lua53", "Lua54", "LuaJIT", "Luau"
+# Use LuaJIT for Neovim (LuaJIT is the runtime Neovim uses)
+syntax = "LuaJIT"
+
+# ── Indentation ─────────────────────────────────────────────────────────────
+# "Spaces" | "Tabs"
+indent_type = "Spaces"
+
+# Width of each indent level (applies whether using spaces or tabs)
+indent_width = 2
+
+# ── Line width ──────────────────────────────────────────────────────────────
+# StyLua will try to keep lines under this length
+column_width = 80
+
+# ── Line endings ────────────────────────────────────────────────────────────
+# "Unix" (\n) | "Windows" (\r\n) | "SystemDefault"
+line_endings = "Unix"
+
+# ── Quotes ──────────────────────────────────────────────────────────────────
+# "AutoPreferDouble" | "AutoPreferSingle" | "ForceDouble" | "ForceSingle"
+# AutoPrefer* switches quotes only if it reduces the number of \escapes
+quote_style = "AutoPreferSingle"
+
+# ── Call parentheses ────────────────────────────────────────────────────────
+# Controls whether to omit parentheses on single-argument function calls
+# "Always"        → always keep parens:       foo("bar")
+# "NoSingleString" → omit if arg is a string: foo "bar"
+# "NoSingleTable"  → omit if arg is a table:  foo { ... }
+# "None"           → omit for both:           foo "bar" / foo { ... }
+# "Input"          → preserve whatever was written
+call_parentheses = "Always"
+
+# ── Collapse simple statements ──────────────────────────────────────────────
+# "Never"        → always expand to multiple lines
+# "FunctionOnly" → collapse only simple functions: function() return x end
+# "Always"       → collapse any simple block that fits on one line
+collapse_simple_statement = "Always"
+
+# ── Sort requires ───────────────────────────────────────────────────────────
+# Sorts require() calls at the top of a file alphabetically
+# Disabled by default — enable if you want consistent import ordering
+[sort_requires]
+enabled = true
+
+# vim:cc=+1:tw=78:ft=toml

@@ -1,98 +1,39 @@
-set clipboard^=unnamed,unnamedplus
-set autochdir
+set clipboard=unnamedplus
+set hidden
 set wildmenu
 set wildmode=longest:full,full
 set listchars=tab:»\ ,trail:¬,lead:·,nbsp:␣,extends:›,precedes:‹
 set list
+set path=.,,**
+set incsearch
+set smartcase
+set ignorecase
+set scrolloff=10
+set number
+set relativenumber
 
-fu! Fzy(choice_command, vim_command)
-  try
-    let output = system(a:choice_command . " | fzy ")
-    exec a:vim_command . ' ' . output
-  catch /Vim:Interrupt/
-    " Swallow errors from ^C
-  endtry
-  redraw!
-endf
+filetype plugin indent on
+syntax on
 
-com! -complete=dir -nargs=* Fd call Fzy("fd " . <q-args>, ":e")
+let mapleader = ","
 
-nnoremap <space>f :Fd<space>
-
-inoremap jk <esc>
-inoremap kj <esc>
+inoremap jk <esc>l
+inoremap kj <esc>l
+cnoremap jk <esc>
+cnoremap kj <esc>
 
 
-" ============================================================
-" Emacs-style keybindings in Insert mode
-" ============================================================
+set wildcharm=<C-z>
 
-inoremap <C-f> <C-o>l
-inoremap <C-b> <C-o>h
+" Completion menu navigation (insert mode)
+inoremap <expr> <Down>  pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>    pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <Left>  pumvisible() ? "\<C-e>" : "\<Left>"
+inoremap <expr> <Right> pumvisible() ? "\<C-y>" : "\<Right>"
 
-inoremap <M-f> <C-o>e
-inoremap <M-b> <C-o>b
+" Cmdline completion navigation
+cnoremap <expr> <Down>  wildmenumode() ? "\<C-n>" : "\<Down>"
+cnoremap <expr> <Up>    wildmenumode() ? "\<C-p>" : "\<Up>"
+cnoremap <expr> <Left>  wildmenumode() ? "\<C-e>" : "\<Left>"
+cnoremap <expr> <Right> wildmenumode() ? "\<C-y>" : "\<C-z>"
 
-inoremap <C-a> <C-o>0
-inoremap <C-e> <C-o>$
-
-inoremap <C-n> <C-o>j
-inoremap <C-p> <C-o>k
-
-inoremap <M-a> <C-o>(
-inoremap <M-e> <C-o>)
-
-inoremap <M-{> <C-o>{
-inoremap <M-}> <C-o>}
-
-inoremap <M-<> <C-o>gg
-inoremap <M->> <C-o>G
-
-" goto line
-inoremap <M-g>g <C-o>:
-
-inoremap <C-d> <Del>
-inoremap <M-d> <C-o>dw
-inoremap <M-BS> <C-w>
-inoremap <C-u> <C-o>d0
-inoremap <C-k> <C-o>D
-inoremap <C-/> <C-o>u
-
-inoremap <A-j> <C-o>:m .+1<CR>
-inoremap <A-k> <C-o>:m .-2<CR>
-
-" ------------------------------------------------------------
-" Movement
-" ------------------------------------------------------------
-
-cnoremap <C-f> <Right>
-cnoremap <C-b> <Left>
-
-cnoremap <M-f> <S-Right>
-cnoremap <M-b> <S-Left>
-
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-
-" ------------------------------------------------------------
-" Deletion
-" ------------------------------------------------------------
-
-cnoremap <C-d> <Del>
-cnoremap <M-d> <C-Right><C-w>
-cnoremap <M-BS> <C-w>
-cnoremap <C-u> <C-e><C-u>
-
-" ------------------------------------------------------------
-" History navigation
-" ------------------------------------------------------------
-
-cnoremap <C-n> <Down>
-cnoremap <C-p> <Up>
-
-" ------------------------------------------------------------
-" Miscellaneous
-" ------------------------------------------------------------
-
-cnoremap <C-t> <C-e><BS>
-cnoremap <C-l> <C-f>

@@ -30,9 +30,9 @@ redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 # This keeps screen locking and full suspend predictable
 # TODO: patch up slock
 # ------------------------------------------
-xset +dpms
-xset dpms 600 0 0
-xss-lock --transfer-sleep-lock -- slock &
+# xset +dpms
+# xset dpms 600 0 0
+# xss-lock --transfer-sleep-lock -- slock &
 
-notify-capslock & disown # not working
+notify-capslock & disown # sometimes it works, others it does not
 reset-keyboard

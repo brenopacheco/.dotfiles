@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export XDG_CONFIG_HOME=~/.dotfiles
+exec nvim $@

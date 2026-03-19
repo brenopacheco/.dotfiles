@@ -187,7 +187,7 @@ local keyboard = {
 }
 
 -- [[ setup
-
+vim.z = vim.z or {}
 vim.g.mapleader = keyboard.leader
 vim.z.keyboard = keyboard
 

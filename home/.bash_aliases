@@ -3,7 +3,7 @@ alias cr='cargo run'
 
 alias gpgr="gpgconf --reload gpg-agent"
 
-alias ts='tmux new -s'
+alias ts='tmux new -s $PWD'
 alias ta='tmux attach'
 alias tk='tmux kill-server'
 

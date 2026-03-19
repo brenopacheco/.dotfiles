@@ -1,3 +1,0 @@
---- Kill-ring
---
--- cycle through registers (like emacs M-y)

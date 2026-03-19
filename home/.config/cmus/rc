@@ -1,0 +1,186 @@
+# ~/.config/cmus/rc
+# comprehensive cmus configuration with sane defaults
+# lines starting with # are comments and are ignored by cmus
+
+
+# =============================================================================
+# PLAYBACK BEHAVIOUR
+# =============================================================================
+
+# continue playing after the current track ends (i.e. don't stop at end of track)
+set continue=true
+
+# repeat the queue/library when it ends
+set repeat=false
+
+# repeat just the current track
+set repeat_current=false
+
+# shuffle playback
+set shuffle=false
+
+# aaa (active after active) mode — scope of shuffle and repeat
+#   all     = entire library
+#   artist  = stay within current artist
+#   album   = stay within current album
+set aaa_mode=all
+
+# automatically re-add tracks that finish playing back to the queue
+set replaygain=false
+
+# replaygain preamp in dB (range: -64 to 64)
+# only relevant if replaygain tags exist in your files
+set replaygain_preamp=0
+
+# limit volume to 100% even with replaygain preamp applied
+set replaygain_limit=true
+
+
+# =============================================================================
+# VOLUME & AUDIO
+# =============================================================================
+
+# use software volume control instead of the system mixer
+# false = use your system volume (alsa/pulseaudio/pipewire) — recommended
+set softvol=false
+
+# initial volume when softvol is enabled (0–100)
+set vol_left=100
+set vol_right=100
+
+
+# =============================================================================
+# LIBRARY
+# =============================================================================
+
+# automatically add files dropped into the library view
+set auto_reshuffle=true
+
+# follow the currently playing track in the library view
+set follow=true
+
+# show hidden files (dotfiles) in the file browser
+set show_hidden=false
+
+# show all files in the file browser, not just known audio formats
+set show_all_files=false
+
+# sort order for view 2 (the sorted flat library)
+# fields: artist, album, discnumber, tracknumber, title, filename, date, genre, duration
+set lib_sort=artist album discnumber tracknumber title
+
+# sort order for the playlist view
+set pl_sort=
+
+
+# =============================================================================
+# DISPLAY
+# =============================================================================
+
+# show the remaining time instead of elapsed time for the current track
+set show_remaining_time=false
+
+# display the status line at the bottom
+set set_term_title=true
+
+# format string for the currently playing track (top bar)
+# available fields: %a artist  %l album  %t title  %n tracknumber
+#                   %d duration  %D discnumber  %f filename  %F path
+#                   %y date  %g genre  %c comment
+set format_current= %a - %l - %t
+
+# format string for tracks in the library/playlist view
+set format_trackwin=%n. %t%= %y  %d
+
+# format string for the title bar (terminal window title)
+set format_title=%a - %t
+
+# highlight the current row in the library/playlist
+set mouse=false
+
+
+# =============================================================================
+# COLOURS
+# =============================================================================
+# format: color <element> <foreground> <background>
+# colours: default black red green yellow blue magenta cyan white
+#          plus bright variants: brightblack brightred etc.
+# -1 or "default" = use terminal default
+
+colorscheme default
+
+# you can override individual elements, for example:
+# color cur_item        yellow    default
+# color active_item     white     default
+# color statusline      white     black
+# color titleline       white     black
+# color separator       blue      default
+
+
+# =============================================================================
+# KEY BINDINGS — REFERENCE
+# =============================================================================
+# uncomment and edit any bind line to override a default
+# syntax: bind -f <context> <key> <command>
+# contexts: common, library, playlist, queue, browser, filters, settings
+
+# --- views ---
+# bind -f common 1  view library
+# bind -f common 2  view sorted
+# bind -f common 3  view playlist
+# bind -f common 4  view queue
+# bind -f common 5  view browser
+# bind -f common 6  view filters
+# bind -f common 7  view settings
+
+# --- playback ---
+# bind -f common x  player-play
+# bind -f common c  player-pause
+# bind -f common v  player-stop
+# bind -f common z  player-prev
+# bind -f common b  player-next
+# bind -f common s  toggle shuffle
+# bind -f common r  toggle repeat
+# bind -f common C  toggle continue
+
+# --- seeking ---
+# bind -f common ,  seek -10
+# bind -f common .  seek +10
+# bind -f common <  seek -60
+# bind -f common >  seek +60
+
+# --- volume ---
+# bind -f common +  vol +10%
+# bind -f common -  vol -10%
+
+# --- navigation ---
+# bind -f common j  win-down
+# bind -f common k  win-up
+# bind -f common g  win-top
+# bind -f common G  win-bottom
+# bind -f common ^F win-page-down
+# bind -f common ^B win-page-up
+
+# --- search ---
+# bind -f common /  search-start
+# bind -f common n  search-next
+# bind -f common N  search-prev
+
+# --- queue ---
+# bind -f common e  win-add-q
+# bind -f common E  win-add-Q
+# bind -f common y  win-add-pl
+
+# --- misc ---
+# bind -f common i  win-sel-cur
+# bind -f common u  update-cache
+# bind -f common :  command-mode
+# bind -f common q  quit
+
+
+# =============================================================================
+# LIBRARY PATHS
+# =============================================================================
+# uncomment and adjust to auto-load your music on startup
+
+add ~/Music

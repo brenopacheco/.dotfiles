@@ -89,7 +89,7 @@ pacman(
     'zathura',                'zathura-pdf-mupdf',
     'zip',                    'zk',
     'cpanminus',              'perl-local-lib',
-    'man-pages',
+    'man-pages', 'yad',
 
     # lock
     'xss-lock', 'slock',
@@ -110,6 +110,7 @@ dirs(
     '~/.config',
     '~/.config/systemd/user',
     '~/.config/emacs',
+    '~/.emacs.d',
     '~/.gnupg',
     '~/.ssh'
 );
