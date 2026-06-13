@@ -1,0 +1,80 @@
+VIM BUFFER STATES & MANAGEMENT — CHEATSHEET
+──────────────────────────────────────────────────────────────────────────────
+BUFFER STATES
+──────────────────────────────────────────────────────────────────────────────
+  state      in window   in memory   object exists
+  ────────── ─────────── ─────────── ─────────────
+  active     ✓           ✓           ✓
+  hidden     —           ✓           ✓
+  inactive   —           —           ✓
+  wiped      —           —           —
+
+  active   → :e  :b  :sp  :vs
+  hidden   → :hide              bufhidden=hide
+  inactive → :badd  :bunload    bufhidden=unload
+  wiped    → :bwipeout          bufhidden=wipe
+
+  bufhidden="" defers to global 'hidden' (default off):
+    hidden=on  → hide on abandon
+    hidden=off → unload on abandon
+
+BUFLISTED
+──────────────────────────────────────────────────────────────────────────────
+  - set at creation; state transitions (:hide, :bunload) never touch it
+  - files opened with :e, :b, :badd etc. are listed by default
+  - only :bdelete and :bwipeout explicitly remove the listed flag
+  - :bunload on an unlisted buffer is equivalent to :bdelete
+  - plugin buffers: set buflisted=0 explicitly
+
+:ls FLAGS
+──────────────────────────────────────────────────────────────────────────────
+  :ls   listed buffers only
+  :ls!  all buffers including unlisted
+
+  u   unlisted          %   current          #   alternate
+  a   active            h   hidden           ' ' inactive (unloaded)
+  +   modified          -   nomodifiable     =   readonly
+
+PRACTICAL CASES
+──────────────────────────────────────────────────────────────────────────────
+  goal                  how
+  ─────────────────────────────────────────────────────────────────────────
+  hide, keep listed     buflisted=1 + bufhidden=hide
+                        buflisted=1 + hidden=on
+                        → normal editing; why most people set hidden in vimrc
+
+  hide, make unlisted   buflisted=0 + bufhidden=hide
+                        buflisted=0 + hidden=on
+                        → plugin buffers keeping a process alive (terminals,
+                          background jobs); loaded but invisible in :ls
+
+  unload, keep listed   buflisted=1 + :bunload
+                        buflisted=1 + bufhidden=unload
+                        buflisted=1 + hidden=off
+                        → large files you're not actively editing; frees
+                          memory while keeping them in :ls
+
+  unload, make unlisted :bdelete
+                        buflisted=0 + :bunload
+                        buflisted=0 + bufhidden=unload
+                        → legacy; ghost buffers existed to preserve marks
+                          before shada. now shada persists marks independently
+                          of buffer state — prefer :bwipeout instead
+
+  wipe                  :bwipeout
+                        bufhidden=wipe
+                        → ephemeral buffers (scratch, popups, preview, plugin
+                          UI); leaves no trace, avoids accumulating buf numbers
+
+NOTES
+──────────────────────────────────────────────────────────────────────────────
+  - "active" means displayed in any window, not just the current one
+    (current window = where the cursor is; only one at a time)
+  - :hide on the last window switches to another buffer, doesn't close Vim
+  - :badd is the only command that creates a buffer directly in inactive
+    state, without it ever having been active or hidden first
+  - a :bdelete'd buffer can be relisted with :badd or by reopening the file;
+    Vim reuses the same buffer number
+  - general rule: hidden=on for day-to-day work; :bwipeout when truly done
+
+vim:cc=+1:tw=78

@@ -1,0 +1,8 @@
+#!/bin/bash
+# Remove pacman cache and orphaned packages.
+# Usage: clean-pacman
+
+sudo pacman -Scc
+sudo pacman -Rns "$(pacman -Qtdq)"
+rm -rf ~/.cache/yay
+rm -rf ~/.cache/pacman

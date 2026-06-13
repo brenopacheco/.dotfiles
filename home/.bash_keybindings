@@ -1,6 +1,2 @@
-#bind -x '"": "clear"'             # C-l    :: clear screen
-bind '"\C-l": clear-screen'
-bind '"\C-p": previous-history'
-bind '"\C-n": next-history'
-
-# vim:tw=78:ts=8:noet:ft=sh:norl:
+# Keybindings live in fish (~/.config/fish/config.fish) now.
+# Bash is a fallback shell — defaults are fine.

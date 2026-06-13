@@ -3,6 +3,8 @@ if not ok then return end
 
 snacks.did_setup = false
 require('snacks').setup({
+  bigfile = { enabled = true },
+  input = { enabled = true },
   picker = {
     win = {
       input = {

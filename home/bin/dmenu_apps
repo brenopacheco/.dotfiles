@@ -2,6 +2,7 @@
 # shellcheck disable=SC2086
 # Launch application from global (-a) or user config applications
 
+# /usr/share/applications/
 APPS=(
 	'arandr.desktop'
 	'aseprite.desktop'
@@ -31,6 +32,7 @@ APPS=(
 	'org.kde.okular.desktop'
 	'org.mozilla.Thunderbird.desktop'
 	'org.pulseaudio.pavucontrol.desktop'
+	'org.qutebrowser.qutebrowser.desktop'
 	'org.zealdocs.zeal.desktop'
 	'screengrab.desktop'
 	'slack.desktop'

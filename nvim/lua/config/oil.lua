@@ -19,6 +19,7 @@ oil.setup({
     ['gx'] = 'actions.open_external',
     ['zh'] = { 'actions.toggle_hidden', mode = 'n' },
     ['zx'] = 'actions.refresh',
+    ['.'] = 'actions.open_cmdline',
   },
   use_default_keymaps = false,
 })

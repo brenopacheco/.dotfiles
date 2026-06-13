@@ -17,225 +17,154 @@
 ---
 --- Both the `+` and `*` registers are set for cross-platform clipboard
 --- compatibility (on Linux they are typically the same).
+---
+--- TODO: get the line number too, optionally?
 
-local function yank(text)
-  vim.fn.setreg('+', text)
-  vim.fn.setreg('*', text)
-  vim.notify('Yanked: ' .. text, vim.log.levels.INFO)
+local bi = require('mods.bufinfo')
+
+local function git_root(path) return vim.fs.root(path, '.git') end
+
+local function git_cmd(root, ...)
+  local args = { 'git', '-C', root, ... }
+  local output = vim.trim(vim.fn.system(args))
+  if vim.v.shell_error ~= 0 then return nil end
+  return output
 end
 
---- Returns (start_line, end_line) from the command opts.
---- Three states: (nil, nil) = no line decoration; (n, n) = single line; (s, e) = range.
----@return integer|nil, integer|nil
-local function parse_range(opts)
-  if opts.range > 0 then return opts.line1, opts.line2 end
-  return nil, nil
+local function resolve_effective_path()
+  local info = bi.get(vim.api.nvim_get_current_buf())
+  return info.path or info.dir
 end
 
----@return string|nil
-local function current_file()
-  local abs = vim.fn.expand('%:p')
-
-  if abs == '' then
-    vim.notify('Current buffer has no file name', vim.log.levels.INFO)
-    return nil
+local function get_rel_path()
+  local path = resolve_effective_path()
+  if not path then return nil end
+  local root = git_root(path)
+  if root and vim.startswith(path, root) then
+    local rel = path:sub(#root + 2)
+    return rel ~= '' and rel or '.'
   end
-
-  -- Buffer names with a URI scheme (term://, oil://, fugitive://, etc.)
-  -- are not real filesystem paths.
-  if abs:match('^%a[%w-]*://') then
-    vim.notify('Buffer has no backing file', vim.log.levels.INFO)
-    return nil
-  end
-
-  return abs
+  return vim.fn.fnamemodify(path, ':.')
 end
 
-----------------------------------------------------------------------
--- Formatters: all take (abs, start_line, end_line) → string|nil
-----------------------------------------------------------------------
-
----@param path string
----@param s integer|nil
----@param e integer|nil
----@return string
-local function with_ref(path, s, e)
-  if not s then return path end
-  if s == e then return path .. ':' .. s end
-  return path .. ':' .. s .. '-' .. e
+local function get_abs_path()
+  local path = resolve_effective_path()
+  if not path then return nil end
+  return vim.fn.fnamemodify(path, ':p')
 end
 
----@param abs string
----@param s integer|nil
----@param e integer|nil
----@return string
-local function path_rel(abs, s, e)
-  -- Relative to git root when inside a repo, cwd otherwise.
-  local base = vim.fs.root(abs, '.git') or vim.fn.getcwd(0)
-  local rel = vim.fs.relpath(base, abs)
-  if not rel then
-    vim.notify(
-      'Could not make path relative; using absolute',
-      vim.log.levels.WARN
-    )
-  end
-  return with_ref(rel or abs, s, e)
+local function get_file()
+  local path = resolve_effective_path()
+  if not path then return nil end
+  return vim.fn.fnamemodify(path, ':t')
 end
 
----@param abs string
----@param s integer|nil
----@param e integer|nil
----@return string
-local function path_file(abs, s, e) return with_ref(vim.fs.basename(abs), s, e) end
-
----@param abs string
----@param s integer|nil
----@param e integer|nil
----@return string
-local function path_dir(abs, s, e) return with_ref(vim.fs.dirname(abs), s, e) end
-
-----------------------------------------------------------------------
--- Permalink
-----------------------------------------------------------------------
-
---- Extracts owner/repo from a git remote URL.
---- Handles SSH (git@...) and HTTPS (https://...) for GitHub and GitLab.
---- Multi-segment GitLab group paths (group/subgroup/repo) are not supported;
---- returns nil for these so the caller can notify the user.
----@param url string
----@return string|nil host, string|nil owner, string|nil repo
-local function parse_remote(url)
-  -- SSH: git@github.com:owner/repo.git
-  local host, owner, repo = url:match('^git@([^:]+):([^/]+)/(.+)$')
-  if host and owner and repo then
-    repo = repo:gsub('%.git$', '')
-    return host, owner, repo
+local function get_dir()
+  local path = resolve_effective_path()
+  if not path then return nil end
+  local stat = vim.uv.fs_stat(path)
+  if stat and stat.type == 'directory' then
+    return vim.fn.fnamemodify(path, ':p'):gsub('/$', '')
   end
-
-  -- HTTPS: https://github.com/owner/repo.git
-  -- Only matches a single owner/repo segment — multi-segment GitLab group
-  -- paths (e.g. group/subgroup/repo) will not match and return nil.
-  host, owner, repo = url:match('^https?://([^/]+)/([^/]+)/([^/]+)$')
-  if host and owner and repo then
-    repo = repo:gsub('%.git$', '')
-    return host, owner, repo
-  end
-
-  return nil, nil, nil
+  return vim.fn.fnamemodify(path, ':h')
 end
 
----@param abs string
----@param start_line integer|nil
----@param end_line integer|nil
----@return string|nil
-local function permalink(abs, start_line, end_line)
-  local root = vim.fs.root(abs, '.git')
-  if not root then
-    vim.notify('Not in a git repository', vim.log.levels.WARN)
-    return nil
+local function get_link(line1, line2)
+  local path = resolve_effective_path()
+  if not path then return nil end
+  local root = git_root(path)
+  if not root then return nil end
+
+  local rel = path:sub(#root + 2)
+
+  local remote = git_cmd(root, 'remote', 'get-url', 'origin')
+  if not remote or remote == '' then return nil end
+
+  local web_url
+
+  -- git@host:path.git
+  local host, repo_path = remote:match('^git@([^:]+):(.+)')
+  if host then
+    repo_path = repo_path:gsub('%.git$', '')
+    web_url = 'https://' .. host .. '/' .. repo_path
   end
 
-  local remote_result =
-    vim.system({ 'git', '-C', root, 'remote', 'get-url', 'origin' }):wait()
-  if remote_result.code ~= 0 then
-    vim.notify('No git remote "origin" found', vim.log.levels.WARN)
-    return nil
-  end
-  local remote = vim.trim(remote_result.stdout)
-
-  local host, owner, repo = parse_remote(remote)
-  if not host or not owner or not repo then
-    vim.notify('Could not parse remote URL: ' .. remote, vim.log.levels.ERROR)
-    return nil
-  end
-
-  local sha_result =
-    vim.system({ 'git', '-C', root, 'rev-parse', 'HEAD' }):wait()
-  if sha_result.code ~= 0 then
-    vim.notify('Could not resolve HEAD commit', vim.log.levels.WARN)
-    return nil
-  end
-  local sha = vim.trim(sha_result.stdout)
-
-  local rel = vim.fs.relpath(root, abs) or abs
-
-  local fragment = ''
-  if start_line then
-    if start_line == end_line then
-      fragment = '#L' .. start_line
-    else
-      fragment = '#L' .. start_line .. '-L' .. end_line
+  -- https://host/path.git
+  if not web_url then
+    local proto, h, p = remote:match('^(https?)://([^/]+)/(.+)$')
+    if proto then
+      p = p:gsub('%.git$', '')
+      web_url = proto .. '://' .. h .. '/' .. p
     end
   end
 
-  if host:match('gitlab') then
-    return ('https://%s/%s/%s/-/blob/%s/%s%s'):format(
-      host,
-      owner,
-      repo,
-      sha,
-      rel,
-      fragment
-    )
+  -- ssh://git@host/path.git
+  if not web_url then
+    local h, p = remote:match('^ssh://git@([^/]+)/(.+)$')
+    if h then
+      p = p:gsub('%.git$', '')
+      web_url = 'https://' .. h .. '/' .. p
+    end
   end
 
-  return ('https://%s/%s/%s/blob/%s/%s%s'):format(
-    host,
-    owner,
-    repo,
-    sha,
-    rel,
-    fragment
-  )
+  if not web_url then return nil end
+
+  local ref = git_cmd(root, 'rev-parse', '--abbrev-ref', 'HEAD')
+  if not ref or ref == '' or ref == 'HEAD' then
+    ref = git_cmd(root, 'rev-parse', 'HEAD')
+    if not ref then return nil end
+  end
+
+  local is_gitlab = web_url:find('gitlab%.com')
+
+  local base = is_gitlab and web_url .. '/-/blob/' .. ref .. '/' .. rel
+    or web_url .. '/blob/' .. ref .. '/' .. rel
+
+  if line1 == line2 then return base .. '#L' .. line1 end
+  return base .. '#L' .. line1 .. '-L' .. line2
 end
 
-----------------------------------------------------------------------
--- Command
-----------------------------------------------------------------------
-
-local formats = {
-  abs = with_ref,
-  dir = path_dir,
-  file = path_file,
-  link = permalink,
-  rel = path_rel,
-}
-
--- Statically defined in sorted order for stable tab-completion and error messages.
-local COMPLETE = { 'abs', 'dir', 'file', 'link', 'rel' }
-
 local function yank_path(opts)
-  local abs = current_file()
-  if not abs then return end
+  local mode = opts.args ~= '' and opts.args or 'rel'
+  local text
 
-  local kind = opts.fargs[1] or 'rel'
-  local formatter = formats[kind]
-
-  if not formatter then
-    vim.notify(
-      ('Unknown path kind: %s (expected: %s)'):format(
-        kind,
-        table.concat(COMPLETE, ', ')
-      ),
-      vim.log.levels.ERROR
-    )
+  if mode == 'abs' then
+    text = get_abs_path()
+  elseif mode == 'rel' then
+    text = get_rel_path()
+  elseif mode == 'file' then
+    text = get_file()
+  elseif mode == 'dir' then
+    text = get_dir()
+  elseif mode == 'link' then
+    text = get_link(opts.line1, opts.line2)
+  else
+    vim.notify('YankPath: unknown mode: ' .. mode, vim.log.levels.WARN)
     return
   end
 
-  local s, e = parse_range(opts)
-  local result = formatter(abs, s, e)
-  if result then yank(result) end
+  if not text then
+    if mode == 'link' then
+      vim.notify(
+        'YankPath: could not generate link (check git remote and repo)',
+        vim.log.levels.WARN
+      )
+    else
+      vim.notify('YankPath: buffer has no file path', vim.log.levels.WARN)
+    end
+    return
+  end
+
+  vim.fn.setreg('+', text)
+  vim.fn.setreg('*', text)
+  vim.notify('YankPath: copied ' .. text, vim.log.levels.INFO)
 end
 
 vim.api.nvim_create_user_command('YankPath', yank_path, {
   nargs = '?',
   range = true,
-  complete = function(arglead)
-    return vim.tbl_filter(
-      function(k) return vim.startswith(k, arglead) end,
-      COMPLETE
-    )
-  end,
+  complete = function() return { 'abs', 'rel', 'file', 'dir', 'link' } end,
+  desc = 'Copy current file path to clipboard',
 })
 
 return {}

@@ -108,6 +108,7 @@ dirs(
 
     # prevent stow folding
     '~/.config',
+    '~/.config/fish',
     '~/.config/systemd/user',
     '~/.config/emacs',
     '~/.emacs.d',

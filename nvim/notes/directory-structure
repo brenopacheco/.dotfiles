@@ -1,0 +1,74 @@
+~/.config/nvim/
+│
+├── init.lua                          # Entry point. Sourced first on every startup.
+│                                     # Use init.vim instead if you prefer VimL.
+│
+├── lua/                              # Lua modules. Nothing here is auto-sourced.
+│   ├── foo.lua                       # Loaded via require('foo')
+│   └── foo/
+│       └── init.lua                  # Also loaded via require('foo')
+│
+├── plugin/                           # Auto-sourced after init.lua, alphabetically.
+│   ├── 01-settings.lua               # All .lua and .vim files are sourced.
+│   └── 02-keymaps.lua                # Applies to your config and every plugin on rtp.
+│
+├── after/                            # Mirrors every sibling dir; always loads last.
+│   ├── plugin/                       # Sourced after all plugin/ files on the rtp.
+│   │   └── overrides.lua             # Safe place to override plugin defaults.
+│   ├── ftplugin/                     # Sourced after all ftplugin/ files on the rtp.
+│   │   └── python.lua
+│   ├── syntax/
+│   │   └── python.vim
+│   └── indent/
+│       └── python.lua
+│
+├── ftplugin/                         # Triggered by FileType event (not at startup).
+│   ├── python.lua                    # Runs when ft=python is set.
+│   └── python/                       # Subdirectory form also accepted.
+│       └── extra.lua                 # ALL matching files across rtp are sourced
+│                                     # (unlike indent/ and syntax/ which stop at first).
+│
+├── indent/                           # FileType-triggered. Stops at FIRST match on rtp.
+│   └── python.lua                    # Sets indentation rules for that filetype.
+│
+├── syntax/                           # FileType-triggered. Stops at FIRST match on rtp.
+│   └── python.vim                    # Only relevant when treesitter is disabled.
+│
+├── ftdetect/                         # Filetype detection. Sourced during ft detection phase.
+│   └── myext.lua                     # Typically calls vim.filetype.add(). All files
+│                                     # across rtp are sourced (not just first match).
+│
+├── lsp/                              # NEW in 0.11. Built-in LSP config per server.
+│   └── pyright.lua                   # Returns a config table for vim.lsp.config().
+│                                     # Server starts automatically via vim.lsp.enable().
+│                                     # Replaces most nvim-lspconfig boilerplate.
+│
+├── queries/                          # Treesitter query files.
+│   └── python/
+│       ├── highlights.scm            # Syntax highlighting queries.
+│       ├── injections.scm            # Embedded language injections.
+│       └── textobjects.scm           # Used by nvim-treesitter-textobjects etc.
+│                                     # Query files are MERGED across rtp entries,
+│                                     # so yours extend built-ins rather than replace them.
+│
+├── health/                           # Healthcheck modules. Sourced on :checkhealth only.
+│   └── myplugin.lua                  # Or myplugin/health.lua. Registers check functions.
+│
+├── compiler/                         # Loaded only on :compiler {name}.
+│   └── mycompiler.vim
+│
+├── colors/                           # Loaded only on :colorscheme {name}.
+│   └── mytheme.lua
+│
+├── keymap/                           # Loaded only on :set keymap={name}.
+│   └── mykeymap.vim
+│
+├── autoload/                         # Legacy VimL lazy-loading. Not used in Lua workflows.
+│   └── foo.vim                       # foo#bar() call triggers sourcing of this file.
+│
+└── pack/                             # Built-in package manager (`:h packages`).
+    └── {bundle-name}/
+        ├── start/                    # Auto-added to rtp before plugin/ files are sourced.
+        │   └── {plugin}/             # Full plugin directory layout (has its own plugin/ etc).
+        └── opt/                      # NOT added to rtp automatically.
+            └── {plugin}/             # Loaded on demand via :packadd {plugin}.

@@ -13,18 +13,6 @@
       "rev": "db486b42299b2e3f5831809617af21becf268a39",
       "src": "git@github.com:lewis6991/gitsigns.nvim"
     },
-    "hlchunk.nvim": {
-      "rev": "06f51922ca43d5cdacf96725c106405fe064c59e",
-      "src": "https://github.com/shellRaining/hlchunk.nvim"
-    },
-    "neoformat": {
-      "rev": "9d95e5ca3ab263363758d5b1d7a174a30556ab2d",
-      "src": "https://github.com/sbdchd/neoformat"
-    },
-    "nightfox.nvim": {
-      "rev": "ba47d4b4c5ec308718641ba7402c143836f35aa9",
-      "src": "git@github.com:EdenEast/nightfox.nvim"
-    },
     "nvim-lspconfig": {
       "rev": "a776085e04f7b15d0b59fae2244df07d98360ab4",
       "src": "git@github.com:neovim/nvim-lspconfig"
@@ -42,10 +30,6 @@
       "rev": "0fcc83805ad11cf714a949c98c605ed717e0b83e",
       "src": "git@github.com:stevearc/oil.nvim"
     },
-    "schemastore.nvim": {
-      "rev": "e1a36239e4e36759546852dae5f4737375b388f6",
-      "src": "https://github.com/b0o/schemastore.nvim"
-    },
     "snacks.nvim": {
       "rev": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e",
       "src": "git@github.com:folke/snacks.nvim"
@@ -56,11 +40,7 @@
     },
     "vim-nightfly-guicolors": {
       "rev": "66050453bf40ac7eddc7a84dd15291db85fefc43",
-      "src": "https://github.com/bluz71/vim-nightfly-guicolors"
-    },
-    "zk-nvim": {
-      "rev": "bc3b39374b25fad977cecc936588cb060f15a773",
-      "src": "https://github.com/zk-org/zk-nvim"
+      "src": "git@github.com:bluz71/vim-nightfly-guicolors"
     }
   }
 }

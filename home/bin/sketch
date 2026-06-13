@@ -1,97 +1,58 @@
-#!/usr/bin/env bash
-# Start a new sketch project
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Getopt::Long qw(GetOptions);
+use Pod::Usage   qw(pod2usage);
+use File::Path   qw(make_path);
 
-SELECTED=$1
+=head1 SYNOPSIS
 
-function help() {
-	cat <<EOF
-Usage: sketch [go|c|js|sh|lua|pl|rust] [NAME]
+mycmd [-h|--help] [NAME]
 
-Creates a sketch project for a given language.
-The directory is created in $HOME/sketch with a random name.
-If NAME is provided, the directory name is prefixed with the argument.
+=cut
 
-EOF
+my $help = 0;
+GetOptions(
+    'h|help' => \$help,
+) or pod2usage(2);
+pod2usage(1) if $help;
+
+my $name = shift @ARGV;
+
+my $home = $ENV{HOME};
+make_path("$home/sketch");
+
+# generate 10 random hex chars
+open(my $urandom, '<', '/dev/urandom') or die "Can't open /dev/urandom: $!";
+read($urandom, my $raw, 32);
+close $urandom;
+my $tmpname = substr(unpack('H*', $raw), 0, 10);
+
+$tmpname = "$name-$tmpname" if defined $name && length $name;
+
+my $dir     = "$home/sketch/$tmpname";
+my $session = "sketch-$tmpname";
+
+make_path($dir);
+chdir($dir) or exit 1;
+
+system("git init >/dev/null 2>&1") == 0 or exit 1;
+
+my $ignore_dir = "$home/.ignores";
+
+print "Directory: $dir\n";
+print "Session:   $session\n";
+
+system('tmux', 'new-session', '-d', '-s', $session, '-c', $dir);
+system('tmux', 'send-keys', '-t', $session, 'nvim .', 'C-m');
+system('tmux', 'attach-session', '-t', $session);
+
+if (-t STDIN) {
+    # Already in a terminal — just attach directly
+    system('tmux', 'attach-session', '-t', $session);
+} else {
+    # No terminal — spawn one with st, attached to the session
+    system('st', '-e', 'tmux', 'attach-session', '-t', $session);
 }
 
-if test "$#" -lt 1; then
-	help
-	exit 0
-fi
-
-SELECTED=$1
-NAME=$2
-
-if [[ ! "$SELECTED" =~ ^(go|c|js|sh|lua|pl|rust)$ ]]; then
-	help
-	echo "Invalid language" >&2
-	exit 1
-fi
-
-mkdir -p ~/sketch
-
-TMPNAME="${SELECTED}_$(LC_ALL=C tr -cd 'a-f0-9' </dev/urandom | head -c 10)"
-
-if [[ -n "$NAME" ]]; then
-	TMPNAME="$NAME-$TMPNAME"
-fi
-
-DIR="$HOME/sketch/$TMPNAME"
-SESSION="sketch-$TMPNAME"
-
-mkdir -p "$DIR"
-cd "$DIR" || exit 1
-git init >/dev/null 2>&1 || exit 1
-
-IGNORE_DIR=$HOME/.ignores
-
-case $SELECTED in
-"go")
-	go mod init pkg
-	touch main.go
-	echo -e "package main\n\nfunc main() {\n\n\n}" >main.go
-	echo -e 'all:\n\tgo run main.go' >Makefile
-	cp "${IGNORE_DIR}/Go.gitignore" .gitignore
-	;;
-"c")
-	echo -e "#include <stdio.h>\n\nint main() {\n\n  return 0;\n}" >main.c
-	echo -e 'all:\n\tgcc main.c -o main\n\t./main' >Makefile
-	;;
-"js")
-	bun init -y
-	echo -e 'all:\n\tbun run start' >Makefile
-	jq '.scripts = { "start": "bun run index.ts" }' package.json |
-		sponge package.json
-	cp "${IGNORE_DIR}/Node.gitignore" .gitignore
-	;;
-"sh")
-	FILE="main.sh"
-	touch $FILE
-	chmod +x $FILE
-	echo -e "#!/usr/bin/env bash\n" >$FILE
-	echo -e "all:\n\t./$FILE" >Makefile
-	;;
-"lua")
-	touch main.lua
-	cp "${IGNORE_DIR}/Lua.gitignore" .gitignore
-	;;
-"pl")
-	echo -e "#!/usr/bin/env perl\n\nuse diagnostics;\nuse feature 'say';\n\n" >main.pl
-	chmod +x ./main.pl
-	echo -e 'all:\n\t./main.pl' >Makefile
-	;;
-"rust")
-	cargo init
-	echo -e "all:\n\tcargo run" >Makefile
-	;;
-esac
-
-echo "Language:  $SELECTED"
-echo "Directory: $DIR"
-echo "Session:   $SESSION"
-
-tmux new-session -d -s "$SESSION" -c "$DIR"
-tmux send-keys -t "${SESSION}" 'nvim .' C-m
-tmux attach-session -t "$SESSION"
-
-exit 0
+exit 0;

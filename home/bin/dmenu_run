@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
 
-#"systemctl restart --user emacs"
+#
 cmds=(
 	"alacritty"
 	"clone-github"
-	"dmenu_pdf"
-	"faillock-reset"
 	"monitor asus"
 	"monitor dual"
 	"monitor hp"
 	"reset-audio"
-	"reset-keyboard"
-	"reset-keyboard -x"
-	"screengrab -r"
 	"shutdown -h now"
 	"shutdown -r now"
 	"systemctl suspend"
+	"faillock-reset"
+	"systemctl restart --user emacs"
 )
 
 cmd=$(printf "%s\n" "${cmds[@]}" | dmenu -p Run)

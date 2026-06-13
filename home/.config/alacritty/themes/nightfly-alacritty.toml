@@ -1,6 +1,6 @@
-# nightfly theme for Alacritty
-#
-# Upstream: github.com/bluz71/vim-nightfly-colors
+# Usage: copy this theme into the `~/.config/alacritty/themes` directory, then
+# import it in your `~/.config/alacritty/alacritty.toml` configuration file as
+# follows: import = ["~/.config/alacritty/themes/nightfly.toml"].
 
 [colors]
 draw_bold_text_with_bright_colors = true
@@ -30,8 +30,7 @@ white = "#a1aab8"
 yellow = "#e3d18a"
 
 [colors.primary]
-# background = "#011627"
-#background = "#f6f2ee" # dayfox
+background = "#011627"
 bright_foreground = "#eeeeee"
 foreground = "#bdc1c6"
 

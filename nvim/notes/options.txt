@@ -1,0 +1,78 @@
+VIM/NVIM OPTION SCOPES — CHEATSHEET
+──────────────────────────────────────────────────────────────────────────────
+MENTAL MODEL
+─────────────────────────────────────────────────────────────────────────────
+  every option has up to three values:
+
+  global value      fallback for all windows/buffers; authoritative for
+                    global-local when no local override is set
+  template value    copied into each new window/buffer at creation time
+  window/buf value  per-window or per-buffer override
+
+WHICH SLOTS EXIST PER SCOPE
+──────────────────────────────────────────────────────────────────────────────
+  scope             global value    template value   window/buf value
+  ───────────────── ─────────────── ──────────────── ────────────────
+  global            ✓               —                —
+  local to win/buf  —               ✓                ✓
+  global-local      ✓               —                ✓
+  local-noglobal    —               —                ✓
+
+  (* local-noglobal is a subset of local-to-win/buf: it has a per-window or
+     per-buffer value slot but NO template slot. Values are never inherited
+     by new windows/buffers — each starts fresh.)
+
+WRITING TO SLOTS
+──────────────────────────────────────────────────────────────────────────────
+  goal                     vimscript    lua shorthand    nvim API
+  ──────────────────────── ──────────── ──────────────── ────────────────────
+  global value (*)         :setglobal   vim.go.opt       scope="global"
+  template value (*)       :setglobal   vim.go.opt       scope="global"
+  window value             :setlocal    vim.wo.opt       win=0, scope="local"
+  buffer value             :setlocal    vim.bo.opt       buf=0, scope="local"
+  both at once             :set         vim.o.opt        win=0 (or buf=0)
+
+  (* same command writes to different slots depending on scope:
+     global and global-local options → global value
+     local-to-win/buf options        → template value
+     local-noglobal options          → win/buf value only; no template exists,
+                                       so :setglobal is a no-op for these)
+
+INSPECTING
+──────────────────────────────────────────────────────────────────────────────
+  goal                     vimscript       nvim API
+  ──────────────────────── ──────────────  ───────────────────────────────────
+  effective value          :set opt?       {win=0}
+  window/buf value         :setlocal opt?  {win=0, scope="local"}
+  global/template value    :setglobal opt? {scope="global"}
+
+  (for local-noglobal options, :setglobal opt? has no meaningful value)
+
+LOCAL-NOGLOBAL WINDOW OPTIONS                         *local-noglobal*
+──────────────────────────────────────────────────────────────────────────────
+  These local-to-window options have no template slot and are never copied
+  to new windows. Set them per-window (e.g. in a WinNew autocommand).
+
+  option            reason
+  ───────────────── ───────────────────────────────────────────
+  'previewwindow'   only one preview window can exist at a time
+  'scroll'          specific to the existing window's geometry
+  'winfixbuf'       specific to the existing window
+  'winfixheight'    specific to the existing window
+  'winfixwidth'     specific to the existing window
+
+LOCAL-NOGLOBAL BUFFER OPTIONS
+──────────────────────────────────────────────────────────────────────────────
+  These local-to-buffer options have no template slot and are never copied
+  to new buffers. They are set automatically or by autocommands.
+
+  option            reason
+  ───────────────── ──────────────────────────────
+  'filetype'        set explicitly by autocommands
+  'syntax'          set explicitly by autocommands
+  'bufhidden'       denotes special buffers
+  'buftype'         denotes special buffers
+  'readonly'        detected automatically
+  'modified'        detected automatically
+
+vim:cc=+1:tw=78

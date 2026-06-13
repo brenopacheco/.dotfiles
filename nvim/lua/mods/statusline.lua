@@ -5,7 +5,7 @@
 --- Layout:
 ---
 ---   {filename} {flags}  ·  {diag} · {project} · {ruler}
----   └── left ──────────┘   └── right ──────────────────┘
+---   └── left ──────────┘   └── right ─────────────────┘
 ---
 --- Segments:
 ---
@@ -130,81 +130,74 @@ local function normalise_path(path)
     local rel = path:sub(#root + 2)
     return rel ~= '' and rel or vim.fn.fnamemodify(path, ':t')
   end
-  return vim.fn.fnamemodify(path, ':~:.')
+  return vim.fn.fnamemodify(path, ':~')
 end
 
--- Each entry is { pattern, handler(name) -> string }.
--- Tried in order; first match wins. The generic URI entry at the end catches
--- any scheme not explicitly handled above (gpg://, pdf://, ssh://, etc.).
-local scheme_handlers = {
-  {
-    '^oil://',
-    function(name)
-      local path = name:gsub('^oil://', ''):gsub('/$', '')
-      return '[oil] ' .. normalise_path(path)
-    end,
-  },
+local function dir_hint(path)
+  local root = path and vim.fs.root(path, '.git')
+  if root and vim.startswith(path, root) then
+    local rel = path:sub(#root + 2)
+    return rel ~= '' and rel or '.'
+  end
+  return path and vim.fn.fnamemodify(path, ':~')
+end
 
-  {
-    '^term://',
-    function(name)
-      local dir, cmd = name:match('^term://(.-)//[^:]+:(.+)$')
-      if dir and cmd then
-        return '[term] ' .. cmd .. ' @ ' .. normalise_path(vim.fn.expand(dir))
-      end
-      return '[term]'
-    end,
-  },
-
-  {
-    '^fugitive://',
-    function(name)
-      local ref_path = name:match('%.git//(.+)$')
-      if ref_path then return '[git] ' .. ref_path end
-      local repo_root = name:match('^fugitive://(.*)/%.git//')
-      return '[git] ' .. repo_root
-    end,
-  },
-
-  -- Generic URI fallback: extracts the scheme name as the bracket label and
-  -- normalises the path portion. Handles gpg://, pdf://, and any future scheme.
-  {
-    '^%a[%w-]*://',
-    function(name)
-      local scheme = name:match('^(%a[%w-]*)://')
-      local path = name:match('^%a[%w-]*://(.-)//')
-        or name:match('^%a[%w-]*://(.*)')
-      return '[' .. scheme .. '] ' .. normalise_path(path or name)
-    end,
-  },
-}
+local bi = require('mods.bufinfo')
 
 local function resolve_filename(bufnr)
+  local info = bi.get(bufnr)
   local name = vim.api.nvim_buf_get_name(bufnr)
-  local buftype = vim.bo[bufnr].buftype
 
-  if buftype == 'help' then
-    return '[help] ' .. vim.fn.fnamemodify(name, ':t')
+  if info.kind == 'help' then return '[help] ' .. (info.label or '') end
+
+  if info.kind == 'netrw' then
+    return '[netwr] ' .. (info.dir and dir_hint(info.dir) or '')
   end
 
-  if vim.bo[bufnr].filetype == 'netrw' then
-    local curdir = vim.b[bufnr].netrw_curdir or name
-    return '[netwr] ' .. normalise_path(curdir:gsub('/$', ''))
-  end
-
-  if buftype == 'quickfix' then
+  if info.kind == 'quickfix' then
     local title = vim.fn.getqflist({ title = true }).title or ''
     return '[qf] ' .. title
   end
 
-  if name == '' then return '[No Name]' end
+  if info.kind == 'unnamed' then return '[No Name]' end
 
-  for _, entry in ipairs(scheme_handlers) do
-    local pat, handler = entry[1], entry[2]
-    if name:match(pat) then return handler(name) end
+  if info.scheme == 'oil' then
+    return '[oil] ' .. (info.dir and dir_hint(info.dir) or '')
   end
 
-  return normalise_path(name)
+  if info.scheme == 'term' then
+    local cmd = name:match('//%d+:(.+)$')
+    local hint = info.dir and dir_hint(info.dir)
+    local s = '[term] ' .. (cmd or '')
+    if hint and hint ~= '.' then s = s .. ' (' .. hint .. ')' end
+    return s
+  end
+
+  if info.scheme == 'compile' then
+    local cmd = name:match('//%d+:(.+)$')
+    local hint = info.dir and dir_hint(info.dir)
+    local s = '[compile] ' .. (cmd or '')
+    if hint and hint ~= '.' then s = s .. ' (' .. hint .. ')' end
+    return s
+  end
+
+  if info.kind == 'capture' then
+    local cmd = name:match('//%d+:(.+)$')
+    return '[capture] :' .. (cmd or '')
+  end
+
+  if info.scheme == 'fugitive' then
+    local ref_path = name:match('%.git//(.+)$')
+    if ref_path then return '[git] ' .. ref_path end
+    return '[git] ' .. (info.dir or '')
+  end
+
+  if info.scheme then
+    local p = info.path or info.dir
+    return '[' .. info.scheme .. '] ' .. (p and normalise_path(p) or '')
+  end
+
+  return info.path and normalise_path(info.path) or '[No Name]'
 end
 
 ------------------------------------------------------------------------
@@ -232,7 +225,8 @@ end
 
 local function render_project()
   local root = vim.fs.root(vim.fn.getcwd(0), '.git')
-  if not root then return vim.fn.fnamemodify(vim.fn.getcwd(0), ':p:h') end
+  if not root then return '' end
+  -- if not root then return vim.fn.fnamemodify(vim.fn.getcwd(0), ':~') end
   return vim.fn.fnamemodify(root, ':t')
 end
 

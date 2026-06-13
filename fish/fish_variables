@@ -1,0 +1,4 @@
+# This file contains fish universal variable definitions.
+# VERSION: 3.0
+SETUVAR __fish_initialized:4300
+SETUVAR fish_user_paths:/home/breno/\x2erustup/toolchains/stable\x2dx86_64\x2dunknown\x2dlinux\x2dgnu/bin\x1e/home/breno/\x2ego/bin\x1e/home/breno/\x2elocal/bin\x1e/home/breno/\x2ecargo/bin\x1e/home/breno/\x2easdf/shims\x1e/home/breno/bin

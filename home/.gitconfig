@@ -21,7 +21,6 @@
 	defaultBranch = main
 [log]
 	date = relative
-[alias]
 [url "git@github-private.com:brenoleonhardt/"]
 	insteadOf = git@github.com:brenoleonhardt/
 	insteadOf = https://github.com/brenoleonhardt/
@@ -30,8 +29,7 @@
 	insteadOf = https://github.com/breno-pacheco1/
 [url "git@github.com:"]
     insteadOf = https://github.com/
-
-# override [user] for work repos
-# add URL rewriting [url "git@github-work.com"]
+# override [user] for work repos — see ~/work/.gitconfig
+# add URL rewriting: [url "git@github-work.com"]
 [includeIf "gitdir:~/work/"]
     path = ~/work/.gitconfig

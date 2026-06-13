@@ -1,0 +1,19 @@
+#!/bin/bash
+# Compress a PDF via ghostscript.
+# Usage: compress-pdf <file.pdf>
+
+if [ -z "$1" ]; then
+    echo "Usage: compress-pdf <file.pdf>" >&2
+    exit 1
+fi
+
+if [ ! -f "$1" ]; then
+    echo "'$1' is not a valid file" >&2
+    exit 1
+fi
+
+output="${1%.pdf}-compressed.pdf"
+
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer \
+    -dNOPAUSE -dQUIET -dBATCH \
+    -sOutputFile="$output" "$1"

@@ -7,7 +7,7 @@
 ---   QuickFixCmdPost  grep
 
 vim.api.nvim_create_autocmd('QuickFixCmdPost', {
-  pattern = 'grep',
+  pattern = '*',
   group = vim.api.nvim_create_augroup('my/auto-open-qf', { clear = true }),
   desc = 'Auto-open quickfix on grep',
   callback = function()
