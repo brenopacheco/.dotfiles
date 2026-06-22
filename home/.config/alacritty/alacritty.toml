@@ -14,10 +14,6 @@ bold_italic = { family = "FiraCode Nerd Font Mono", style = "Bold"    }
 
 [keyboard]
 bindings = [
-  # NOTE: removed the manual CSI u bindings (Ctrl+1..9, Ctrl+Backspace, etc.)
-  # — they were a workaround for tmux's old key handling.  Tmux now has
-  # `extkeys` + `csi-u` and Alacritty sends correct sequences natively.
-  { key = "M", mods = "Control", chars = "\u001b[109;5u" },
   { key = "Equals", mods = "Super", action = "IncreaseFontSize" },
   { key = "Minus",  mods = "Super", action = "DecreaseFontSize" },
 ]

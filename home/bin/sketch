@@ -51,8 +51,8 @@ if (-t STDIN) {
     # Already in a terminal — just attach directly
     system('tmux', 'attach-session', '-t', $session);
 } else {
-    # No terminal — spawn one with st, attached to the session
-    system('st', '-e', 'tmux', 'attach-session', '-t', $session);
+    # No terminal — spawn one attached to the session
+    system('alacritty', '-e', 'tmux', 'attach-session', '-t', $session);
 }
 
 exit 0;

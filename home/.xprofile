@@ -3,7 +3,7 @@
 
 exec > >(logger -t xprofile -p user.info) 2> >(logger -t xprofile -p user.err)
 
-export PATH="/bin:/usr/bin:/home/$USER/bin"
+export PATH="/bin:/usr/bin:/home/$USER/bin:/home/$USER/.local/bin"
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
 dbus-update-activation-environment --all # for gnome-keyring

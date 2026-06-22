@@ -34,11 +34,11 @@ function launch_or_attach() {
 		exit 0
 	else
 		local open_window
-		open_window=$(xwininfo -root -tree | grep st-256color | grep "$session" | awk '{print $1}' | head -n1)
+		open_window=$(xwininfo -root -tree | grep Alacritty | grep "$session" | awk '{print $1}' | head -n1)
 		if [[ -n "$open_window" ]]; then
 			wmctrl -i -a "$open_window"
 		else
-			setsid st -t "$session" -e tmux attach -t "$session" >/dev/null 2>&1
+			setsid alacritty -T "$session" -e tmux attach -t "$session" >/dev/null 2>&1
 		fi
 	fi
 

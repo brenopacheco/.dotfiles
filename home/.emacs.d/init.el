@@ -1,6 +1,4 @@
-;;(load (expand-file-name "lisp/xdg.el" user-emacs-directory))
-;; (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-;; (require 'xdg)
+;https://codeberg.org/ashton314/emacs-bedrock/src/branch/main/init.el
 
 (defun reload-config ()
   (interactive)
@@ -23,43 +21,95 @@
 ;; When opening help, move pointer to window
 (setq help-window-select t)
 
+;; Open emacs in scratch buffer
+(setopt inhibit-splash-screen t)
+
+;; Automatically reread from disk if the underlying file changes
+(setopt auto-revert-avoid-polling t)
+
+;; Save history for minibuffer
+(savehist-mode)
+
+(auto-save-mode -1)
+
+;; Show the help buffer after startup
+(add-hook 'after-init-hook 'help-quick)
+
+;; which-key: shows a popup of available keybindings when typing a long key
+;; sequence (e.g. C-x ...)
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+(setopt enable-recursive-minibuffers t)                ; Use the minibuffer whilst in the minibuffer
+(setopt completion-cycle-threshold 1)                  ; TAB cycles candidates
+(setopt completions-detailed t)                        ; Show annotations
+(setopt tab-always-indent 'complete)                   ; When I hit TAB, try to complete, otherwise, indent
+(setopt completion-styles '(basic initials substring)) ; Different styles to match input to candidates
+
+(setopt completion-auto-help 'always)                  ; Open completion always; `lazy' another option
+(setopt completions-max-height 20)                     ; This is arbitrary
+(setopt completions-format 'one-column)
+(setopt completions-group t)
+;(setopt completion-auto-select 'second-tab)            ; Much more eager
+
+(keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete) ; TAB acts more like how it does in the shell
+
+;(icomplete-vertical-mode)
+;(fido-vertical-mode)
+;(setopt icomplete-delay-completions-threshold 4000)
+
+;; Mode line information
+(setopt line-number-mode t)                        ; Show current line in modeline
+(setopt column-number-mode t)                      ; Show column as well
+
+(setopt x-underline-at-descent-line nil)           ; Prettier underlines
+(setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
+
+(setopt show-trailing-whitespace nil)      ; By default, don't underline trailing spaces
+(setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
+
+;; Enable horizontal scrolling
+(setopt mouse-wheel-tilt-scroll t)
+(setopt mouse-wheel-flip-direction t)
+
+;; We won't set these, but they're good to know about
+;;
+;; (setopt indent-tabs-mode nil)
+;; (setopt tab-width 4)
+
+;; Misc. UI tweaks
+(blink-cursor-mode -1)                                ; Steady cursor
+(pixel-scroll-precision-mode)                         ; Smooth scrolling
+
+;; Display line numbers in programming mode
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(setopt display-line-numbers-width 3)           ; Set a minimum width
+
+;; Nice line wrapping when working with text
+(add-hook 'text-mode-hook 'visual-line-mode)
+
 ;; Swap buffer-menu for ibuffer
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-;; start org-mode with org-indented-mode, indenting headers
-(setq org-startup-indented t)
-
-;; start org-mode with org-num-mode, numbering the headers
-(setq org-startup-numerated t)
+;; (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (recentf-mode 1)
-
-;; allow fido-mode to complete buffer with C-M-i
-(setq icomplete-in-buffer 1)
 (fido-mode 1)
-(advice-add 'completion-at-point
-            :after #'minibuffer-hide-completions)
+(load-theme 'modus-operandi)
 
-;; Core files
-(setq org-default-notes-file "~/notes/org/inbox.org")
+;; Enable this if things get too overwhelming
+;(use-package evil
+;  :ensure t
+;  :init
+;  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+;  (setq evil-want-keybinding nil)
+;  :config
+;  (evil-mode 1))
+;
+;(use-package evil-collection
+;  :after evil
+;  :ensure t
+;  :config
+;  (evil-collection-init))
 
-(setq org-agenda-files '("~/notes/org/inbox.org"
-                          "~/notes/org/notes.org"))
-
-(setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
-
-;; Refile settings
-(setq org-refile-use-outline-path nil)
-(setq org-refile-allow-creating-parent-nodes 'confirm)
-
-;; Auto-save after refile and capture
-(advice-add 'org-refile :after 'org-save-all-org-buffers)
-(add-hook 'org-capture-after-finalize-hook 'org-save-all-org-buffers)
-
-;; Capture templates
-(setq org-capture-templates
-      '(("t" "Todo" entry (file "~/notes/org/inbox.org")
-         "* TODO %?\n  %i\n  %a")
-        ("n" "Note" entry (file "~/notes/org/inbox.org")
-         "* %?\n  %i\n  %a")))
-
+;; Emacs will throw trash here

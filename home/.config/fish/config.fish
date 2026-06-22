@@ -38,10 +38,11 @@ fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.luarocks/bin
 fish_add_path $HOME/.go/bin
+fish_add_path $HOME/.local/bin
 
-if type -q rustup
-    fish_add_path (dirname (rustup which rustc))
-end
+# if type -q rustup
+#     fish_add_path (dirname (rustup which rustc))
+# end
 
 # ---- GPG agent ----
 if not pgrep gpg-agent >/dev/null 2>&1
