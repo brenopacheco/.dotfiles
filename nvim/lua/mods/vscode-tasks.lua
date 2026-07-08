@@ -1,0 +1,2 @@
+-- Adds support for parsing tasks.json file and using problem-matchers
+-- TODO: define scope

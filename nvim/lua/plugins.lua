@@ -11,6 +11,8 @@ vim.pack.add({
   gh('neovim/nvim-lspconfig'),
   gh('lewis6991/gitsigns.nvim'),
   gh('bluz71/vim-nightfly-guicolors'),
+  gh('LunarVim/lunar.nvim.git'),
+  gh('folke/tokyonight.nvim'),
   { src = gh('Saghen/blink.cmp'), version = 'v1.10.2' },
   { src = gh('nvim-treesitter/nvim-treesitter'), version = 'main' },
 

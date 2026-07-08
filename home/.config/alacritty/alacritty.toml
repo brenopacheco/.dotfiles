@@ -12,8 +12,10 @@ bold        = { family = "FiraCode Nerd Font Mono", style = "Bold"    }
 italic      = { family = "FiraCode Nerd Font Mono", style = "Regular" }
 bold_italic = { family = "FiraCode Nerd Font Mono", style = "Bold"    }
 
+# https://alacritty.org/config-alacritty-bindings.html
 [keyboard]
 bindings = [
-  { key = "Equals", mods = "Super", action = "IncreaseFontSize" },
-  { key = "Minus",  mods = "Super", action = "DecreaseFontSize" },
+  # cut is not implemented?
+  #{ key = "C", mods = "Super", action = "Copy" },
+  #{ key = "V", mods = "Super", action = "Paste" },
 ]

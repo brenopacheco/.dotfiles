@@ -41,6 +41,9 @@
 ---     bypasses the agent's pinentry dialog and routes the passphrase prompt
 ---     through stdin, enabling headless / non-TTY use. The GPG agent still
 ---     supplies any cached passphrase; only the prompt path changes.
+---
+--- Issues and limitations:
+---   - It does not work over ssh, using oil or netrw
 
 local group = vim.api.nvim_create_augroup('my/gpg', { clear = true })
 

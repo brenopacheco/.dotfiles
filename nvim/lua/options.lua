@@ -12,6 +12,7 @@ vim.g.editorconfig = true
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('clangd')
+vim.lsp.enable('ts_ls')
 -- vim.lsp.enable('filepaths_ls')
 -- }}}
 -- 2. OPTIONS =========================================================== {{{
@@ -67,7 +68,7 @@ vim.opt.relativenumber = true -- show line numbers relative to the cursor
 vim.opt.report         = 0 -- always report number of lines changed by a command
 vim.opt.scrolloff      = 10 -- keep 10 lines visible above/below the cursor
 vim.opt.shada          = "!,'100,<50,s10,h" -- what's saved in the shada file (marks, registers, history)
-vim.opt.shell          = '/bin/fish' -- vim executes {shell} {shellcmdflag} {command}
+vim.opt.shell          = 'fish' -- vim executes {shell} {shellcmdflag} {command}
 vim.opt.shellcmdflag   = '-c' -- tells the shell to evaluate the following cmdline
 vim.opt.shiftwidth     = 4 -- number of spaces used for each step of (auto)indent
 vim.opt.shortmess      = 'cltOCTFso'  -- options for the messages below statusline
@@ -79,9 +80,10 @@ vim.opt.signcolumn     = 'yes:1' -- always show a 1-wide sign column (e.g. for d
 vim.opt.smartcase      = true -- case-sensitive search if query contains uppercase
 vim.opt.smartindent    = false -- disable smartindent (autoindent/filetype indent used instead)
 vim.opt.spell          = false -- spell-checking disabled by default
-vim.opt.splitbelow     = false -- new horizontal splits open above current window
+-- splitbelow=true and splitright=true mimick tmux and i3's behavior
+vim.opt.splitbelow     = true -- new horizontal splits open below current window
+vim.opt.splitright     = true  -- new vertical splits open to the right of current window
 vim.opt.splitkeep      = 'topline' -- keep the same topline visible when splitting/closing windows
-vim.opt.splitright     = false -- new vertical splits open to the left of current window
 vim.opt.startofline    = false -- keep cursor column on commands like G, gg, Ctrl-D
 vim.opt.suffixesadd    = '' -- no extra suffixes tried when looking up filenames (gf)
 vim.opt.tabstop        = 4 -- width (in spaces) a tab character is displayed as

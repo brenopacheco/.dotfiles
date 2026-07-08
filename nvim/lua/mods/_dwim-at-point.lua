@@ -1,0 +1,20 @@
+-- Creates a new command that works similarly to gx, gf, gF, gd, gD, g], C-],
+-- :Man, :help, etc depending on context and what can be done. The idea is to
+-- DWIM by checking what is under the cursor, and what is our current context.
+-- the idea is that the user should not need multile goto commands to "open"
+-- something. this should be similar to embark-dwim.
+--
+-- TODO: properly look at embark, how it works, and what "default" action does
+-- and the heuristics it uses.
+--
+-- Embark is an Emacs package that provides a single universal prefix
+-- key—default `C-.`—to act on whatever is at point. Instead of memorizing
+-- mode‑specific bindings, you point to a file path, symbol, URL, buffer name,
+-- or selected region. Pressing `.` (or `RET`) runs the default action—usually
+-- the most logical operation, such as opening a file, visiting a URL, or
+-- jumping to a definition. A popup menu also shows other context‑sensitive
+-- actions like `k` (kill), `h` (help), or `w` (copy). Embark works inside the
+-- minibuffer too, letting you act on candidates without leaving the prompt,
+-- and its “collect” feature gathers all targets of a type (e.g., all URLs)
+-- into a separate buffer for bulk operations. In essence, Embark turns Emacs
+-- into a cohesive interface where “act on this” is always one keystroke away.

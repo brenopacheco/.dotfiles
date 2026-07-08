@@ -1,4 +1,23 @@
 ;https://codeberg.org/ashton314/emacs-bedrock/src/branch/main/init.el
+(setq auto-save-default nil)
+
+(keymap-global-set "C-x g" 'grep)
+(setq grep-use-null-device nil)           ; stop appending /dev/null
+(setq grep-command "rg --line-number --no-heading --smart-case ")
+
+
+(fido-mode 1)
+
+(which-key-mode 1)
+
+(global-set-key (kbd "C-x C-0") #'delete-window)
+(global-set-key (kbd "C-x C-1") #'delete-other-windows)
+(global-set-key (kbd "C-x C-2") #'split-window-below)
+(global-set-key (kbd "C-x C-3") #'split-window-right)
+(global-set-key (kbd "C-x C-o") #'other-window)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
+
+
 
 (defun reload-config ()
   (interactive)
@@ -79,6 +98,11 @@
 ;; (setopt indent-tabs-mode nil)
 ;; (setopt tab-width 4)
 
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode 1)
+
+
 ;; Misc. UI tweaks
 (blink-cursor-mode -1)                                ; Steady cursor
 (pixel-scroll-precision-mode)                         ; Smooth scrolling
@@ -95,7 +119,8 @@
 
 (recentf-mode 1)
 (fido-mode 1)
-(load-theme 'modus-operandi)
+;;(load-theme 'modus-operandi)
+(load-theme 'modus-vivendi)
 
 ;; Enable this if things get too overwhelming
 ;(use-package evil
@@ -111,5 +136,3 @@
 ;  :ensure t
 ;  :config
 ;  (evil-collection-init))
-
-;; Emacs will throw trash here

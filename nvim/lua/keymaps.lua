@@ -37,13 +37,18 @@ vim.keymap.set({ 'n' }, '<c-w><c-e>', vim.cmd.enew)
 vim.keymap.set({ 'n' }, '<c-w><c-t>', function() vim.cmd('tabnew') end)
 vim.keymap.set({ 'n', 'x' }, 'Q', '<Nop>')
 
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+
 -- WINDOW NAVIGATION ===========================================================
 -- vim.keymap.set({ 'n' }, '<c-k>', '<c-w>w')   -- next window
 -- vim.keymap.set({ 'n' }, '<c-j>', '<c-w>W')   -- previous window
 -- vim.keymap.set({ 'n' }, '<c-x>', '<c-w>c')   -- close window
 -- vim.keymap.set({ 'n' }, '<c-s>', '<c-w>s')   -- horizontal split
 -- vim.keymap.set({ 'n' }, '<c-v>', '<c-w>v')   -- vertical split (visual block via <C-q>)
--- vim.keymap.set({ 'n' }, '<c-o>', '<c-w>o')   -- maximize (only) window
+-- vim.keymap.set({ 'n' }, '<c-m>', '<c-w>o')   -- maximize (only) windo
+vim.keymap.set({ 'n' }, '<c-n>', 'gt')
+vim.keymap.set({ 'n' }, '<c-p>', 'gT')
 vim.keymap.set({ 'n' }, '<c-1>', '1gt')
 vim.keymap.set({ 'n' }, '<c-2>', '2gt')
 vim.keymap.set({ 'n' }, '<c-3>', '3gt')
@@ -54,16 +59,16 @@ if true then return end
 -- CYCLE =======================================================================
 vim.keymap.set({ 'n' }, ']b', vim.cmd.bprevious)
 vim.keymap.set({ 'n' }, '[b', vim.cmd.bnext)
-vim.keymap.set({ 'n' }, ']q', maps.qf_item_next)
-vim.keymap.set({ 'n' }, '[q', maps.qf_item_prev)
 vim.keymap.set({ 'n' }, ']e', vim.cmd.cnewer)
 vim.keymap.set({ 'n' }, '[e', vim.cmd.colder)
-vim.keymap.set({ 'n' }, ']d', maps.diag_prev)
-vim.keymap.set({ 'n' }, '[d', maps.diag_next)
-vim.keymap.set({ 'n' }, ']t', maps.term_prev)
-vim.keymap.set({ 'n' }, '[t', maps.term_next)
-vim.keymap.set({ 'n' }, ']c', maps.chunk_prev)
-vim.keymap.set({ 'n' }, '[c', maps.chunk_next)
+--vim.keymap.set({ 'n' }, ']q', maps.qf_item_next)
+--vim.keymap.set({ 'n' }, '[q', maps.qf_item_prev)
+--vim.keymap.set({ 'n' }, ']d', maps.diag_prev)
+--vim.keymap.set({ 'n' }, '[d', maps.diag_next)
+--vim.keymap.set({ 'n' }, ']t', maps.term_prev)
+--vim.keymap.set({ 'n' }, '[t', maps.term_next)
+--vim.keymap.set({ 'n' }, ']c', maps.chunk_prev)
+--vim.keymap.set({ 'n' }, '[c', maps.chunk_next)
 
 -- QUICKFIX ====================================================================
 vim.keymap.set({ 'n' }, 'qf', maps.qf_global) -- ':Cfilter //<left>') -- figure out a better mapping

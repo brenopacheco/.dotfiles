@@ -40,9 +40,9 @@ fish_add_path $HOME/.luarocks/bin
 fish_add_path $HOME/.go/bin
 fish_add_path $HOME/.local/bin
 
-# if type -q rustup
-#     fish_add_path (dirname (rustup which rustc))
-# end
+if type -q rustup
+    fish_add_path (dirname (rustup which rustc))
+end
 
 # ---- GPG agent ----
 if not pgrep gpg-agent >/dev/null 2>&1
@@ -78,7 +78,7 @@ abbr --add ls 'ls -Fl'
 abbr --add ports 'ss -tulpn'
 
 # Pacman
-abbr --add pac 'sudo pacman -S'
+abbr --add pi 'sudo pacman -S'
 abbr --add pr 'sudo pacman -Rncs'
 
 # Tmux
@@ -89,6 +89,11 @@ abbr --add ts 'tmux new -s (basename $PWD)'
 # Git shortcuts
 abbr --add gs 'git status'
 abbr --add gp 'git pull'
+abbr --add grm 'git clean -fd'
+
+# Common dirs
+abbr --add desk 'cd ~/Desktop/'
+abbr --add down 'cd ~/Downloads/'
 
 # ---- Functions ----
 

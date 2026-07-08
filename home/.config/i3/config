@@ -1,0 +1,119 @@
+# i3 config — minimal, vim-like, Super as mod
+# All keybindings written in extenso with override notes.
+
+set $mod Mod4
+
+font pango:JetBrains Mono 13
+floating_modifier $mod
+
+# ── Launch ────────────────────────────────────────────────────────
+bindsym $mod+Delete exec alacritty
+bindsym $mod+d exec --no-startup-id dmenu_apps
+bindsym $mod+p exec --no-startup-id dmenu_run
+
+# ── Navigation (vim-style hjkl) ───────────────────────────────────
+# OVERRIDE: was $mod+j focus left
+bindsym $mod+h focus left
+# OVERRIDE: was $mod+k focus down
+bindsym $mod+j focus down
+# OVERRIDE: was $mod+l focus up
+bindsym $mod+k focus up
+# OVERRIDE: was $mod+semicolon focus right
+bindsym $mod+l focus right
+
+# tree-order sibling traversal (orientation-agnostic)
+#bindsym $mod+n focus next
+#bindsym $mod+p focus prev
+
+# ── Move windows ──────────────────────────────────────────────────
+# OVERRIDE: was $mod+Shift+j move left
+bindsym $mod+Shift+h move left
+# OVERRIDE: was $mod+Shift+k move down
+bindsym $mod+Shift+j move down
+# OVERRIDE: was $mod+Shift+l move up
+bindsym $mod+Shift+k move up
+# OVERRIDE: was $mod+Shift+semicolon move right
+bindsym $mod+Shift+l move right
+
+# ── Split ─────────────────────────────────────────────────────────
+# OVERRIDE: was $mod+h split h (h now used for left navigation)
+bindsym $mod+s split horizontal
+# unchanged (already vim-like)
+bindsym $mod+v split vertical
+
+# ── Layout ────────────────────────────────────────────────────────
+# OVERRIDE: was $mod+s layout stacking (s now used for split)
+bindsym $mod+t layout stacking
+# unchanged
+bindsym $mod+w layout tabbed
+# unchanged
+bindsym $mod+e layout toggle split
+
+# ── Fullscreen ────────────────────────────────────────────────────
+bindsym $mod+f fullscreen toggle
+
+# ── Floating ──────────────────────────────────────────────────────
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+# ── Focus parent ──────────────────────────────────────────────────
+bindsym $mod+a focus parent
+
+# ── Kill ──────────────────────────────────────────────────────────
+bindsym $mod+q kill
+
+# ── Resize mode (vim-style hjkl) ──────────────────────────────────
+# OVERRIDE: resize mode used jkl;
+bindsym $mod+r mode "resize"
+mode "resize" {
+    # OVERRIDE: was j (shrink width)
+    bindsym h resize shrink width 10 px or 10 ppt
+    # OVERRIDE: was k (grow height)
+    bindsym j resize grow height 10 px or 10 ppt
+    # OVERRIDE: was l (shrink height)
+    bindsym k resize shrink height 10 px or 10 ppt
+    # OVERRIDE: was semicolon (grow width)
+    bindsym l resize grow width 10 px or 10 ppt
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+
+# ── Workspaces ────────────────────────────────────────────────────
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# ── Reload / restart / exit ───────────────────────────────────────
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+q exit
+
+# ── Bar ───────────────────────────────────────────────────────────
+bar {
+    status_command i3status
+}
+
+gaps inner 0
+smart_gaps on
+default_border pixel 2
+hide_edge_borders none

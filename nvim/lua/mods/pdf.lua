@@ -19,8 +19,7 @@
 ---   - `pdftotext` must be available in $PATH
 ---
 --- Limitations:
----   - `-layout` mode preserves physical layout but may produce uneven
----     results for complex PDFs with tables, columns, or forms.
+---   - It does not work over ssh, using oil or netrw.
 ---
 --- Examples:
 ---   :edit paper.pdf
@@ -182,6 +181,7 @@ vim.api.nvim_create_autocmd('BufReadCmd', {
   desc = 'Open PDF files as text via pdftotext',
   callback = function(ev)
     if ev.match:match('^pdf://') then return end
+    if ev.match:match('^oil%-ssh://') then return end
 
     if not has_pdftotext then
       vim.notify('pdftotext not found in PATH', vim.log.levels.ERROR)

@@ -13,6 +13,10 @@
       "rev": "db486b42299b2e3f5831809617af21becf268a39",
       "src": "git@github.com:lewis6991/gitsigns.nvim"
     },
+    "lunar.nvim": {
+      "rev": "08bbc93b96ad698d22fc2aa01805786bcedc34b9",
+      "src": "git@github.com:LunarVim/lunar.nvim.git"
+    },
     "nvim-lspconfig": {
       "rev": "a776085e04f7b15d0b59fae2244df07d98360ab4",
       "src": "git@github.com:neovim/nvim-lspconfig"
@@ -33,6 +37,10 @@
     "snacks.nvim": {
       "rev": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e",
       "src": "git@github.com:folke/snacks.nvim"
+    },
+    "tokyonight.nvim": {
+      "rev": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",
+      "src": "git@github.com:folke/tokyonight.nvim"
     },
     "vim-fugitive": {
       "rev": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0",

@@ -157,6 +157,7 @@ systemctl(
         'lightdm.service',
         'pcscd.socket',    # gpg-card
         'disable-xhc1-wakeup.service'
+	# TODO: 'keyd'
 
         # 'sshd.service'
     ]

@@ -25,3 +25,9 @@ redshift-gtk -l 41.1691:-8.6793 -g 0.75 & disown
 
 notify-capslock & disown
 reset-keyboard
+
+#couldn't make this work for cmd-x/c/v
+#keyd-application-mapper -d & disown
+# sudo systemctl enable --now keyd
+# /etc/keyd/default.conf
+# ~/.config/keyd/app.conf

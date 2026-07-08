@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+#
+cmds=(
+	"alacritty"
+	"clone-github"
+	"monitor asus"
+	"monitor dual"
+	"monitor hp"
+	"reset-audio"
+	"shutdown -h now"
+	"shutdown -r now"
+	"systemctl suspend"
+	"faillock-reset"
+	"systemctl restart --user emacs"
+)
+
+cmd=$(printf "%s\n" "${cmds[@]}" | dmenu -p Run)
+
+test -z "$cmd" && exit 1
+
+output=$(eval "$cmd")
+
+notify-send "$cmd" "$output"
